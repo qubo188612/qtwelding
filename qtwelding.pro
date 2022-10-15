@@ -13,6 +13,8 @@ QT       += core gui network
 
 SOURCES += \
         main.cpp \
+        my_parameters.cpp \
+        project.cpp \
         qtweldingdlg.cpp
 
 # Default rules for deployment.
@@ -24,4 +26,6 @@ FORMS += \
     qtweldingdlg.ui
 
 HEADERS += \
+    my_parameters.h \
+    project.h \
     qtweldingdlg.h
