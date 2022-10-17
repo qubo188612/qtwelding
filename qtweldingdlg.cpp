@@ -21,13 +21,20 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     m_mcs=m_mcs->Get();
 
     b_init_show_ui_list=true;
+    b_init_sent_leaser=true;
+
+    qtmysunny=new qtmysunnyDlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
                   |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
+
     thread = new qtweldingThread(this);
     connect(thread, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
+    connect(thread, SIGNAL(Send_sent_leaser()), this, SLOT(init_sent_leaser()));
+
+    ConnectCamer();//连接相机
 
     b_thread=true;
     thread->start();
@@ -37,16 +44,19 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
 qtweldingDlg::~qtweldingDlg()
 {
+    DisconnectCamer();
+
     thread->Stop();
     thread->quit();
     thread->wait();
 
+    delete qtmysunny;
     delete ui;
 }
 
 void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "open project", "", "Project File(*.json)");
+    QString fileName = QFileDialog::getOpenFileName(this, "open project", "./DATA/", "Project File(*.json)");
 #if _MSC_VER
     QTextCodec *code = QTextCodec::codecForName("GBK");
 #else
@@ -89,7 +99,14 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺编辑
 
 void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
 {
-
+    thread->Lock();
+    DisconnectCamer();
+    qtmysunny->init_dlg_show();
+    qtmysunny->setWindowTitle(QString::fromLocal8Bit("激光头设置"));
+    qtmysunny->exec();
+    qtmysunny->close_dlg_show();
+    ConnectCamer();
+    thread->unLock();
 }
 
 
@@ -104,8 +121,66 @@ void qtweldingDlg::on_setwelderBtn_clicked()//焊机设置
 
 }
 
+void qtweldingDlg::ConnectCamer()
+{
+    int real_readnum;
+    if(m_mcs->resultdata.link_result_state==false)
+    {
+        QString server_ip=m_mcs->ip->camer_ip[0].ip;
+        QString server_port2="1502";
+        m_mcs->resultdata.ctx_result = modbus_new_tcp(server_ip.toUtf8(), server_port2.toInt());
+        if (modbus_connect(m_mcs->resultdata.ctx_result) == -1)
+        {
+            ui->record->append(QString::fromLocal8Bit("激光头1502端口连接失败"));
+            modbus_free(m_mcs->resultdata.ctx_result);
+            return;
+        }
+        m_mcs->resultdata.link_result_state=true;
+        ui->record->append(QString::fromLocal8Bit("激光头1502端口连接成功"));
+    }
+
+    u_int16_t task;
+    real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_result,0x102,1,&task);
+    if(real_readnum<0)
+    {
+        ui->record->append(QString::fromLocal8Bit("激光头获取当前任务号信息失败"));
+    }
+    else
+    {
+        ui->leaser_tasknum->setText(QString::number(task));
+        QString msg=QString::fromLocal8Bit("激光头获取当前内部任务号:")+QString::number(task);
+        ui->record->append(msg);
+    }
+
+    m_mcs->cam->sop_cam[0].InitConnect();
+
+    if(m_mcs->cam->sop_cam[0].b_connect==true)
+    {
+        ui->record->append(QString::fromLocal8Bit("激光头连接成功"));
+    }
+    else if(m_mcs->cam->sop_cam[0].b_connect==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("激光头连接失败"));
+    }
+}
+
+void qtweldingDlg::DisconnectCamer()
+{
+    m_mcs->cam->sop_cam[0].DisConnect();
+    ui->record->append(QString::fromLocal8Bit("相机关闭"));
+
+    if(m_mcs->resultdata.link_result_state==true)
+    {
+        modbus_free(m_mcs->resultdata.ctx_result);
+        m_mcs->resultdata.link_result_state=false;
+        ui->record->append(QString::fromLocal8Bit("1502端口关闭"));
+    }
+}
+
 void qtweldingDlg::init_show_ui_list()//界面刷新
 {
+    QString msg;
+    //工程信息
     ui->project_name->setText(m_mcs->project->project_name);
     switch(m_mcs->project->project_Id)
     {
@@ -113,12 +188,74 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
             ui->project_Id->setText(QString::fromLocal8Bit("示教扫描类型"));
         break;
     }
+
+    //机器人信息
+    msg=m_mcs->ip->robot_ip[0].ip+":"+QString::number(m_mcs->ip->robot_ip[0].port);
+    ui->robot_ip_port->setText(msg);
+
+    //相机信息
+    ui->leaser_ip->setText(m_mcs->ip->camer_ip[0].ip);
+
+
+    float Y=(int16_t)leaser_rcv_data[1]/100.0;
+    float Z=(int16_t)leaser_rcv_data[2]/100.0;
+
+    u_int16_t hour=(int16_t)leaser_rcv_data[5];
+    u_int16_t min=(int16_t)leaser_rcv_data[6];
+    u_int16_t sec=(int16_t)leaser_rcv_data[7];
+    u_int16_t msec=(int16_t)leaser_rcv_data[8];
+
+    u_int16_t hour2=(int16_t)leaser_rcv_data[11];
+    u_int16_t min2=(int16_t)leaser_rcv_data[12];
+    u_int16_t sec2=(int16_t)leaser_rcv_data[13];
+    u_int16_t msec2=(int16_t)leaser_rcv_data[14];
+    float fps=(float)leaser_rcv_data[9]/100.0;
+    float camfps=(float)leaser_rcv_data[10]/100.0;
+
+    ui->leaser_state->setText("0x"+QString::number(leaser_rcv_data[0],16));
+    ui->leaser_pos_y->setText(QString::number(Y,'f',2));
+    ui->leaser_pos_z->setText(QString::number(Z,'f',2));
+
+
+    msg=QString::number(hour)+":"+QString::number(min)+":"+QString::number(sec)+":"+QString::number(msec);
+    ui->leaser_timestamp->setText(msg);
+    msg=QString::number(hour2)+":"+QString::number(min2)+":"+QString::number(sec2)+":"+QString::number(msec2);
+    ui->leaser_time->setText(msg);
+
+    ui->leaser_camera_fps->setText(QString::number(fps,'f',2));
+    ui->leaser_result_fps->setText(QString::number(camfps,'f',2));
+
     b_init_show_ui_list=true;
+}
+
+void qtweldingDlg::init_sent_leaser()
+{
+    if(send_group_leaser.size()!=0)
+    {
+        sent_info_leaser sentdata=send_group_leaser[0];
+        std::vector<sent_info_leaser>::iterator it = send_group_leaser.begin();
+        send_group_leaser.erase(it);
+        int rc=modbus_write_registers(sentdata.ctx,sentdata.port,sentdata.data.size(),sentdata.data.data());
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("激光头通信异常"));
+        }
+        if(send_group_leaser.size()==0)
+        {
+            ctx_result_dosomeing=DO_NOTHING;
+        }
+    }
+    else
+    {
+        ctx_result_dosomeing=DO_NOTHING;
+    }
+    b_init_sent_leaser=true;
 }
 
 qtweldingThread::qtweldingThread(qtweldingDlg *statci_p)
 {
     _p=statci_p;
+    lock=false;
 }
 
 void qtweldingThread::run()
@@ -127,10 +264,25 @@ void qtweldingThread::run()
     {
         if(_p->b_thread==true)
         {
-            if(_p->b_init_show_ui_list==true)
+            if(lock==false)
             {
-                _p->b_init_show_ui_list=false;
-                emit Send_show_ui_list();
+                if(_p->ctx_result_dosomeing==DO_WRITE_TASK)
+                {
+                    if(_p->b_init_sent_leaser==true)
+                    {
+                        _p->b_init_sent_leaser=false;
+                        emit Send_sent_leaser();
+                    }
+                }
+                else if(_p->ctx_result_dosomeing==DO_NOTHING)
+                {
+                    modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x02,15,_p->leaser_rcv_data);
+                }
+                if(_p->b_init_show_ui_list==true)
+                {
+                    _p->b_init_show_ui_list=false;
+                    emit Send_show_ui_list();
+                }
             }
             sleep(0);
         }
@@ -153,5 +305,15 @@ void qtweldingThread::Stop()
       sleep(0);
     }
   }
+}
+
+void qtweldingThread::Lock()
+{
+  lock=true;
+}
+
+void qtweldingThread::unLock()
+{
+  lock=false;
 }
 

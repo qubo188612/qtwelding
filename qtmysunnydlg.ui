@@ -1,0 +1,2990 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>qtmysunnyDlg</class>
+ <widget class="QDialog" name="qtmysunnyDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1128</width>
+    <height>758</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="connectcameraBtn">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>40</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>连接相机</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="record">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>630</y>
+     <width>581</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>610</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>调试信息:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="IPadd">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>121</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>IP:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>10</y>
+     <width>101</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>机器人型号:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>40</y>
+     <width>101</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>机器人端口:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="robotsetBtn">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>70</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导入机器人设置</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="robotport">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>40</y>
+     <width>121</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>10</y>
+     <width>121</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>无机器人</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>智昌机器人</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>智昌-川崎机器人</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>摩卡-纳伯特机器人</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>610</y>
+     <width>92</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>暂停刷新</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>570</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>检测结果:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>570</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>有效:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>570</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Y1:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>570</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Z1:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>570</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>570</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>570</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>10</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>任务号:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="tasknum">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>10</y>
+     <width>113</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="tasknumsetBtn">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>40</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导入任务号</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="tasknumshowBtn">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>100</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>任务号图示</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="savebmpshowBtn">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>700</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>保存图像</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveavishowBtn">
+   <property name="geometry">
+    <rect>
+     <x>1010</x>
+     <y>700</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>录制视频</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="savebmpstepBtn">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>700</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>写入步骤</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="bmpstepEdit">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>720</y>
+     <width>101</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>700</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>示图步骤:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>590</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Y2:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_17">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>590</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_18">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>590</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Z2:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_19">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>590</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_20">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>610</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Y3:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_21">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>610</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_22">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>610</y>
+     <width>21</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Z3:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_23">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>610</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_24">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>570</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>焊点:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_25">
+   <property name="geometry">
+    <rect>
+     <x>526</x>
+     <y>570</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="PictureBox" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>10</y>
+     <width>521</width>
+     <height>681</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cam_width">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>100</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_28">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>相机宽:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_29">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>相机高:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cam_height">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>130</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="setcamsizeBtn">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>130</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导入相机设置</string>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>581</width>
+     <height>341</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>3</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Tab 1</string>
+    </attribute>
+    <widget class="QLineEdit" name="alg0_99_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab1label_1">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="writeTab1Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入参数</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="readTab1Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取参数</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Tab 2</string>
+    </attribute>
+    <widget class="QLabel" name="tab2label_1">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg100_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="writeTab2Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入任务号100参数</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="readTab2Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取任务号100参数</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tab2tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>391</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>11</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>12</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>13</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>14</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>15</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>16</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>17</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>18</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>19</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>20</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>21</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>22</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>取值范围</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <item row="0" column="0">
+      <property name="text">
+       <string>pingjun</string>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>b_yanmofuzhu</string>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="1" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>b_gudingquyu</string>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="2" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>widthliantongdis</string>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="3" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string>highliantongdis</string>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="4" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string>gujiaerzhi</string>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="5" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="6" column="0">
+      <property name="text">
+       <string>jiguanghight</string>
+      </property>
+     </item>
+     <item row="6" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="6" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="7" column="0">
+      <property name="text">
+       <string>jiguanglong</string>
+      </property>
+     </item>
+     <item row="7" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="7" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="8" column="0">
+      <property name="text">
+       <string>jiguangkuandu</string>
+      </property>
+     </item>
+     <item row="8" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="8" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="9" column="0">
+      <property name="text">
+       <string>Updif</string>
+      </property>
+     </item>
+     <item row="9" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="9" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="10" column="0">
+      <property name="text">
+       <string>Updifmin</string>
+      </property>
+     </item>
+     <item row="10" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="10" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="11" column="0">
+      <property name="text">
+       <string>Uplong</string>
+      </property>
+     </item>
+     <item row="11" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="11" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="12" column="0">
+      <property name="text">
+       <string>Downdif</string>
+      </property>
+     </item>
+     <item row="12" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="12" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="13" column="0">
+      <property name="text">
+       <string>Downdifmin</string>
+      </property>
+     </item>
+     <item row="13" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="13" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="14" column="0">
+      <property name="text">
+       <string>Downdlong</string>
+      </property>
+     </item>
+     <item row="14" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="14" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="15" column="0">
+      <property name="text">
+       <string>duanxianerzhi</string>
+      </property>
+     </item>
+     <item row="15" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="15" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="16" column="0">
+      <property name="text">
+       <string>erzhisize</string>
+      </property>
+     </item>
+     <item row="16" column="1">
+      <property name="text">
+       <string>[80,500]</string>
+      </property>
+     </item>
+     <item row="16" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="17" column="0">
+      <property name="text">
+       <string>erzhisize2</string>
+      </property>
+     </item>
+     <item row="17" column="1">
+      <property name="text">
+       <string>[30,500]</string>
+      </property>
+     </item>
+     <item row="17" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="18" column="0">
+      <property name="text">
+       <string>searchdectancemax</string>
+      </property>
+     </item>
+     <item row="18" column="1">
+      <property name="text">
+       <string>[30,500]</string>
+      </property>
+     </item>
+     <item row="18" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="19" column="0">
+      <property name="text">
+       <string>searchdectancemin</string>
+      </property>
+     </item>
+     <item row="19" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="19" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="20" column="0">
+      <property name="text">
+       <string>dis_center_st</string>
+      </property>
+     </item>
+     <item row="20" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="20" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="21" column="0">
+      <property name="text">
+       <string>dis_center_ed</string>
+      </property>
+     </item>
+     <item row="21" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="21" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="initTab2Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>10</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>重置任务号100参数</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+    <widget class="QLineEdit" name="alg101_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab2label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="writeTab3Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入任务号101参数</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="initTab3Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>10</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>重置任务号101参数</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="readTab3Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取任务号101参数</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tab3tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>391</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>11</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>12</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>13</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>14</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>15</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>16</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>17</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>18</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>19</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>20</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>21</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>22</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>取值范围</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <item row="0" column="0">
+      <property name="text">
+       <string>pingjun</string>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>b_yanmofuzhu</string>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="1" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>b_gudingquyu</string>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="2" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>widthliantongdis</string>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="3" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string>highliantongdis</string>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="4" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string>gujiaerzhi</string>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="5" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="6" column="0">
+      <property name="text">
+       <string>jiguanghight</string>
+      </property>
+     </item>
+     <item row="6" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="6" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="7" column="0">
+      <property name="text">
+       <string>jiguanglong</string>
+      </property>
+     </item>
+     <item row="7" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="7" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="8" column="0">
+      <property name="text">
+       <string>jiguangkuandu</string>
+      </property>
+     </item>
+     <item row="8" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="8" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="9" column="0">
+      <property name="text">
+       <string>Updif</string>
+      </property>
+     </item>
+     <item row="9" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="9" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="10" column="0">
+      <property name="text">
+       <string>Updifmin</string>
+      </property>
+     </item>
+     <item row="10" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="10" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="11" column="0">
+      <property name="text">
+       <string>Uplong</string>
+      </property>
+     </item>
+     <item row="11" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="11" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="12" column="0">
+      <property name="text">
+       <string>Downdif</string>
+      </property>
+     </item>
+     <item row="12" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="12" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="13" column="0">
+      <property name="text">
+       <string>Downdifmin</string>
+      </property>
+     </item>
+     <item row="13" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="13" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="14" column="0">
+      <property name="text">
+       <string>Downdlong</string>
+      </property>
+     </item>
+     <item row="14" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="14" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="15" column="0">
+      <property name="text">
+       <string>duanxianerzhi</string>
+      </property>
+     </item>
+     <item row="15" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="15" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="16" column="0">
+      <property name="text">
+       <string>erzhisize</string>
+      </property>
+     </item>
+     <item row="16" column="1">
+      <property name="text">
+       <string>[80,500]</string>
+      </property>
+     </item>
+     <item row="16" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="17" column="0">
+      <property name="text">
+       <string>erzhisize2</string>
+      </property>
+     </item>
+     <item row="17" column="1">
+      <property name="text">
+       <string>[30,500]</string>
+      </property>
+     </item>
+     <item row="17" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="18" column="0">
+      <property name="text">
+       <string>searchdectancemax</string>
+      </property>
+     </item>
+     <item row="18" column="1">
+      <property name="text">
+       <string>[30,500]</string>
+      </property>
+     </item>
+     <item row="18" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="19" column="0">
+      <property name="text">
+       <string>searchdectancemin</string>
+      </property>
+     </item>
+     <item row="19" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="19" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="20" column="0">
+      <property name="text">
+       <string>dis_center_st</string>
+      </property>
+     </item>
+     <item row="20" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="20" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="21" column="0">
+      <property name="text">
+       <string>dis_center_ed</string>
+      </property>
+     </item>
+     <item row="21" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="21" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+    <widget class="QLabel" name="tab2label_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tab4tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>391</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>11</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>12</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>13</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>14</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>15</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>16</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>17</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>18</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>19</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>20</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>21</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>22</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>23</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>24</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>25</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>26</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>27</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>28</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>29</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>30</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>31</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>32</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>33</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>34</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>35</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>取值范围</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <item row="0" column="0">
+      <property name="text">
+       <string>pingjun</string>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>b_yanmofuzhu</string>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="1" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>b_gudingquyu</string>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="2" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>widthliantongdis</string>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="3" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string>highliantongdis</string>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="4" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string>gujiaerzhi</string>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="5" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="6" column="0">
+      <property name="text">
+       <string>jiguanghight</string>
+      </property>
+     </item>
+     <item row="6" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="6" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="7" column="0">
+      <property name="text">
+       <string>jiguanglong</string>
+      </property>
+     </item>
+     <item row="7" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="7" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="8" column="0">
+      <property name="text">
+       <string>jiguangkuandu</string>
+      </property>
+     </item>
+     <item row="8" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="8" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="9" column="0">
+      <property name="text">
+       <string>Updif</string>
+      </property>
+     </item>
+     <item row="9" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="9" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="10" column="0">
+      <property name="text">
+       <string>Updifmin</string>
+      </property>
+     </item>
+     <item row="10" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="10" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="11" column="0">
+      <property name="text">
+       <string>Uplong</string>
+      </property>
+     </item>
+     <item row="11" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="11" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="12" column="0">
+      <property name="text">
+       <string>Downdif</string>
+      </property>
+     </item>
+     <item row="12" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="12" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="13" column="0">
+      <property name="text">
+       <string>Downdifmin</string>
+      </property>
+     </item>
+     <item row="13" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="13" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="14" column="0">
+      <property name="text">
+       <string>Downdlong</string>
+      </property>
+     </item>
+     <item row="14" column="1">
+      <property name="text">
+       <string>[1,500]</string>
+      </property>
+     </item>
+     <item row="14" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="15" column="0">
+      <property name="text">
+       <string>St_Down</string>
+      </property>
+     </item>
+     <item row="15" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="15" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="16" column="0">
+      <property name="text">
+       <string>Ed_Down</string>
+      </property>
+     </item>
+     <item row="16" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="16" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="17" column="0">
+      <property name="text">
+       <string>St_Up</string>
+      </property>
+     </item>
+     <item row="17" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="17" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="18" column="0">
+      <property name="text">
+       <string>Ed_Up</string>
+      </property>
+     </item>
+     <item row="18" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="18" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="19" column="0">
+      <property name="text">
+       <string>Updif2</string>
+      </property>
+     </item>
+     <item row="19" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="19" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="20" column="0">
+      <property name="text">
+       <string>Updifmin2</string>
+      </property>
+     </item>
+     <item row="20" column="1">
+      <property name="text">
+       <string>[-255,255]</string>
+      </property>
+     </item>
+     <item row="20" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="21" column="0">
+      <property name="text">
+       <string>dis_center_st</string>
+      </property>
+     </item>
+     <item row="21" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="21" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="22" column="0">
+      <property name="text">
+       <string>dis_center_ed</string>
+      </property>
+     </item>
+     <item row="22" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="22" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="23" column="0">
+      <property name="text">
+       <string>b_opengudingdimian</string>
+      </property>
+     </item>
+     <item row="23" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="23" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="24" column="0">
+      <property name="text">
+       <string>dimianpangdingjuli</string>
+      </property>
+     </item>
+     <item row="24" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="24" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="25" column="0">
+      <property name="text">
+       <string>dimianpingjunshunum</string>
+      </property>
+     </item>
+     <item row="25" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="25" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="26" column="0">
+      <property name="text">
+       <string>dis_center_st2</string>
+      </property>
+     </item>
+     <item row="26" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="26" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="27" column="0">
+      <property name="text">
+       <string>dis_center_ed2</string>
+      </property>
+     </item>
+     <item row="27" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="27" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="28" column="0">
+      <property name="text">
+       <string>dis_center_st3</string>
+      </property>
+     </item>
+     <item row="28" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="28" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="29" column="0">
+      <property name="text">
+       <string>dis_center_ed3</string>
+      </property>
+     </item>
+     <item row="29" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="29" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="30" column="0">
+      <property name="text">
+       <string>xuexijuli</string>
+      </property>
+     </item>
+     <item row="30" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="30" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="31" column="0">
+      <property name="text">
+       <string>b_pingpowending</string>
+      </property>
+     </item>
+     <item row="31" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="31" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="32" column="0">
+      <property name="text">
+       <string>pingpowending_dis</string>
+      </property>
+     </item>
+     <item row="32" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="32" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="33" column="0">
+      <property name="text">
+       <string>b_xielvopen</string>
+      </property>
+     </item>
+     <item row="33" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="33" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="34" column="0">
+      <property name="text">
+       <string>xielvfanwei</string>
+      </property>
+     </item>
+     <item row="34" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="34" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="initTab4Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>10</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>重置任务号102参数</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="writeTab4Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入任务号102参数</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg102_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_27">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="readTab4Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取任务号102参数</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+    <widget class="QPushButton" name="writeTab5Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入任务号103参数</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_32">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab2label_7">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tab5tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>391</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>取值范围</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <item row="0" column="0">
+      <property name="text">
+       <string>pingjun</string>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>gujiaerzhi</string>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="1" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>widthliantongdis</string>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="2" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>highliantongdis</string>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="3" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string>jiguanglong</string>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="4" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string>jiguangkuandu</string>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="5" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="6" column="0">
+      <property name="text">
+       <string>jiguangduibidu</string>
+      </property>
+     </item>
+     <item row="6" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="6" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLineEdit" name="alg103_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="readTab5Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取任务号103参数</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="initTab5Btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>10</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>重置任务号103参数</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label_30">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>100</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>(640-1536)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_31">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>130</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>(480-1024)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_33">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>590</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>时间戳:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_34">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>590</y>
+     <width>151</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_35">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>590</y>
+     <width>71</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>数据帧率:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_36">
+   <property name="geometry">
+    <rect>
+     <x>526</x>
+     <y>590</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_37">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>610</y>
+     <width>71</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>相机帧率:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_38">
+   <property name="geometry">
+    <rect>
+     <x>526</x>
+     <y>610</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cam_fps">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>160</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_39">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>帧率:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_40">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>160</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>(30-250)</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cambuildBtn">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>160</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>激光头标定</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_41">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>190</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>激光器时钟:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_42">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>190</y>
+     <width>151</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PictureBox</class>
+   <extends>QWidget</extends>
+   <header location="global">PictureBox.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

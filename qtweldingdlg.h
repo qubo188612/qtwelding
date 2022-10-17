@@ -13,12 +13,24 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #endif
+#include "qtmysunnydlg.h"
+#include <vector>
 
 namespace Ui {
 class qtweldingDlg;
 }
 
 class qtweldingThread;
+
+
+class sent_info_leaser              //发送相机数据
+{
+public:
+    modbus_t *ctx;                  //sock
+    int port;                       //发送端口
+    int addr;                       //发送寄存器
+    std::vector<uint16_t> data;        //发送数据
+};
 
 class qtweldingDlg : public QDialog
 {
@@ -34,6 +46,14 @@ public:
     bool b_thread;
     bool b_stop_thread;
     volatile bool b_init_show_ui_list;
+    volatile bool b_init_sent_leaser;    //相机往外发送
+
+    qtmysunnyDlg *qtmysunny;
+
+    int ctx_result_dosomeing;   //1502端口忙
+
+    std::vector<sent_info_leaser> send_group_leaser;    //发送相机数据队列
+    unsigned short leaser_rcv_data[15];
 
 private slots:
     void on_importprojectBtn_clicked();
@@ -52,8 +72,14 @@ private slots:
 
     void init_show_ui_list();
 
+    void init_sent_leaser();
+
 private:
     Ui::qtweldingDlg *ui;
+
+    void ConnectCamer();       //连接相机
+    void DisconnectCamer();    //断开相机
+
 };
 
 class qtweldingThread : public QThread
@@ -63,14 +89,17 @@ class qtweldingThread : public QThread
 public:
     qtweldingThread(qtweldingDlg *statci_p);
     void Stop();
+    void Lock();
+    void unLock();
 protected:
     void run();
 private:
     qtweldingDlg *_p;
-
+    bool lock;
 signals:
     // 自定义信号
     void Send_show_ui_list();
+    void Send_sent_leaser();
 };
 
 #endif // QTWELDINGDLG_H
