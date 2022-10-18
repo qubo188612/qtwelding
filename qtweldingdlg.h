@@ -80,6 +80,10 @@ private:
     void ConnectCamer();       //连接相机
     void DisconnectCamer();    //断开相机
 
+    bool b_RunAlgCamer;
+    void RunAlgCamer();        //运行算法
+    void StopAlgCamer();       //停止算法
+
 };
 
 class qtweldingThread : public QThread
@@ -89,13 +93,10 @@ class qtweldingThread : public QThread
 public:
     qtweldingThread(qtweldingDlg *statci_p);
     void Stop();
-    void Lock();
-    void unLock();
 protected:
     void run();
 private:
     qtweldingDlg *_p;
-    bool lock;
 signals:
     // 自定义信号
     void Send_show_ui_list();

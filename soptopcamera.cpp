@@ -479,8 +479,8 @@ void StartCameraThread::run()
   _p->b_stopthred=false;
   if(_p->b_connect==true)
   {
-    rclcpp::init(_p->argc,_p->argv);
-    rclcpp::spin(std::make_shared<Camshow>(_p));
+      rclcpp::init(_p->argc,_p->argv);
+      rclcpp::spin(std::make_shared<Camshow>(_p));
   }
   _p->b_stopthred=true;
 }

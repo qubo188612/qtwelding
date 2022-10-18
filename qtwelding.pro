@@ -17,6 +17,7 @@ SOURCES += \
         PictureBox.cpp \
         ResultData.cpp \
         TimeFunction.cpp \
+        XTcp.cpp \
         cam_sen.cpp \
         cambuilddlg.cpp \
         ipaddress.cpp \
