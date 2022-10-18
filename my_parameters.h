@@ -7,6 +7,7 @@
 #include "E2proomData.h"
 #include "project.h"
 #include "ipaddress.h"
+#include "robotdata.h"
 
 class my_parameters
 {
@@ -19,9 +20,11 @@ public:
 
     IPaddress *ip;  //设备ip信息
 
-    ResultData resultdata;		//实时结果数据
+    RobotData *rob; //机器人
 
-    E2proomData e2proomdata;
+    ResultData resultdata;		//激光头实时结果数据
+
+    E2proomData e2proomdata;    //保存文件
 
 
 protected:

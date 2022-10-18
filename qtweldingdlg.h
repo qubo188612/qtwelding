@@ -13,8 +13,10 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #endif
-#include "qtmysunnydlg.h"
 #include <vector>
+#include "qtmysunnydlg.h"
+#include "demarcatedlg.h"
+
 
 namespace Ui {
 class qtweldingDlg;
@@ -27,9 +29,8 @@ class sent_info_leaser              //发送相机数据
 {
 public:
     modbus_t *ctx;                  //sock
-    int port;                       //发送端口
     int addr;                       //发送寄存器
-    std::vector<uint16_t> data;        //发送数据
+    std::vector<uint16_t> data;     //发送数据
 };
 
 class qtweldingDlg : public QDialog
@@ -49,11 +50,13 @@ public:
     volatile bool b_init_sent_leaser;    //相机往外发送
 
     qtmysunnyDlg *qtmysunny;
+    demarcateDlg *demarcate;
 
     int ctx_result_dosomeing;   //1502端口忙
 
     std::vector<sent_info_leaser> send_group_leaser;    //发送相机数据队列
     unsigned short leaser_rcv_data[15];
+    unsigned short leaser_rcv_data2[4];
 
 private slots:
     void on_importprojectBtn_clicked();
@@ -73,6 +76,8 @@ private slots:
     void init_show_ui_list();
 
     void init_sent_leaser();
+
+    void on_demarcateBtn_clicked();
 
 private:
     Ui::qtweldingDlg *ui;

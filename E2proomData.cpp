@@ -65,6 +65,10 @@ E2proomData::E2proomData()
     camdlg_cvimg_posY4_max=E2POOM_CAMDLG_CVIMG_POSY4_MAX;
     camdlg_cvimg_posY4_use=E2POOM_CAMDLG_CVIMG_POSY4_USE;
 
+    demdlg_radio_mod_min=E2POOM_DEMDLG_RADIO_MOD_MIN;
+    demdlg_radio_mod_max=E2POOM_DEMDLG_RADIO_MOD_MAX;
+    demdlg_radio_mod_use=E2POOM_DEMDLG_RADIO_MOD_USE;
+
     read_para();
 }
 
@@ -107,9 +111,20 @@ void E2proomData::check_para()
         camdlg_cvimg_posX4=camdlg_cvimg_posX4_use;
     if(camdlg_cvimg_posY4<camdlg_cvimg_posY4_min||camdlg_cvimg_posY4>camdlg_cvimg_posY4_max)
         camdlg_cvimg_posY4=camdlg_cvimg_posY4_use;
+
+    if(demdlg_radio_mod<demdlg_radio_mod_min||demdlg_radio_mod>demdlg_radio_mod_max)
+        demdlg_radio_mod=demdlg_radio_mod_use;
 }
 
 void E2proomData::read_para()
+{
+    read_camdlg_para();
+    read_demdlg_para();
+
+    check_para();
+}
+
+void E2proomData::read_camdlg_para()
 {
     Uint8 *buff=NULL;
     CFileOut fo;
@@ -169,9 +184,6 @@ void E2proomData::read_para()
       delete []buff;
       buff=NULL;
     }
-
-
-    check_para();
 }
 
 void E2proomData::write_camdlg_para()
@@ -247,4 +259,24 @@ void E2proomData::init_camdlg_para()
     camdlg_cvimg_posY3=camdlg_cvimg_posY3_use;
     camdlg_cvimg_posX4=camdlg_cvimg_posX4_use;
     camdlg_cvimg_posY4=camdlg_cvimg_posY4_use;
+}
+
+void E2proomData::read_demdlg_para()
+{
+
+}
+
+void E2proomData::write_demdlg_para()
+{
+
+}
+
+void E2proomData::init_demdlg_para()
+{
+
+}
+
+void E2proomData::write()
+{
+    write_camdlg_para();
 }

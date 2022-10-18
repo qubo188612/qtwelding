@@ -20,12 +20,14 @@ SOURCES += \
         XTcp.cpp \
         cam_sen.cpp \
         cambuilddlg.cpp \
+        demarcatedlg.cpp \
         ipaddress.cpp \
         main.cpp \
         my_parameters.cpp \
         project.cpp \
         qtmysunnydlg.cpp \
         qtweldingdlg.cpp \
+        robotdata.cpp \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp
@@ -37,6 +39,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 FORMS += \
     cambuilddlg.ui \
+    demarcatedlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     showtasknumdlg.ui
@@ -50,12 +53,14 @@ HEADERS += \
     XTcp.h \
     cam_sen.h \
     cambuilddlg.h \
+    demarcatedlg.h \
     global.h \
     ipaddress.h \
     my_parameters.h \
     project.h \
     qtmysunnydlg.h \
     qtweldingdlg.h \
+    robotdata.h \
     showtasknumdlg.h \
     soptocameratcpip.h \
     soptopcamera.h \
@@ -106,4 +111,7 @@ LIBS += /home/qubo/myRos2test/install/tutorial_interfaces/lib/libtutorial_interf
 INCLUDEPATH += /home/qubo/modbus/libmodbus/install/include \
 
 LIBS += /home/qubo/modbus/libmodbus/install/lib/libmodbus.so
+
+#Eigen库的添加
+INCLUDEPATH += /usr/include/eigen3
 }

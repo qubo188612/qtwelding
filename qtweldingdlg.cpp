@@ -26,6 +26,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ctx_result_dosomeing=DO_NOTHING;
 
     qtmysunny=new qtmysunnyDlg(m_mcs);
+    demarcate=new demarcateDlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -81,6 +82,7 @@ qtweldingDlg::~qtweldingDlg()
 
     delete thread;
     delete qtmysunny;
+    delete demarcate;
     delete ui;
 }
 
@@ -148,10 +150,41 @@ void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
 
 }
 
-
 void qtweldingDlg::on_setwelderBtn_clicked()//焊机设置
 {
 
+}
+
+void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
+{
+    if(m_mcs->resultdata.link_result_state==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("激光头未连接成功"));
+    }
+    /*
+    else if()
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+    }
+    */
+    else
+    {
+        sent_info_leaser sentdata;
+        sentdata.ctx=m_mcs->resultdata.ctx_result;
+        sentdata.addr=0x101;
+        sentdata.data={0xff};
+        send_group_leaser.push_back(sentdata);
+        ctx_result_dosomeing=DO_WRITE_TASK;
+
+        demarcate->init_dlg_show();
+        demarcate->setWindowTitle(QString::fromLocal8Bit("标定设置"));
+        demarcate->exec();
+        demarcate->close_dlg_show();
+
+        sentdata.data={0x00};
+        send_group_leaser.push_back(sentdata);
+        ctx_result_dosomeing=DO_WRITE_TASK;
+    }
 }
 
 void qtweldingDlg::ConnectCamer()
@@ -279,6 +312,10 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
 
     float Y=(int16_t)leaser_rcv_data[1]/100.0;
     float Z=(int16_t)leaser_rcv_data[2]/100.0;
+    float Y2=(int16_t)leaser_rcv_data2[0]/100.0;
+    float Z2=(int16_t)leaser_rcv_data2[1]/100.0;
+    float Y3=(int16_t)leaser_rcv_data2[2]/100.0;
+    float Z3=(int16_t)leaser_rcv_data2[3]/100.0;
 
     u_int16_t hour=(int16_t)leaser_rcv_data[5];
     u_int16_t min=(int16_t)leaser_rcv_data[6];
@@ -296,6 +333,15 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
     ui->leaser_pos_y->setText(QString::number(Y,'f',2));
     ui->leaser_pos_z->setText(QString::number(Z,'f',2));
 
+    m_mcs->resultdata.pos1.Y=Y;
+    m_mcs->resultdata.pos1.Z=Z;
+    m_mcs->resultdata.pos1.nEn=true;
+    m_mcs->resultdata.pos2.Y=Y2;
+    m_mcs->resultdata.pos2.Z=Z2;
+    m_mcs->resultdata.pos2.nEn=true;
+    m_mcs->resultdata.pos3.Y=Y3;
+    m_mcs->resultdata.pos3.Z=Z3;
+    m_mcs->resultdata.pos3.nEn=true;
 
     msg=QString::number(hour)+":"+QString::number(min)+":"+QString::number(sec)+":"+QString::number(msec);
     ui->leaser_timestamp->setText(msg);
@@ -315,7 +361,7 @@ void qtweldingDlg::init_sent_leaser()
         sent_info_leaser sentdata=send_group_leaser[0];
         std::vector<sent_info_leaser>::iterator it = send_group_leaser.begin();
         send_group_leaser.erase(it);
-        int rc=modbus_write_registers(sentdata.ctx,sentdata.port,sentdata.data.size(),sentdata.data.data());
+        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
         if(rc!=1)
         {
             ui->record->append(QString::fromLocal8Bit("激光头通信异常"));
@@ -356,6 +402,7 @@ void qtweldingThread::run()
                 else if(_p->ctx_result_dosomeing==DO_NOTHING)
                 {
                     modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x02,15,_p->leaser_rcv_data);
+                    modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x50,4,_p->leaser_rcv_data2);
                 }
             }
             if(_p->b_init_show_ui_list==true)
@@ -384,4 +431,7 @@ void qtweldingThread::Stop()
     }
   }
 }
+
+
+
 

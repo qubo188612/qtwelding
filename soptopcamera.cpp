@@ -115,21 +115,12 @@ void Camshow::cloud_callback(const tutorial_interfaces::msg::IfAlgorhmitcloud ms
     {
         if(msg.lasertrackoutcloud.size()>0)
         {
-            std::vector<cv::Point3f> cv_ptr;
-            cv_ptr.resize(msg.lasertrackoutcloud.size());
-            for(int n=0;n<msg.lasertrackoutcloud.size();n++)
-            {
-              cv_ptr[n].x=msg.lasertrackoutcloud[n].x;
-              cv_ptr[n].y=msg.lasertrackoutcloud[n].y;
-              cv_ptr[n].z=msg.lasertrackoutcloud[n].u;
-            }
-            (*(_p->cv_line)).linepoint=cv_ptr;
-            (*(_p->cv_line)).linehead=msg.header;
-            _p->b_cv_lineEn=true;
+            (*(_p->ros_line))=msg;
+            _p->b_ros_lineEn=true;
         }
         else
         {
-            _p->b_cv_lineEn=false;
+            _p->b_ros_lineEn=false;
         }
         _p->b_updatacloud_finish=true;
         _p->callbacknumber++;
@@ -217,7 +208,7 @@ SoptopCamera::SoptopCamera()
   b_stopthred=true;
   b_connetc_noimage=false;
 
-  cv_line=new Ros2lineinfo;
+  ros_line=new tutorial_interfaces::msg::IfAlgorhmitcloud;
 }
 
 SoptopCamera::~SoptopCamera()
@@ -229,7 +220,7 @@ SoptopCamera::~SoptopCamera()
       delete StartCamera_thread;
       StartCamera_thread=NULL;
   }
-  delete cv_line;
+  delete ros_line;
 }
 
 void SoptopCamera::timerEvent(QTimerEvent *event)

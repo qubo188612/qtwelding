@@ -8,6 +8,16 @@
 #define MODBUS_RESULT_MAXNUM            400
 #define MODBUS_PARAM_MAXNUM             400
 
+class leaser_pos //激光器pos点坐标
+{
+public:
+    leaser_pos();
+
+    float Y;
+    float Z;
+    bool nEn;
+};
+
 class modbustcpThread;
 
 class ResultData
@@ -15,6 +25,10 @@ class ResultData
 public:
     ResultData();
     ~ResultData();
+
+    leaser_pos pos1;    //激光器pos1点坐标
+    leaser_pos pos2;    //激光器pos2点坐标
+    leaser_pos pos3;    //激光器pos3点坐标
 
     uint8_t link_result_state;
     uint8_t link_param_state;

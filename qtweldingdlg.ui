@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1294</width>
-    <height>770</height>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1354,6 +1354,30 @@
        </property>
        <property name="text">
         <string>焊机设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="demarcateBtn">
+       <property name="minimumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>标定设置</string>
        </property>
       </widget>
      </item>

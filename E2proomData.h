@@ -65,12 +65,18 @@
 #define E2POOM_CAMDLG_CVIMG_POSY4_MAX       CAMBUILD_IMAGE_HEIGHT-1
 #define E2POOM_CAMDLG_CVIMG_POSY4_USE       0
 
+#define E2POOM_DEMDLG_SYSPATH_MOTO			"./SAVE/E2P_DEMDLG.bsd"
+#define E2POOM_DEMDLG_RADIO_MOD_MIN         0
+#define E2POOM_DEMDLG_RADIO_MOD_MAX         1
+#define E2POOM_DEMDLG_RADIO_MOD_USE         0
+
 class E2proomData
 {
 public:
     E2proomData();
     ~E2proomData();
-
+/***************************/
+    //相机内参标定界面
     Int32 camdlg_modposX1;
     Int32 camdlg_modposY1;
     Int32 camdlg_modposX2;
@@ -89,6 +95,7 @@ public:
     Int32 camdlg_cvimg_posX4;
     Int32 camdlg_cvimg_posY4;
 
+    void read_camdlg_para();
     void write_camdlg_para();
     void init_camdlg_para();
 
@@ -141,6 +148,17 @@ public:
     Int32 camdlg_cvimg_posY4_min;
     Int32 camdlg_cvimg_posY4_max;
     Int32 camdlg_cvimg_posY4_use;
+ /***************************/
+    //手眼标定页面
+    Int32 demdlg_radio_mod;     //0:眼在手上，1:眼在手外
+
+
+    Int32 demdlg_radio_mod_min;
+    Int32 demdlg_radio_mod_max;
+    Int32 demdlg_radio_mod_use;
+    void read_demdlg_para();
+    void write_demdlg_para();
+    void init_demdlg_para();
  /***************************/
     void write();
 private:

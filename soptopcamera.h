@@ -31,13 +31,6 @@
 using std::placeholders::_1;
 class StartCameraThread;
 
-class Ros2lineinfo
-{
-public:
-    std_msgs::msg::Header linehead;
-    std::vector<cv::Point3f> linepoint;
-};
-
 struct Params
 {
   std::vector<double> homography_matrix;
@@ -77,8 +70,8 @@ public:
 
     cv::Mat cv_image;       //相机图像
 
-    Ros2lineinfo *cv_line;     //相机轮廓
-    bool b_cv_lineEn;     //相机轮廓有效位
+    tutorial_interfaces::msg::IfAlgorhmitcloud *ros_line;     //相机轮廓
+    bool b_ros_lineEn;     //相机轮廓有效位
 
     PictureBox *m_lab_show;
 
