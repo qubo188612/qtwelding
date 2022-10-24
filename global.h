@@ -1,6 +1,7 @@
 ﻿#ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "QString"
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #if _MSC_VER
 #include "tistdtypes.h"
@@ -139,9 +140,11 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS102_PINGPOWENGDING_DIS_REG_ADD      0x0061
 #define ALS102_B_XIELVOPEN_REG_ADD             0x0062
 #define ALS102_XIELVFANWEI_REG_ADD             0x0063
+#define ALS102_UPLONG2_REG_ADD                 0x0064
+#define ALS102_CEBANKONGDONGDIS_REG_ADD        0x0065
 
 
-#define ALS102_REG_TOTALNUM                    0x0024
+#define ALS102_REG_TOTALNUM                    0x0026
 
 #define ALS102_INIT_REG_ADD                    0x006f
 
@@ -165,6 +168,41 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS_SHOW_STEP_REG_ADD                  0x018f
 /*****************************/
 
+class IP                //ip
+{
+public:
+    QString ip;         //ip地址
+};
 
+class IP_port      //ip和port
+{
+public:
+    QString ip;         //ip地址
+    int port;           //ip端口
+};
+
+class RobPos        //机器人坐标
+{
+public:
+    RobPos();
+
+    float X;
+    float Y;
+    float Z;
+    float RX;
+    float RY;
+    float RZ;
+    bool nEn;
+};
+
+class leaser_pos //激光器pos点坐标
+{
+public:
+    leaser_pos();
+
+    float Y;
+    float Z;
+    bool nEn;
+};
 
 #endif // GLOBAL_H

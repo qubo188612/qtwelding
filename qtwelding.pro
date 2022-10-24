@@ -21,6 +21,7 @@ SOURCES += \
         cam_sen.cpp \
         cambuilddlg.cpp \
         demarcatedlg.cpp \
+        global.cpp \
         ipaddress.cpp \
         main.cpp \
         my_parameters.cpp \

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1030</width>
+    <width>1090</width>
     <height>530</height>
    </rect>
   </property>
@@ -41,7 +41,7 @@
     <rect>
      <x>410</x>
      <y>40</y>
-     <width>611</width>
+     <width>671</width>
      <height>361</height>
     </rect>
    </property>
@@ -84,9 +84,6 @@
    <property name="text">
     <string>眼在手上</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="radio2">
    <property name="geometry">
@@ -100,9 +97,6 @@
    <property name="text">
     <string>眼在手外</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup</string>
-   </attribute>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
@@ -195,7 +189,7 @@
     <string>计算标定结果</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a33_label">
+  <widget class="QLabel" name="a22_label">
    <property name="geometry">
     <rect>
      <x>960</x>
@@ -208,7 +202,7 @@
     <string>a33</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a12_label">
+  <widget class="QLabel" name="a01_label">
    <property name="geometry">
     <rect>
      <x>900</x>
@@ -221,7 +215,7 @@
     <string>a12</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a22_label">
+  <widget class="QLabel" name="a11_label">
    <property name="geometry">
     <rect>
      <x>900</x>
@@ -234,7 +228,7 @@
     <string>a22</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a13_label">
+  <widget class="QLabel" name="a02_label">
    <property name="geometry">
     <rect>
      <x>960</x>
@@ -247,7 +241,7 @@
     <string>a13</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a31_label">
+  <widget class="QLabel" name="a20_label">
    <property name="geometry">
     <rect>
      <x>840</x>
@@ -260,7 +254,7 @@
     <string>a31</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a11_label">
+  <widget class="QLabel" name="a00_label">
    <property name="geometry">
     <rect>
      <x>840</x>
@@ -273,7 +267,7 @@
     <string>a11</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a21_label">
+  <widget class="QLabel" name="a10_label">
    <property name="geometry">
     <rect>
      <x>840</x>
@@ -286,7 +280,7 @@
     <string>a21</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a32_label">
+  <widget class="QLabel" name="a21_label">
    <property name="geometry">
     <rect>
      <x>900</x>
@@ -299,7 +293,7 @@
     <string>a32</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a22_label_2">
+  <widget class="QLabel" name="a12_label">
    <property name="geometry">
     <rect>
      <x>960</x>
@@ -377,10 +371,46 @@
     <string>清空激光头点</string>
    </property>
   </widget>
+  <widget class="QLabel" name="t0_label">
+   <property name="geometry">
+    <rect>
+     <x>1020</x>
+     <y>420</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t1_label">
+   <property name="geometry">
+    <rect>
+     <x>1020</x>
+     <y>460</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t2_label">
+   <property name="geometry">
+    <rect>
+     <x>1020</x>
+     <y>500</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t3</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>

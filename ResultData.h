@@ -3,20 +3,11 @@
 #include "opencv2/opencv.hpp"
 #include <modbus/modbus.h>
 #include <QThread>
+#include "global.h"
 
 #define MODBUS_ROBOT_REGISTERS_NUM      10
 #define MODBUS_RESULT_MAXNUM            400
 #define MODBUS_PARAM_MAXNUM             400
-
-class leaser_pos //激光器pos点坐标
-{
-public:
-    leaser_pos();
-
-    float Y;
-    float Z;
-    bool nEn;
-};
 
 class modbustcpThread;
 

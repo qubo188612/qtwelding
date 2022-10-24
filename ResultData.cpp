@@ -1,10 +1,5 @@
 #include "ResultData.h"
-leaser_pos::leaser_pos()
-{
-    Y=0;
-    Z=0;
-    nEn=0;
-}
+
 
 ResultData::ResultData()
 {

@@ -16,20 +16,7 @@
 #include <unistd.h>
 #endif
 
-#define IPADDRESS_PATH_MOTO       "./SAVE/ip.json"
-
-class IP                //ip
-{
-public:
-    QString ip;         //ip地址
-};
-
-class IP_port      //ip和port
-{
-public:
-    QString ip;         //ip地址
-    int port;           //ip端口
-};
+#define IPADDRESS_PATH_MOTO       "./SAVE/ip.bsd"
 
 class IPaddress
 {

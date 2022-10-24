@@ -263,20 +263,139 @@ void E2proomData::init_camdlg_para()
 
 void E2proomData::read_demdlg_para()
 {
-
+    QJsonDocument jsonDoc;
+    if(0!=Loadjsonfile(E2POOM_DEMDLG_SYSPATH_MOTO,jsonDoc))
+    {
+        return;
+    }
+    QJsonObject rootObj = jsonDoc.object();
+    QJsonObject::Iterator it;
+    for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
+    {
+        QString keyString=it.key();
+        if(keyString=="demdlg_radio_mod")
+        {
+            demdlg_radio_mod=it.value().toInt();
+        }
+        else if(keyString=="demdlg_R")
+        {
+            QJsonArray arrData=it.value().toArray();
+            if(arrData.size()!=9)
+            {
+                continue;
+            }
+            int n=0;
+            for(int j=0;j<3;j++)
+            {
+                for(int i=0;i<3;i++)
+                {
+                    demdlg_R(j,i)=arrData[n++].toDouble();
+                }
+            }
+        }
+        else if(keyString=="demdlg_T")
+        {
+            QJsonArray arrData=it.value().toArray();
+            if(arrData.size()!=3)
+            {
+                continue;
+            }
+            for(int i=0;i<3;i++)
+            {
+                demdlg_T(i)=arrData[i].toDouble();
+            }
+        }
+    }
 }
 
 void E2proomData::write_demdlg_para()
 {
+    QVariantHash data;
+    data.insert("demdlg_radio_mod", demdlg_radio_mod);
 
+    QJsonArray arrData1;
+    for (int j=0;j<3;j++)
+        for(int i=0;i<3;i++)
+            arrData1.append(demdlg_R(j,i));
+    data.insert("demdlg_R",arrData1);
+
+    QJsonArray arrData2;
+    for (int i=0;i<3;i++)
+        arrData2.append(demdlg_T(i));
+    data.insert("demdlg_T",arrData2);
+
+    QVariantHash arrData3;
+    for (int i=0;i<demdlg_Robotpos.size();i++)
+    {
+        QVariantHash singpos;
+        singpos.insert("X",demdlg_Robotpos[i].X);
+        singpos.insert("Y",demdlg_Robotpos[i].Y);
+        singpos.insert("Z",demdlg_Robotpos[i].Z);
+        singpos.insert("RX",demdlg_Robotpos[i].RX);
+        singpos.insert("RY",demdlg_Robotpos[i].RY);
+        singpos.insert("RZ",demdlg_Robotpos[i].RZ);
+        arrData3.insert(QString::number(i),singpos);
+    }
+    data.insert("demdlg_Robotpos",arrData3);
+
+    Savejsonfile(E2POOM_DEMDLG_SYSPATH_MOTO,data);
 }
 
 void E2proomData::init_demdlg_para()
 {
-
+    demdlg_radio_mod=demdlg_radio_mod_use;
 }
 
 void E2proomData::write()
 {
     write_camdlg_para();
+    write_demdlg_para();
+}
+
+int E2proomData::Loadjsonfile(char* filename,QJsonDocument &jsonDoc)
+{
+    QFile loadFile(filename);
+
+    if (!loadFile.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Unable to load JSON file";
+        return 1;
+    }
+
+    QByteArray allData = loadFile.readAll();
+    loadFile.close();
+
+    QJsonParseError json_error;
+    jsonDoc=QJsonDocument::fromJson(allData, &json_error);
+
+    if (json_error.error != QJsonParseError::NoError)
+    {
+        qDebug() << "JSON error!";
+        return 1;
+    }
+
+    return 0;
+}
+
+int E2proomData::Savejsonfile(char* filename,QVariantHash data)
+{
+    QJsonObject rootObj = QJsonObject::fromVariantHash(data);
+    QJsonDocument document;
+    document.setObject(rootObj);
+
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    QString json_str(byte_array);
+    //根据实际填写路径
+    QFile file(filename);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "file error!";
+        return 1;
+    }
+    QTextStream in(&file);
+    in << json_str;
+
+    file.close();   // 关闭file
+    return 0;
 }

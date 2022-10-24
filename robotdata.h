@@ -1,19 +1,6 @@
 #ifndef ROBOTDATA_H
 #define ROBOTDATA_H
-
-class RobPos
-{
-public:
-    RobPos();
-
-    float X;
-    float Y;
-    float Z;
-    float RX;
-    float RY;
-    float RZ;
-    bool nEn;
-};
+#include "global.h"
 
 class RobotData
 {
