@@ -7,22 +7,12 @@
     <x>0</x>
     <y>0</y>
     <width>1090</width>
-    <height>530</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QTextBrowser" name="textBrowser">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>391</width>
-     <height>361</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -34,16 +24,6 @@
    </property>
    <property name="text">
     <string>TCP坐标点:</string>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="textBrowser_2">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>40</y>
-     <width>671</width>
-     <height>361</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -408,6 +388,49 @@
    </property>
    <property name="text">
     <string>t3</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="record">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>550</y>
+     <width>1071</width>
+     <height>141</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>530</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>调试信息:</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="robposlist">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>391</width>
+     <height>361</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="leaserposlist">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>40</y>
+     <width>671</width>
+     <height>361</height>
+    </rect>
    </property>
   </widget>
  </widget>

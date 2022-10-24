@@ -305,6 +305,96 @@ void E2proomData::read_demdlg_para()
                 demdlg_T(i)=arrData[i].toDouble();
             }
         }
+        else if(keyString=="demdlg_Robotpos")
+        {
+            QJsonObject rootObj = it.value().toObject();
+            QJsonObject::Iterator it;
+            int size=rootObj.size();
+            demdlg_Robotpos.resize(size);
+            for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
+            {
+                Int32 num =it.key().toInt();
+                QJsonObject rootObj = it.value().toObject();
+                QJsonObject::Iterator it;
+                for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
+                {
+                    QString keyString=it.key();
+                    if(keyString=="X")
+                    {
+                        demdlg_Robotpos[num].X=it.value().toDouble();
+                    }
+                    else if(keyString=="Y")
+                    {
+                        demdlg_Robotpos[num].Y=it.value().toDouble();
+                    }
+                    else if(keyString=="Z")
+                    {
+                        demdlg_Robotpos[num].Z=it.value().toDouble();
+                    }
+                    else if(keyString=="RX")
+                    {
+                        demdlg_Robotpos[num].RX=it.value().toDouble();
+                    }
+                    else if(keyString=="RY")
+                    {
+                        demdlg_Robotpos[num].RY=it.value().toDouble();
+                    }
+                    else if(keyString=="RZ")
+                    {
+                        demdlg_Robotpos[num].RZ=it.value().toDouble();
+                    }
+                }
+            }
+        }
+        else if(keyString=="demdlg_Leaserpos")
+        {
+            QJsonObject rootObj = it.value().toObject();
+            QJsonObject::Iterator it;
+            int size=rootObj.size();
+            demdlg_Leaserpos.resize(size);
+            for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
+            {
+                Int32 num =it.key().toInt();
+                QJsonObject rootObj = it.value().toObject();
+                QJsonObject::Iterator it;
+                for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
+                {
+                    QString keyString=it.key();
+                    if(keyString=="camY")
+                    {
+                        demdlg_Leaserpos[num].leaserpos.Y=it.value().toDouble();
+                    }
+                    else if(keyString=="camZ")
+                    {
+                        demdlg_Leaserpos[num].leaserpos.Z=it.value().toDouble();
+                    }
+                    else if(keyString=="robX")
+                    {
+                        demdlg_Leaserpos[num].robotpos.X=it.value().toDouble();
+                    }
+                    else if(keyString=="robY")
+                    {
+                        demdlg_Leaserpos[num].robotpos.Y=it.value().toDouble();
+                    }
+                    else if(keyString=="robZ")
+                    {
+                        demdlg_Leaserpos[num].robotpos.Z=it.value().toDouble();
+                    }
+                    else if(keyString=="robRX")
+                    {
+                        demdlg_Leaserpos[num].robotpos.RX=it.value().toDouble();
+                    }
+                    else if(keyString=="robRY")
+                    {
+                        demdlg_Leaserpos[num].robotpos.RY=it.value().toDouble();
+                    }
+                    else if(keyString=="robRZ")
+                    {
+                        demdlg_Leaserpos[num].robotpos.RZ=it.value().toDouble();
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -337,6 +427,22 @@ void E2proomData::write_demdlg_para()
         arrData3.insert(QString::number(i),singpos);
     }
     data.insert("demdlg_Robotpos",arrData3);
+
+    QVariantHash arrData4;
+    for (int i=0;i<demdlg_Leaserpos.size();i++)
+    {
+        QVariantHash singpos;
+        singpos.insert("camY",demdlg_Leaserpos[i].leaserpos.Y);
+        singpos.insert("camZ",demdlg_Leaserpos[i].leaserpos.Z);
+        singpos.insert("robX",demdlg_Leaserpos[i].robotpos.X);
+        singpos.insert("robY",demdlg_Leaserpos[i].robotpos.Y);
+        singpos.insert("robZ",demdlg_Leaserpos[i].robotpos.Z);
+        singpos.insert("robRX",demdlg_Leaserpos[i].robotpos.RX);
+        singpos.insert("robRY",demdlg_Leaserpos[i].robotpos.RY);
+        singpos.insert("robRZ",demdlg_Leaserpos[i].robotpos.RZ);
+        arrData4.insert(QString::number(i),singpos);
+    }
+    data.insert("demdlg_Leaserpos",arrData4);
 
     Savejsonfile(E2POOM_DEMDLG_SYSPATH_MOTO,data);
 }

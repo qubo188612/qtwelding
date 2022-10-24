@@ -11,6 +11,15 @@
 
 class modbustcpThread;
 
+class systime
+{
+public:
+    u_int16_t hour;
+    u_int16_t min;
+    u_int16_t sec;
+    u_int16_t msec;
+};
+
 class ResultData
 {
 public:
@@ -20,6 +29,12 @@ public:
     leaser_pos pos1;    //激光器pos1点坐标
     leaser_pos pos2;    //激光器pos2点坐标
     leaser_pos pos3;    //激光器pos3点坐标
+    systime leaser_time;//激光器时间
+    systime time_stamp; //数据时间戳
+    float fps;          //算法帧率
+    float camfps;       //相机帧率
+    uint16_t state;     //有效位
+
 
     uint8_t link_result_state;
     uint8_t link_param_state;

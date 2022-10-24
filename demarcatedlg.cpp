@@ -35,13 +35,15 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
 
 demarcateDlg::~demarcateDlg()
 {
-
     delete ui;
 }
 
 void demarcateDlg::init_dlg_show()
 {
-
+    now_robpos=m_mcs->e2proomdata.demdlg_Robotpos.size()-1;
+    now_leaserpos=m_mcs->e2proomdata.demdlg_Leaserpos.size()-1;
+    updataRoblistUi();
+    updataLeaserlistUi();
 }
 
 void demarcateDlg::close_dlg_show()
@@ -62,7 +64,35 @@ void demarcateDlg::on_radio2_clicked()      //眼在手外
 
 void demarcateDlg::on_pushButton_clicked()  //添加TCP点
 {
-
+    int num=0;
+    m_mcs->rob->TCPpos.nEn=false;
+    while (m_mcs->rob->TCPpos.nEn==false)
+    {
+        if(num>10)
+        {
+            break;
+        }
+        usleep(10000);
+        num++;
+    }
+    if(m_mcs->rob->TCPpos.nEn==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+    }
+    else
+    {
+        if(now_robpos==m_mcs->e2proomdata.demdlg_Robotpos.size()-1)
+        {
+            m_mcs->e2proomdata.demdlg_Robotpos.push_back(m_mcs->rob->TCPpos);
+        }
+        else
+        {
+            m_mcs->e2proomdata.demdlg_Robotpos.insert(m_mcs->e2proomdata.demdlg_Robotpos.begin()+now_robpos+1,m_mcs->rob->TCPpos);
+        }
+        ui->record->append(QString::fromLocal8Bit("添加TCP点成功"));
+        now_robpos++;
+        updataRoblistUi();
+    }
 }
 
 void demarcateDlg::on_pushButton_3_clicked() //删除TCP点
@@ -85,7 +115,47 @@ void demarcateDlg::on_pushButton_8_clicked()    //清空TCP点
 
 void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
 {
-
+    int num=0;
+    m_mcs->resultdata.pos1.nEn=false;
+    m_mcs->rob->TCPpos.nEn=false;
+    while (m_mcs->resultdata.pos1.nEn==false||
+           m_mcs->rob->TCPpos.nEn==false)
+    {
+        if(num>10)
+        {
+            break;
+        }
+        usleep(10000);
+        num++;
+    }
+    if(m_mcs->resultdata.pos1.nEn==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
+    }
+    else if(m_mcs->rob->TCPpos.nEn==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+    }
+    else
+    {
+        if(now_leaserpos==m_mcs->e2proomdata.demdlg_Leaserpos.size()-1)
+        {
+            TCP_Leaserpos sing;
+            sing.robotpos=m_mcs->rob->TCPpos;
+            sing.leaserpos=m_mcs->resultdata.pos1;
+            m_mcs->e2proomdata.demdlg_Leaserpos.push_back(sing);
+        }
+        else
+        {
+            TCP_Leaserpos sing;
+            sing.robotpos=m_mcs->rob->TCPpos;
+            sing.leaserpos=m_mcs->resultdata.pos1;
+            m_mcs->e2proomdata.demdlg_Leaserpos.insert(m_mcs->e2proomdata.demdlg_Leaserpos.begin()+now_leaserpos+1,sing);
+        }
+        ui->record->append(QString::fromLocal8Bit("添加TCP点成功"));
+        now_leaserpos++;
+        updataLeaserlistUi();
+    }
 }
 
 
@@ -109,6 +179,77 @@ void demarcateDlg::on_pushButton_9_clicked()     //清空激光头点
 
 void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
 {
+    if(m_mcs->e2proomdata.demdlg_Leaserpos.size()!=m_mcs->e2proomdata.demdlg_Robotpos.size())
+    {
+        ui->record->append(QString::fromLocal8Bit("TCP坐标点要与激光头坐标点个数相同"));
+    }
+    else if(m_mcs->e2proomdata.demdlg_Robotpos.size()<4)
+    {
+        ui->record->append(QString::fromLocal8Bit("TCP坐标点个数要至少大于4个"));
+    }
+    else
+    {
+        m_mcs->e2proomdata.write_demdlg_para();
 
+
+
+        ui->record->append(QString::fromLocal8Bit("标定完成"));
+    }
+}
+
+void demarcateDlg::updataRoblistUi()
+{
+    ui->robposlist->clear();
+    for(int n=0;n<m_mcs->e2proomdata.demdlg_Robotpos.size();n++)
+    {
+        QString msg;
+        msg="TCP"+QString::number(n)+":"+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].X,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].Y,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].Z,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RX,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RY,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RZ,'f',3);
+        ui->robposlist->addItem(msg);
+    }
+    if(m_mcs->e2proomdata.demdlg_Robotpos.size()>0)
+    {
+        ui->robposlist->setCurrentRow(now_robpos);
+    }
+}
+
+void demarcateDlg::updataLeaserlistUi()
+{
+    ui->leaserposlist->clear();
+    for(int n=0;n<m_mcs->e2proomdata.demdlg_Leaserpos.size();n++)
+    {
+        QString msg;
+        msg="CAM"+QString::number(n)+":"+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Y,'f',2)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Z,'f',2)+" TCP:"+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.X,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Y,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Z,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RX,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RY,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RZ,'f',3);
+
+        ui->leaserposlist->addItem(msg);
+    }
+    if(m_mcs->e2proomdata.demdlg_Leaserpos.size()>0)
+    {
+        ui->leaserposlist->setCurrentRow(now_leaserpos);
+    }
+}
+
+void demarcateDlg::on_robposlist_itemClicked(QListWidgetItem *item)
+{
+    now_robpos=ui->robposlist->currentRow();
+}
+
+
+void demarcateDlg::on_leaserposlist_itemClicked(QListWidgetItem *item)
+{
+    now_leaserpos=ui->leaserposlist->currentRow();
 }
 

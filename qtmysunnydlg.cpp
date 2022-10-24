@@ -1196,7 +1196,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(m_mcs->resultdata.link_result_state==true)
         {
             close_camer_modbus();
-            modbus_free(m_mcs->resultdata.ctx_result);
+            modbus_close(m_mcs->resultdata.ctx_result);
             m_mcs->resultdata.link_result_state=false;
             if(ui->checkBox->isChecked()==false)
                 ui->record->append(QString::fromLocal8Bit("1502端口关闭"));

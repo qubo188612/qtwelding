@@ -2,6 +2,7 @@
 #define DEMARCATEDLG_H
 
 #include <QDialog>
+#include <QListWidgetItem>
 #include "my_parameters.h"
 
 namespace Ui {
@@ -44,9 +45,17 @@ private slots:
 
     void on_pushButton_7_clicked();
 
+    void on_robposlist_itemClicked(QListWidgetItem *item);
+
+    void on_leaserposlist_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::demarcateDlg *ui;
 
+    int now_robpos;         //当前指向TCP修改位置
+    int now_leaserpos;      //当前指向激光头修改位置
+    void updataRoblistUi();
+    void updataLeaserlistUi();
 };
 
 #endif // DEMARCATEDLG_H

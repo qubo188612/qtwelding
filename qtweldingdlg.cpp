@@ -22,8 +22,12 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     b_init_show_ui_list=true;
     b_init_sent_leaser=true;
+    b_init_show_robpos_list=true;
+    b_init_set_robtask=true;
+
     b_RunAlgCamer=false;
     ctx_result_dosomeing=DO_NOTHING;
+    ctx_robot_dosomeing=DO_NOTHING;
 
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
@@ -36,16 +40,16 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->project_Id->setText(QString::fromLocal8Bit("无"));
     ui->project_scannum->setText(QString::fromLocal8Bit("0/0"));
     ui->project_weldnum->setText(QString::fromLocal8Bit("0/0"));
-    ui->robot_model->setText(QString::fromLocal8Bit("无"));
+    ui->robot_model->setText(m_mcs->rob->robot_model_toQString());
     ui->robot_ip_port->setText(QString::fromLocal8Bit("0.0.0.0"));
-    ui->robot_state->setText(QString::fromLocal8Bit("未链接"));
-    ui->robot_speed->setText(QString::fromLocal8Bit("0.000"));
-    ui->robot_pos_x->setText(QString::fromLocal8Bit("0.000"));
-    ui->robot_pos_y->setText(QString::fromLocal8Bit("0.000"));
-    ui->robot_pos_z->setText(QString::fromLocal8Bit("0.000"));
-    ui->robot_pos_rx->setText(QString::fromLocal8Bit("0.000"));
-    ui->robot_pos_ry->setText(QString::fromLocal8Bit("0.000"));
-    ui->robot_pos_rz->setText(QString::fromLocal8Bit("0.000"));
+    ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
+    ui->robot_speed->setText(QString::number(m_mcs->rob->robot_speed,'f',3));
+    ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',3));
+    ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',3));
+    ui->robot_pos_z->setText(QString::number(m_mcs->rob->TCPpos.Z,'f',3));
+    ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
+    ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
+    ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
     ui->leaser_ip->setText(QString::fromLocal8Bit("0.0.0.0"));
     ui->leaser_pos_y->setText(QString::fromLocal8Bit("0.000"));
     ui->leaser_pos_z->setText(QString::fromLocal8Bit("0.000"));
@@ -60,27 +64,40 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->weld_process->setText(QString::fromLocal8Bit("平焊"));
     ui->weld_alternating->setText(QString::fromLocal8Bit("直流"));
 
-    thread = new qtweldingThread(this);
-    connect(thread, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
-    connect(thread, SIGNAL(Send_sent_leaser()), this, SLOT(init_sent_leaser()));
+    thread1 = new qtweldingThread(this);
+    connect(thread1, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
+    connect(thread1, SIGNAL(Send_sent_leaser()), this, SLOT(init_sent_leaser()));
+
+    thread2 = new qtgetrobThread(this);
+    connect(thread2, SIGNAL(Send_show_robpos_list()), this, SLOT(init_show_robpos_list()));
+    connect(thread2, SIGNAL(Send_set_robtask()), this, SLOT(init_set_robtask()));
 
     ConnectCamer();//连接相机
+    ConnectRobot();//连接机器人
 
-    b_thread=true;
-    thread->start();
+    b_thread1=true;
+    thread1->start();
+
+    b_thread2=true;
+    thread2->start();
 
     ui->record->append(QString::fromLocal8Bit("系统启动成功"));
 }
 
 qtweldingDlg::~qtweldingDlg()
 {
-    thread->Stop();
-    thread->quit();
-    thread->wait();
+    thread1->Stop();
+    thread1->quit();
+    thread1->wait();
+    thread2->Stop();
+    thread2->quit();
+    thread2->wait();
 
     DisconnectCamer();
+    DisconnectRobot();
 
-    delete thread;
+    delete thread1;
+    delete thread2;
     delete qtmysunny;
     delete demarcate;
     delete ui;
@@ -131,17 +148,17 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺编辑
 
 void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
 {
-    thread->Stop();
-    thread->quit();
-    thread->wait();
+    thread1->Stop();
+    thread1->quit();
+    thread1->wait();
     DisconnectCamer();
     qtmysunny->init_dlg_show();
     qtmysunny->setWindowTitle(QString::fromLocal8Bit("激光头设置"));
     qtmysunny->exec();
     qtmysunny->close_dlg_show();
     ConnectCamer();
-    b_thread=true;
-    thread->start();
+    b_thread1=true;
+    thread1->start();
 }
 
 
@@ -161,12 +178,10 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
     {
         ui->record->append(QString::fromLocal8Bit("激光头未连接成功"));
     }
-    /*
-    else if()
+    else if(m_mcs->rob->b_link_ctx_posget==false)
     {
         ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
     }
-    */
     else
     {
         sent_info_leaser sentdata;
@@ -290,66 +305,52 @@ void qtweldingDlg::StopAlgCamer()
     }
 }
 
+void qtweldingDlg::ConnectRobot()
+{
+    if(0==m_mcs->rob->ConnectRobot(m_mcs->ip->robot_ip->ip,m_mcs->ip->robot_ip->port))
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人连接成功"));
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人连接失败"));
+    }
+}
+
+void qtweldingDlg::DisconnectRobot()
+{
+    m_mcs->rob->DisconnectRobot();
+    ui->record->append(QString::fromLocal8Bit("与机器人断开连接"));
+}
+
 void qtweldingDlg::init_show_ui_list()//界面刷新
 {
     QString msg;
     //工程信息
     ui->project_name->setText(m_mcs->project->project_name);
-    switch(m_mcs->project->project_Id)
-    {
-        case PROGECT_ID_TEACH_SCAN:
-            ui->project_Id->setText(QString::fromLocal8Bit("示教扫描类型"));
-        break;
-    }
-
-    //机器人信息
-    msg=m_mcs->ip->robot_ip[0].ip+":"+QString::number(m_mcs->ip->robot_ip[0].port);
-    ui->robot_ip_port->setText(msg);
+    ui->project_Id->setText(m_mcs->project->project_Id_toQString());
 
     //相机信息
     ui->leaser_ip->setText(m_mcs->ip->camer_ip[0].ip);
 
+    ui->leaser_state->setText("0x"+QString::number(m_mcs->resultdata.state,16));
+    ui->leaser_pos_y->setText(QString::number(m_mcs->resultdata.pos1.Y,'f',2));
+    ui->leaser_pos_z->setText(QString::number(m_mcs->resultdata.pos1.Z,'f',2));
 
-    float Y=(int16_t)leaser_rcv_data[1]/100.0;
-    float Z=(int16_t)leaser_rcv_data[2]/100.0;
-    float Y2=(int16_t)leaser_rcv_data2[0]/100.0;
-    float Z2=(int16_t)leaser_rcv_data2[1]/100.0;
-    float Y3=(int16_t)leaser_rcv_data2[2]/100.0;
-    float Z3=(int16_t)leaser_rcv_data2[3]/100.0;
 
-    u_int16_t hour=(int16_t)leaser_rcv_data[5];
-    u_int16_t min=(int16_t)leaser_rcv_data[6];
-    u_int16_t sec=(int16_t)leaser_rcv_data[7];
-    u_int16_t msec=(int16_t)leaser_rcv_data[8];
-
-    u_int16_t hour2=(int16_t)leaser_rcv_data[11];
-    u_int16_t min2=(int16_t)leaser_rcv_data[12];
-    u_int16_t sec2=(int16_t)leaser_rcv_data[13];
-    u_int16_t msec2=(int16_t)leaser_rcv_data[14];
-    float fps=(float)leaser_rcv_data[9]/100.0;
-    float camfps=(float)leaser_rcv_data[10]/100.0;
-
-    ui->leaser_state->setText("0x"+QString::number(leaser_rcv_data[0],16));
-    ui->leaser_pos_y->setText(QString::number(Y,'f',2));
-    ui->leaser_pos_z->setText(QString::number(Z,'f',2));
-
-    m_mcs->resultdata.pos1.Y=Y;
-    m_mcs->resultdata.pos1.Z=Z;
-    m_mcs->resultdata.pos1.nEn=true;
-    m_mcs->resultdata.pos2.Y=Y2;
-    m_mcs->resultdata.pos2.Z=Z2;
-    m_mcs->resultdata.pos2.nEn=true;
-    m_mcs->resultdata.pos3.Y=Y3;
-    m_mcs->resultdata.pos3.Z=Z3;
-    m_mcs->resultdata.pos3.nEn=true;
-
-    msg=QString::number(hour)+":"+QString::number(min)+":"+QString::number(sec)+":"+QString::number(msec);
+    msg=QString::number(m_mcs->resultdata.leaser_time.hour)+":"+
+                QString::number(m_mcs->resultdata.leaser_time.min)+":"+
+                QString::number(m_mcs->resultdata.leaser_time.sec)+":"+
+                QString::number(m_mcs->resultdata.leaser_time.msec);
     ui->leaser_timestamp->setText(msg);
-    msg=QString::number(hour2)+":"+QString::number(min2)+":"+QString::number(sec2)+":"+QString::number(msec2);
+    msg=QString::number(m_mcs->resultdata.time_stamp.hour)+":"+
+                QString::number(m_mcs->resultdata.time_stamp.min)+":"+
+                QString::number(m_mcs->resultdata.time_stamp.sec)+":"+
+                QString::number(m_mcs->resultdata.time_stamp.msec);
     ui->leaser_time->setText(msg);
 
-    ui->leaser_camera_fps->setText(QString::number(fps,'f',2));
-    ui->leaser_result_fps->setText(QString::number(camfps,'f',2));
+    ui->leaser_camera_fps->setText(QString::number(m_mcs->resultdata.fps,'f',2));
+    ui->leaser_result_fps->setText(QString::number(m_mcs->resultdata.camfps,'f',2));
 
     b_init_show_ui_list=true;
 }
@@ -378,6 +379,52 @@ void qtweldingDlg::init_sent_leaser()
     b_init_sent_leaser=true;
 }
 
+void qtweldingDlg::init_show_robpos_list()
+{
+    //机器人信息
+    QString msg;
+
+    msg=m_mcs->ip->robot_ip[0].ip+":"+QString::number(m_mcs->ip->robot_ip[0].port);
+    ui->robot_ip_port->setText(msg);
+    ui->robot_model->setText(m_mcs->rob->robot_model_toQString());
+    ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
+
+    ui->robot_speed->setText(QString::number(m_mcs->rob->robot_speed,'f',3));
+    ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',3));
+    ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',3));
+    ui->robot_pos_z->setText(QString::number(m_mcs->rob->TCPpos.Z,'f',3));
+    ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
+    ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
+    ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
+
+    b_init_show_robpos_list=true;
+}
+
+void qtweldingDlg::init_set_robtask()
+{
+    if(send_group_robot.size()!=0)
+    {
+        sent_info_robot sentdata=send_group_robot[0];
+        std::vector<sent_info_robot>::iterator it = send_group_robot.begin();
+        send_group_robot.erase(it);
+        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+        }
+        if(send_group_robot.size()==0)
+        {
+            ctx_robot_dosomeing=DO_NOTHING;
+        }
+    }
+    else
+    {
+        ctx_robot_dosomeing=DO_NOTHING;
+    }
+    b_init_set_robtask=true;
+}
+
+
 qtweldingThread::qtweldingThread(qtweldingDlg *statci_p)
 {
     _p=statci_p;
@@ -387,7 +434,7 @@ void qtweldingThread::run()
 {
     while (1)
     {
-        if(_p->b_thread==true)
+        if(_p->b_thread1==true)
         {
             if(_p->m_mcs->resultdata.link_result_state==true)
             {
@@ -401,8 +448,55 @@ void qtweldingThread::run()
                 }
                 else if(_p->ctx_result_dosomeing==DO_NOTHING)
                 {
-                    modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x02,15,_p->leaser_rcv_data);
-                    modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x50,4,_p->leaser_rcv_data2);
+                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x02,15,_p->leaser_rcv_data))
+                    {
+                        float Y=(int16_t)_p->leaser_rcv_data[1]/100.0;
+                        float Z=(int16_t)_p->leaser_rcv_data[2]/100.0;
+                        _p->m_mcs->resultdata.pos1.Y=Y;
+                        _p->m_mcs->resultdata.pos1.Z=Z;
+                        _p->m_mcs->resultdata.time_stamp.hour=(int16_t)_p->leaser_rcv_data[5];
+                        _p->m_mcs->resultdata.time_stamp.min=(int16_t)_p->leaser_rcv_data[6];
+                        _p->m_mcs->resultdata.time_stamp.sec=(int16_t)_p->leaser_rcv_data[7];
+                        _p->m_mcs->resultdata.time_stamp.msec=(int16_t)_p->leaser_rcv_data[8];
+                        _p->m_mcs->resultdata.leaser_time.hour=(int16_t)_p->leaser_rcv_data[11];
+                        _p->m_mcs->resultdata.leaser_time.min=(int16_t)_p->leaser_rcv_data[12];
+                        _p->m_mcs->resultdata.leaser_time.sec=(int16_t)_p->leaser_rcv_data[13];
+                        _p->m_mcs->resultdata.leaser_time.msec=(int16_t)_p->leaser_rcv_data[14];
+                        _p->m_mcs->resultdata.fps=(float)_p->leaser_rcv_data[9]/100.0;
+                        _p->m_mcs->resultdata.camfps=(float)_p->leaser_rcv_data[10]/100.0;
+                        _p->m_mcs->resultdata.state=_p->leaser_rcv_data[0];
+                        if(_p->m_mcs->resultdata.state==0)
+                        {
+                            _p->m_mcs->resultdata.pos1.nEn=false;
+                        }
+                        else
+                        {
+                            _p->m_mcs->resultdata.pos1.nEn=true;
+                        }
+                    }
+                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x50,4,_p->leaser_rcv_data2))
+                    {
+                        float Y2=(int16_t)_p->leaser_rcv_data2[0]/100.0;
+                        float Z2=(int16_t)_p->leaser_rcv_data2[1]/100.0;
+                        float Y3=(int16_t)_p->leaser_rcv_data2[2]/100.0;
+                        float Z3=(int16_t)_p->leaser_rcv_data2[3]/100.0;
+                        _p->m_mcs->resultdata.pos2.Y=Y2;
+                        _p->m_mcs->resultdata.pos2.Z=Z2;
+                        _p->m_mcs->resultdata.pos2.nEn=true;
+                        _p->m_mcs->resultdata.pos3.Y=Y3;
+                        _p->m_mcs->resultdata.pos3.Z=Z3;
+                        _p->m_mcs->resultdata.pos3.nEn=true;
+                        if(_p->m_mcs->resultdata.state==0)
+                        {
+                            _p->m_mcs->resultdata.pos2.nEn=false;
+                            _p->m_mcs->resultdata.pos3.nEn=false;
+                        }
+                        else
+                        {
+                            _p->m_mcs->resultdata.pos2.nEn=true;
+                            _p->m_mcs->resultdata.pos3.nEn=true;
+                        }
+                    }
                 }
             }
             if(_p->b_init_show_ui_list==true)
@@ -413,7 +507,7 @@ void qtweldingThread::run()
         }
         else
         {
-            _p->b_stop_thread=true;
+            _p->b_stop_thread1=true;
             break;
         }
     }
@@ -421,11 +515,75 @@ void qtweldingThread::run()
 
 void qtweldingThread::Stop()
 {
-  if(_p->b_thread==true)
+  if(_p->b_thread1==true)
   {
-    _p->b_stop_thread=false;
-    _p->b_thread=false;
-    while (_p->b_stop_thread==false)
+    _p->b_stop_thread1=false;
+    _p->b_thread1=false;
+    while (_p->b_stop_thread1==false)
+    {
+      sleep(0);
+    }
+  }
+}
+
+qtgetrobThread::qtgetrobThread(qtweldingDlg *statci_p)
+{
+    _p=statci_p;
+}
+
+void qtgetrobThread::run()
+{
+    while (1)
+    {
+        if(_p->b_thread2==true)
+        {
+            if(_p->m_mcs->rob->b_connect==true)
+            {
+                if(_p->ctx_robot_dosomeing==DO_WRITE_TASK)
+                {
+                    if(_p->b_init_set_robtask==true)
+                    {
+                        _p->b_init_set_robtask=false;
+                        emit Send_set_robtask();
+                    }
+                }
+                else if(_p->ctx_robot_dosomeing==DO_NOTHING)
+                {
+                //访问机器人坐标通信
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,0x00,14,_p->robotpos_rcv_data))
+                    {
+                        _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
+                        _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);
+                        _p->m_mcs->rob->TCPpos.Z=*((float*)&_p->robotpos_rcv_data[4]);
+                        _p->m_mcs->rob->TCPpos.RX=*((float*)&_p->robotpos_rcv_data[6]);
+                        _p->m_mcs->rob->TCPpos.RY=*((float*)&_p->robotpos_rcv_data[8]);
+                        _p->m_mcs->rob->TCPpos.RZ=*((float*)&_p->robotpos_rcv_data[10]);
+                        _p->m_mcs->rob->TCPpos.nEn=true;
+                        _p->m_mcs->rob->robot_speed=*((float*)&_p->robotpos_rcv_data[12]);
+                    }
+                }
+            }
+            if(_p->b_init_show_robpos_list==true)
+            {
+                _p->b_init_show_robpos_list=false;
+                emit Send_show_robpos_list();
+            }
+        }
+        else
+        {
+            _p->b_stop_thread2=true;
+            break;
+        }
+    }
+}
+
+void qtgetrobThread::Stop()
+{
+  if(_p->b_thread2==true)
+  {
+    _p->b_stop_thread2=false;
+    _p->b_thread2=false;
+    while (_p->b_stop_thread2==false)
     {
       sleep(0);
     }

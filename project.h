@@ -31,6 +31,8 @@ public:
 
     Project_ID project_Id;      //项目总类型id
 
+    QString project_Id_toQString(); //项目总类型id转QString输出
+
     QString project_name;       //项目名
 
     int SaveProject(char* filename);    //保存项目

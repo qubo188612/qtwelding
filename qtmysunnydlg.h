@@ -47,7 +47,7 @@ public:
 
     void showupdata_tabWidget(int index);
 
-    getposThread *thread1;
+    getposThread *thread1;          //激光器线程
     bool b_thread1;
     bool b_stop_thread1;
 
@@ -102,7 +102,6 @@ signals:
     void Send_show_pos_failed();
     void Send_show_cvimage_inlab(cv::Mat);
     void Send_set_task();
-
 };
 
 #endif // QTMYSUNNYDLG_H

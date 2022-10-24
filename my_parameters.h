@@ -26,7 +26,6 @@ public:
 
     E2proomData e2proomdata;    //保存文件
 
-
 protected:
     my_parameters();
     ~my_parameters();

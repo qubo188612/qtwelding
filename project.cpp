@@ -247,3 +247,15 @@ QString Project::JsonToQstring(QJsonObject jsonObject)
 {
     return QString(QJsonDocument(jsonObject).toJson());
 }
+
+QString Project::project_Id_toQString()
+{
+    QString msg;
+    switch(project_Id)
+    {
+        case PROGECT_ID_TEACH_SCAN:
+            msg=QString::fromLocal8Bit("示教扫描类型");
+        break;
+    }
+    return msg;
+}

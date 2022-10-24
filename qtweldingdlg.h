@@ -24,8 +24,17 @@ class qtweldingDlg;
 
 class qtweldingThread;
 
+class qtgetrobThread;
 
 class sent_info_leaser              //发送相机数据
+{
+public:
+    modbus_t *ctx;                  //sock
+    int addr;                       //发送寄存器
+    std::vector<uint16_t> data;     //发送数据
+};
+
+class sent_info_robot             //发送机器人数据
 {
 public:
     modbus_t *ctx;                  //sock
@@ -43,20 +52,32 @@ public:
 
     my_parameters *m_mcs;
 
-    qtweldingThread *thread;
-    bool b_thread;
-    bool b_stop_thread;
+    qtweldingThread *thread1;            //相机线程
+    bool b_thread1;
+    bool b_stop_thread1;
     volatile bool b_init_show_ui_list;
     volatile bool b_init_sent_leaser;    //相机往外发送
+
+    qtgetrobThread *thread2;          //机器人线程
+    bool b_thread2;
+    bool b_stop_thread2;
+    volatile bool b_init_show_robpos_list;
+    volatile bool b_init_set_robtask;
+
 
     qtmysunnyDlg *qtmysunny;
     demarcateDlg *demarcate;
 
     int ctx_result_dosomeing;   //1502端口忙
+    int ctx_robot_dosomeing;    //机器人端口忙
 
     std::vector<sent_info_leaser> send_group_leaser;    //发送相机数据队列
     unsigned short leaser_rcv_data[15];
     unsigned short leaser_rcv_data2[4];
+
+    std::vector<sent_info_robot> send_group_robot;    //发送机器人数据队列
+    unsigned short robotpos_rcv_data[14];
+
 
 private slots:
     void on_importprojectBtn_clicked();
@@ -79,11 +100,18 @@ private slots:
 
     void on_demarcateBtn_clicked();
 
+    void init_show_robpos_list();
+
+    void init_set_robtask();
+
 private:
     Ui::qtweldingDlg *ui;
 
     void ConnectCamer();       //连接相机
     void DisconnectCamer();    //断开相机
+
+    void ConnectRobot();        //连接机器人
+    void DisconnectRobot();     //断开机器人
 
     bool b_RunAlgCamer;
     void RunAlgCamer();        //运行算法
@@ -106,6 +134,24 @@ signals:
     // 自定义信号
     void Send_show_ui_list();
     void Send_sent_leaser();
+};
+
+class qtgetrobThread : public QThread
+{
+    Q_OBJECT
+
+public:
+    qtgetrobThread(qtweldingDlg *statci_p);
+    void Stop();
+protected:
+    void run();
+private:
+    qtweldingDlg *_p;
+
+signals:
+    // 自定义信号
+    void Send_show_robpos_list();
+    void Send_set_robtask();
 };
 
 #endif // QTWELDINGDLG_H
