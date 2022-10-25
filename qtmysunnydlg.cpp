@@ -966,6 +966,7 @@ qtmysunnyDlg::~qtmysunnyDlg()
     thread1->wait();
     m_mcs->cam->sop_cam[0].DisConnect();
     */
+    delete thread1;
     delete showtasknum;
 #if _MSC_VER||WINDOWS_TCP
 #else
@@ -1176,10 +1177,12 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         thread1->quit();
         thread1->wait();
 
-        u_int16_t tab_reg[1];
-        tab_reg[0]=0;
-        modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
-
+        if(m_mcs->resultdata.link_param_state==true)
+        {
+            u_int16_t tab_reg[1];
+            tab_reg[0]=0;
+            modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
+        }
         if(m_mcs->resultdata.b_luzhi==true)
         {
             m_mcs->resultdata.b_luzhi=false;
@@ -1197,6 +1200,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         {
             close_camer_modbus();
             modbus_close(m_mcs->resultdata.ctx_result);
+            modbus_free(m_mcs->resultdata.ctx_result);
             m_mcs->resultdata.link_result_state=false;
             if(ui->checkBox->isChecked()==false)
                 ui->record->append(QString::fromLocal8Bit("1502端口关闭"));
@@ -1204,6 +1208,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(m_mcs->resultdata.link_param_state==true)
         {
             modbus_close(m_mcs->resultdata.ctx_param);
+            modbus_free(m_mcs->resultdata.ctx_param);
             m_mcs->resultdata.link_param_state=false;
             if(ui->checkBox->isChecked()==false)
                 ui->record->append(QString::fromLocal8Bit("1500端口关闭"));
@@ -1211,6 +1216,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(m_mcs->resultdata.link_robotset_state==true)
         {
             modbus_close(m_mcs->resultdata.ctx_robotset);
+            modbus_free(m_mcs->resultdata.ctx_robotset);
             m_mcs->resultdata.link_robotset_state=false;
             if(ui->checkBox->isChecked()==false)
                 ui->record->append(QString::fromLocal8Bit("1501端口关闭"));

@@ -97,7 +97,14 @@ void demarcateDlg::on_pushButton_clicked()  //添加TCP点
 
 void demarcateDlg::on_pushButton_3_clicked() //删除TCP点
 {
-
+    if(now_robpos>=0&&m_mcs->e2proomdata.demdlg_Robotpos.size()>now_robpos)
+    {
+        m_mcs->e2proomdata.demdlg_Robotpos.erase(m_mcs->e2proomdata.demdlg_Robotpos.begin()+now_robpos);
+        ui->record->append(QString::fromLocal8Bit("删除TCP点"));
+        if(now_robpos>=m_mcs->e2proomdata.demdlg_Robotpos.size())
+            now_robpos=now_robpos-1;
+        updataRoblistUi();
+    }
 }
 
 

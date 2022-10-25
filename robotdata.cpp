@@ -83,6 +83,7 @@ void RobotData::DisconnectRobot()
          if(b_link_ctx_posget==true)
          {
             modbus_close(ctx_posget);
+            modbus_free(ctx_posget);
             b_link_ctx_posget=false;
          }
          b_connect=false;
