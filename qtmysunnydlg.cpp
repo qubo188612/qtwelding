@@ -21,6 +21,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
 
     ui->setupUi(this);
+
+    ui->label_3->hide();
+    ui->label_4->hide();
+    ui->comboBox->hide();
+    ui->robotport->hide();
+    ui->robotsetBtn->hide();
+
     ui->tabWidget->setTabText(0,QString::fromLocal8Bit("任务0-99"));
     ui->tabWidget->setTabText(1,QString::fromLocal8Bit("任务100"));
     ui->tabWidget->setTabText(2,QString::fromLocal8Bit("任务101"));
@@ -112,6 +119,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     connect(ui->connectcameraBtn,&QPushButton::clicked,[=](){
        if(m_mcs->cam->sop_cam[0].b_connect==false)
        {
+          m_mcs->cam->sop_cam[0].ipaddress=ui->IPadd->text();
           m_mcs->ip->camer_ip[0].ip=m_mcs->cam->sop_cam[0].ipaddress;
           m_mcs->ip->SaveIP(IPADDRESS_PATH_MOTO);
           img_windowshow(true,ui->widget);

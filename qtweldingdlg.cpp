@@ -31,6 +31,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
+    robotset=new robotsetDlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -100,6 +101,7 @@ qtweldingDlg::~qtweldingDlg()
     delete thread2;
     delete qtmysunny;
     delete demarcate;
+    delete robotset;
     delete ui;
 }
 
@@ -164,7 +166,17 @@ void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
 
 void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
 {
-
+    thread2->Stop();
+    thread2->quit();
+    thread2->wait();
+    DisconnectRobot();
+    robotset->init_dlg_show();
+    robotset->setWindowTitle(QString::fromLocal8Bit("机器人设置"));
+    robotset->exec();
+    robotset->close_dlg_show();
+    ConnectRobot();
+    b_thread2=true;
+    thread2->start();
 }
 
 void qtweldingDlg::on_setwelderBtn_clicked()//焊机设置
@@ -307,9 +319,34 @@ void qtweldingDlg::StopAlgCamer()
 
 void qtweldingDlg::ConnectRobot()
 {
-    if(0==m_mcs->rob->ConnectRobot(m_mcs->ip->robot_ip->ip,m_mcs->ip->robot_ip->port))
+    if(0==m_mcs->rob->ConnectRobot(m_mcs->ip->robot_ip[0].robot_ip.ip,m_mcs->ip->robot_ip[0].robot_ip.port))
     {
         ui->record->append(QString::fromLocal8Bit("与机器人连接成功"));
+        //写入机器人型号和远程地址
+        uint16_t u16_data[5];
+        u16_data[0]=m_mcs->rob->robot_model;
+        int rc=modbus_write_registers(m_mcs->rob->ctx_posget,0x100,1,u16_data);
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人型号设置失败"));
+        }
+        QStringList sections=m_mcs->ip->robot_ip[0].remote_ip.ip.split(".");
+        if(sections.size()==4)
+        {
+            for(int n=0;n<sections.size();n++)
+            {
+                u16_data[n]=sections[n].toInt();
+            }
+            rc=modbus_write_registers(m_mcs->rob->ctx_posget,0x300,4,u16_data);
+            if(rc!=4)
+            {
+                ui->record->append(QString::fromLocal8Bit("机器人远程IP地址设置失败"));
+            }
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人远程IP地址格式错误"));
+        }
     }
     else
     {
@@ -382,10 +419,8 @@ void qtweldingDlg::init_sent_leaser()
 void qtweldingDlg::init_show_robpos_list()
 {
     //机器人信息
-    QString msg;
 
-    msg=m_mcs->ip->robot_ip[0].ip+":"+QString::number(m_mcs->ip->robot_ip[0].port);
-    ui->robot_ip_port->setText(msg);
+    ui->robot_ip_port->setText(m_mcs->ip->robot_ip[0].remote_ip.ip);
     ui->robot_model->setText(m_mcs->rob->robot_model_toQString());
     ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
 
@@ -550,7 +585,7 @@ void qtgetrobThread::run()
                 else if(_p->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
-                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,0x1e,14,_p->robotpos_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,0x00,14,_p->robotpos_rcv_data))
                     {
                         _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
                         _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);

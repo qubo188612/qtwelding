@@ -2,6 +2,21 @@
 #define ROBOTDATA_H
 #include "global.h"
 #include <modbus/modbus.h>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QFile>
+#include <QJsonObject>
+#include <QDebug>
+#include <QJsonArray>
+#include <QByteArray>
+#if _MSC_VER
+#include <QDir>
+#else
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
+#define ROBOTDATA_PATH_MOTO       "./SAVE/robdata.bsd"
 
 typedef enum ROBOT_MODEL_ID            //机器人型号
 {
@@ -42,9 +57,17 @@ public:
     modbus_t *ctx_posget;       //机器人坐标访问
     bool b_link_ctx_posget;     //机器人坐标访问连接
 
+    int SaveRob(char* filename);    //保存项目
+
 protected:
     RobotData();
     ~RobotData();
+
+    int LoadRob(char* filename);    //读取项目
+
+    QVariantHash encoed_json(); //把项目进行json编码
+
+    int decoed_json(QByteArray allData);//把项目进行json解码
 };
 
 

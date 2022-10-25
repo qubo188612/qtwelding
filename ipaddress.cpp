@@ -23,8 +23,9 @@ IPaddress::IPaddress()
     if(0!=LoadIP(IPADDRESS_PATH_MOTO))
     {
         camer_ip[0].ip="192.168.1.2";
-        robot_ip[0].ip="192.168.1.3";
-        robot_ip[0].port=1600;
+        robot_ip[0].robot_ip.ip="127.0.0.1";
+        robot_ip[0].robot_ip.port=1496;
+        robot_ip[0].remote_ip.ip="192.168.1.3";
     }
 }
 
@@ -85,8 +86,9 @@ QVariantHash IPaddress::encoed_json()
     QString p_id;
 
     data.insert("camer_ip", camer_ip[0].ip);
-    subData1.insert("robot_ip", robot_ip[0].ip);
-    subData1.insert("robot_port", robot_ip[0].port);
+    subData1.insert("robot_ip", robot_ip[0].robot_ip.ip);
+    subData1.insert("robot_port", robot_ip[0].robot_ip.port);
+    subData1.insert("robot_remote_ip", robot_ip[0].remote_ip.ip);
     data.insert("robot", subData1);
 
     return data;
@@ -117,11 +119,15 @@ int IPaddress::decoed_json(QByteArray allData)
                 QString keyString=it_obj.key();
                 if(keyString=="robot_ip")//机器人ip
                 {
-                    robot_ip[0].ip=it_obj.value().toString();
+                    robot_ip[0].robot_ip.ip=it_obj.value().toString();
                 }
                 else if(keyString=="robot_port")//机器人端口
                 {
-                    robot_ip[0].port=it_obj.value().toInt();
+                    robot_ip[0].robot_ip.port=it_obj.value().toInt();
+                }
+                else if(keyString=="robot_remote_ip")
+                {
+                    robot_ip[0].remote_ip.ip=it_obj.value().toString();
                 }
             }
         }

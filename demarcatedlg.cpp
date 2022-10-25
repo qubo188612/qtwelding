@@ -105,18 +105,52 @@ void demarcateDlg::on_pushButton_3_clicked() //删除TCP点
             now_robpos=now_robpos-1;
         updataRoblistUi();
     }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("请先选中要删除的TCP点"));
+    }
 }
 
 
 void demarcateDlg::on_pushButton_2_clicked()   //替换TCP点
 {
-
+    if(now_robpos>=0&&m_mcs->e2proomdata.demdlg_Robotpos.size()>now_robpos)
+    {
+        int num=0;
+        m_mcs->rob->TCPpos.nEn=false;
+        while (m_mcs->rob->TCPpos.nEn==false)
+        {
+            if(num>10)
+            {
+                break;
+            }
+            usleep(10000);
+            num++;
+        }
+        if(m_mcs->rob->TCPpos.nEn==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        }
+        else
+        {
+            m_mcs->e2proomdata.demdlg_Robotpos[now_robpos]=m_mcs->rob->TCPpos;
+            ui->record->append(QString::fromLocal8Bit("替换TCP点成功"));
+            updataRoblistUi();
+        }
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("请先选中要替换的TCP点"));
+    }
 }
 
 
 void demarcateDlg::on_pushButton_8_clicked()    //清空TCP点
 {
-
+    m_mcs->e2proomdata.demdlg_Robotpos.clear();
+    ui->record->append(QString::fromLocal8Bit("清空TCP点"));
+    now_robpos=m_mcs->e2proomdata.demdlg_Robotpos.size()-1;
+    updataRoblistUi();
 }
 
 
@@ -168,19 +202,69 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
 
 void demarcateDlg::on_pushButton_6_clicked()    //删除激光头点
 {
-
+    if(now_leaserpos>=0&&m_mcs->e2proomdata.demdlg_Leaserpos.size()>now_leaserpos)
+    {
+        m_mcs->e2proomdata.demdlg_Leaserpos.erase(m_mcs->e2proomdata.demdlg_Leaserpos.begin()+now_leaserpos);
+        ui->record->append(QString::fromLocal8Bit("删除激光头点"));
+        if(now_leaserpos>=m_mcs->e2proomdata.demdlg_Leaserpos.size())
+            now_leaserpos=now_leaserpos-1;
+        updataLeaserlistUi();
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("请先选中要删除的激光头点"));
+    }
 }
 
 
 void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
 {
-
+    if(now_leaserpos>=0&&m_mcs->e2proomdata.demdlg_Leaserpos.size()>now_leaserpos)
+    {
+        int num=0;
+        m_mcs->resultdata.pos1.nEn=false;
+        m_mcs->rob->TCPpos.nEn=false;
+        while (m_mcs->resultdata.pos1.nEn==false||
+               m_mcs->rob->TCPpos.nEn==false)
+        {
+            if(num>10)
+            {
+                break;
+            }
+            usleep(10000);
+            num++;
+        }
+        if(m_mcs->resultdata.pos1.nEn==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
+        }
+        else if(m_mcs->rob->TCPpos.nEn==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        }
+        else
+        {
+            TCP_Leaserpos sing;
+            sing.robotpos=m_mcs->rob->TCPpos;
+            sing.leaserpos=m_mcs->resultdata.pos1;
+            m_mcs->e2proomdata.demdlg_Leaserpos[now_leaserpos]=sing;
+            ui->record->append(QString::fromLocal8Bit("替换激光头点成功"));
+            updataLeaserlistUi();
+        }
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("请先选中要替换的激光头点"));
+    }
 }
 
 
 void demarcateDlg::on_pushButton_9_clicked()     //清空激光头点
 {
-
+    m_mcs->e2proomdata.demdlg_Leaserpos.clear();
+    ui->record->append(QString::fromLocal8Bit("清空激光头点"));
+    now_leaserpos=m_mcs->e2proomdata.demdlg_Leaserpos.size()-1;
+    updataLeaserlistUi();
 }
 
 

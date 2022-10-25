@@ -18,13 +18,20 @@
 
 #define IPADDRESS_PATH_MOTO       "./SAVE/ip.bsd"
 
+class RobotIP
+{
+public:
+    IP_port robot_ip;       //机器人服务器IP
+    IP remote_ip;           //机器人远程IP
+};
+
 class IPaddress
 {
 public:
     static IPaddress *Get();
 
-    IP camer_ip[CAMTOTALNUM];        //相机ip
-    IP_port robot_ip[ROBOTTALNUM];   //机器人ip
+    IP camer_ip[CAMTOTALNUM];           //相机ip
+    RobotIP robot_ip[ROBOTTALNUM];      //机器人ip和端口
 
     int SaveIP(char* filename);    //保存项目
 

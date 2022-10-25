@@ -16,6 +16,7 @@
 #include <vector>
 #include "qtmysunnydlg.h"
 #include "demarcatedlg.h"
+#include "robotsetdlg.h"
 
 
 namespace Ui {
@@ -67,6 +68,7 @@ public:
 
     qtmysunnyDlg *qtmysunny;
     demarcateDlg *demarcate;
+    robotsetDlg *robotset;
 
     int ctx_result_dosomeing;   //1502端口忙
     int ctx_robot_dosomeing;    //机器人端口忙
