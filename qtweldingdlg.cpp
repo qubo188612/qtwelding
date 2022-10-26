@@ -122,10 +122,10 @@ void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
         }
         else
         {
-            QString path=name.c_str();
-            QString msg="已经成功加载工程文件:"+path;
+            QString path=QString::fromLocal8Bit(name.c_str());
+            QString msg=QString::fromLocal8Bit("已经成功加载工程文件:")+path;
             ui->record->append(msg);
-            msg="工程名称:"+m_mcs->project->project_name;
+            msg=QString::fromLocal8Bit("工程名称:")+m_mcs->project->project_name;
             ui->record->append(msg);
         }
     }
@@ -224,12 +224,12 @@ void qtweldingDlg::ConnectCamer()
         m_mcs->resultdata.ctx_result = modbus_new_tcp(server_ip.toUtf8(), server_port2.toInt());
         if (modbus_connect(m_mcs->resultdata.ctx_result) == -1)
         {
-            ui->record->append(server_port2+"端口连接失败");
+            ui->record->append(server_port2+QString::fromLocal8Bit("端口连接失败"));
             modbus_free(m_mcs->resultdata.ctx_result);
             return;
         }
         m_mcs->resultdata.link_result_state=true;
-        ui->record->append(server_port2+"端口连接成功");
+        ui->record->append(server_port2+QString::fromLocal8Bit("端口连接成功"));
     //  RunAlgCamer();
     }
 
@@ -258,7 +258,7 @@ void qtweldingDlg::DisconnectCamer()
         modbus_free(m_mcs->resultdata.ctx_result);
         m_mcs->resultdata.link_result_state=false;
         QString msg=QString::number(PORT_ALS_RESULT);
-        ui->record->append(msg+"端口关闭");
+        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
     }
 }
 
