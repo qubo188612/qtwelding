@@ -56,6 +56,10 @@ private:
     int now_leaserpos;      //当前指向激光头修改位置
     void updataRoblistUi();
     void updataLeaserlistUi();
+    void updataDemarcateResult();
+
+    bool point2RT(std::vector<Eigen::Vector3d> &p1,std::vector<Eigen::Vector3d> &p2,double &err,std::vector<double> &errgroup);
+    std::vector<double> errgroup;
 };
 
 #endif // DEMARCATEDLG_H

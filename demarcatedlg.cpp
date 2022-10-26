@@ -280,10 +280,38 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
     }
     else
     {
+        double err;
         m_mcs->e2proomdata.write_demdlg_para();
+        switch(m_mcs->e2proomdata.demdlg_radio_mod)
+        {
+            case 0://眼在手上
+            {
 
-
-
+            }
+            break;
+            case 1://眼在手外
+            {
+                std::vector<Eigen::Vector3d> cloudpoint;
+                std::vector<Eigen::Vector3d> robotpoint;
+                for(int n=0;n<m_mcs->e2proomdata.demdlg_Leaserpos.size();n++)
+                {
+                    Eigen::Vector3d cloudsing;
+                    Eigen::Vector3d robotsing;
+                    cloudsing[0]=0;
+                    cloudsing[1]=m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Y;
+                    cloudsing[2]=m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Z;
+                    cloudpoint.push_back(cloudsing);
+                    robotsing[0]=m_mcs->e2proomdata.demdlg_Robotpos[n].X;
+                    robotsing[1]=m_mcs->e2proomdata.demdlg_Robotpos[n].Y;
+                    robotsing[2]=m_mcs->e2proomdata.demdlg_Robotpos[n].Z;
+                    robotpoint.push_back(robotsing);
+                }
+                point2RT(cloudpoint,robotpoint,err,errgroup);
+                ui->err->setText(QString::number(err,'f',2));
+            }
+            break;
+        }
+        updataDemarcateResult();
         ui->record->append(QString::fromLocal8Bit("标定完成"));
     }
 }
@@ -333,6 +361,31 @@ void demarcateDlg::updataLeaserlistUi()
     }
 }
 
+void demarcateDlg::updataDemarcateResult()
+{
+    ui->leaserposlist->clear();
+    for(int n=0;n<m_mcs->e2proomdata.demdlg_Leaserpos.size();n++)
+    {
+        QString msg;
+        msg="CAM"+QString::number(n)+":"+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Y,'f',2)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Z,'f',2)+" TCP:"+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.X,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Y,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Z,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RX,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RY,'f',3)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RZ,'f',3)+" Precision:"+
+            QString::number(errgroup[n],'f',2);
+
+        ui->leaserposlist->addItem(msg);
+    }
+    if(m_mcs->e2proomdata.demdlg_Leaserpos.size()>0)
+    {
+        ui->leaserposlist->setCurrentRow(now_leaserpos);
+    }
+}
+
 void demarcateDlg::on_robposlist_itemClicked(QListWidgetItem *item)
 {
     now_robpos=ui->robposlist->currentRow();
@@ -342,5 +395,96 @@ void demarcateDlg::on_robposlist_itemClicked(QListWidgetItem *item)
 void demarcateDlg::on_leaserposlist_itemClicked(QListWidgetItem *item)
 {
     now_leaserpos=ui->leaserposlist->currentRow();
+}
+
+bool demarcateDlg::point2RT(std::vector<Eigen::Vector3d> &p1,std::vector<Eigen::Vector3d> &p2,double &err,std::vector<double> &errgroup)
+{
+    if(p1.size() != p2.size())
+        return false;
+    int num = p1.size();
+
+    //求质心
+    Eigen::Vector3d temp1(0,0,0),temp2(0,0,0);
+    for(int i = 0;i < num;i ++)
+    {
+        temp1 += p1.at(i);
+        temp2 += p2.at(i);
+    }
+    temp1 /= num;
+    temp2 /= num;
+
+    //求缩放因子Z
+    double Z = 0;
+    double Z1 = 0;
+    double Z2 = 0;
+    for(int i = 0;i < num;i ++)
+    {
+        double x1 = p1.at(i)(0) - temp1(0);
+        double y1 = p1.at(i)(1) - temp1(1);
+        double z1 = p1.at(i)(2) - temp1(2);
+        double x2 = p2.at(i)(0) - temp2(0);
+        double y2 = p2.at(i)(1) - temp2(1);
+        double z2 = p2.at(i)(2) - temp2(2);
+
+        Z1 += x1*x1+y1*y1+z1*z1;
+        Z2 += x2*x2+y2*y2+z2*z2;
+    }
+    Z = Z1/Z2;
+
+    //求 H
+    Eigen::Matrix3d H;
+    H <<	0, 0, 0,
+            0, 0, 0,
+            0, 0, 0;
+    for(int i = 0;i < num;i ++)
+    {
+        H += (p1.at(i) - temp1)*(p2.at(i) - temp2).transpose();
+    }
+    // 进行svd分解
+    Eigen::JacobiSVD<Eigen::MatrixXd> svd(H,
+                                                 Eigen::ComputeThinU |
+                                                 Eigen::ComputeThinV);
+    // 构建SVD分解结果
+    Eigen::MatrixXd U = svd.matrixU();
+    Eigen::MatrixXd V = svd.matrixV();
+    Eigen::MatrixXd D = svd.singularValues();
+
+
+    m_mcs->e2proomdata.demdlg_R = V*U.transpose();
+    //行列值
+    double hlz = m_mcs->e2proomdata.demdlg_R(0,0)*m_mcs->e2proomdata.demdlg_R(1,1)*m_mcs->e2proomdata.demdlg_R(2,2) +
+                 m_mcs->e2proomdata.demdlg_R(0,1)*m_mcs->e2proomdata.demdlg_R(1,2)*m_mcs->e2proomdata.demdlg_R(2,0) +
+                 m_mcs->e2proomdata.demdlg_R(0,2)*m_mcs->e2proomdata.demdlg_R(1,0)*m_mcs->e2proomdata.demdlg_R(2,1) -
+                 m_mcs->e2proomdata.demdlg_R(0,2)*m_mcs->e2proomdata.demdlg_R(1,1)*m_mcs->e2proomdata.demdlg_R(2,0) -
+                 m_mcs->e2proomdata.demdlg_R(0,1)*m_mcs->e2proomdata.demdlg_R(1,0)*m_mcs->e2proomdata.demdlg_R(2,2) -
+                 m_mcs->e2proomdata.demdlg_R(0,0)*m_mcs->e2proomdata.demdlg_R(1,2)*m_mcs->e2proomdata.demdlg_R(2,1);
+    if(hlz < 0)
+    {
+        V(0,2) = -V(0,2);
+        V(1,2) = -V(1,2);
+        V(2,2) = -V(2,2);
+        m_mcs->e2proomdata.demdlg_R = V*U.transpose();
+    }
+
+
+    m_mcs->e2proomdata.demdlg_T = -m_mcs->e2proomdata.demdlg_R/(pow(Z,0.5))*temp1 + temp2;
+    m_mcs->e2proomdata.demdlg_R = m_mcs->e2proomdata.demdlg_R/((pow(Z,0.5)));
+
+
+    //计算误差
+    std::vector<Eigen::Vector3d> p3;
+    double errtemp = 0;
+    double et = 0;
+    errgroup.resize(num);
+    for(int i = 0;i < num;i ++)
+    {
+        Eigen::Vector3d p3temp = m_mcs->e2proomdata.demdlg_R * p1.at(i) + m_mcs->e2proomdata.demdlg_T;
+        et = (p3temp - p2.at(i)).norm();
+        errgroup[i]= et;
+        errtemp += et;
+    }
+    err = errtemp / num;
+    m_mcs->e2proomdata.write_demdlg_para();
+    return true;
 }
 

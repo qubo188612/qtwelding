@@ -312,7 +312,7 @@
     <string>标定精度:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="err">
    <property name="geometry">
     <rect>
      <x>750</x>

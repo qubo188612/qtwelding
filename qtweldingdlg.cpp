@@ -220,21 +220,21 @@ void qtweldingDlg::ConnectCamer()
     if(m_mcs->resultdata.link_result_state==false)
     {
         QString server_ip=m_mcs->ip->camer_ip[0].ip;
-        QString server_port2="1502";
+        QString server_port2=QString::number(PORT_ALS_RESULT);
         m_mcs->resultdata.ctx_result = modbus_new_tcp(server_ip.toUtf8(), server_port2.toInt());
         if (modbus_connect(m_mcs->resultdata.ctx_result) == -1)
         {
-            ui->record->append(QString::fromLocal8Bit("激光头1502端口连接失败"));
+            ui->record->append(server_port2+"端口连接失败");
             modbus_free(m_mcs->resultdata.ctx_result);
             return;
         }
         m_mcs->resultdata.link_result_state=true;
-        ui->record->append(QString::fromLocal8Bit("激光头1502端口连接成功"));
+        ui->record->append(server_port2+"端口连接成功");
     //  RunAlgCamer();
     }
 
     u_int16_t task;
-    real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_result,0x102,1,&task);
+    real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_result,ALS_TASKNUM_REG_ADD,1,&task);
     if(real_readnum<0)
     {
         ui->record->append(QString::fromLocal8Bit("激光头获取当前任务号信息失败"));
@@ -257,7 +257,8 @@ void qtweldingDlg::DisconnectCamer()
         }
         modbus_free(m_mcs->resultdata.ctx_result);
         m_mcs->resultdata.link_result_state=false;
-        ui->record->append(QString::fromLocal8Bit("1502端口关闭"));
+        QString msg=QString::number(PORT_ALS_RESULT);
+        ui->record->append(msg+"端口关闭");
     }
 }
 
@@ -267,7 +268,7 @@ void qtweldingDlg::RunAlgCamer()
     {
         uint16_t tab_reg[1];
         tab_reg[0]=0xff;
-        int rc=modbus_write_registers(m_mcs->resultdata.ctx_result,0x101,1,tab_reg);
+        int rc=modbus_write_registers(m_mcs->resultdata.ctx_result,ALS_OPEN_REG_ADD,1,tab_reg);
         if(rc!=1)
         {
             ui->record->append(QString::fromLocal8Bit("激光头相机启动设置失败"));
@@ -305,7 +306,7 @@ void qtweldingDlg::StopAlgCamer()
         }
         uint16_t tab_reg[1];
         tab_reg[0]=0;
-        int rc=modbus_write_registers(m_mcs->resultdata.ctx_result,0x101,1,tab_reg);
+        int rc=modbus_write_registers(m_mcs->resultdata.ctx_result,ALS_OPEN_REG_ADD,1,tab_reg);
         if(rc!=1)
         {
             ui->record->append(QString::fromLocal8Bit("激光头相机关闭设置失败"));
@@ -325,7 +326,7 @@ void qtweldingDlg::ConnectRobot()
         //写入机器人型号和远程地址
         uint16_t u16_data[5];
         u16_data[0]=m_mcs->rob->robot_model;
-        int rc=modbus_write_registers(m_mcs->rob->ctx_posget,0x100,1,u16_data);
+        int rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_MODEL_REG_ADD,1,u16_data);
         if(rc!=1)
         {
             ui->record->append(QString::fromLocal8Bit("机器人型号设置失败"));
@@ -337,7 +338,7 @@ void qtweldingDlg::ConnectRobot()
             {
                 u16_data[n]=sections[n].toInt();
             }
-            rc=modbus_write_registers(m_mcs->rob->ctx_posget,0x300,4,u16_data);
+            rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_IPADDR_1_REG_ADD,4,u16_data);
             if(rc!=4)
             {
                 ui->record->append(QString::fromLocal8Bit("机器人远程IP地址设置失败"));
@@ -483,7 +484,7 @@ void qtweldingThread::run()
                 }
                 else if(_p->ctx_result_dosomeing==DO_NOTHING)
                 {
-                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x02,15,_p->leaser_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,ALS_STATE_REG_ADD,15,_p->leaser_rcv_data))
                     {
                         float Y=(int16_t)_p->leaser_rcv_data[1]/100.0;
                         float Z=(int16_t)_p->leaser_rcv_data[2]/100.0;
@@ -509,7 +510,7 @@ void qtweldingThread::run()
                             _p->m_mcs->resultdata.pos1.nEn=true;
                         }
                     }
-                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,0x50,4,_p->leaser_rcv_data2))
+                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,ALS_Y_POINT2_REG_ADD,4,_p->leaser_rcv_data2))
                     {
                         float Y2=(int16_t)_p->leaser_rcv_data2[0]/100.0;
                         float Z2=(int16_t)_p->leaser_rcv_data2[1]/100.0;
@@ -585,7 +586,7 @@ void qtgetrobThread::run()
                 else if(_p->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
-                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,0x00,14,_p->robotpos_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,14,_p->robotpos_rcv_data))
                     {
                         _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
                         _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);

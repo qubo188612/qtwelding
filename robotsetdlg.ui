@@ -90,7 +90,7 @@
     <rect>
      <x>130</x>
      <y>230</y>
-     <width>201</width>
+     <width>111</width>
      <height>25</height>
     </rect>
    </property>
@@ -136,6 +136,19 @@
    </property>
    <property name="text">
     <string>机器人型号:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>230</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>(1477-1496)</string>
    </property>
   </widget>
  </widget>
