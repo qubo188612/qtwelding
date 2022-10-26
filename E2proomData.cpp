@@ -15,6 +15,9 @@ E2proomData::E2proomData()
     }
 #endif
 
+    matrix_camera2plane=cv::Mat::zeros(3,3,CV_64F);
+    matrix_plane2robot=cv::Mat::zeros(3,3,CV_64F);
+
     camdlg_modposX1_min=E2POOM_CAMDLG_MODPOSX1_MIN;
     camdlg_modposX1_max=E2POOM_CAMDLG_MODPOSX1_MAX;
     camdlg_modposX1_use=E2POOM_CAMDLG_MODPOSX1_USE;
@@ -395,6 +398,40 @@ void E2proomData::read_demdlg_para()
                 }
             }
         }
+        else if(keyString=="matrix_camera2plane")
+        {
+            QJsonArray arrData=it.value().toArray();
+            if(arrData.size()!=9)
+            {
+                continue;
+            }
+            int n=0;
+            for(int j=0;j<3;j++)
+            {
+                double *d= matrix_camera2plane.ptr<double>(j);
+                for(int i=0;i<3;i++)
+                {
+                    d[i]=arrData[n++].toDouble();
+                }
+            }
+        }
+        else if(keyString=="matrix_plane2robot")
+        {
+            QJsonArray arrData=it.value().toArray();
+            if(arrData.size()!=9)
+            {
+                continue;
+            }
+            int n=0;
+            for(int j=0;j<3;j++)
+            {
+                double *d= matrix_plane2robot.ptr<double>(j);
+                for(int i=0;i<3;i++)
+                {
+                    d[i]=arrData[n++].toDouble();
+                }
+            }
+        }
     }
 }
 
@@ -443,6 +480,28 @@ void E2proomData::write_demdlg_para()
         arrData4.insert(QString::number(i),singpos);
     }
     data.insert("demdlg_Leaserpos",arrData4);
+
+    QJsonArray arrData6;
+    for (int j=0;j<3;j++)
+    {
+        double *d= matrix_camera2plane.ptr<double>(j);
+        for (int i=0;i<3;i++)
+        {
+            arrData6.append(d[i]);
+        }
+    }
+    data.insert("matrix_camera2plane",arrData6);
+
+    QJsonArray arrData7;
+    for (int j=0;j<3;j++)
+    {
+        double *d= matrix_plane2robot.ptr<double>(j);
+        for (int i=0;i<3;i++)
+        {
+            arrData7.append(d[i]);
+        }
+    }
+    data.insert("matrix_plane2robot",arrData7);
 
     Savejsonfile(E2POOM_DEMDLG_SYSPATH_MOTO,data);
 }

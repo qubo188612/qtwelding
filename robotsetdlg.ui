@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>427</height>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>360</y>
+     <y>400</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -150,6 +150,44 @@
    <property name="text">
     <string>(1477-1496)</string>
    </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>350</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>姿态标准:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="robot_posure_model">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>350</y>
+     <width>201</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>安川姿态标准</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>库卡姿态标准</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>松下姿态标准</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>

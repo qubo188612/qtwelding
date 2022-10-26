@@ -18,6 +18,7 @@ SOURCES += \
         ResultData.cpp \
         TimeFunction.cpp \
         XTcp.cpp \
+        calibration.cpp \
         cam_sen.cpp \
         cambuilddlg.cpp \
         demarcatedlg.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     ResultData.h \
     TimeFunction.h \
     XTcp.h \
+    calibration.h \
     cam_sen.h \
     cambuilddlg.h \
     demarcatedlg.h \

@@ -2,6 +2,7 @@
 #define ROBOTDATA_H
 #include "global.h"
 #include <modbus/modbus.h>
+#include "calibration.h"
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QFile>
@@ -45,6 +46,8 @@ public:
 
     ROBOT_STATE robot_state;    //机器人状态
     QString robot_state_toQString();  //机器人状态字符串输出
+
+    CAL_POSTURE cal_posture_model;  //机器人姿态标准
 
     float robot_speed;         //机器人移动速度
 

@@ -29,6 +29,7 @@ RobotData::RobotData()
     if(0!=LoadRob(ROBOTDATA_PATH_MOTO))
     {
         robot_model=ROBOT_MODEL_NULL;
+        cal_posture_model=CAL_ROBOT_YASKAWA;
     }
 }
 
@@ -158,7 +159,7 @@ QVariantHash RobotData::encoed_json()
     QVariantHash data;
 
     data.insert("robot_model", robot_model);
-
+    data.insert("cal_posture_model",cal_posture_model);
     return data;
 }
 
@@ -178,9 +179,13 @@ int RobotData::decoed_json(QByteArray allData)
     for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
     {
         QString keyString=it.key();
-        if(keyString=="robot_model")//机器人
+        if(keyString=="robot_model")//机器人型号
         {
             robot_model=(ROBOT_MODEL)it.value().toInt();
+        }
+        else if(keyString=="cal_posture_model")//机器人姿态标准
+        {
+            cal_posture_model=(CAL_POSTURE)it.value().toInt();
         }
     }
 

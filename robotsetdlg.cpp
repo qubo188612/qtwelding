@@ -17,6 +17,7 @@ robotsetDlg::robotsetDlg(my_parameters *mcs,QWidget *parent) :
     ui->robot_ip->setText(m_mcs->ip->robot_ip[0].robot_ip.ip);
     ui->robot_port->setText(QString::number(m_mcs->ip->robot_ip[0].robot_ip.port));
     ui->robot_remoteip->setText(m_mcs->ip->robot_ip[0].remote_ip.ip);
+    ui->robot_posure_model->setCurrentIndex(m_mcs->rob->cal_posture_model);
 }
 
 robotsetDlg::~robotsetDlg()
@@ -37,6 +38,7 @@ void robotsetDlg::close_dlg_show()
 void robotsetDlg::on_pushButton_clicked()
 {
     m_mcs->rob->robot_model=(ROBOT_MODEL)ui->robot_model->currentIndex();
+    m_mcs->rob->cal_posture_model=(CAL_POSTURE)ui->robot_posure_model->currentIndex();
     m_mcs->rob->SaveRob(ROBOTDATA_PATH_MOTO);
     m_mcs->ip->robot_ip[0].robot_ip.ip=ui->robot_ip->text();
     m_mcs->ip->robot_ip[0].robot_ip.port=ui->robot_port->text().toInt();

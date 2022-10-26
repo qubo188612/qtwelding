@@ -270,26 +270,52 @@ void demarcateDlg::on_pushButton_9_clicked()     //清空激光头点
 
 void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
 {
-    if(m_mcs->e2proomdata.demdlg_Leaserpos.size()!=m_mcs->e2proomdata.demdlg_Robotpos.size())
+    double err;
+    m_mcs->e2proomdata.write_demdlg_para();
+    switch(m_mcs->e2proomdata.demdlg_radio_mod)
     {
-        ui->record->append(QString::fromLocal8Bit("TCP坐标点要与激光头坐标点个数相同"));
-    }
-    else if(m_mcs->e2proomdata.demdlg_Robotpos.size()<4)
-    {
-        ui->record->append(QString::fromLocal8Bit("TCP坐标点个数要至少大于4个"));
-    }
-    else
-    {
-        double err;
-        m_mcs->e2proomdata.write_demdlg_para();
-        switch(m_mcs->e2proomdata.demdlg_radio_mod)
+        case 0://眼在手上
         {
-            case 0://眼在手上
+            if(m_mcs->e2proomdata.demdlg_Robotpos.size()!=1)
             {
-
+                ui->record->append(QString::fromLocal8Bit("TCP坐标点应该只能有一个"));
             }
-            break;
-            case 1://眼在手外
+            else if(m_mcs->e2proomdata.demdlg_Leaserpos.size()<4)
+            {
+                ui->record->append(QString::fromLocal8Bit("激光头坐标点个数要至少大于4个"));
+            }
+            else
+            {
+                if(true==Calibration::hand_on_yes_point2RT(m_mcs->rob->cal_posture_model,
+                                                  m_mcs->e2proomdata.demdlg_Robotpos[0],
+                                                  m_mcs->e2proomdata.demdlg_Leaserpos,
+                                                  m_mcs->e2proomdata.matrix_camera2plane,
+                                                  m_mcs->e2proomdata.matrix_plane2robot,
+                                                  err,errgroup))
+                {
+                    updataDemarcateResult();
+                    ui->record->append(QString::fromLocal8Bit("标定完成"));
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("标定计算出现问题,请检查数据"));
+                }
+                m_mcs->e2proomdata.write_demdlg_para();
+                ui->err->setText(QString::number(err,'f',2));
+            }
+        }
+        break;
+        case 1://眼在手外
+        {
+            if(m_mcs->e2proomdata.demdlg_Leaserpos.size()!=m_mcs->e2proomdata.demdlg_Robotpos.size())
+            {
+                ui->record->append(QString::fromLocal8Bit("TCP坐标点要与激光头坐标点个数相同"));
+            }
+            else if(m_mcs->e2proomdata.demdlg_Robotpos.size()<4)
+            {
+                ui->record->append(QString::fromLocal8Bit("TCP坐标点个数要至少大于4个"));
+            }
+            else
             {
                 std::vector<Eigen::Vector3d> cloudpoint;
                 std::vector<Eigen::Vector3d> robotpoint;
@@ -306,13 +332,14 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                     robotsing[2]=m_mcs->e2proomdata.demdlg_Robotpos[n].Z;
                     robotpoint.push_back(robotsing);
                 }
-                point2RT(cloudpoint,robotpoint,err,errgroup);
+                Calibration::hand_out_yes_point2RT(cloudpoint,robotpoint,m_mcs->e2proomdata.demdlg_R,m_mcs->e2proomdata.demdlg_T,err,errgroup);
+                m_mcs->e2proomdata.write_demdlg_para();
                 ui->err->setText(QString::number(err,'f',2));
+                updataDemarcateResult();
+                ui->record->append(QString::fromLocal8Bit("标定完成"));
             }
-            break;
         }
-        updataDemarcateResult();
-        ui->record->append(QString::fromLocal8Bit("标定完成"));
+        break;
     }
 }
 
@@ -395,96 +422,5 @@ void demarcateDlg::on_robposlist_itemClicked(QListWidgetItem *item)
 void demarcateDlg::on_leaserposlist_itemClicked(QListWidgetItem *item)
 {
     now_leaserpos=ui->leaserposlist->currentRow();
-}
-
-bool demarcateDlg::point2RT(std::vector<Eigen::Vector3d> &p1,std::vector<Eigen::Vector3d> &p2,double &err,std::vector<double> &errgroup)
-{
-    if(p1.size() != p2.size())
-        return false;
-    int num = p1.size();
-
-    //求质心
-    Eigen::Vector3d temp1(0,0,0),temp2(0,0,0);
-    for(int i = 0;i < num;i ++)
-    {
-        temp1 += p1.at(i);
-        temp2 += p2.at(i);
-    }
-    temp1 /= num;
-    temp2 /= num;
-
-    //求缩放因子Z
-    double Z = 0;
-    double Z1 = 0;
-    double Z2 = 0;
-    for(int i = 0;i < num;i ++)
-    {
-        double x1 = p1.at(i)(0) - temp1(0);
-        double y1 = p1.at(i)(1) - temp1(1);
-        double z1 = p1.at(i)(2) - temp1(2);
-        double x2 = p2.at(i)(0) - temp2(0);
-        double y2 = p2.at(i)(1) - temp2(1);
-        double z2 = p2.at(i)(2) - temp2(2);
-
-        Z1 += x1*x1+y1*y1+z1*z1;
-        Z2 += x2*x2+y2*y2+z2*z2;
-    }
-    Z = Z1/Z2;
-
-    //求 H
-    Eigen::Matrix3d H;
-    H <<	0, 0, 0,
-            0, 0, 0,
-            0, 0, 0;
-    for(int i = 0;i < num;i ++)
-    {
-        H += (p1.at(i) - temp1)*(p2.at(i) - temp2).transpose();
-    }
-    // 进行svd分解
-    Eigen::JacobiSVD<Eigen::MatrixXd> svd(H,
-                                                 Eigen::ComputeThinU |
-                                                 Eigen::ComputeThinV);
-    // 构建SVD分解结果
-    Eigen::MatrixXd U = svd.matrixU();
-    Eigen::MatrixXd V = svd.matrixV();
-    Eigen::MatrixXd D = svd.singularValues();
-
-
-    m_mcs->e2proomdata.demdlg_R = V*U.transpose();
-    //行列值
-    double hlz = m_mcs->e2proomdata.demdlg_R(0,0)*m_mcs->e2proomdata.demdlg_R(1,1)*m_mcs->e2proomdata.demdlg_R(2,2) +
-                 m_mcs->e2proomdata.demdlg_R(0,1)*m_mcs->e2proomdata.demdlg_R(1,2)*m_mcs->e2proomdata.demdlg_R(2,0) +
-                 m_mcs->e2proomdata.demdlg_R(0,2)*m_mcs->e2proomdata.demdlg_R(1,0)*m_mcs->e2proomdata.demdlg_R(2,1) -
-                 m_mcs->e2proomdata.demdlg_R(0,2)*m_mcs->e2proomdata.demdlg_R(1,1)*m_mcs->e2proomdata.demdlg_R(2,0) -
-                 m_mcs->e2proomdata.demdlg_R(0,1)*m_mcs->e2proomdata.demdlg_R(1,0)*m_mcs->e2proomdata.demdlg_R(2,2) -
-                 m_mcs->e2proomdata.demdlg_R(0,0)*m_mcs->e2proomdata.demdlg_R(1,2)*m_mcs->e2proomdata.demdlg_R(2,1);
-    if(hlz < 0)
-    {
-        V(0,2) = -V(0,2);
-        V(1,2) = -V(1,2);
-        V(2,2) = -V(2,2);
-        m_mcs->e2proomdata.demdlg_R = V*U.transpose();
-    }
-
-
-    m_mcs->e2proomdata.demdlg_T = -m_mcs->e2proomdata.demdlg_R/(pow(Z,0.5))*temp1 + temp2;
-    m_mcs->e2proomdata.demdlg_R = m_mcs->e2proomdata.demdlg_R/((pow(Z,0.5)));
-
-
-    //计算误差
-    std::vector<Eigen::Vector3d> p3;
-    double errtemp = 0;
-    double et = 0;
-    errgroup.resize(num);
-    for(int i = 0;i < num;i ++)
-    {
-        Eigen::Vector3d p3temp = m_mcs->e2proomdata.demdlg_R * p1.at(i) + m_mcs->e2proomdata.demdlg_T;
-        et = (p3temp - p2.at(i)).norm();
-        errgroup[i]= et;
-        errtemp += et;
-    }
-    err = errtemp / num;
-    m_mcs->e2proomdata.write_demdlg_para();
-    return true;
 }
 

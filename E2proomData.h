@@ -20,6 +20,7 @@
 #include "FileOut.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <opencv2/opencv.hpp>
 
 #define E2POOM_CAMDLG_SAVEBUFF              64
 #define E2POOM_CAMDLG_SYSPATH_MOTO			"./SAVE/E2P_CAMDLG.bsd"
@@ -79,12 +80,6 @@
 #define E2POOM_DEMDLG_RADIO_MOD_MAX         1
 #define E2POOM_DEMDLG_RADIO_MOD_USE         0
 
-class TCP_Leaserpos //机器人激光头手眼标定点坐标系
-{
-public:
-    leaser_pos leaserpos;  //激光头坐标
-    RobPos robotpos;       //此时的机器人坐标
-};
 
 class E2proomData
 {
@@ -167,10 +162,13 @@ public:
  /***************************/
     //手眼标定页面
     Int32 demdlg_radio_mod;     //0:眼在手上，1:眼在手外
-    Eigen::Matrix3d demdlg_R;          //旋转矩阵
-    Eigen::Vector3d demdlg_T;          //平移变量
+    Eigen::Matrix3d demdlg_R;          //眼在手外旋转矩阵
+    Eigen::Vector3d demdlg_T;          //眼在手外平移变量
     std::vector<RobPos> demdlg_Robotpos;  //机器人手眼标定点
     std::vector<TCP_Leaserpos> demdlg_Leaserpos; //激光头手眼标定点
+
+    cv::Mat matrix_camera2plane;        //眼在手上旋转矩阵1
+    cv::Mat matrix_plane2robot;         //眼在手上旋转矩阵2
 
     Int32 demdlg_radio_mod_min;
     Int32 demdlg_radio_mod_max;

@@ -309,4 +309,12 @@ public:
     bool nEn;
 };
 
+class TCP_Leaserpos //机器人激光头手眼标定点坐标系
+{
+public:
+    leaser_pos leaserpos;  //激光头坐标
+    RobPos robotpos;       //此时的机器人坐标
+};
+
+
 #endif // GLOBAL_H
