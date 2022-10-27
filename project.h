@@ -15,12 +15,14 @@
 #include <unistd.h>
 #endif
 
-#define PROJECT_PATH_MOTO       "./SAVE/path.json"
+#define PROJECT_PATH_MOTO       "./SAVE/path.bsd"
 
+#define PROJECT_ID_TOTAL_NUM       1      //项目类型总数
 typedef enum PROJECT_ID
 {
     PROGECT_ID_TEACH_SCAN=0,       //示教扫描类型
 }Project_ID;
+
 
 class Project
 {
@@ -31,7 +33,7 @@ public:
 
     Project_ID project_Id;      //项目总类型id
 
-    QString project_Id_toQString(); //项目总类型id转QString输出
+    QString project_Id_toQString(Project_ID project_Id); //项目总类型id转QString输出
 
     QString project_name;       //项目名
 

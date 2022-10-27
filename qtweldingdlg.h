@@ -17,6 +17,9 @@
 #include "qtmysunnydlg.h"
 #include "demarcatedlg.h"
 #include "robotsetdlg.h"
+#include "editprojectdlg.h"
+#include "newprojectdlg.h"
+#include "setprojectdlg.h"
 
 
 namespace Ui {
@@ -69,6 +72,9 @@ public:
     qtmysunnyDlg *qtmysunny;
     demarcateDlg *demarcate;
     robotsetDlg *robotset;
+    editprojectDlg *editproject;
+    newprojectDlg *newproject;
+    setprojectDlg *setproject;
 
     int ctx_result_dosomeing;   //1502端口忙
     int ctx_robot_dosomeing;    //机器人端口忙

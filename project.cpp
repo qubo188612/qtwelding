@@ -64,7 +64,7 @@ int Project::SaveProject(char* filename)
 
     file.close();   // 关闭file
 
-    project_path=QString(QLatin1String(filename));
+    project_path=QString::fromLocal8Bit(filename);
 
     SaveProjectPath(PROJECT_PATH_MOTO);
 
@@ -87,7 +87,7 @@ int Project::LoadProject(char* filename)
     if(0!=decoed_json(allData))
         return 1;
 
-    project_path=QString(QLatin1String(filename));
+    project_path=QString::fromLocal8Bit(filename);
 
     SaveProjectPath(PROJECT_PATH_MOTO);
 
@@ -248,7 +248,7 @@ QString Project::JsonToQstring(QJsonObject jsonObject)
     return QString(QJsonDocument(jsonObject).toJson());
 }
 
-QString Project::project_Id_toQString()
+QString Project::project_Id_toQString(Project_ID project_Id)
 {
     QString msg;
     switch(project_Id)

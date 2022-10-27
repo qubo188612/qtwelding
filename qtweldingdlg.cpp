@@ -32,6 +32,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
     robotset=new robotsetDlg(m_mcs);
+    editproject=new editprojectDlg(m_mcs);
+    newproject=new newprojectDlg(m_mcs);
+    setproject=new setprojectDlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -102,12 +105,15 @@ qtweldingDlg::~qtweldingDlg()
     delete qtmysunny;
     delete demarcate;
     delete robotset;
+    delete editproject;
+    delete newproject;
+    delete setproject;
     delete ui;
 }
 
 void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "open project", "./DATA/", "Project File(*.json)");
+    QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的工程文件"), "./DATA/", "JSON(*.json)");
 #if _MSC_VER
     QTextCodec *code = QTextCodec::codecForName("GBK");
 #else
@@ -138,7 +144,62 @@ void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
 
 void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
 {
-
+    int rc;
+    editproject->init_dlg_show();
+    editproject->setWindowTitle(QString::fromLocal8Bit("工程编辑"));
+    rc=editproject->exec();
+    editproject->close_dlg_show();
+    switch(rc)
+    {
+        case EDITPROJECTDLG_BTN1:   //新建工程
+        {
+            int rc2;
+            newproject->init_dlg_show();
+            newproject->setWindowTitle(QString::fromLocal8Bit("新建工程"));
+            rc2=newproject->exec();
+            newproject->close_dlg_show();
+            if(rc2!=0)//保存成功返回
+            {
+                QString msg=QString::fromLocal8Bit("工程名称: ")+m_mcs->project->project_name+
+                            QString::fromLocal8Bit(" 工程类型")+QString::number(m_mcs->project->project_Id)+": "
+                            +m_mcs->project->project_Id_toQString(m_mcs->project->project_Id);
+                switch(m_mcs->project->project_Id)
+                {
+                    case PROGECT_ID_TEACH_SCAN:
+                    {
+                        setproject->init_dlg_show();
+                        setproject->setWindowTitle(msg);
+                        setproject->exec();
+                        setproject->close_dlg_show();
+                    }
+                    break;
+                }
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消新建工程"));
+            }
+        }
+        break;
+        case EDITPROJECTDLG_BTN2:   //编辑当前工程
+        {
+            QString msg=QString::fromLocal8Bit("工程名称: ")+m_mcs->project->project_name+
+                        QString::fromLocal8Bit(" 工程类型")+QString::number(m_mcs->project->project_Id)+": "
+                        +m_mcs->project->project_Id_toQString(m_mcs->project->project_Id);
+            switch(m_mcs->project->project_Id)
+            {
+                case PROGECT_ID_TEACH_SCAN:
+                {
+                    setproject->init_dlg_show();
+                    setproject->setWindowTitle(msg);
+                    setproject->exec();
+                    setproject->close_dlg_show();
+                }
+                break;
+            }
+        }
+        break;
+    }
 }
 
 
@@ -366,7 +427,7 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
     QString msg;
     //工程信息
     ui->project_name->setText(m_mcs->project->project_name);
-    ui->project_Id->setText(m_mcs->project->project_Id_toQString());
+    ui->project_Id->setText(m_mcs->project->project_Id_toQString(m_mcs->project->project_Id));
 
     //相机信息
     ui->leaser_ip->setText(m_mcs->ip->camer_ip[0].ip);

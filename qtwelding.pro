@@ -22,15 +22,18 @@ SOURCES += \
         cam_sen.cpp \
         cambuilddlg.cpp \
         demarcatedlg.cpp \
+        editprojectdlg.cpp \
         global.cpp \
         ipaddress.cpp \
         main.cpp \
         my_parameters.cpp \
+        newprojectdlg.cpp \
         project.cpp \
         qtmysunnydlg.cpp \
         qtweldingdlg.cpp \
         robotdata.cpp \
         robotsetdlg.cpp \
+        setprojectdlg.cpp \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp
@@ -43,9 +46,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 FORMS += \
     cambuilddlg.ui \
     demarcatedlg.ui \
+    editprojectdlg.ui \
+    newprojectdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
+    setprojectdlg.ui \
     showtasknumdlg.ui
 
 HEADERS += \
@@ -59,14 +65,17 @@ HEADERS += \
     cam_sen.h \
     cambuilddlg.h \
     demarcatedlg.h \
+    editprojectdlg.h \
     global.h \
     ipaddress.h \
     my_parameters.h \
+    newprojectdlg.h \
     project.h \
     qtmysunnydlg.h \
     qtweldingdlg.h \
     robotdata.h \
     robotsetdlg.h \
+    setprojectdlg.h \
     showtasknumdlg.h \
     soptocameratcpip.h \
     soptopcamera.h \
