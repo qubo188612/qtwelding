@@ -24,6 +24,8 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define CAMTOTALNUM                 1   //最多相机路数
 #define ROBOTTALNUM                 1   //最多机器人路数
 
+#define ROBOTTCPNUM                 10  //每个机器人最多TCP上限
+
 #define CLOULD_POINT_NOTDATE        FLT_MAX
 
 /*************************/
@@ -38,10 +40,13 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 #define DEEPIMG_CALLBACKNUM_DNUM     5
 
+#define DO_NOTHING         0
+#define DO_WRITE_TASK      1
+
 /*****************************/
 //机器人信息和指令传输端口                        (1477-1496)
 
-#define ROB_X_POS_FH_REG_ADD                  0x001E       //机器人当前坐标
+#define ROB_X_POS_FH_REG_ADD                  0x0000       //机器人当前坐标
 #define ROB_X_POS_FL_REG_ADD                  0x0001
 #define ROB_Y_POS_FH_REG_ADD                  0x0002
 #define ROB_Y_POS_FL_REG_ADD                  0x0003
@@ -315,6 +320,12 @@ public:
     leaser_pos leaserpos;  //激光头坐标
     RobPos robotpos;       //此时的机器人坐标
 };
+
+typedef enum Robmovemodel_ID            //机器人移动方式
+{
+    MOVEL=0,        //直线运动
+    MOVEJ=1,        //关节运动
+}Robmovemodel;
 
 
 #endif // GLOBAL_H

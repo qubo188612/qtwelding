@@ -143,6 +143,7 @@ QVariantHash Project::encoed_json()
 {
     QVariantHash data;
     QVariantHash subData1;
+    QVariantHash subData2;
     QString p_id;
     switch(project_Id)
     {
@@ -152,6 +153,12 @@ QVariantHash Project::encoed_json()
     }
     subData1.insert("project_Id", p_id);
     subData1.insert("project_name", project_name);
+    for(int n=0;n<project_cmdlist.size();n++)
+    {
+        QString line="line"+QString::number(n);
+        subData2.insert(line,project_cmdlist[n]);
+    }
+    subData1.insert("project_cmdlist", subData2);
     data.insert("Project", subData1);
 
     return data;
@@ -159,6 +166,7 @@ QVariantHash Project::encoed_json()
 
 int Project::decoed_json(QByteArray allData)
 {
+    project_cmdlist.clear();
     QJsonParseError json_error;
     QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &json_error));
 
@@ -195,6 +203,25 @@ int Project::decoed_json(QByteArray allData)
                 else if(keyString=="project_name")//项目名称
                 {
                     project_name=it_obj.value().toString();
+                }
+                else if(keyString=="project_cmdlist")//项目指令集
+                {
+                    QJsonObject obj = it_obj->toObject();
+                    QJsonObject::Iterator it;
+                    project_cmdlist.reserve(obj.size());
+                    for(int t=0;t<obj.size();t++)
+                    {
+                        QString s_key="line"+QString::number(t);
+                        for(it=obj.begin();it!=obj.end();it++)//遍历Key
+                        {
+                            QString keyString=it.key();
+                            if(keyString==s_key)
+                            {
+                                QString msg=it.value().toString();
+                                project_cmdlist.push_back(msg);
+                            }
+                        }
+                    }
                 }
             }
         }

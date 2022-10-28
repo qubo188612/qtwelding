@@ -19,9 +19,6 @@
 #include "TimeFunction.h"
 #include "PictureBox.h"
 
-#define DO_NOTHING         0
-#define DO_WRITE_TASK      1
-
 namespace Ui {
 class qtmysunnyDlg;
 }

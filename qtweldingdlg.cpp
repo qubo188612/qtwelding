@@ -26,8 +26,6 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     b_init_set_robtask=true;
 
     b_RunAlgCamer=false;
-    ctx_result_dosomeing=DO_NOTHING;
-    ctx_robot_dosomeing=DO_NOTHING;
 
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
@@ -261,8 +259,8 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         sentdata.ctx=m_mcs->resultdata.ctx_result;
         sentdata.addr=0x101;
         sentdata.data={0xff};
-        send_group_leaser.push_back(sentdata);
-        ctx_result_dosomeing=DO_WRITE_TASK;
+        m_mcs->resultdata.send_group_leaser.push_back(sentdata);
+        m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
 
         demarcate->init_dlg_show();
         demarcate->setWindowTitle(QString::fromLocal8Bit("标定设置"));
@@ -270,8 +268,8 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         demarcate->close_dlg_show();
 
         sentdata.data={0x00};
-        send_group_leaser.push_back(sentdata);
-        ctx_result_dosomeing=DO_WRITE_TASK;
+        m_mcs->resultdata.send_group_leaser.push_back(sentdata);
+        m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
     }
 }
 
@@ -456,24 +454,9 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
 
 void qtweldingDlg::init_sent_leaser()
 {
-    if(send_group_leaser.size()!=0)
+    if(m_mcs->resultdata.b_send_group_leaser==false)
     {
-        sent_info_leaser sentdata=send_group_leaser[0];
-        std::vector<sent_info_leaser>::iterator it = send_group_leaser.begin();
-        send_group_leaser.erase(it);
-        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
-        if(rc!=1)
-        {
-            ui->record->append(QString::fromLocal8Bit("激光头通信异常"));
-        }
-        if(send_group_leaser.size()==0)
-        {
-            ctx_result_dosomeing=DO_NOTHING;
-        }
-    }
-    else
-    {
-        ctx_result_dosomeing=DO_NOTHING;
+        ui->record->append(QString::fromLocal8Bit("激光头通信异常"));
     }
     b_init_sent_leaser=true;
 }
@@ -499,24 +482,9 @@ void qtweldingDlg::init_show_robpos_list()
 
 void qtweldingDlg::init_set_robtask()
 {
-    if(send_group_robot.size()!=0)
+    if(m_mcs->rob->b_send_group_robot==false)
     {
-        sent_info_robot sentdata=send_group_robot[0];
-        std::vector<sent_info_robot>::iterator it = send_group_robot.begin();
-        send_group_robot.erase(it);
-        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
-        if(rc!=1)
-        {
-            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
-        }
-        if(send_group_robot.size()==0)
-        {
-            ctx_robot_dosomeing=DO_NOTHING;
-        }
-    }
-    else
-    {
-        ctx_robot_dosomeing=DO_NOTHING;
+        ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
     }
     b_init_set_robtask=true;
 }
@@ -535,15 +503,38 @@ void qtweldingThread::run()
         {
             if(_p->m_mcs->resultdata.link_result_state==true)
             {
-                if(_p->ctx_result_dosomeing==DO_WRITE_TASK)
+                if(_p->m_mcs->resultdata.ctx_result_dosomeing==DO_WRITE_TASK)
                 {
-                    if(_p->b_init_sent_leaser==true)
+                    if(_p->m_mcs->resultdata.send_group_leaser.size()!=0)
                     {
-                        _p->b_init_sent_leaser=false;
-                        emit Send_sent_leaser();
+                        sent_info_leaser sentdata=_p->m_mcs->resultdata.send_group_leaser[0];
+                        std::vector<sent_info_leaser>::iterator it = _p->m_mcs->resultdata.send_group_leaser.begin();
+                        _p->m_mcs->resultdata.send_group_leaser.erase(it);
+                        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+                        if(rc!=1)
+                        {
+                            _p->m_mcs->resultdata.b_send_group_leaser=false;
+                            if(_p->b_init_sent_leaser==true)
+                            {
+                                _p->b_init_sent_leaser=false;
+                                emit Send_sent_leaser();
+                            }
+                        }
+                        else
+                        {
+                            _p->m_mcs->resultdata.b_send_group_leaser=true;
+                        }
+                        if(_p->m_mcs->resultdata.send_group_leaser.size()==0)
+                        {
+                            _p->m_mcs->resultdata.ctx_result_dosomeing=DO_NOTHING;
+                        }
+                    }
+                    else
+                    {
+                        _p->m_mcs->resultdata.ctx_result_dosomeing=DO_NOTHING;
                     }
                 }
-                else if(_p->ctx_result_dosomeing==DO_NOTHING)
+                else if(_p->m_mcs->resultdata.ctx_result_dosomeing==DO_NOTHING)
                 {
                     if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,ALS_STATE_REG_ADD,15,_p->leaser_rcv_data))
                     {
@@ -636,15 +627,38 @@ void qtgetrobThread::run()
         {
             if(_p->m_mcs->rob->b_connect==true)
             {
-                if(_p->ctx_robot_dosomeing==DO_WRITE_TASK)
+                if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_WRITE_TASK)
                 {
-                    if(_p->b_init_set_robtask==true)
+                    if(_p->m_mcs->rob->send_group_robot.size()!=0)
                     {
-                        _p->b_init_set_robtask=false;
-                        emit Send_set_robtask();
+                        sent_info_robot sentdata=_p->m_mcs->rob->send_group_robot[0];
+                        std::vector<sent_info_robot>::iterator it = _p->m_mcs->rob->send_group_robot.begin();
+                        _p->m_mcs->rob->send_group_robot.erase(it);
+                        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+                        if(rc!=1)
+                        {
+                            _p->m_mcs->rob->b_send_group_robot=false;
+                            if(_p->b_init_set_robtask==true)
+                            {
+                                _p->b_init_set_robtask=false;
+                                emit Send_set_robtask();
+                            }
+                        }
+                        else
+                        {
+                            _p->m_mcs->rob->b_send_group_robot=true;
+                        }
+                        if(_p->m_mcs->rob->send_group_robot.size()==0)
+                        {
+                            _p->m_mcs->rob->ctx_robot_dosomeing=DO_NOTHING;
+                        }
+                    }
+                    else
+                    {
+                        _p->m_mcs->rob->ctx_robot_dosomeing=DO_NOTHING;
                     }
                 }
-                else if(_p->ctx_robot_dosomeing==DO_NOTHING)
+                else if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
                     if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,14,_p->robotpos_rcv_data))

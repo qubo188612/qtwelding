@@ -175,17 +175,17 @@
    </property>
    <item>
     <property name="text">
-     <string>安川姿态标准</string>
+     <string>内旋 RX-RY-RZ</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>库卡姿态标准</string>
+     <string>外旋 RZ-RY-RX</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>松下姿态标准</string>
+     <string>内旋 RX-&quot;RY&quot;-RZ</string>
     </property>
    </item>
   </widget>

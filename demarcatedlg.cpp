@@ -179,18 +179,15 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
     }
     else
     {
+        TCP_Leaserpos sing;
+        sing.robotpos=m_mcs->rob->TCPpos;
+        sing.leaserpos=m_mcs->resultdata.pos1;
         if(now_leaserpos==m_mcs->e2proomdata.demdlg_Leaserpos.size()-1)
-        {
-            TCP_Leaserpos sing;
-            sing.robotpos=m_mcs->rob->TCPpos;
-            sing.leaserpos=m_mcs->resultdata.pos1;
+        {            
             m_mcs->e2proomdata.demdlg_Leaserpos.push_back(sing);
         }
         else
         {
-            TCP_Leaserpos sing;
-            sing.robotpos=m_mcs->rob->TCPpos;
-            sing.leaserpos=m_mcs->resultdata.pos1;
             m_mcs->e2proomdata.demdlg_Leaserpos.insert(m_mcs->e2proomdata.demdlg_Leaserpos.begin()+now_leaserpos+1,sing);
         }
         ui->record->append(QString::fromLocal8Bit("添加TCP点成功"));

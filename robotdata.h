@@ -34,12 +34,19 @@ typedef enum ROBOT_STATE_ID            //机器人状态
     ROBOT_STATE_TRACE=4,               //跟踪
 }ROBOT_STATE;
 
+class sent_info_robot             //发送机器人数据
+{
+public:
+    modbus_t *ctx;                  //sock
+    int addr;                       //发送寄存器
+    std::vector<uint16_t> data;     //发送数据
+};
 
 class RobotData
 {
 public:
     static RobotData *Get();
-    RobPos TCPpos;      //机器人TCP针头坐标
+    RobPos TCPpos;      //机器人当前TCP坐标
 
     ROBOT_MODEL robot_model;    //机器人型号
     QString robot_model_toQString();  //机器人型号字符串输出
@@ -49,7 +56,7 @@ public:
 
     CAL_POSTURE cal_posture_model;  //机器人姿态标准
 
-    float robot_speed;         //机器人移动速度
+    float robot_speed;         //机器人当前移动速度
 
     bool b_connect;             //是否连接机器人
 
@@ -59,6 +66,10 @@ public:
 
     modbus_t *ctx_posget;       //机器人坐标访问
     bool b_link_ctx_posget;     //机器人坐标访问连接
+
+    std::vector<sent_info_robot> send_group_robot;    //发送机器人数据队列
+    volatile bool b_send_group_robot;       //发送机器人数据是否异常
+    int ctx_robot_dosomeing;    //机器人端口忙
 
     int SaveRob(char* filename);    //保存项目
 

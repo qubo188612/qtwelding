@@ -26,6 +26,7 @@ SOURCES += \
         global.cpp \
         ipaddress.cpp \
         main.cpp \
+        my_cmd.cpp \
         my_parameters.cpp \
         newprojectdlg.cpp \
         project.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
     editprojectdlg.h \
     global.h \
     ipaddress.h \
+    my_cmd.h \
     my_parameters.h \
     newprojectdlg.h \
     project.h \

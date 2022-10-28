@@ -11,6 +11,14 @@
 
 class modbustcpThread;
 
+class sent_info_leaser              //发送相机数据
+{
+public:
+    modbus_t *ctx;                  //sock
+    int addr;                       //发送寄存器
+    std::vector<uint16_t> data;     //发送数据
+};
+
 class systime
 {
 public:
@@ -53,6 +61,10 @@ public:
     uint16_t alg101_threshold;
     uint16_t alg102_threshold;
     uint16_t alg103_threshold;
+
+    std::vector<sent_info_leaser> send_group_leaser;    //发送相机数据队列
+    volatile bool b_send_group_leaser;  //发送相机数据队列是否异常
+    int ctx_result_dosomeing;   //1502端口忙
 
 protected:
 

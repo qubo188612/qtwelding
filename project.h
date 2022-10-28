@@ -37,6 +37,8 @@ public:
 
     QString project_name;       //项目名
 
+    std::vector<QString> project_cmdlist;  //项目指令集合
+
     int SaveProject(char* filename);    //保存项目
 
     int LoadProject(char* filename);    //读取项目

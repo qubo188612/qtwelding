@@ -25,6 +25,8 @@ RobotData::RobotData()
     b_link_ctx_posget=false;
     robot_speed=0;
     robot_state=ROBOT_STATE_UNLINK;
+    b_send_group_robot=false;
+    ctx_robot_dosomeing=DO_NOTHING;
 
     if(0!=LoadRob(ROBOTDATA_PATH_MOTO))
     {

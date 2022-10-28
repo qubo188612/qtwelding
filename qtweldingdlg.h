@@ -30,22 +30,6 @@ class qtweldingThread;
 
 class qtgetrobThread;
 
-class sent_info_leaser              //发送相机数据
-{
-public:
-    modbus_t *ctx;                  //sock
-    int addr;                       //发送寄存器
-    std::vector<uint16_t> data;     //发送数据
-};
-
-class sent_info_robot             //发送机器人数据
-{
-public:
-    modbus_t *ctx;                  //sock
-    int addr;                       //发送寄存器
-    std::vector<uint16_t> data;     //发送数据
-};
-
 class qtweldingDlg : public QDialog
 {
     Q_OBJECT
@@ -68,7 +52,6 @@ public:
     volatile bool b_init_show_robpos_list;
     volatile bool b_init_set_robtask;
 
-
     qtmysunnyDlg *qtmysunny;
     demarcateDlg *demarcate;
     robotsetDlg *robotset;
@@ -76,14 +59,11 @@ public:
     newprojectDlg *newproject;
     setprojectDlg *setproject;
 
-    int ctx_result_dosomeing;   //1502端口忙
-    int ctx_robot_dosomeing;    //机器人端口忙
 
-    std::vector<sent_info_leaser> send_group_leaser;    //发送相机数据队列
     unsigned short leaser_rcv_data[15];
     unsigned short leaser_rcv_data2[4];
 
-    std::vector<sent_info_robot> send_group_robot;    //发送机器人数据队列
+
     unsigned short robotpos_rcv_data[14];
 
 

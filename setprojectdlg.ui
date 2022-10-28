@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QListWidget" name="cmdlist">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -36,7 +36,7 @@
     <string>运行指令:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="cmdlistdeleteBtn">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -49,7 +49,7 @@
     <string>删除指令</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="cmdlistclearBtn">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -74,7 +74,7 @@
    <property name="title">
     <string>机器人移动指令:</string>
    </property>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="moveaddBtn">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -100,7 +100,7 @@
      <string>TCP:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="movetcpcombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -123,7 +123,7 @@
      <string>移动速度:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_7">
+   <widget class="QLineEdit" name="movespeed">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -135,6 +135,39 @@
     <property name="text">
      <string/>
     </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>41</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>模式:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="movemodecombo">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>90</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>MOVEL</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>MOVEJ</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
@@ -149,7 +182,7 @@
    <property name="title">
     <string>激光器指令:</string>
    </property>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="leaseropenBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -175,7 +208,7 @@
      <string>任务号:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="leasertasknum">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -185,7 +218,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="leasercloseBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -211,7 +244,7 @@
    <property name="title">
     <string>采集激光数据指令:</string>
    </property>
-   <widget class="QPushButton" name="pushButton_6">
+   <widget class="QPushButton" name="scanaddBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -221,7 +254,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>插入采集将指令</string>
+     <string>插入采集数据指令</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_12">
@@ -237,7 +270,7 @@
      <string>TCP:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_4">
+   <widget class="QComboBox" name="scantcpcombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -260,7 +293,7 @@
      <string>采集速度:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_6">
+   <widget class="QLineEdit" name="scanspeed">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -283,7 +316,7 @@
    <property name="title">
     <string>起弧指令:</string>
    </property>
-   <widget class="QPushButton" name="pushButton_8">
+   <widget class="QPushButton" name="welderarcingBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -296,7 +329,7 @@
      <string>插入起弧指令</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_9">
+   <widget class="QPushButton" name="welderarcoutBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -348,7 +381,7 @@
      <string>模式:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="weldercurrent">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -358,18 +391,28 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QComboBox" name="weldermodelcombo">
     <property name="geometry">
      <rect>
       <x>60</x>
       <y>70</y>
-      <width>113</width>
+      <width>111</width>
       <height>25</height>
      </rect>
     </property>
+    <item>
+     <property name="text">
+      <string>直流</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>交流</string>
+     </property>
+    </item>
    </widget>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="record">
    <property name="geometry">
     <rect>
      <x>720</x>
@@ -417,7 +460,7 @@
      <string>指令:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="customcmd">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -427,7 +470,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_10">
+   <widget class="QPushButton" name="customaddBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -440,7 +483,7 @@
      <string>插入自定义指令</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_12">
+   <widget class="QPushButton" name="customcheckBtn">
     <property name="geometry">
      <rect>
       <x>350</x>
@@ -479,7 +522,7 @@
      <string>跟踪轨迹:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_2">
+   <widget class="QComboBox" name="tracetrackcombo">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -489,7 +532,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_13">
+   <widget class="QPushButton" name="tracecmdaddBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -502,7 +545,7 @@
      <string>插入跟踪轨迹指令</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_14">
+   <widget class="QPushButton" name="traceeditBtn">
     <property name="geometry">
      <rect>
       <x>350</x>
@@ -528,7 +571,7 @@
      <string>跟踪速度:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="tracespeed">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -551,7 +594,7 @@
      <string>TCP:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_3">
+   <widget class="QComboBox" name="tracetcpcombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -562,7 +605,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton_15">
+  <widget class="QPushButton" name="OKBtn">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -572,7 +615,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>确定</string>
+    <string>保存操作</string>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox_7">
@@ -600,7 +643,7 @@
      <string>延时时间:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_8">
+   <widget class="QLineEdit" name="delaytime">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -610,7 +653,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_18">
+   <widget class="QPushButton" name="delaytimeBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
