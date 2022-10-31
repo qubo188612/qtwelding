@@ -327,5 +327,11 @@ typedef enum Robmovemodel_ID            //机器人移动方式
     MOVEJ=1,        //关节运动
 }Robmovemodel;
 
+typedef enum Alternatingcurrent_ID    //交变电流
+{
+    DIRECT=0,       //直流电
+    ALTERNATING=1,  //交流电
+}Alternatingcurrent;
+
 
 #endif // GLOBAL_H

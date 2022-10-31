@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include <QMessageBox>
 #include "my_parameters.h"
 #include "my_cmd.h"
 

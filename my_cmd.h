@@ -2,13 +2,19 @@
 #define MY_CMD_H
 
 #include <QString>
+#include <QStringList>
 #include <global.h>
 
 /************************/
 //项目0:命令集合
-//移动指令，举例 MOV: SPEED[25] MOVL[1,32,45,66,7,89,3] TCP[1]
+//移动指令，举例 MOV: SPEED[25] MOVL[1.3,32.7,45,66,7,89,3] TCP[1]
 //延时指令，举例 DELAY: TIME[1000]
 //激光指令，举例 CAM: TASK[102] WORK[1]
+//激光指令，举例 CAM: WORK[0]
+//焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEM[0]
+//焊机指令，举例 WELD: WORK[0]
+//采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3] SPEED[25] TCP[0]
+//跟踪指令，举例 TRACE: ROUTE[0] SPEED[25] TCP[0]
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
 #define CMD_DELAY_KEY                   "DELAY:"        //延时命令集合KEY
@@ -47,6 +53,8 @@ public:
     static QString cmd_scan(RobPos pos,float speed,int tcp);//采集命令
     static QString cmd_trace(int route,float speed,int tcp);//跟踪命令
 
+
+    static int decodecmd(QString msg,QString &return_msg);//解码
 protected:
     static QString rc_tcp(int tcp);
     static QString rc_speed(float speed);
@@ -57,6 +65,11 @@ protected:
     static QString rc_eled(float eled);
     static QString rc_elem(int elem);
     static QString rc_route(int route);
+
+    static int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
+    static int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
+    static int de_int(QString parakey,QString msg,int data_fpos,int data_bpos,int &intdata,QString &return_msg);
+    static int de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos,QString &return_msg);
 };
 
 #endif // MY_CMD_H
