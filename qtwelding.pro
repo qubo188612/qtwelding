@@ -39,7 +39,8 @@ SOURCES += \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
-        soptopcamera.cpp
+        soptopcamera.cpp \
+        tosendbuffer.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -85,7 +86,8 @@ HEADERS += \
     showtasknumdlg.h \
     soptocameratcpip.h \
     soptopcamera.h \
-    tistdtypes.h
+    tistdtypes.h \
+    tosendbuffer.h
 
 
 win32{

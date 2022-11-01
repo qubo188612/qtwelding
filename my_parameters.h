@@ -9,8 +9,10 @@
 #include "ipaddress.h"
 #include "robotdata.h"
 #include "process.h"
+#include "tosendbuffer.h"
 
 class Process;
+class toSendbuffer;
 
 class my_parameters
 {
@@ -30,6 +32,8 @@ public:
     E2proomData e2proomdata;    //保存文件
 
     Process *process;   //流程
+
+    toSendbuffer *tosendbuffer; //转以太网协议
 
 protected:
     my_parameters();

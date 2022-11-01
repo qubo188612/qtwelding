@@ -181,8 +181,19 @@ void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
 {
     if(m_mcs->process->b_processrun==false)
     {
-        m_mcs->process->init_start_process();
-        ui->record->append(QString::fromLocal8Bit("开始运行工程"));
+        if(m_mcs->rob->b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人未链接成功"));
+        }
+        else if(m_mcs->resultdata.link_result_state==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("激光头未链接成功"));
+        }
+        else
+        {
+            m_mcs->process->init_start_process();
+            ui->record->append(QString::fromLocal8Bit("开始运行工程"));
+        }
     }
     else
     {

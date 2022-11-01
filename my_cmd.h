@@ -37,39 +37,43 @@
 #define CMD_ROUTE                           "ROUTE"     //轨迹序号
 
 
-
 /************************/
 class my_cmd
 {
 public:
     my_cmd();
 
-    static QString cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
-    static QString cmd_delay(int time);//延时命令
-    static QString cmd_cam(int task,int work);//相机启停命令不
-    static QString cmd_cam_work(int work);//相机启停命令
-    static QString cmd_elec(float eled,int elem,int work);//焊机启停命令不
-    static QString cmd_elec_work(int work);//焊机启停命令
-    static QString cmd_scan(RobPos pos,float speed,int tcp);//采集命令
-    static QString cmd_trace(int route,float speed,int tcp);//跟踪命令
+    QString cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
+    QString cmd_delay(int time);//延时命令
+    QString cmd_cam(int task,int work);//相机启停命令不
+    QString cmd_cam_work(int work);//相机启停命令
+    QString cmd_elec(float eled,int elem,int work);//焊机启停命令不
+    QString cmd_elec_work(int work);//焊机启停命令
+    QString cmd_scan(RobPos pos,float speed,int tcp);//采集命令
+    QString cmd_trace(int route,float speed,int tcp);//跟踪命令
 
 
-    static int decodecmd(QString msg,QString &return_msg);//解码
+    int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码
+    int cmd_move_tcp;//获取到移动TCP
+    RobPos cmd_move_pos;//获取到移动坐标
+    float cmd_move_speed;//获取到速度值
+    Robmovemodel cmd_move_movemod;//获取到的移动模式
+
 protected:
-    static QString rc_tcp(int tcp);
-    static QString rc_speed(float speed);
-    static QString rc_move(RobPos pos,Robmovemodel movemodel);
-    static QString rc_time(int time);
-    static QString rc_task(int task);
-    static QString rc_work(int work);
-    static QString rc_eled(float eled);
-    static QString rc_elem(int elem);
-    static QString rc_route(int route);
+    QString rc_tcp(int tcp);
+    QString rc_speed(float speed);
+    QString rc_move(RobPos pos,Robmovemodel movemodel);
+    QString rc_time(int time);
+    QString rc_task(int task);
+    QString rc_work(int work);
+    QString rc_eled(float eled);
+    QString rc_elem(int elem);
+    QString rc_route(int route);
 
-    static int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
-    static int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
-    static int de_int(QString parakey,QString msg,int data_fpos,int data_bpos,int &intdata,QString &return_msg);
-    static int de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos,QString &return_msg);
+    int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
+    int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
+    int de_int(QString parakey,QString msg,int data_fpos,int data_bpos,int &intdata,QString &return_msg);
+    int de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos,QString &return_msg);
 };
 
 #endif // MY_CMD_H

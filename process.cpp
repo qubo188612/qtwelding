@@ -4,7 +4,6 @@ Process *Process::Get(my_parameters *mcs)
 {
     static Process fun;
     fun.m_mcs=mcs;
-    fun.process1_scanbeforetrace->Get(mcs);
     return &fun;
 }
 

@@ -84,7 +84,7 @@ QString my_cmd::cmd_trace(int route,float speed,int tcp)
     return msg;
 }
 
-int my_cmd::decodecmd(QString msg,QString &return_msg)
+int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
     {
@@ -104,10 +104,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg)
         bool b_SPEED=false;
         bool b_MOVE=false;
         bool b_TCP=false;
-        int tcp;//获取到的TCP
-        RobPos pos;//获取到移动坐标
-        float speed;//获取到速度值
-        Robmovemodel movemod;//获取到的移动模式
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -125,7 +121,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg)
                     if(b_SPEED==false)
                     {
                         b_SPEED=true;
-                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,speed,return_msg))
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_move_speed,return_msg))
                         {
                             return 1;
                         }
@@ -141,11 +137,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg)
                     if(b_MOVE==false)
                     {
                         b_MOVE=true;
-                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,pos,return_msg))
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_move_pos,return_msg))
                         {
                             return 1;
                         }
-                        movemod=MOVEL;
+                        cmd_move_movemod=MOVEL;
                     }
                     else
                     {
@@ -158,11 +154,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg)
                     if(b_MOVE==false)
                     {
                         b_MOVE=true;
-                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,pos,return_msg))
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_move_pos,return_msg))
                         {
                             return 1;
                         }
-                        movemod=MOVEJ;
+                        cmd_move_movemod=MOVEJ;
                     }
                     else
                     {
@@ -175,11 +171,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg)
                     if(b_TCP==false)
                     {
                         b_TCP=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,tcp,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_move_tcp,return_msg))
                         {
                             return 1;
                         }
-                        if(tcp<0||tcp>=ROBOTTCPNUM)
+                        if(cmd_move_tcp<0||cmd_move_tcp>=ROBOTTCPNUM)
                         {
                             return_msg=("TCP的值超出设置范围");
                             return 1;
@@ -644,7 +640,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg)
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
         return 1;
     }
-
+    return_key=key;
 
     return 0;
 }

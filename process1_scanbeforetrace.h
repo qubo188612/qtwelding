@@ -1,6 +1,7 @@
 #ifndef PROCESS1_SCANBEFORETRACE_H
 #define PROCESS1_SCANBEFORETRACE_H
 #include "my_parameters.h"
+#include "my_cmd.h"
 
 class my_parameters;
 
@@ -14,7 +15,7 @@ public:
     my_parameters *m_mcs;
 
     void init_start_process();      //启动流程
-    void stop_process();        //停止流程
+    void stop_process();            //停止流程
     void paused_process();          //暂停流程
     void continue_process();        //继续流程
 

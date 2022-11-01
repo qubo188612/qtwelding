@@ -83,7 +83,8 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         bool rc;
         float speed=ui->movespeed->text().toFloat(&rc);
         RobPos robpos=m_mcs->rob->TCPpos;
-        QString msg=my_cmd::cmd_move(robpos,movemodel,speed,tcp);
+        my_cmd cmd;
+        QString msg=cmd.cmd_move(robpos,movemodel,speed,tcp);
         if(ui->movespeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -117,7 +118,8 @@ void setprojectDlg::on_delaytimeBtn_clicked()//插入延时指令
 {
     bool rc;
     int time=ui->delaytime->text().toInt(&rc);
-    QString msg=my_cmd::cmd_delay(time);
+    my_cmd cmd;
+    QString msg=cmd.cmd_delay(time);
     if(ui->delaytime->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写延时时间"));
@@ -146,7 +148,8 @@ void setprojectDlg::on_leaseropenBtn_clicked()//插入开激光指令
 {
     bool rc;
     int task=ui->leasertasknum->text().toInt(&rc);
-    QString msg=my_cmd::cmd_cam(task,1);
+    my_cmd cmd;
+    QString msg=cmd.cmd_cam(task,1);
     if(ui->leasertasknum->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写任务号"));
@@ -173,7 +176,8 @@ void setprojectDlg::on_leaseropenBtn_clicked()//插入开激光指令
 
 void setprojectDlg::on_leasercloseBtn_clicked()//插入关激光指令
 {
-    QString msg=my_cmd::cmd_cam_work(0);
+    my_cmd cmd;
+    QString msg=cmd.cmd_cam_work(0);
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
     {
         m_mcs->project->project_cmdlist.push_back(msg);
@@ -193,7 +197,8 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
     bool rc;
     float eled=ui->weldercurrent->text().toFloat(&rc);
     int elem=ui->weldermodelcombo->currentIndex();
-    QString msg=my_cmd::cmd_elec(eled,elem,1);
+    my_cmd cmd;
+    QString msg=cmd.cmd_elec(eled,elem,1);
     if(ui->weldercurrent->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写电流值"));
@@ -220,7 +225,8 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
 
 void setprojectDlg::on_welderarcoutBtn_clicked()//插入息弧指令
 {
-    QString msg=my_cmd::cmd_elec_work(0);
+    my_cmd cmd;
+    QString msg=cmd.cmd_elec_work(0);
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
     {
         m_mcs->project->project_cmdlist.push_back(msg);
@@ -284,7 +290,8 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         bool rc;
         float speed=ui->scanspeed->text().toFloat(&rc);
         RobPos robpos=m_mcs->rob->TCPpos;
-        QString msg=my_cmd::cmd_scan(robpos,speed,tcp);
+        my_cmd cmd;
+        QString msg=cmd.cmd_scan(robpos,speed,tcp);
         if(ui->scanspeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
@@ -335,7 +342,8 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
         ui->record->append(QString::fromLocal8Bit("跟踪速度格式出错"));
         return;
     }
-    QString msg=my_cmd::cmd_trace(route,speed,tcp);
+    my_cmd cmd;
+    QString msg=cmd.cmd_trace(route,speed,tcp);
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
     {
         m_mcs->project->project_cmdlist.push_back(msg);
@@ -359,7 +367,9 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑轨迹
 void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
 {
     QString msg;
-    if(0==my_cmd::decodecmd(ui->customcmd->text(),msg))
+    QString key;
+    my_cmd cmd;
+    if(0==cmd.decodecmd(ui->customcmd->text(),msg,key))
     {
         //解码成功
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)

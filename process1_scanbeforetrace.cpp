@@ -54,9 +54,27 @@ void Process1Thread::run()
 {
     if(_p->b_thread==true)
     {
-
+        for(int n=0;n<_p->m_mcs->project->project_cmdlist.size();n++)
+        {
+            QString msg,key;
+            my_cmd cmd;
+            int rc=cmd.decodecmd(_p->m_mcs->project->project_cmdlist[n],msg,key);
+            if(rc!=0)
+            {
+                //语法出错
+                goto OUT_THREAD_ERROR;
+            }
+            if(key==CMD_MOV_KEY)
+            {
+                int tcp=cmd.cmd_move_tcp;//获取到移动TCP
+                RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+                float speed=cmd.cmd_move_speed;//获取到速度值
+                Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+                _p->m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);
+            }
+        }
     }
-
+OUT_THREAD_ERROR:
     _p->b_thread=false;
     _p->thread->quit();
     _p->thread->wait();
