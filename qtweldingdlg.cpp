@@ -83,6 +83,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     b_thread2=true;
     thread2->start();
 
+    UpdataUi();
+
     ui->record->append(QString::fromLocal8Bit("系统启动成功"));
 }
 
@@ -107,6 +109,40 @@ qtweldingDlg::~qtweldingDlg()
     delete newproject;
     delete setproject;
     delete ui;
+}
+
+void qtweldingDlg::UpdataUi()
+{
+    if(m_mcs->process->b_processrun==false)
+    {
+        ui->runprojectBtn->setText(QString::fromLocal8Bit("运行工程"));
+        ui->demarcateBtn->setDisabled(false);
+        ui->editprojectBtn->setDisabled(false);
+        ui->editweldprocessBtn->setDisabled(false);
+        ui->importprojectBtn->setDisabled(false);
+        ui->runpausedBtn->setDisabled(true);
+        ui->setlaserheadBtn->setDisabled(false);
+        ui->setrobotBtn->setDisabled(false);
+    }
+    else
+    {
+        ui->runprojectBtn->setText(QString::fromLocal8Bit("停止工程"));
+        ui->demarcateBtn->setDisabled(true);
+        ui->editprojectBtn->setDisabled(true);
+        ui->editweldprocessBtn->setDisabled(true);
+        ui->importprojectBtn->setDisabled(true);
+        ui->runpausedBtn->setDisabled(false);
+        ui->setlaserheadBtn->setDisabled(true);
+        ui->setrobotBtn->setDisabled(true);
+    }
+    if(m_mcs->process->b_processpaused==false)
+    {
+        ui->runpausedBtn->setText(QString::fromLocal8Bit("暂停工程"));
+    }
+    else
+    {
+        ui->runpausedBtn->setText(QString::fromLocal8Bit("继续工程"));
+    }
 }
 
 void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
@@ -137,7 +173,33 @@ void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
 
 void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
 {
+    if(m_mcs->process->b_processrun==false)
+    {
+        m_mcs->process->init_start_process();
+        ui->record->append(QString::fromLocal8Bit("开始运行工程"));
+    }
+    else
+    {
+        m_mcs->process->stop_process();
 
+        ui->record->append(QString::fromLocal8Bit("停止运行工程"));
+    }
+    UpdataUi();
+}
+
+void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程
+{
+    if(m_mcs->process->b_processpaused==false)
+    {
+        m_mcs->process->paused_process();
+        ui->record->append(QString::fromLocal8Bit("暂停运行工程"));
+    }
+    else
+    {
+        m_mcs->process->continue_process();
+        ui->record->append(QString::fromLocal8Bit("继续运行工程"));
+    }
+    UpdataUi();
 }
 
 void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
@@ -201,12 +263,6 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
 }
 
 
-void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺编辑
-{
-
-}
-
-
 void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
 {
     thread1->Stop();
@@ -238,7 +294,7 @@ void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
     thread2->start();
 }
 
-void qtweldingDlg::on_setwelderBtn_clicked()//焊机设置
+void qtweldingDlg::on_weldersetBtn_clicked()//焊机设置
 {
 
 }
@@ -592,6 +648,7 @@ void qtweldingThread::run()
                 _p->b_init_show_ui_list=false;
                 emit Send_show_ui_list();
             }
+            sleep(0);
         }
         else
         {
@@ -679,6 +736,7 @@ void qtgetrobThread::run()
                 _p->b_init_show_robpos_list=false;
                 emit Send_show_robpos_list();
             }
+            sleep(0);
         }
         else
         {
@@ -700,6 +758,7 @@ void qtgetrobThread::Stop()
     }
   }
 }
+
 
 
 

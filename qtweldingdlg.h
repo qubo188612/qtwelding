@@ -74,13 +74,9 @@ private slots:
 
     void on_editprojectBtn_clicked();
 
-    void on_editweldprocessBtn_clicked();
-
     void on_setlaserheadBtn_clicked();
 
     void on_setrobotBtn_clicked();
-
-    void on_setwelderBtn_clicked();
 
     void init_show_ui_list();
 
@@ -91,6 +87,10 @@ private slots:
     void init_show_robpos_list();
 
     void init_set_robtask();
+
+    void on_weldersetBtn_clicked();
+
+    void on_runpausedBtn_clicked();
 
 private:
     Ui::qtweldingDlg *ui;
@@ -105,6 +105,7 @@ private:
     void RunAlgCamer();        //运行算法
     void StopAlgCamer();       //停止算法
 
+    void UpdataUi();            //控件使能
 };
 
 class qtweldingThread : public QThread
@@ -141,5 +142,7 @@ signals:
     void Send_show_robpos_list();
     void Send_set_robtask();
 };
+
+
 
 #endif // QTWELDINGDLG_H

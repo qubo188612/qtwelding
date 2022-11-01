@@ -29,6 +29,8 @@ SOURCES += \
         my_cmd.cpp \
         my_parameters.cpp \
         newprojectdlg.cpp \
+        process.cpp \
+        process1_scanbeforetrace.cpp \
         project.cpp \
         qtmysunnydlg.cpp \
         qtweldingdlg.cpp \
@@ -72,6 +74,8 @@ HEADERS += \
     my_cmd.h \
     my_parameters.h \
     newprojectdlg.h \
+    process.h \
+    process1_scanbeforetrace.h \
     project.h \
     qtmysunnydlg.h \
     qtweldingdlg.h \

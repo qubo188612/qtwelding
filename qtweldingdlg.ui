@@ -1193,8 +1193,8 @@
       <widget class="QPushButton" name="importprojectBtn">
        <property name="minimumSize">
         <size>
-         <width>191</width>
-         <height>91</height>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1217,8 +1217,8 @@
       <widget class="QPushButton" name="runprojectBtn">
        <property name="minimumSize">
         <size>
-         <width>191</width>
-         <height>91</height>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1238,11 +1238,35 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="editprojectBtn">
+      <widget class="QPushButton" name="runpausedBtn">
        <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>71</height>
+        </size>
+       </property>
+       <property name="maximumSize">
         <size>
          <width>191</width>
          <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>暂停工程</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="editprojectBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1265,8 +1289,8 @@
       <widget class="QPushButton" name="editweldprocessBtn">
        <property name="minimumSize">
         <size>
-         <width>191</width>
-         <height>91</height>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1289,8 +1313,8 @@
       <widget class="QPushButton" name="setlaserheadBtn">
        <property name="minimumSize">
         <size>
-         <width>191</width>
-         <height>91</height>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1313,8 +1337,8 @@
       <widget class="QPushButton" name="setrobotBtn">
        <property name="minimumSize">
         <size>
-         <width>191</width>
-         <height>91</height>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1334,35 +1358,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_7">
-       <property name="minimumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>焊机设置</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="demarcateBtn">
        <property name="minimumSize">
         <size>
-         <width>191</width>
-         <height>91</height>
+         <width>171</width>
+         <height>71</height>
         </size>
        </property>
        <property name="maximumSize">

@@ -12,6 +12,7 @@ my_parameters::my_parameters()
     cam=cam->Get();
     ip=ip->Get();
     rob=rob->Get();
+    process=process->Get(this);
     for(int n=0;n<CAMTOTALNUM;n++)
     {
         cam->sop_cam[n].ipaddress=ip->camer_ip[n].ip;

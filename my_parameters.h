@@ -8,6 +8,9 @@
 #include "project.h"
 #include "ipaddress.h"
 #include "robotdata.h"
+#include "process.h"
+
+class Process;
 
 class my_parameters
 {
@@ -25,6 +28,8 @@ public:
     ResultData resultdata;		//激光头实时结果数据
 
     E2proomData e2proomdata;    //保存文件
+
+    Process *process;   //流程
 
 protected:
     my_parameters();

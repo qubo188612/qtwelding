@@ -362,7 +362,17 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
     if(0==my_cmd::decodecmd(ui->customcmd->text(),msg))
     {
         //解码成功
+        if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+        {
+            m_mcs->project->project_cmdlist.push_back(ui->customcmd->text());
+        }
+        else
+        {
+            m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,ui->customcmd->text());
+        }
         ui->record->append(QString::fromLocal8Bit("插入自定义指令成功"));
+        now_cmdline++;
+        updatacmdlistUi();
     }
     else
     {
