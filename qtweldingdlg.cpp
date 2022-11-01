@@ -90,12 +90,18 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
 qtweldingDlg::~qtweldingDlg()
 {
-    thread1->Stop();
-    thread1->quit();
-    thread1->wait();
-    thread2->Stop();
-    thread2->quit();
-    thread2->wait();
+    if(b_thread1==true)
+    {
+        thread1->Stop();
+        thread1->quit();
+        thread1->wait();
+    }
+    if(b_thread2==true)
+    {
+        thread2->Stop();
+        thread2->quit();
+        thread2->wait();
+    }
 
     DisconnectCamer();
     DisconnectRobot();
