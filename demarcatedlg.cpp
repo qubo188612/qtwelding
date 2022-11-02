@@ -72,7 +72,7 @@ void demarcateDlg::on_pushButton_clicked()  //添加TCP点
         {
             break;
         }
-        usleep(10000);
+        usleep(ROB_WORK_DELAY_STEP);
         num++;
     }
     if(m_mcs->rob->TCPpos.nEn==false)
@@ -124,7 +124,7 @@ void demarcateDlg::on_pushButton_2_clicked()   //替换TCP点
             {
                 break;
             }
-            usleep(10000);
+            usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
         if(m_mcs->rob->TCPpos.nEn==false)
@@ -166,7 +166,7 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
         {
             break;
         }
-        usleep(10000);
+        usleep(ROB_WORK_DELAY_STEP);
         num++;
     }
     if(m_mcs->resultdata.pos1.nEn==false)
@@ -228,7 +228,7 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
             {
                 break;
             }
-            usleep(10000);
+            usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
         if(m_mcs->resultdata.pos1.nEn==false)

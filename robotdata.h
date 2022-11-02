@@ -27,11 +27,10 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
 
 typedef enum ROBOT_STATE_ID            //机器人状态
 {
-    ROBOT_STATE_UNLINK=0,              //未连接
-    ROBOT_STATE_IDLE=1,                //空闲
-    ROBOT_STATE_MOVE=2,                //移动
-    ROBOT_STATE_SCAN=3,                //扫描
-    ROBOT_STATE_TRACE=4,               //跟踪
+    ROBOT_STATE_UNLINK=-1,              //未连接
+    ROBOT_STATE_IDLE=0,                 //空闲
+    ROBOT_STATE_MOVE=1,                 //忙碌
+    ROBOT_STATE_STOP=2,                 //急停
 }ROBOT_STATE;
 
 class sent_info_robot             //发送机器人数据

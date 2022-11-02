@@ -17,6 +17,25 @@ toSendbuffer::~toSendbuffer()
 
 }
 
+void toSendbuffer::cmd_lock(bool lock)
+{
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_STOP_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(1);
+    if(lock==true)
+    {
+        sendrob.data[0]=1;
+    }
+    else
+    {
+        sendrob.data[0]=0;
+    }
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+}
+
 void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp)
 {
     sent_info_robot sendrob;

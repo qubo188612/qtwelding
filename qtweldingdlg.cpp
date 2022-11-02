@@ -480,6 +480,12 @@ void qtweldingDlg::ConnectRobot()
         {
             ui->record->append(QString::fromLocal8Bit("机器人远程IP地址格式错误"));
         }
+        u16_data[0]=0;
+        rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_STOP_REG_ADD,1,u16_data);
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人启停设置失败"));
+        }
     }
     else
     {
@@ -584,7 +590,7 @@ void qtweldingThread::run()
                         std::vector<sent_info_leaser>::iterator it = _p->m_mcs->resultdata.send_group_leaser.begin();
                         _p->m_mcs->resultdata.send_group_leaser.erase(it);
                         int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
-                        if(rc!=1)
+                        if(rc!=sentdata.data.size())
                         {
                             _p->m_mcs->resultdata.b_send_group_leaser=false;
                             if(_p->b_init_sent_leaser==true)
@@ -709,7 +715,7 @@ void qtgetrobThread::run()
                         std::vector<sent_info_robot>::iterator it = _p->m_mcs->rob->send_group_robot.begin();
                         _p->m_mcs->rob->send_group_robot.erase(it);
                         int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
-                        if(rc!=1)
+                        if(rc!=sentdata.data.size())
                         {
                             _p->m_mcs->rob->b_send_group_robot=false;
                             if(_p->b_init_set_robtask==true)
@@ -735,7 +741,7 @@ void qtgetrobThread::run()
                 else if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
-                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,14,_p->robotpos_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,15,_p->robotpos_rcv_data))
                     {
                         _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
                         _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);
@@ -745,6 +751,7 @@ void qtgetrobThread::run()
                         _p->m_mcs->rob->TCPpos.RZ=*((float*)&_p->robotpos_rcv_data[10]);
                         _p->m_mcs->rob->TCPpos.nEn=true;
                         _p->m_mcs->rob->robot_speed=*((float*)&_p->robotpos_rcv_data[12]);
+                        _p->m_mcs->rob->robot_state=(ROBOT_STATE)_p->robotpos_rcv_data[14];
                     }
                 }
             }

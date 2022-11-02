@@ -67,13 +67,10 @@ QString RobotData::robot_state_toQString()
         msg="空闲";
         break;
     case ROBOT_STATE_MOVE:
-        msg="移动";
+        msg="忙碌";
         break;
-    case ROBOT_STATE_SCAN:
+    case ROBOT_STATE_STOP:
         msg="扫描";
-        break;
-    case ROBOT_STATE_TRACE:
-        msg="跟踪";
         break;
     }
     return msg;

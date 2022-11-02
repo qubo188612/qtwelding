@@ -46,7 +46,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         m_mcs->rob->b_send_group_robot=false;
         m_mcs->rob->send_group_robot.push_back(sendrob);
         m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
-        usleep(50000);
+        usleep(ROB_WORK_DELAY);
         int num=0;
         while(m_mcs->rob->b_send_group_robot==false)
         {
@@ -54,7 +54,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
             {
                 break;
             }
-            usleep(10000);
+            usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
         if(m_mcs->rob->b_send_group_robot==false)
@@ -62,7 +62,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
             ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
             return;
         }
-        usleep(50000);//等待服务器获取到机器人坐标
+        usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
         num=0;
         m_mcs->rob->TCPpos.nEn=false;
         while (m_mcs->rob->TCPpos.nEn==false)
@@ -71,7 +71,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
             {
                 break;
             }
-            usleep(10000);
+            usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
         if(m_mcs->rob->TCPpos.nEn==false)
@@ -254,7 +254,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         m_mcs->rob->b_send_group_robot=false;
         m_mcs->rob->send_group_robot.push_back(sendrob);
         m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
-        usleep(50000);
+        usleep(ROB_WORK_DELAY);
         int num=0;
         while(m_mcs->rob->b_send_group_robot==false)
         {
@@ -262,7 +262,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
             {
                 break;
             }
-            usleep(10000);
+            usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
         if(m_mcs->rob->b_send_group_robot==false)
@@ -270,7 +270,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
             ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
             return;
         }
-        usleep(50000);//等待服务器获取到机器人坐标
+        usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
         num=0;
         m_mcs->rob->TCPpos.nEn=false;
         while (m_mcs->rob->TCPpos.nEn==false)
@@ -279,7 +279,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
             {
                 break;
             }
-            usleep(10000);
+            usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
         if(m_mcs->rob->TCPpos.nEn==false)

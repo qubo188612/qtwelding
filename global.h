@@ -43,6 +43,9 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DO_NOTHING         0
 #define DO_WRITE_TASK      1
 
+#define ROB_WORK_DELAY      50000       //机器人通讯反映时间(微秒)
+#define ROB_WORK_DELAY_STEP 10000       //机器人每步循环等待时间(微秒)
+
 /*****************************/
 //机器人信息和指令传输端口                        (1477-1496)
 
@@ -89,6 +92,8 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_IPADDR_2_REG_ADD                  0x0301        //远程IP
 #define ROB_IPADDR_3_REG_ADD                  0x0302        //远程IP
 #define ROB_IPADDR_4_REG_ADD                  0x0303        //远程IP
+
+#define ROB_STOP_REG_ADD                      0x0400        //急停
 
 /*****************************/
 //相机原图TCP传输端口

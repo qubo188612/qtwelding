@@ -14,7 +14,10 @@ public:
 
     my_parameters *m_mcs;
 
+    void cmd_lock(bool lock);   //机器人是否锁住
+
     void cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
+
 protected:
     toSendbuffer();
     ~toSendbuffer();
