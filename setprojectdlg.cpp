@@ -196,7 +196,7 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
 {
     bool rc;
     float eled=ui->weldercurrent->text().toFloat(&rc);
-    int elem=ui->weldermodelcombo->currentIndex();
+    Alternatingcurrent elem=(Alternatingcurrent)ui->weldermodelcombo->currentIndex();
     my_cmd cmd;
     QString msg=cmd.cmd_elec(eled,elem,1);
     if(ui->weldercurrent->text().isEmpty())
@@ -390,6 +390,30 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
     }
 }
 
+void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
+{
+    QString msg;
+    QString key;
+    my_cmd cmd;
+    if(0==cmd.decodecmd(ui->customcmd->text(),msg,key))
+    {
+        //解码成功
+        if(now_cmdline>=0&&m_mcs->project->project_cmdlist.size()>now_cmdline)
+        {
+            m_mcs->project->project_cmdlist[now_cmdline]=ui->customcmd->text();
+            ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+            updatacmdlistUi();
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("请先选中要替换的指令"));
+        }
+    }
+    else
+    {
+        ui->record->append(msg);
+    }
+}
 
 void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
 {
@@ -465,6 +489,5 @@ void setprojectDlg::updatacmdlistUi()
         ui->cmdlist->setCurrentRow(now_cmdline);
     }
 }
-
 
 

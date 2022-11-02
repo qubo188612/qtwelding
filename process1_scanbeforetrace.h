@@ -23,11 +23,12 @@ public:
     bool b_thread;
     bool b_stop_thread;
 
+    volatile int buildline;//当前执行的cmd行数
+
 protected:
 
     Process1_scanbeforetrace();
     ~Process1_scanbeforetrace();
-
 };
 
 class Process1Thread : public QThread

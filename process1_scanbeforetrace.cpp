@@ -9,6 +9,7 @@ Process1_scanbeforetrace *Process1_scanbeforetrace::Get(my_parameters *mcs)
 
 Process1_scanbeforetrace::Process1_scanbeforetrace()
 {
+    buildline=0;
     b_thread=false;
     thread = new Process1Thread(this);
 }
@@ -26,6 +27,7 @@ Process1_scanbeforetrace::~Process1_scanbeforetrace()
 
 void Process1_scanbeforetrace::init_start_process()
 {
+    buildline=0;
     b_thread=true;
     thread->start();
 }
@@ -54,31 +56,10 @@ void Process1Thread::run()
 {
     if(_p->b_thread==true)
     {
-        for(int n=0;n<_p->m_mcs->project->project_cmdlist.size();n++)
+        int rc=_p->m_mcs->tosendbuffer->cmdlist_build(_p->buildline);
+        if(rc!=0)
         {
-            QString msg,key;
-            my_cmd cmd;
-            int rc=cmd.decodecmd(_p->m_mcs->project->project_cmdlist[n],msg,key);
-            if(rc!=0)
-            {
-                //语法出错
-                goto OUT_THREAD_ERROR;
-            }
-            if(key==CMD_MOV_KEY)
-            {
-                int tcp=cmd.cmd_move_tcp;//获取到移动TCP
-                RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
-                float speed=cmd.cmd_move_speed;//获取到速度值
-                Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
-                _p->m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-                usleep(ROB_WORK_DELAY);
-                while(_p->m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
-                {
-                    if(_p->b_stop_thread==true)     //停止
-                        goto OUT_THREAD_ERROR;
-                    usleep(ROB_WORK_DELAY_STEP);
-                }
-            }
+            goto OUT_THREAD_ERROR;
         }
     }
 OUT_THREAD_ERROR:

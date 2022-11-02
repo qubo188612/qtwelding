@@ -496,6 +496,19 @@
      <string>指令表查看</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="customreplaceBtn">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>70</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>替换自定义指令</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_6">
    <property name="geometry">

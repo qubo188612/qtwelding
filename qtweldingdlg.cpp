@@ -332,6 +332,7 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         sentdata.ctx=m_mcs->resultdata.ctx_result;
         sentdata.addr=0x101;
         sentdata.data={0xff};
+        m_mcs->resultdata.b_send_group_leaser=false;
         m_mcs->resultdata.send_group_leaser.push_back(sentdata);
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
 
@@ -341,6 +342,7 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         demarcate->close_dlg_show();
 
         sentdata.data={0x00};
+        m_mcs->resultdata.b_send_group_leaser=false;
         m_mcs->resultdata.send_group_leaser.push_back(sentdata);
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
     }

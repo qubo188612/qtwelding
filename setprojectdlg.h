@@ -55,6 +55,8 @@ private slots:
 
     void on_cmdlist_itemClicked(QListWidgetItem *item);
 
+    void on_customreplaceBtn_clicked();
+
 private:
     Ui::setprojectDlg *ui;
     int now_cmdline;         //当前指向CMD行数

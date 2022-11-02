@@ -2,7 +2,21 @@
 
 my_cmd::my_cmd()
 {
-
+    cmd_move_tcp=0;//获取到移动TCP
+    cmd_move_speed=0;//获取到速度值
+    cmd_move_movemod=MOVEL;//获取到的移动模式
+    cmd_delay_time=0;//获取到延时时间
+    cmd_cam_task=0;//获取到相机任务号
+    cmd_cam_work_d=0;//获取到相机启停
+    cmd_elec_work_d=0;//获取到焊机启停
+    cmd_elec_elem=DIRECT;  //获取到焊机交变电流模式
+    cmd_elec_eled=0; //获取到焊机电流
+    cmd_scan_speed=0;//获取到的扫描速度
+    cmd_scan_tcp=0;//获取到扫描TCP
+    cmd_scan_movemod=MOVEL;//获取到的扫描模式
+    cmd_trace_route=0;//获取到跟踪轨迹序号
+    cmd_trace_speed=0;//获取到的跟踪速度
+    cmd_trace_tcp=0;//获取到跟踪TCP
 }
 
 QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp)
@@ -42,7 +56,7 @@ QString my_cmd::cmd_cam_work(int work)
     return msg;
 }
 
-QString my_cmd::cmd_elec(float eled,int elem,int work)
+QString my_cmd::cmd_elec(float eled,Alternatingcurrent elem,int work)
 {
     QString msg;
     msg=QString(CMD_WELD_KEY)+" "+
@@ -90,6 +104,15 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
     {
         return_msg=QString::fromLocal8Bit("指令为空");
         return 1;
+    }
+    int exegesis=msg.indexOf("#");//寻找注释
+    if(exegesis>=0)//代码有注释
+    {
+        msg=msg.left(exegesis);//截取注释左侧代码
+        if(msg.size()==0)
+        {
+            return 0;//是注释
+        }
     }
     QStringList list = msg.split(":");
     if(list.size()!=2)
@@ -209,7 +232,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
     {
         int pn=0;
         bool b_TIME=false;
-        int time;//获取到延时值
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -226,7 +248,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_TIME==false)
                     {
                         b_TIME=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,time,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_delay_time,return_msg))
                         {
                             return 1;
                         }
@@ -255,8 +277,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         int pn=0;
         bool b_WORK=false;
         bool b_TASK=false;
-        int work;//获取到值
-        int tasknum;//获取到任务号值
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -273,11 +293,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_WORK==false)
                     {
                         b_WORK=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,work,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_cam_work_d,return_msg))
                         {
                             return 1;
                         }
-                        if(work!=1&&work!=0)
+                        if(cmd_cam_work_d!=1&&cmd_cam_work_d!=0)
                         {
                             return_msg=paramname+QString::fromLocal8Bit("项参数只能为0或1");
                             return 1;
@@ -294,7 +314,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_TASK==false)
                     {
                         b_TASK=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,tasknum,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_cam_task,return_msg))
                         {
                             return 1;
                         }
@@ -319,7 +339,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_TASK==false)
         {
-            if(work==1)
+            if(cmd_cam_work_d==1)
             {
                 return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_TASK+QString::fromLocal8Bit("'项参数");
                 return 1;
@@ -333,9 +353,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_WORK=false;
         bool b_ELED=false;
         bool b_ELEM=false;
-        int work;//获取到值
-        Alternatingcurrent elem;//获取到的交变电流
-        float eled;//获取到电流值
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -352,11 +369,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_WORK==false)
                     {
                         b_WORK=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,work,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_elec_work_d,return_msg))
                         {
                             return 1;
                         }
-                        if(work!=1&&work!=0)
+                        if(cmd_elec_work_d!=1&&cmd_elec_work_d!=0)
                         {
                             return_msg=paramname+QString::fromLocal8Bit("项参数只能为0或1");
                             return 1;
@@ -378,7 +395,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         {
                             return 1;
                         }
-                        elem=(Alternatingcurrent)data;
+                        cmd_elec_elem=(Alternatingcurrent)data;
                     }
                     else
                     {
@@ -391,7 +408,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_ELED==false)
                     {
                         b_ELED=true;
-                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,eled,return_msg))
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_elec_eled,return_msg))
                         {
                             return 1;
                         }
@@ -416,7 +433,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_ELEM==false)
         {
-            if(work==1)
+            if(cmd_elec_work_d==1)
             {
                 return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_ELEM+QString::fromLocal8Bit("'项参数");
                 return 1;
@@ -424,7 +441,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_ELED==false)
         {
-            if(work==1)
+            if(cmd_elec_work_d==1)
             {
                 return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_ELED+QString::fromLocal8Bit("'项参数");
                 return 1;
@@ -437,10 +454,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_SPEED=false;
         bool b_MOVE=false;
         bool b_TCP=false;
-        int tcp;//获取到的TCP
-        RobPos pos;//获取到扫描坐标
-        float speed;//获取到速度值
-        Robmovemodel movemod;//获取到的移动模式
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -458,7 +471,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_SPEED==false)
                     {
                         b_SPEED=true;
-                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,speed,return_msg))
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_scan_speed,return_msg))
                         {
                             return 1;
                         }
@@ -474,11 +487,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_MOVE==false)
                     {
                         b_MOVE=true;
-                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,pos,return_msg))
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_scan_pos,return_msg))
                         {
                             return 1;
                         }
-                        movemod=MOVEL;
+                        cmd_scan_movemod=MOVEL;
                     }
                     else
                     {
@@ -491,11 +504,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_MOVE==false)
                     {
                         b_MOVE=true;
-                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,pos,return_msg))
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_scan_pos,return_msg))
                         {
                             return 1;
                         }
-                        movemod=MOVEJ;
+                        cmd_scan_movemod=MOVEJ;
                     }
                     else
                     {
@@ -508,11 +521,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_TCP==false)
                     {
                         b_TCP=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,tcp,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_scan_tcp,return_msg))
                         {
                             return 1;
                         }
-                        if(tcp<0||tcp>=ROBOTTCPNUM)
+                        if(cmd_scan_tcp<0||cmd_scan_tcp>=ROBOTTCPNUM)
                         {
                             return_msg=("TCP的值超出设置范围");
                             return 1;
@@ -548,10 +561,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_SPEED=false;
         bool b_ROUTE=false;
         bool b_TCP=false;
-        int tcp;//获取到的TCP
-        int route;//获取到
-        float speed;//获取到跟踪速度值
-        Robmovemodel movemod;//获取到的移动模式
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -569,7 +578,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_SPEED==false)
                     {
                         b_SPEED=true;
-                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,speed,return_msg))
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_trace_speed,return_msg))
                         {
                             return 1;
                         }
@@ -585,11 +594,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_TCP==false)
                     {
                         b_TCP=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,tcp,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_trace_tcp,return_msg))
                         {
                             return 1;
                         }
-                        if(tcp<0||tcp>=ROBOTTCPNUM)
+                        if(cmd_trace_tcp<0||cmd_trace_tcp>=ROBOTTCPNUM)
                         {
                             return_msg=("TCP的值超出设置范围");
                             return 1;
@@ -601,11 +610,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_ROUTE==false)
                     {
                         b_ROUTE=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,route,return_msg))
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_trace_route,return_msg))
                         {
                             return 1;
                         }
-                        if(route<0)//这里还要添加判断上限
+                        if(cmd_trace_route<0)//这里还要添加判断上限
                         {
                             return_msg=("轨迹的选取超出设置范围");
                             return 1;
@@ -706,7 +715,7 @@ QString my_cmd::rc_work(int work)
     return msg;
 }
 
-QString my_cmd::rc_elem(int elem)
+QString my_cmd::rc_elem(Alternatingcurrent elem)
 {
     QString msg;
     msg=QString(CMD_ELEM)+"["+QString::number(elem)+"]";

@@ -7,6 +7,7 @@
 
 /************************/
 //项目0:命令集合
+//注释符号，举例 #测试
 //移动指令，举例 MOV: SPEED[25] MOVL[1.3,32.7,45,66,7,89,3] TCP[1]
 //延时指令，举例 DELAY: TIME[1000]
 //激光指令，举例 CAM: TASK[102] WORK[1]
@@ -47,17 +48,37 @@ public:
     QString cmd_delay(int time);//延时命令
     QString cmd_cam(int task,int work);//相机启停命令不
     QString cmd_cam_work(int work);//相机启停命令
-    QString cmd_elec(float eled,int elem,int work);//焊机启停命令不
+    QString cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令不
     QString cmd_elec_work(int work);//焊机启停命令
     QString cmd_scan(RobPos pos,float speed,int tcp);//采集命令
     QString cmd_trace(int route,float speed,int tcp);//跟踪命令
 
 
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码
+
     int cmd_move_tcp;//获取到移动TCP
-    RobPos cmd_move_pos;//获取到移动坐标
+    RobPos cmd_move_pos;//获取到移动终点坐标
     float cmd_move_speed;//获取到速度值
     Robmovemodel cmd_move_movemod;//获取到的移动模式
+
+    int cmd_delay_time;//获取到延时时间
+
+    int cmd_cam_task;//获取到相机任务号
+    int cmd_cam_work_d;//获取到相机启停
+
+    int cmd_elec_work_d;//获取到焊机启停
+    Alternatingcurrent cmd_elec_elem;  //获取到焊机交变电流模式
+    float cmd_elec_eled; //获取到焊机电流
+
+    RobPos cmd_scan_pos;//获取到扫描终点坐标
+    float cmd_scan_speed;//获取到的扫描速度
+    int cmd_scan_tcp;//获取到扫描TCP
+    Robmovemodel cmd_scan_movemod;//获取到的扫描模式
+
+    int cmd_trace_route;//获取到跟踪轨迹序号
+    float cmd_trace_speed;//获取到的跟踪速度
+    int cmd_trace_tcp;//获取到跟踪TCP
+
 
 protected:
     QString rc_tcp(int tcp);
@@ -67,7 +88,7 @@ protected:
     QString rc_task(int task);
     QString rc_work(int work);
     QString rc_eled(float eled);
-    QString rc_elem(int elem);
+    QString rc_elem(Alternatingcurrent elem);
     QString rc_route(int route);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
