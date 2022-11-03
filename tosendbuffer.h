@@ -21,8 +21,13 @@ public:
     void cmd_cam(int task,int work);//相机启动停止命令
     void cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令
 
+    int cmdlist_check();//检查指令
     int cmdlist_build(volatile int &line);//把机器人文件命令编译,line为当前开始的编译步骤
     void cmdlist_stopbuild();//把机器人文件停止编译
+
+    int cmdlist_creat_tracename_mem();//创建扫描轨迹存放空间
+
+    void cmd_clear_elec_work();//清除焊接寄存器当前状态
 
 protected:
     toSendbuffer();

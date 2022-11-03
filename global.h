@@ -326,6 +326,13 @@ public:
     RobPos robotpos;       //此时的机器人坐标
 };
 
+class Scan_trace_result    //扫描采集点
+{
+public:
+    std::vector<TCP_Leaserpos> point;//扫描结果点
+    QString name; //扫描轨迹名字
+};
+
 typedef enum Robmovemodel_ID            //机器人移动方式
 {
     MOVEL=0,        //直线运动

@@ -818,11 +818,11 @@ void qtrecordThread::run()
         {
             if(_p->m_mcs->main_record.size()!=0)
             {
-                QString msg=_p->m_mcs->main_record[0];
-                std::vector<QString>::iterator it = _p->m_mcs->main_record.begin();
-                _p->m_mcs->main_record.erase(it);
                 if(_p->b_init_show_record_list==true)
                 {
+                    QString msg=_p->m_mcs->main_record[0];
+                    std::vector<QString>::iterator it = _p->m_mcs->main_record.begin();
+                    _p->m_mcs->main_record.erase(it);
                     _p->b_init_show_record_list=false;
                     qRegisterMetaType< QString >("QString");
                     emit Send_show_record_list(msg);

@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QByteArray>
+#include "global.h"
 #if _MSC_VER
 #include <QDir>
 #else
@@ -22,7 +23,6 @@ typedef enum PROJECT_ID
 {
     PROGECT_ID_TEACH_SCAN=0,       //示教扫描类型
 }Project_ID;
-
 
 class Project
 {
@@ -46,6 +46,8 @@ public:
     int SaveProjectPath(char* filename);    //保存最后一次项目路径，以便下次打开
 
     int LoadProjectPath(char* filename);    //读取最后一次项目路径，以便下次打开
+
+    std::vector<Scan_trace_result> project_scan_trace;  //扫描轨迹
 
 protected:
     Project();

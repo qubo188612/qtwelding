@@ -10,6 +10,7 @@ toSendbuffer *toSendbuffer::Get(my_parameters *mcs)
 toSendbuffer::toSendbuffer()
 {
     b_cmdlist_build=false;
+    u16data_elec_work=0;
 }
 
 toSendbuffer::~toSendbuffer()
@@ -17,12 +18,84 @@ toSendbuffer::~toSendbuffer()
 
 }
 
+void toSendbuffer::cmd_clear_elec_work()
+{
+    u16data_elec_work=0;
+}
+
+int toSendbuffer::cmdlist_creat_tracename_mem()
+{
+    int err=0;
+    QString return_msg;
+    m_mcs->project->project_scan_trace.clear();
+    for(int n=0;n<m_mcs->project->project_cmdlist.size();n++)
+    {
+        QString msg,key;
+        my_cmd cmd;
+        int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
+        if(rc<=0)
+        {
+            if(key==CMD_SCAN_KEY)//采集指令
+            {
+                QString name=cmd.cmd_scan_name;//获取到的扫描名字
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                {
+                    if(m_mcs->project->project_scan_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                }
+                else
+                {
+                    Scan_trace_result trace;
+                    trace.name=name;
+                    m_mcs->project->project_scan_trace.push_back(trace);
+                }
+            }
+        }
+    }
+    return err;
+}
+
+int toSendbuffer::cmdlist_check()
+{
+    int err=0;
+    QString return_msg;  
+    for(int n=0;n<m_mcs->project->project_cmdlist.size();n++)
+    {
+        QString msg,key;
+        my_cmd cmd;
+        int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
+        if(rc>0)
+        {
+            //语法出错
+            err=1;
+            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+            m_mcs->main_record.push_back(return_msg);
+        }
+    }
+    if(0!=cmdlist_creat_tracename_mem())
+    {
+        err=1;//扫描轨道重名
+    }
+    return err;
+}
+
 int toSendbuffer::cmdlist_build(volatile int &line)
 {
     QString return_msg;
-    if(line<0||line>m_mcs->project->project_cmdlist.size())
+    if(line<0||line>=m_mcs->project->project_cmdlist.size())
     {
-        return_msg=QString::fromLocal8Bit("Line")+QString::number(line)+QString::fromLocal8Bit("行命令超出总行数");
+        return_msg=QString::fromLocal8Bit("已经执行完全部命令");
+        m_mcs->main_record.push_back(return_msg);
         return 1;
     }
     b_cmdlist_build=true;
@@ -30,13 +103,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     {
         QString msg,key;
         my_cmd cmd;
-        return_msg=QString::fromLocal8Bit("执行Line")+QString::number(line)+QString::fromLocal8Bit(": ")+m_mcs->project->project_cmdlist[n];
+        return_msg=QString::fromLocal8Bit("执行Line")+QString::number(n)+QString::fromLocal8Bit(": ")+m_mcs->project->project_cmdlist[n];
         m_mcs->main_record.push_back(return_msg);
         int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
         if(rc>0)
         {
             //语法出错
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(line)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+            m_mcs->main_record.push_back(return_msg);
+            line=n;
             return 1;
         }
         else if(rc<0)//注释行
@@ -56,6 +131,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     return_msg=QString::fromLocal8Bit("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    cmd_lock(true);
+                    line=n;
                     return 1;
                 }
                 usleep(ROB_WORK_DELAY_STEP);
@@ -86,6 +164,16 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             float speed=cmd.cmd_scan_speed;//获取到的扫描速度
             int tcp=cmd.cmd_scan_tcp;//获取到扫描TCP
             Robmovemodel movemod=cmd.cmd_scan_movemod;//获取到的扫描模式
+            QString name=cmd.cmd_scan_name;//获取到的扫描名字
+            int scan_trace_num;//要储存的轨道数据下标
+            for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_scan_trace[n].name)
+                {
+                    scan_trace_num=n;//找到要储存的扫描轨迹下标
+                    break;
+                }
+            }
             cmd_move(pos,movemod,speed,tcp);
             usleep(ROB_WORK_DELAY);
             while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待扫描到位
@@ -93,12 +181,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     return_msg=QString::fromLocal8Bit("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    cmd_lock(true);
+                    line=n;
                     return 1;
                 }
-                usleep(0);
                 //这里添加
 
                 //开始采集检测数据
+                usleep(0);
             }
         }
         else if(key==CMD_TRACE_KEY)//跟踪命令
@@ -110,11 +201,19 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             //这里添加轨迹生成
             //这里添加移动命令
         }
+        if(b_cmdlist_build==false)//停止或暂停了
+        {
+            return_msg=QString::fromLocal8Bit("手动停止进程");
+            m_mcs->main_record.push_back(return_msg);
+            line=n;
+            return 1;
+        }
     }
     b_cmdlist_build=false;
     u16data_elec_work=0;
     return_msg=QString::fromLocal8Bit("指令执行结束");
     m_mcs->main_record.push_back(return_msg);
+    line=m_mcs->project->project_cmdlist.size();
     return 0;
 }
 

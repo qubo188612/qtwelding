@@ -74,7 +74,7 @@ QString my_cmd::cmd_elec_work(int work)
     return msg;
 }
 
-QString my_cmd::cmd_scan(RobPos pos,float speed,int tcp)
+QString my_cmd::cmd_scan(RobPos pos,float speed,int tcp,QString name)
 {
     QString msg;
     QString msg1;
@@ -82,7 +82,8 @@ QString my_cmd::cmd_scan(RobPos pos,float speed,int tcp)
     msg=QString(CMD_SCAN_KEY)+" "+
             rc_move(pos,MOVEL)+" "+
             rc_speed(speed)+" "+
-            rc_tcp(tcp);
+            rc_tcp(tcp)+" "+
+            rc_name(name);
     return msg;
 }
 
@@ -454,6 +455,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_SPEED=false;
         bool b_MOVE=false;
         bool b_TCP=false;
+        bool b_NAME=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -532,6 +534,22 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                     }
                 }
+                else if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_scan_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
                 else
                 {
                     return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
@@ -552,6 +570,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_TCP==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }
@@ -736,6 +759,13 @@ QString my_cmd::rc_route(int route)
     return msg;
 }
 
+QString my_cmd::rc_name(QString name)
+{
+    QString msg;
+    msg=QString(CMD_NAME)+"["+name+"]";
+    return msg;
+}
+
 int my_cmd::de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg)
 {
     data_fpos = msg.indexOf("[");
@@ -839,6 +869,24 @@ int my_cmd::de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,Ro
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RZ项参数数据格式错误");
+        return 1;
+    }
+    return 0;
+}
+
+int my_cmd::de_QString(QString parakey,QString msg,int data_fpos,int data_bpos,QString &QStringdata,QString &return_msg)
+{
+    QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
+    if(paramdata.size()==0)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return 1;
+    }
+    bool ok;
+    QStringdata=paramdata;//获取到值
+    if(QStringdata.size()==0)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据格式错误");
         return 1;
     }
     return 0;

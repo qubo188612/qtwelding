@@ -291,7 +291,8 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         float speed=ui->scanspeed->text().toFloat(&rc);
         RobPos robpos=m_mcs->rob->TCPpos;
         my_cmd cmd;
-        QString msg=cmd.cmd_scan(robpos,speed,tcp);
+        QString name=ui->scanname->text();
+        QString msg=cmd.cmd_scan(robpos,speed,tcp,name);
         if(ui->scanspeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
@@ -301,6 +302,20 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         {
             ui->record->append(QString::fromLocal8Bit("采集速度格式出错"));
             return;
+        }
+        if(ui->scanname->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写轨迹名称"));
+            return;
+        }
+        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem();
+        for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+        {
+            if(name==m_mcs->project->project_scan_trace[n].name)
+            {
+                ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                return;
+            }
         }
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
         {
@@ -369,8 +384,21 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
     QString msg;
     QString key;
     my_cmd cmd;
-    if(0<=cmd.decodecmd(ui->customcmd->text(),msg,key))
-    {
+    if(0>=cmd.decodecmd(ui->customcmd->text(),msg,key))
+    {   
+        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem();
+        if(key==CMD_SCAN_KEY)
+        {
+            QString name=cmd.cmd_scan_name;
+            for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_scan_trace[n].name)
+                {
+                    ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                    return;
+                }
+            }
+        }
         //解码成功
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
         {
@@ -395,13 +423,20 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
     QString msg;
     QString key;
     my_cmd cmd;
-    if(0<=cmd.decodecmd(ui->customcmd->text(),msg,key))
+    if(0>=cmd.decodecmd(ui->customcmd->text(),msg,key))
     {
         //解码成功
         if(now_cmdline>=0&&m_mcs->project->project_cmdlist.size()>now_cmdline)
         {
             m_mcs->project->project_cmdlist[now_cmdline]=ui->customcmd->text();
-            ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+            if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem())
+            {
+                ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+            }
             updatacmdlistUi();
         }
         else
@@ -481,7 +516,7 @@ void setprojectDlg::updatacmdlistUi()
     for(int n=0;n<m_mcs->project->project_cmdlist.size();n++)
     {
         QString msg;
-        msg="Line"+QString::number(n+1)+"  "+m_mcs->project->project_cmdlist[n];
+        msg="Line"+QString::number(n)+"  "+m_mcs->project->project_cmdlist[n];
         ui->cmdlist->addItem(msg);
     }
     if(m_mcs->project->project_cmdlist.size()>0)
