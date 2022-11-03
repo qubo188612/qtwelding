@@ -1,4 +1,5 @@
 #include "process1_scanbeforetrace.h"
+#include <sys/socket.h>
 
 Process1_scanbeforetrace *Process1_scanbeforetrace::Get(my_parameters *mcs)
 {
@@ -28,6 +29,8 @@ Process1_scanbeforetrace::~Process1_scanbeforetrace()
 void Process1_scanbeforetrace::init_start_process()
 {
     buildline=0;
+
+
     b_thread=true;
     thread->start();
 }
@@ -54,6 +57,7 @@ Process1Thread::Process1Thread(Process1_scanbeforetrace *statci_p)
 
 void Process1Thread::run()
 {
+    QString msg;
     if(_p->b_thread==true)
     {
         int rc=_p->m_mcs->tosendbuffer->cmdlist_build(_p->buildline);
@@ -61,7 +65,7 @@ void Process1Thread::run()
         {
             goto OUT_THREAD_ERROR;
         }
-    }
+    }    
 OUT_THREAD_ERROR:
     _p->b_thread=false;
     _p->thread->quit();

@@ -54,8 +54,9 @@ public:
     QString cmd_trace(int route,float speed,int tcp);//跟踪命令
 
 
-    int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码
-
+    int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
+                                                                       //     返回值-1:注释行
+                                                                       //     返回值>0:异常
     int cmd_move_tcp;//获取到移动TCP
     RobPos cmd_move_pos;//获取到移动终点坐标
     float cmd_move_speed;//获取到速度值

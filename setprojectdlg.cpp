@@ -369,7 +369,7 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
     QString msg;
     QString key;
     my_cmd cmd;
-    if(0==cmd.decodecmd(ui->customcmd->text(),msg,key))
+    if(0<=cmd.decodecmd(ui->customcmd->text(),msg,key))
     {
         //解码成功
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
@@ -395,7 +395,7 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
     QString msg;
     QString key;
     my_cmd cmd;
-    if(0==cmd.decodecmd(ui->customcmd->text(),msg,key))
+    if(0<=cmd.decodecmd(ui->customcmd->text(),msg,key))
     {
         //解码成功
         if(now_cmdline>=0&&m_mcs->project->project_cmdlist.size()>now_cmdline)

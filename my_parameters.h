@@ -35,6 +35,8 @@ public:
 
     toSendbuffer *tosendbuffer; //转以太网协议
 
+    std::vector<QString> main_record;//主页显示列表信息
+
 protected:
     my_parameters();
     ~my_parameters();

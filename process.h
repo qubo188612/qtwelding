@@ -1,6 +1,7 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 #include <QString>
+#include <QTextBrowser>
 #include "my_parameters.h"
 #include "process1_scanbeforetrace.h"
 
@@ -28,6 +29,7 @@ protected:
     ~Process();
 
     my_parameters *m_mcs;
+    QTextBrowser *m_record;
 };
 
 #endif // PROCESS_H

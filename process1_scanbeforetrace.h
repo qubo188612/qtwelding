@@ -1,5 +1,6 @@
 #ifndef PROCESS1_SCANBEFORETRACE_H
 #define PROCESS1_SCANBEFORETRACE_H
+#include <QTextBrowser>
 #include "my_parameters.h"
 #include "my_cmd.h"
 
@@ -7,7 +8,7 @@ class my_parameters;
 
 class Process1Thread;
 
-class Process1_scanbeforetrace      //工程1先扫描后跟踪
+class Process1_scanbeforetrace    //工程1先扫描后跟踪
 {
 public:
     static Process1_scanbeforetrace *Get(my_parameters *mcs);
@@ -25,7 +26,10 @@ public:
 
     volatile int buildline;//当前执行的cmd行数
 
+
 protected:
+
+    QTextBrowser *m_record;
 
     Process1_scanbeforetrace();
     ~Process1_scanbeforetrace();
@@ -40,6 +44,7 @@ protected:
     void run();
 private:
     Process1_scanbeforetrace *_p;
+
 };
 
 #endif // PROCESS1_SCANBEFORETRACE_H

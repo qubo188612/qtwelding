@@ -19,8 +19,10 @@ toSendbuffer::~toSendbuffer()
 
 int toSendbuffer::cmdlist_build(volatile int &line)
 {
+    QString return_msg;
     if(line<0||line>m_mcs->project->project_cmdlist.size())
     {
+        return_msg=QString::fromLocal8Bit("Line")+QString::number(line)+QString::fromLocal8Bit("行命令超出总行数");
         return 1;
     }
     b_cmdlist_build=true;
@@ -28,11 +30,18 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     {
         QString msg,key;
         my_cmd cmd;
+        return_msg=QString::fromLocal8Bit("执行Line")+QString::number(line)+QString::fromLocal8Bit(": ")+m_mcs->project->project_cmdlist[n];
+        m_mcs->main_record.push_back(return_msg);
         int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
-        if(rc!=0)
+        if(rc>0)
         {
             //语法出错
+            return_msg=QString::fromLocal8Bit("Line")+QString::number(line)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
             return 1;
+        }
+        else if(rc<0)//注释行
+        {
+            continue;
         }
         if(key==CMD_MOV_KEY)//移动指令
         {
@@ -45,7 +54,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
             {
                 if(b_cmdlist_build==false)     //停止
+                {
+                    return_msg=QString::fromLocal8Bit("手动停止进程");
                     return 1;
+                }
                 usleep(ROB_WORK_DELAY_STEP);
             }
         }
@@ -79,7 +91,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待扫描到位
             {
                 if(b_cmdlist_build==false)     //停止
+                {
+                    return_msg=QString::fromLocal8Bit("手动停止进程");
                     return 1;
+                }
                 usleep(0);
                 //这里添加
 
@@ -98,6 +113,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     }
     b_cmdlist_build=false;
     u16data_elec_work=0;
+    return_msg=QString::fromLocal8Bit("指令执行结束");
+    m_mcs->main_record.push_back(return_msg);
     return 0;
 }
 

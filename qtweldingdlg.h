@@ -30,6 +30,8 @@ class qtweldingThread;
 
 class qtgetrobThread;
 
+class qtrecordThread;
+
 class qtweldingDlg : public QDialog
 {
     Q_OBJECT
@@ -52,6 +54,11 @@ public:
     volatile bool b_init_show_robpos_list;
     volatile bool b_init_set_robtask;
 
+    qtrecordThread *thread3;        //主页列表显示
+    bool b_thread3;
+    bool b_stop_thread3;
+    volatile bool b_init_show_record_list;
+
     qtmysunnyDlg *qtmysunny;
     demarcateDlg *demarcate;
     robotsetDlg *robotset;
@@ -68,6 +75,16 @@ public:
 
 
 private slots:
+    void init_show_ui_list();
+
+    void init_sent_leaser();
+
+    void init_show_robpos_list();
+
+    void init_set_robtask();
+
+    void init_show_record_list(QString msg);
+
     void on_importprojectBtn_clicked();
 
     void on_runprojectBtn_clicked();
@@ -78,15 +95,7 @@ private slots:
 
     void on_setrobotBtn_clicked();
 
-    void init_show_ui_list();
-
-    void init_sent_leaser();
-
     void on_demarcateBtn_clicked();
-
-    void init_show_robpos_list();
-
-    void init_set_robtask();
 
     void on_weldersetBtn_clicked();
 
@@ -143,6 +152,21 @@ signals:
     void Send_set_robtask();
 };
 
+class qtrecordThread : public QThread
+{
+    Q_OBJECT
 
+public:
+    qtrecordThread(qtweldingDlg *statci_p);
+    void Stop();
+protected:
+    void run();
+private:
+    qtweldingDlg *_p;
+
+signals:
+    // 自定义信号
+    void Send_show_record_list(QString msg);
+};
 
 #endif // QTWELDINGDLG_H

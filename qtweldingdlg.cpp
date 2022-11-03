@@ -24,6 +24,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     b_init_sent_leaser=true;
     b_init_show_robpos_list=true;
     b_init_set_robtask=true;
+    b_init_show_record_list=true;
 
     b_RunAlgCamer=false;
 
@@ -74,6 +75,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     connect(thread2, SIGNAL(Send_show_robpos_list()), this, SLOT(init_show_robpos_list()));
     connect(thread2, SIGNAL(Send_set_robtask()), this, SLOT(init_set_robtask()));
 
+    thread3 = new qtrecordThread(this);
+    connect(thread3, SIGNAL(Send_show_record_list(QString)), this, SLOT(init_show_record_list(QString)));
+
     ConnectCamer();//连接相机
     ConnectRobot();//连接机器人
 
@@ -82,6 +86,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     b_thread2=true;
     thread2->start();
+
+    b_thread3=true;
+    thread3->start();
 
     UpdataUi();
 
@@ -102,12 +109,19 @@ qtweldingDlg::~qtweldingDlg()
         thread2->quit();
         thread2->wait();
     }
+    if(b_thread3==true)
+    {
+        thread3->Stop();
+        thread3->quit();
+        thread3->wait();
+    }
 
     DisconnectCamer();
     DisconnectRobot();
 
     delete thread1;
     delete thread2;
+    delete thread3;
     delete qtmysunny;
     delete demarcate;
     delete robotset;
@@ -570,6 +584,12 @@ void qtweldingDlg::init_set_robtask()
     b_init_set_robtask=true;
 }
 
+void qtweldingDlg::init_show_record_list(QString msg)
+{
+    ui->record->append(msg);
+    b_init_show_record_list=true;
+}
+
 
 qtweldingThread::qtweldingThread(qtweldingDlg *statci_p)
 {
@@ -785,7 +805,50 @@ void qtgetrobThread::Stop()
   }
 }
 
+qtrecordThread::qtrecordThread(qtweldingDlg *statci_p)
+{
+    _p=statci_p;
+}
 
+void qtrecordThread::run()
+{
+    while (1)
+    {
+        if(_p->b_thread3==true)
+        {
+            if(_p->m_mcs->main_record.size()!=0)
+            {
+                QString msg=_p->m_mcs->main_record[0];
+                std::vector<QString>::iterator it = _p->m_mcs->main_record.begin();
+                _p->m_mcs->main_record.erase(it);
+                if(_p->b_init_show_record_list==true)
+                {
+                    _p->b_init_show_record_list=false;
+                    qRegisterMetaType< QString >("QString");
+                    emit Send_show_record_list(msg);
+                }
+            }
+        }
+        else
+        {
+            _p->b_stop_thread3=true;
+            break;
+        }
+        usleep(0);
+    }
+}
 
+void qtrecordThread::Stop()
+{
+  if(_p->b_thread3==true)
+  {
+    _p->b_stop_thread3=false;
+    _p->b_thread3=false;
+    while (_p->b_stop_thread3==false)
+    {
+      sleep(0);
+    }
+  }
+}
 
 

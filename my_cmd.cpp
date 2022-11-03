@@ -111,7 +111,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         msg=msg.left(exegesis);//截取注释左侧代码
         if(msg.size()==0)
         {
-            return 0;//是注释
+            return -1;//是注释行
         }
     }
     QStringList list = msg.split(":");

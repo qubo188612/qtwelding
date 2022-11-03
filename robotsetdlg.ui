@@ -124,6 +124,11 @@
      <string>智昌机器人</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>越彊机器人</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">

@@ -23,6 +23,7 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
 {
     ROBOT_MODEL_NULL=0,                //无机器人
     ROBOT_MODEL_EMERGEN=1,             //智昌机器人
+    ROBOT_MODEL_DOBOT=2,               //越彊机器人
 }ROBOT_MODEL;
 
 typedef enum ROBOT_STATE_ID            //机器人状态
