@@ -64,6 +64,10 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_SPEED_FH_REG_ADD                  0x000c        //机器人当前速度
 #define ROB_SPEED_FL_REG_ADD                  0x000d
 #define ROB_STATE_REG_ADD                     0x000e        //机器人当前状态
+#define ROB_TIME_HOURS_REG_ADD                0x000f        //当前时间时
+#define ROB_TIME_MINUTES_REG_ADD              0x0010        //当前时间分
+#define ROB_TIME_SECONDS_REG_ADD              0x0011        //当前时间秒
+#define ROB_TIME_MILLISECONDS_REG_ADD         0x0012        //当前时间毫秒
 
 #define ROB_MODEL_REG_ADD                     0x0100        //机器人型号
 #define ROB_TCP_NUM_REG_ADD                   0x0101        //TCP坐标系
@@ -307,6 +311,15 @@ public:
     float RY;
     float RZ;
     bool nEn;
+};
+
+class systime   //时间
+{
+public:
+    u_int16_t hour;
+    u_int16_t min;
+    u_int16_t sec;
+    u_int16_t msec;
 };
 
 class leaser_pos //激光器pos点坐标

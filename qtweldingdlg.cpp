@@ -559,7 +559,7 @@ void qtweldingDlg::init_sent_leaser()
 void qtweldingDlg::init_show_robpos_list()
 {
     //机器人信息
-
+    QString msg;
     ui->robot_ip_port->setText(m_mcs->ip->robot_ip[0].remote_ip.ip);
     ui->robot_model->setText(m_mcs->rob->robot_model_toQString());
     ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
@@ -571,6 +571,11 @@ void qtweldingDlg::init_show_robpos_list()
     ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
     ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
     ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
+    msg=QString::number(m_mcs->rob->robtime.hour)+":"+
+                QString::number(m_mcs->rob->robtime.min)+":"+
+                QString::number(m_mcs->rob->robtime.sec)+":"+
+                QString::number(m_mcs->rob->robtime.msec);
+    ui->robot_time->setText(msg);
 
     b_init_show_robpos_list=true;
 }
@@ -763,7 +768,7 @@ void qtgetrobThread::run()
                 else if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
-                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,15,_p->robotpos_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,19,_p->robotpos_rcv_data))
                     {
                         _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
                         _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);
@@ -774,6 +779,10 @@ void qtgetrobThread::run()
                         _p->m_mcs->rob->TCPpos.nEn=true;
                         _p->m_mcs->rob->robot_speed=*((float*)&_p->robotpos_rcv_data[12]);
                         _p->m_mcs->rob->robot_state=(ROBOT_STATE)_p->robotpos_rcv_data[14];
+                        _p->m_mcs->rob->robtime.hour=(int16_t)_p->robotpos_rcv_data[15];
+                        _p->m_mcs->rob->robtime.min=(int16_t)_p->robotpos_rcv_data[16];
+                        _p->m_mcs->rob->robtime.sec=(int16_t)_p->robotpos_rcv_data[17];
+                        _p->m_mcs->rob->robtime.msec=(int16_t)_p->robotpos_rcv_data[18];
                     }
                 }
             }

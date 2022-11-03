@@ -48,6 +48,8 @@ public:
     static RobotData *Get();
     RobPos TCPpos;      //机器人当前TCP坐标
 
+    systime robtime;    //机器人时间
+
     ROBOT_MODEL robot_model;    //机器人型号
     QString robot_model_toQString();  //机器人型号字符串输出
 

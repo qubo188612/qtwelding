@@ -19,15 +19,6 @@ public:
     std::vector<uint16_t> data;     //发送数据
 };
 
-class systime
-{
-public:
-    u_int16_t hour;
-    u_int16_t min;
-    u_int16_t sec;
-    u_int16_t msec;
-};
-
 class ResultData
 {
 public:

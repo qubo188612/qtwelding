@@ -71,7 +71,7 @@ public:
     unsigned short leaser_rcv_data2[4];
 
 
-    unsigned short robotpos_rcv_data[14];
+    unsigned short robotpos_rcv_data[19];
 
 
 private slots:
