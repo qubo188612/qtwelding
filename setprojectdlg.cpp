@@ -311,7 +311,8 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
             ui->record->append(QString::fromLocal8Bit("请填写轨迹名称"));
             return;
         }
-        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem();
+        std::vector<QString> err_msg;
+        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg);
         for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
         {
             if(name==m_mcs->project->project_scan_trace[n].name)
@@ -343,11 +344,12 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
 {
     bool rc;
     int route=ui->tracetrackcombo->currentIndex();
+    QString name=ui->tracetrackcombo->currentText();
     float speed=ui->tracespeed->text().toFloat(&rc);
     int tcp=ui->tracetcpcombo->currentIndex();
     if(route<0||route>ui->tracetrackcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹序号"));
+        ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名字"));
         return;
     }
     else if(ui->tracespeed->text().isEmpty())
@@ -361,7 +363,7 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
         return;
     }
     my_cmd cmd;
-    QString msg=cmd.cmd_trace(route,speed,tcp);
+    QString msg=cmd.cmd_trace(speed,tcp,name);
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
     {
         m_mcs->project->project_cmdlist.push_back(msg);
@@ -376,30 +378,79 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
 }
 
 
-void setprojectDlg::on_traceeditBtn_clicked()//编辑轨迹
+void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
 {
-    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem())
+    std::vector<QString> err_msg;
+    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
     {
-        traceedit->init_dlg_show();
-        traceedit->setWindowTitle(QString::fromLocal8Bit("编辑跟踪轨迹"));
-        traceedit->exec();
-        traceedit->close_dlg_show();
+        std::vector<QString> err_msg;
+        QString name=ui->tracename->text();
+        if(name.size()==0)
+        {
+            ui->record->append(QString::fromLocal8Bit("请输入要插入的轨迹名字"));
+            return;
+        }
+        for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+        {
+            if(name==m_mcs->project->project_weld_trace[n].name)
+            {
+                ui->record->append(QString::fromLocal8Bit("跟踪轨迹与已有的轨迹重名"));
+                return;
+            }
+        }
+        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(now_cmdline+1,err_msg);
+        if(m_mcs->project->project_scan_trace.size()<=0)
+        {
+            ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的扫描轨迹"));
+            return;
+        }
+        Trace_edit_mode trace_edit_mode=(Trace_edit_mode)ui->traceeditcombo->currentIndex();
+        switch(trace_edit_mode)
+        {
+            case TRACE_EDIT_MODE_ONE_TO_ONE:
+            {
+                traceedit->init_dlg_show();
+                traceedit->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
+                int rc=traceedit->exec();
+                traceedit->close_dlg_show();
+                if(rc!=0)//确定保存生成轨迹
+                {
+                    my_cmd cmd;
+                    std::vector<QString> scanname(1);
+                    scanname[0]=traceedit->name;
+                    QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
+                    if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                    {
+                        m_mcs->project->project_cmdlist.push_back(msg);
+                    }
+                    else
+                    {
+                        m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                    }
+                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    now_cmdline++;
+                    updatacmdlistUi();
+                }
+            }
+            break;
+        }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+        ui->record->append(QString::fromLocal8Bit("有同名的扫描轨迹，请先排除"));
     }
 }
 
 
 void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
 {
+    std::vector<QString> err_msg;
     QString msg;
     QString key;
     my_cmd cmd;
     if(0>=cmd.decodecmd(ui->customcmd->text(),msg,key))
     {   
-        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem();
+        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg);
         if(key==CMD_SCAN_KEY)
         {
             QString name=cmd.cmd_scan_name;
@@ -433,6 +484,7 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
 
 void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
 {
+    std::vector<QString> err_msg;
     QString msg;
     QString key;
     my_cmd cmd;
@@ -442,13 +494,16 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
         if(now_cmdline>=0&&m_mcs->project->project_cmdlist.size()>now_cmdline)
         {
             m_mcs->project->project_cmdlist[now_cmdline]=ui->customcmd->text();
-            if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem())
+            if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
             {
                 ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                for(int n=0;n<err_msg.size();n++)
+                {
+                    ui->record->append(err_msg[n]);
+                }
             }
             updatacmdlistUi();
         }
@@ -513,7 +568,16 @@ void setprojectDlg::on_cmdlistclearBtn_clicked()//清空指令
 
 void setprojectDlg::on_cmdlist_itemClicked(QListWidgetItem *item)//选择值令
 {
+    std::vector<QString> err_msg;
     now_cmdline=ui->cmdlist->currentRow();
+
+    m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(now_cmdline+1,err_msg);
+    ui->tracetrackcombo->clear();
+    for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+    {
+        ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
+    }
+
     ui->customcmd->setText(m_mcs->project->project_cmdlist[now_cmdline]);
 }
 

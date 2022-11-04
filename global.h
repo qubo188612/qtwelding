@@ -350,6 +350,13 @@ public:
     QString name; //扫描轨迹名字
 };
 
+class Weld_trace_result  //跟踪轨迹
+{
+public:
+    std::vector<RobPos> point;//跟踪轨迹结果
+    QString name; //跟踪轨迹名字
+};
+
 typedef enum Robmovemodel_ID            //机器人移动方式
 {
     MOVEL=0,        //直线运动
@@ -362,5 +369,10 @@ typedef enum Alternatingcurrent_ID    //交变电流
     ALTERNATING=1,  //交流电
 }Alternatingcurrent;
 
+//轨迹生成模式
+typedef enum TRACE_EDIT_MODE_ID
+{
+    TRACE_EDIT_MODE_ONE_TO_ONE=0,       //单扫对单轨道模式
+}Trace_edit_mode;
 
 #endif // GLOBAL_H

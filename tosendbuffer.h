@@ -25,7 +25,8 @@ public:
     int cmdlist_build(volatile int &line);//把机器人文件命令编译,line为当前开始的编译步骤
     void cmdlist_stopbuild();//把机器人文件停止编译
 
-    int cmdlist_creat_tracename_mem();//创建扫描轨迹存放空间
+    int cmdlist_creat_tracename_mem(int beforeline,std::vector<QString> &errmsg);//创建扫描\跟踪轨迹存放空间,beforeline值为1到m_mcs->project->project_cmdlist.size();
+
 
     void cmd_clear_elec_work();//清除焊接寄存器当前状态
 

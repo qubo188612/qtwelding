@@ -23,12 +23,14 @@ void toSendbuffer::cmd_clear_elec_work()
     u16data_elec_work=0;
 }
 
-int toSendbuffer::cmdlist_creat_tracename_mem()
+int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString> &errmsg)
 {
+    errmsg.clear();
     int err=0;
     QString return_msg;
     m_mcs->project->project_scan_trace.clear();
-    for(int n=0;n<m_mcs->project->project_cmdlist.size();n++)
+    m_mcs->project->project_weld_trace.clear();
+    for(int n=0;n<beforeline;n++)
     {
         QString msg,key;
         my_cmd cmd;
@@ -52,12 +54,94 @@ int toSendbuffer::cmdlist_creat_tracename_mem()
                     err=1;
                     return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
+                    errmsg.push_back(return_msg);
                 }
                 else
                 {
                     Scan_trace_result trace;
                     trace.name=name;
                     m_mcs->project->project_scan_trace.push_back(trace);
+                }
+            }
+            else if(key==CMD_CREAT_KEY)//生成轨迹指令
+            {
+                QString name=cmd.cmd_creat_name;//获取到的生成的轨迹名字
+                std::vector<QString> scannames=cmd.cmd_creat_scanname;//获取到要扫描的轨道名字
+                Trace_edit_mode mode=cmd.cmd_creat_mode;//获取到的扫描模式
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                {
+                    if(m_mcs->project->project_weld_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    errmsg.push_back(return_msg);
+                }
+                else
+                {
+                    switch(mode)
+                    {
+                        case TRACE_EDIT_MODE_ONE_TO_ONE:
+                        {
+                            if(scannames.size()!=1)
+                            {
+                                err=1;
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
+                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_ONE_TO_ONE)+
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有1个");
+                                m_mcs->main_record.push_back(return_msg);
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            bool b_find=false;
+                            int m=0;
+                            for(m=0;m<scannames.size();m++)
+                            {
+                                b_find=false;
+                                for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                                {
+                                    if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
+                                    {
+                                        b_find=true;
+
+                                        Weld_trace_result trace;
+                                        trace.name=name;
+                                        m_mcs->project->project_weld_trace.push_back(trace);
+
+                                        break;
+                                    }
+                                }
+                                if(b_find==false)//没找到这个名字的扫描轨道
+                                {
+                                    break;
+                                }
+                            }
+                            if(b_find==false)
+                            {
+                                err=1;
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
+                                m_mcs->main_record.push_back(return_msg);
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                        }
+                        break;
+                    default:
+                        {
+                            err=1;
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 不支持当前轨道生成模式");
+                            m_mcs->main_record.push_back(return_msg);
+                            errmsg.push_back(return_msg);
+                        }
+                        break;
+                    }
                 }
             }
         }
@@ -69,6 +153,7 @@ int toSendbuffer::cmdlist_check()
 {
     int err=0;
     QString return_msg;  
+    std::vector<QString> err_msg;
     for(int n=0;n<m_mcs->project->project_cmdlist.size();n++)
     {
         QString msg,key;
@@ -82,9 +167,9 @@ int toSendbuffer::cmdlist_check()
             m_mcs->main_record.push_back(return_msg);
         }
     }
-    if(0!=cmdlist_creat_tracename_mem())
+    if(0!=cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
     {
-        err=1;//扫描轨道重名
+        err=1;//轨道命名出错
     }
     return err;
 }
@@ -205,7 +290,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         }
         else if(key==CMD_TRACE_KEY)//跟踪命令
         {
-            int route=cmd.cmd_trace_route;//获取到跟踪轨迹序号
+            QString name=cmd.cmd_trace_name;//获取到跟踪轨迹序号
             float speed=cmd.cmd_trace_speed;//获取到的跟踪速度
             int tcp=cmd.cmd_trace_tcp;//获取到跟踪TCP
 

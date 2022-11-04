@@ -49,6 +49,8 @@ public:
 
     std::vector<Scan_trace_result> project_scan_trace;  //扫描轨迹
 
+    std::vector<Weld_trace_result> project_weld_trace;  //跟踪轨迹
+
 protected:
     Project();
     ~Project();
