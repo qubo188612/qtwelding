@@ -363,7 +363,35 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
         return;
     }
     my_cmd cmd;
-    QString msg=cmd.cmd_trace(speed,tcp,name);
+    QString filepath=ui->tracefilepath->text();//工艺包路径
+    //请选择工艺包路径
+    if(filepath.size()==0)
+    {
+        ui->record->append(QString::fromLocal8Bit("工艺包路径为空"));
+        return;
+    }
+    else
+    {
+        //这里判断工艺包是否格式正确
+    #if _MSC_VER
+        QTextCodec *code = QTextCodec::codecForName("GBK");
+    #else
+        QTextCodec *code = QTextCodec::codecForName("UTF-8");
+    #endif
+        std::string fname = code->fromUnicode(filepath).data();
+        int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+        if(rc==1)
+        {
+            ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+            return;
+        }
+        else if(rc==2)
+        {
+            ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+            return;
+        }
+    }
+    QString msg=cmd.cmd_trace(speed,tcp,filepath,name);
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
     {
         m_mcs->project->project_cmdlist.push_back(msg);
@@ -417,6 +445,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
                 {
                     my_cmd cmd;
                     std::vector<QString> scanname(1);
+
                     scanname[0]=traceedit->name;
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
                     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
@@ -475,6 +504,27 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
                 }
             }
         }
+        else if(key==CMD_TRACE_KEY)
+        {
+            QString filepath=cmd.cmd_trace_craftfilepath;
+        #if _MSC_VER
+            QTextCodec *code = QTextCodec::codecForName("GBK");
+        #else
+            QTextCodec *code = QTextCodec::codecForName("UTF-8");
+        #endif
+            std::string fname = code->fromUnicode(filepath).data();
+            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            if(rc==1)
+            {
+                ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+                return;
+            }
+            else if(rc==2)
+            {
+                ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+                return;
+            }
+        }
         //解码成功
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
         {
@@ -503,6 +553,27 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
     if(0>=cmd.decodecmd(ui->customcmd->text(),msg,key))
     {
         //解码成功
+        if(key==CMD_TRACE_KEY)
+        {
+            QString filepath=cmd.cmd_trace_craftfilepath;
+        #if _MSC_VER
+            QTextCodec *code = QTextCodec::codecForName("GBK");
+        #else
+            QTextCodec *code = QTextCodec::codecForName("UTF-8");
+        #endif
+            std::string fname = code->fromUnicode(filepath).data();
+            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            if(rc==1)
+            {
+                ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+                return;
+            }
+            else if(rc==2)
+            {
+                ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+                return;
+            }
+        }
         if(now_cmdline>=0&&m_mcs->project->project_cmdlist.size()>now_cmdline)
         {
             m_mcs->project->project_cmdlist[now_cmdline]=ui->customcmd->text();
@@ -591,6 +662,27 @@ void setprojectDlg::on_OKBtn_clicked()//保存指令
     ui->record->append(QString::fromLocal8Bit("已经保存当前操作"));
 }
 
+void setprojectDlg::on_tracefilepathBtn_clicked()//修改路径
+{
+    QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "JSON(*.json)");
+#if _MSC_VER
+    QTextCodec *code = QTextCodec::codecForName("GBK");
+#else
+    QTextCodec *code = QTextCodec::codecForName("UTF-8");
+#endif
+    std::string name = code->fromUnicode(fileName).data();
+    if(name.size()>0)
+    {
+        if(0!=m_mcs->craft->LoadCraft((char*)name.c_str()))
+        {
+            ui->record->append(QString::fromLocal8Bit("工艺文件读取失败"));
+            return;
+        }
+        ui->record->append(QString::fromLocal8Bit("工艺文件读取成功"));
+        ui->tracefilepath->setText(fileName);
+    }
+}
+
 void setprojectDlg::updatacmdlistUi()
 {
     std::vector<QString> err_msg;
@@ -614,5 +706,7 @@ void setprojectDlg::updatacmdlistUi()
         ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
 }
+
+
 
 

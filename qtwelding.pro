@@ -21,6 +21,7 @@ SOURCES += \
         calibration.cpp \
         cam_sen.cpp \
         cambuilddlg.cpp \
+        craft.cpp \
         demarcatedlg.cpp \
         editprojectdlg.cpp \
         global.cpp \
@@ -70,6 +71,7 @@ HEADERS += \
     calibration.h \
     cam_sen.h \
     cambuilddlg.h \
+    craft.h \
     demarcatedlg.h \
     editprojectdlg.h \
     global.h \

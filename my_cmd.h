@@ -15,7 +15,7 @@
 //焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEM[0]
 //焊机指令，举例 WELD: WORK[0]
 //采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3] SPEED[25] TCP[0] NAME[扫描第一条line]
-//跟踪指令，举例 TRACE: NAME[跟踪第一条line] SPEED[25] TCP[0]
+//跟踪指令，举例 TRACE: NAME[跟踪第一条line] SPEED[25] TCP[0] CRAFT[/home/qubo/caf.json]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
@@ -40,6 +40,7 @@
 #define CMD_NAME                            "NAME"      //命名
 #define CMD_SCAN                            "SCAN"      //扫描轨迹参数
 #define CMD_MODE                            "MODE"      //模式参数
+#define CMD_CRAFT                           "CRAFT"     //工艺文件路径
 
 
 /************************/
@@ -55,7 +56,7 @@ public:
     QString cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令不
     QString cmd_elec_work(int work);//焊机启停命令
     QString cmd_scan(RobPos pos,float speed,int tcp,QString name);//采集命令
-    QString cmd_trace(float speed,int tcp,QString name);//跟踪命令
+    QString cmd_trace(float speed,int tcp,QString craftfilepath,QString name);//跟踪命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
 
 
@@ -85,6 +86,7 @@ public:
     QString cmd_trace_name;//获取到跟踪轨迹名字
     float cmd_trace_speed;//获取到的跟踪速度
     int cmd_trace_tcp;//获取到跟踪TCP
+    QString cmd_trace_craftfilepath;//获取到的焊接工艺包路径
 
     QString cmd_creat_name;//获取到的生成的轨迹名字
     Trace_edit_mode cmd_creat_mode;//获取到的轨迹生成模式
@@ -102,6 +104,7 @@ protected:
     QString rc_name(QString name);
     QString rc_mode(int mode);
     QString rc_scan(std::vector<QString> names);
+    QString rc_craft(QString craftfilepath);
 
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);

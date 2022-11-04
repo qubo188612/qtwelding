@@ -10,6 +10,7 @@
 #include "robotdata.h"
 #include "process.h"
 #include "tosendbuffer.h"
+#include "craft.h"
 
 class Process;
 class toSendbuffer;
@@ -20,6 +21,8 @@ public:
     static my_parameters *Get();
 
     Project *project;   //工程项目
+
+    Craft *craft;   //焊接工艺包
 
     Cam_Sen *cam;    //相机
 

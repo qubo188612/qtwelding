@@ -87,7 +87,7 @@ QString my_cmd::cmd_scan(RobPos pos,float speed,int tcp,QString name)
     return msg;
 }
 
-QString my_cmd::cmd_trace(float speed,int tcp,QString name)
+QString my_cmd::cmd_trace(float speed,int tcp,QString craftfilepath,QString name)
 {
     QString msg;
     QString msg1;
@@ -95,6 +95,7 @@ QString my_cmd::cmd_trace(float speed,int tcp,QString name)
     msg=QString(CMD_TRACE_KEY)+" "+
             rc_speed(speed)+" "+
             rc_tcp(tcp)+" "+
+            rc_craft(craftfilepath)+" "+
             rc_name(name);
     return msg;
 }
@@ -606,6 +607,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_SPEED=false;
         bool b_NAME=false;
         bool b_TCP=false;
+        bool b_CRAFT=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -671,6 +673,22 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
+                else if(paramname==CMD_CRAFT)
+                {
+                    if(b_CRAFT==false)
+                    {
+                        b_CRAFT=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace_craftfilepath,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
                 else
                 {
                     return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
@@ -691,6 +709,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_TCP==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_CRAFT==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CRAFT+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }
@@ -897,6 +920,13 @@ QString my_cmd::rc_scan(std::vector<QString> names)
         }
     }
     msg=QString(CMD_SCAN)+"["+msg1+"]";
+    return msg;
+}
+
+QString my_cmd::rc_craft(QString craftfilepath)
+{
+    QString msg;
+    msg=QString(CMD_CRAFT)+"["+craftfilepath+"]";
     return msg;
 }
 

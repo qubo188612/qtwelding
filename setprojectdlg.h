@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QTextCodec>
 #include "my_parameters.h"
 #include "my_cmd.h"
 #include "traceeditdlg.h"
@@ -59,6 +61,8 @@ private slots:
     void on_cmdlist_itemClicked(QListWidgetItem *item);
 
     void on_customreplaceBtn_clicked();
+
+    void on_tracefilepathBtn_clicked();
 
 private:
     Ui::setprojectDlg *ui;

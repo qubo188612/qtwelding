@@ -9,6 +9,7 @@ my_parameters *my_parameters::Get()
 my_parameters::my_parameters()
 {
     project=project->Get();
+    craft=craft->Get();
     cam=cam->Get();
     ip=ip->Get();
     rob=rob->Get();

@@ -88,7 +88,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     switch(mode)
                     {
-                        case TRACE_EDIT_MODE_ONE_TO_ONE:
+                        case TRACE_EDIT_MODE_ONE_TO_ONE:    //单扫单轨道模式
                         {
                             if(scannames.size()!=1)
                             {
@@ -288,16 +288,43 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 usleep(0);
             }
         }
+        else if(key==CMD_CREAT_KEY)//生成轨迹命令
+        {
+            //这里添加轨迹生成
+            QString name=cmd.cmd_creat_name;//获取到的生成的轨迹名字
+            Trace_edit_mode mode=cmd.cmd_creat_mode;//获取到的轨迹生成模式
+            std::vector<QString> scanname=cmd.cmd_creat_scanname;//获取到生成轨迹所需要的轨迹名字
+            switch(mode)
+            {
+                case TRACE_EDIT_MODE_ONE_TO_ONE://单扫单轨
+                {
+                    int scan_trace_num;//搜索到的扫描轨道序号
+                    QString scan_trace_name=scanname[0];//要搜索的扫描轨道名字
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scan_trace_name==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num=n;
+                            break;
+                        }
+                    }
+                    //这里添加轨迹拟合
+                    std::vector<Scan_trace_line> scan_trace=m_mcs->project->project_scan_trace[n].point;
+
+                }
+                break;
+            }
+        }
         else if(key==CMD_TRACE_KEY)//跟踪命令
         {
             QString name=cmd.cmd_trace_name;//获取到跟踪轨迹序号
             float speed=cmd.cmd_trace_speed;//获取到的跟踪速度
             int tcp=cmd.cmd_trace_tcp;//获取到跟踪TCP
-
-            //这里添加轨迹生成
+            QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
             //这里添加移动命令
+
         }
-        if(b_cmdlist_build==false)//停止或暂停了
+        if(b_cmdlist_build==false)//流程停止或暂停了
         {
             return_msg=QString::fromLocal8Bit("手动停止进程");
             m_mcs->main_record.push_back(return_msg);

@@ -7,15 +7,26 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui(new Ui::qtweldingDlg)
 {
 #if _MSC_VER
-    QString filePath =  "./DATA";
+    QString filePath;
+    filePath =  "./DATA";
+    QDir dir(filePath);
+    if(!dir.exists())
+        QDir().mkdir(filePath);
+    filePath =  "./CRAFT";
     QDir dir(filePath);
     if(!dir.exists())
         QDir().mkdir(filePath);
 #else
-    std::string dir = "./DATA";
+    std::string dir;
+    dir = "./DATA";
     if (access(dir.c_str(), 0) == -1)
     {
       mkdir("./DATA",S_IRWXU);
+    }
+    dir = "./CRAFT";
+    if (access(dir.c_str(), 0) == -1)
+    {
+      mkdir("./CRAFT",S_IRWXU);
     }
 #endif
     m_mcs=m_mcs->Get();
