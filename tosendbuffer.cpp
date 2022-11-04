@@ -186,8 +186,19 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     line=n;
                     return 1;
                 }
-                //这里添加
-
+                //这里添加扫描数据
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        Scan_trace_line res;
+                        res.robotpos=m_mcs->rob->TCPpos;
+                        res.robottime=m_mcs->rob->robtime;
+                        res.ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                        m_mcs->project->project_scan_trace[scan_trace_num].point.push_back(res);
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
                 //开始采集检测数据
                 usleep(0);
             }

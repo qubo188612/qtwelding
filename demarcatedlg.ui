@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1090</width>
+    <width>1211</width>
     <height>700</height>
    </rect>
   </property>
@@ -351,7 +351,7 @@
     <string>清空激光头点</string>
    </property>
   </widget>
-  <widget class="QLabel" name="t0_label">
+  <widget class="QLabel" name="t00_label">
    <property name="geometry">
     <rect>
      <x>1020</x>
@@ -361,10 +361,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>t1</string>
+    <string>t11</string>
    </property>
   </widget>
-  <widget class="QLabel" name="t1_label">
+  <widget class="QLabel" name="t10_label">
    <property name="geometry">
     <rect>
      <x>1020</x>
@@ -374,10 +374,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>t2</string>
+    <string>t21</string>
    </property>
   </widget>
-  <widget class="QLabel" name="t2_label">
+  <widget class="QLabel" name="t20_label">
    <property name="geometry">
     <rect>
      <x>1020</x>
@@ -387,7 +387,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>t3</string>
+    <string>t31</string>
    </property>
   </widget>
   <widget class="QTextBrowser" name="record">
@@ -395,7 +395,7 @@
     <rect>
      <x>10</x>
      <y>550</y>
-     <width>1071</width>
+     <width>1191</width>
      <height>141</height>
     </rect>
    </property>
@@ -428,9 +428,87 @@
     <rect>
      <x>410</x>
      <y>40</y>
-     <width>671</width>
+     <width>791</width>
      <height>361</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t01_label">
+   <property name="geometry">
+    <rect>
+     <x>1080</x>
+     <y>420</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t12</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t02_label">
+   <property name="geometry">
+    <rect>
+     <x>1140</x>
+     <y>420</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t13</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t11_label">
+   <property name="geometry">
+    <rect>
+     <x>1080</x>
+     <y>460</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t22</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t12_label">
+   <property name="geometry">
+    <rect>
+     <x>1140</x>
+     <y>460</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t23</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t21_label">
+   <property name="geometry">
+    <rect>
+     <x>1080</x>
+     <y>500</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t32</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="t22_label">
+   <property name="geometry">
+    <rect>
+     <x>1140</x>
+     <y>500</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>t33</string>
    </property>
   </widget>
  </widget>

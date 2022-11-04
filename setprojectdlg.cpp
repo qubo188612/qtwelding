@@ -15,10 +15,13 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
         ui->tracetcpcombo->addItem(msg);
         ui->scantcpcombo->addItem(msg);
     }
+
+    traceedit=new traceeditDlg(mcs);
 }
 
 setprojectDlg::~setprojectDlg()
 {
+    delete traceedit;
     delete ui;
 }
 
@@ -375,7 +378,17 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
 
 void setprojectDlg::on_traceeditBtn_clicked()//编辑轨迹
 {
-
+    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem())
+    {
+        traceedit->init_dlg_show();
+        traceedit->setWindowTitle(QString::fromLocal8Bit("编辑跟踪轨迹"));
+        traceedit->exec();
+        traceedit->close_dlg_show();
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+    }
 }
 
 

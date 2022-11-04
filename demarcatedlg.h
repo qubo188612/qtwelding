@@ -58,7 +58,7 @@ private:
     void updataRoblistUi();
     void updataLeaserlistUi();
     void updataDemarcateResult();
-
+    void updataUi();
 
     std::vector<double> errgroup;
 };

@@ -1,6 +1,7 @@
 ﻿#ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "tutorial_interfaces/msg/if_algorhmitcloud.hpp"
 #include "QString"
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #if _MSC_VER
@@ -29,11 +30,6 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define CLOULD_POINT_NOTDATE        FLT_MAX
 
 /*************************/
-//采集模式
-#define AUTO_MOD                    0
-#define CALLBACK_MOD                1
-#define ACQUISITION_MOD             AUTO_MOD
-/***************************/
 
 #define ROWS_PROPORTION              1.0
 #define COLS_PROPORTION              1.0
@@ -339,10 +335,18 @@ public:
     RobPos robotpos;       //此时的机器人坐标
 };
 
-class Scan_trace_result    //扫描采集点
+class Scan_trace_line  //扫描线结果
 {
 public:
-    std::vector<TCP_Leaserpos> point;//扫描结果点
+    tutorial_interfaces::msg::IfAlgorhmitcloud ros_line;//线激光结果
+    RobPos robotpos;       //此时的机器人坐标
+    systime robottime;     //机器人当前采集的时间
+};
+
+class Scan_trace_result    //扫描轨迹
+{
+public:
+    std::vector<Scan_trace_line> point;//线激光结果
     QString name; //扫描轨迹名字
 };
 

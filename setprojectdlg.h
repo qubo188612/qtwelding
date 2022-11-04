@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include "my_parameters.h"
 #include "my_cmd.h"
+#include "traceeditdlg.h"
 
 namespace Ui {
 class setprojectDlg;
@@ -18,6 +19,8 @@ class setprojectDlg : public QDialog
 public:
     explicit setprojectDlg(my_parameters *mcs,QWidget *parent = nullptr);
     ~setprojectDlg();
+
+    traceeditDlg *traceedit;
 
     my_parameters *m_mcs;
 

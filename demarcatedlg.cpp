@@ -18,19 +18,7 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
             ui->radio2->setChecked(1);
         break;
     }
-
-    ui->a00_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,0),'f',3));
-    ui->a01_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,1),'f',3));
-    ui->a02_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,2),'f',3));
-    ui->a10_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(1,0),'f',3));
-    ui->a11_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(1,1),'f',3));
-    ui->a12_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(1,2),'f',3));
-    ui->a20_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(2,0),'f',3));
-    ui->a21_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(2,1),'f',3));
-    ui->a22_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(2,2),'f',3));
-    ui->t0_label->setText(QString::number(m_mcs->e2proomdata.demdlg_T(0),'f',3));
-    ui->t1_label->setText(QString::number(m_mcs->e2proomdata.demdlg_T(1),'f',3));
-    ui->t2_label->setText(QString::number(m_mcs->e2proomdata.demdlg_T(2),'f',3));
+    updataUi();
 }
 
 demarcateDlg::~demarcateDlg()
@@ -54,12 +42,14 @@ void demarcateDlg::close_dlg_show()
 void demarcateDlg::on_radio1_clicked()      //眼在手上
 {
     m_mcs->e2proomdata.demdlg_radio_mod=0;
+    updataUi();
 }
 
 
 void demarcateDlg::on_radio2_clicked()      //眼在手外
 {
     m_mcs->e2proomdata.demdlg_radio_mod=1;
+    updataUi();
 }
 
 void demarcateDlg::on_pushButton_clicked()  //添加TCP点
@@ -291,6 +281,7 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                                                   err,errgroup))
                 {
                     updataDemarcateResult();
+                    updataUi();
                     ui->record->append(QString::fromLocal8Bit("标定完成"));
                 }
                 else
@@ -333,11 +324,13 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                 m_mcs->e2proomdata.write_demdlg_para();
                 ui->err->setText(QString::number(err,'f',2));
                 updataDemarcateResult();
+                updataUi();
                 ui->record->append(QString::fromLocal8Bit("标定完成"));
             }
         }
         break;
     }
+
 }
 
 void demarcateDlg::updataRoblistUi()
@@ -407,6 +400,68 @@ void demarcateDlg::updataDemarcateResult()
     if(m_mcs->e2proomdata.demdlg_Leaserpos.size()>0)
     {
         ui->leaserposlist->setCurrentRow(now_leaserpos);
+    }
+}
+
+void demarcateDlg::updataUi()
+{
+    switch(m_mcs->e2proomdata.demdlg_radio_mod)
+    {
+        case 0:
+        {
+            ui->a00_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(0,0),'f',3));
+            ui->a01_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(0,1),'f',3));
+            ui->a02_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(0,2),'f',3));
+            ui->a10_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(1,0),'f',3));
+            ui->a11_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(1,1),'f',3));
+            ui->a12_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(1,2),'f',3));
+            ui->a20_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(2,0),'f',3));
+            ui->a21_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(2,1),'f',3));
+            ui->a22_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(2,2),'f',3));
+
+
+            ui->t00_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(0,0),'f',3));
+            ui->t01_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(0,1),'f',3));
+            ui->t02_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(0,2),'f',3));
+            ui->t10_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(1,0),'f',3));
+            ui->t11_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(1,1),'f',3));
+            ui->t12_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(1,2),'f',3));
+            ui->t20_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(2,0),'f',3));
+            ui->t21_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(2,1),'f',3));
+            ui->t22_label->setText(QString::number(m_mcs->e2proomdata.matrix_plane2robot.at<double>(2,2),'f',3));
+
+            ui->t01_label->show();
+            ui->t02_label->show();
+            ui->t11_label->show();
+            ui->t12_label->show();
+            ui->t21_label->show();
+            ui->t22_label->show();
+        }
+        break;
+        case 1:
+        {
+            ui->a00_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,0),'f',3));
+            ui->a01_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,1),'f',3));
+            ui->a02_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,2),'f',3));
+            ui->a10_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(1,0),'f',3));
+            ui->a11_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(1,1),'f',3));
+            ui->a12_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(1,2),'f',3));
+            ui->a20_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(2,0),'f',3));
+            ui->a21_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(2,1),'f',3));
+            ui->a22_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(2,2),'f',3));
+
+            ui->t00_label->setText(QString::number(m_mcs->e2proomdata.demdlg_T(0),'f',3));
+            ui->t10_label->setText(QString::number(m_mcs->e2proomdata.demdlg_T(1),'f',3));
+            ui->t20_label->setText(QString::number(m_mcs->e2proomdata.demdlg_T(2),'f',3));
+
+            ui->t01_label->hide();
+            ui->t02_label->hide();
+            ui->t11_label->hide();
+            ui->t12_label->hide();
+            ui->t21_label->hide();
+            ui->t22_label->hide();
+        }
+        break;
     }
 }
 

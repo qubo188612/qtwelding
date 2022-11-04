@@ -378,6 +378,7 @@ void qtweldingDlg::ConnectCamer()
         }
         m_mcs->resultdata.link_result_state=true;
         ui->record->append(server_port2+QString::fromLocal8Bit("端口连接成功"));
+        m_mcs->cam->sop_cam[0].InitConnect();
     //  RunAlgCamer();
     }
 
@@ -399,6 +400,7 @@ void qtweldingDlg::DisconnectCamer()
 {
     if(m_mcs->resultdata.link_result_state==true)
     {
+        m_mcs->cam->sop_cam[0].DisConnect();
         if(b_RunAlgCamer==true)
         {
             StopAlgCamer();

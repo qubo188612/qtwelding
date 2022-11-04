@@ -40,7 +40,8 @@ SOURCES += \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp \
-        tosendbuffer.cpp
+        tosendbuffer.cpp \
+        traceeditdlg.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -56,7 +57,8 @@ FORMS += \
     qtweldingdlg.ui \
     robotsetdlg.ui \
     setprojectdlg.ui \
-    showtasknumdlg.ui
+    showtasknumdlg.ui \
+    traceeditdlg.ui
 
 HEADERS += \
     E2proomData.h \
@@ -87,7 +89,8 @@ HEADERS += \
     soptocameratcpip.h \
     soptopcamera.h \
     tistdtypes.h \
-    tosendbuffer.h
+    tosendbuffer.h \
+    traceeditdlg.h
 
 
 win32{
