@@ -463,6 +463,18 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
                 }
             }
         }
+        else if(key==CMD_CREAT_KEY)
+        {
+            QString name=cmd.cmd_creat_name;
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_weld_trace[n].name)
+                {
+                    ui->record->append(QString::fromLocal8Bit("从跟踪轨迹与已有的轨迹重名"));
+                    return;
+                }
+            }
+        }
         //解码成功
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
         {
@@ -568,16 +580,8 @@ void setprojectDlg::on_cmdlistclearBtn_clicked()//清空指令
 
 void setprojectDlg::on_cmdlist_itemClicked(QListWidgetItem *item)//选择值令
 {
-    std::vector<QString> err_msg;
     now_cmdline=ui->cmdlist->currentRow();
-
-    m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(now_cmdline+1,err_msg);
-    ui->tracetrackcombo->clear();
-    for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
-    {
-        ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
-    }
-
+    updatacmdlistUi();
     ui->customcmd->setText(m_mcs->project->project_cmdlist[now_cmdline]);
 }
 
@@ -589,6 +593,8 @@ void setprojectDlg::on_OKBtn_clicked()//保存指令
 
 void setprojectDlg::updatacmdlistUi()
 {
+    std::vector<QString> err_msg;
+
     ui->cmdlist->clear();
     for(int n=0;n<m_mcs->project->project_cmdlist.size();n++)
     {
@@ -599,6 +605,13 @@ void setprojectDlg::updatacmdlistUi()
     if(m_mcs->project->project_cmdlist.size()>0)
     {
         ui->cmdlist->setCurrentRow(now_cmdline);
+    }
+
+    m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(now_cmdline+1,err_msg);
+    ui->tracetrackcombo->clear();
+    for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+    {
+        ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
 }
 
