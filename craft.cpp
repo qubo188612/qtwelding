@@ -16,6 +16,18 @@ Craft::~Craft()
 
 }
 
+QString Craft::craft_Id_toQString(Craft_ID craft_id)
+{
+    QString msg;
+    switch(craft_id)
+    {
+        case CRAFT_ID_FIXED_POSTURE:
+            msg=QString::fromLocal8Bit("固定焊接姿态");
+        break;
+    }
+    return msg;
+}
+
 int Craft::LoadCraft(char* filename)    //读取工艺
 {
     QFile loadFile(filename);

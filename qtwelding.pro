@@ -23,14 +23,14 @@ SOURCES += \
         cambuilddlg.cpp \
         craft.cpp \
         demarcatedlg.cpp \
-        editcratfdlg.cpp \
+        editcraftdlg.cpp \
         editprojectdlg.cpp \
         global.cpp \
         ipaddress.cpp \
         main.cpp \
         my_cmd.cpp \
         my_parameters.cpp \
-        newcratfdlg.cpp \
+        newcraftdlg.cpp \
         newprojectdlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
@@ -55,9 +55,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 FORMS += \
     cambuilddlg.ui \
     demarcatedlg.ui \
-    editcratfdlg.ui \
+    editcraftdlg.ui \
     editprojectdlg.ui \
-    newcratfdlg.ui \
+    newcraftdlg.ui \
     newprojectdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
@@ -78,13 +78,13 @@ HEADERS += \
     cambuilddlg.h \
     craft.h \
     demarcatedlg.h \
-    editcratfdlg.h \
+    editcraftdlg.h \
     editprojectdlg.h \
     global.h \
     ipaddress.h \
     my_cmd.h \
     my_parameters.h \
-    newcratfdlg.h \
+    newcraftdlg.h \
     newprojectdlg.h \
     process.h \
     process1_scanbeforetrace.h \

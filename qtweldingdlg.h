@@ -20,8 +20,8 @@
 #include "editprojectdlg.h"
 #include "newprojectdlg.h"
 #include "setprojectdlg.h"
-#include "editcratfdlg.h"
-#include "newcratfdlg.h"
+#include "editcraftdlg.h"
+#include "newcraftdlg.h"
 
 
 namespace Ui {
@@ -67,8 +67,8 @@ public:
     editprojectDlg *editproject;
     newprojectDlg *newproject;
     setprojectDlg *setproject;
-    editcratfDlg *editcratf;
-    newcratfDlg *newcratf;
+    editcraftDlg *editcraft;
+    newcraftDlg *newcraft;
 
 
     unsigned short leaser_rcv_data[15];
