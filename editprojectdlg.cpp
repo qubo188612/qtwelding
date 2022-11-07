@@ -27,12 +27,12 @@ void editprojectDlg::close_dlg_show()
 
 void editprojectDlg::on_BTN1_clicked()
 {
-    done(EDITPROJECTDLG_BTN1);//返回值0
+    done(EDITPROJECTDLG_BTN1);//返回值1
 }
 
 
 void editprojectDlg::on_BTN2_clicked()
 {
-    done(EDITPROJECTDLG_BTN2);//返回值1
+    done(EDITPROJECTDLG_BTN2);//返回值2
 }
 

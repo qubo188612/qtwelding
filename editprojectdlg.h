@@ -4,8 +4,8 @@
 #include <QDialog>
 #include "my_parameters.h"
 
-#define EDITPROJECTDLG_BTN1         0
-#define EDITPROJECTDLG_BTN2         1
+#define EDITPROJECTDLG_BTN1         1
+#define EDITPROJECTDLG_BTN2         2
 
 namespace Ui {
 class editprojectDlg;

@@ -116,7 +116,7 @@ void E2proomData::check_para()
         camdlg_cvimg_posY4=camdlg_cvimg_posY4_use;
 
     if(demdlg_radio_mod<demdlg_radio_mod_min||demdlg_radio_mod>demdlg_radio_mod_max)
-        demdlg_radio_mod=demdlg_radio_mod_use;
+        demdlg_radio_mod=(Eye_Hand_calibrationmode)demdlg_radio_mod_use;
 }
 
 void E2proomData::read_para()
@@ -278,7 +278,7 @@ void E2proomData::read_demdlg_para()
         QString keyString=it.key();
         if(keyString=="demdlg_radio_mod")
         {
-            demdlg_radio_mod=it.value().toInt();
+            demdlg_radio_mod=(Eye_Hand_calibrationmode)it.value().toInt();
         }
         else if(keyString=="demdlg_R")
         {
@@ -508,7 +508,7 @@ void E2proomData::write_demdlg_para()
 
 void E2proomData::init_demdlg_para()
 {
-    demdlg_radio_mod=demdlg_radio_mod_use;
+    demdlg_radio_mod=(Eye_Hand_calibrationmode)demdlg_radio_mod_use;
 }
 
 void E2proomData::write()

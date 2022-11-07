@@ -161,7 +161,7 @@ public:
     Int32 camdlg_cvimg_posY4_use;
  /***************************/
     //手眼标定页面
-    Int32 demdlg_radio_mod;     //0:眼在手上，1:眼在手外
+    Eye_Hand_calibrationmode demdlg_radio_mod;     //0:眼在手上，1:眼在手外
     Eigen::Matrix3d demdlg_R;          //眼在手外旋转矩阵
     Eigen::Vector3d demdlg_T;          //眼在手外平移变量
     std::vector<RobPos> demdlg_Robotpos;  //机器人手眼标定点

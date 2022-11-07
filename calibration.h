@@ -21,12 +21,12 @@ public:
     Calibration();
     ~Calibration();
     //眼在手外的标定,计算旋转和标定矩阵
-    static bool hand_out_yes_point2RT(std::vector<Eigen::Vector3d> &p1,     //输入手坐标
-                                       std::vector<Eigen::Vector3d> &p2,    //输入眼坐标
-                                       Eigen::Matrix3d &R,                  //输出旋转矩阵
-                                       Eigen::Vector3d &T,                  //输出平移举证
-                                       double &err,                         //输出总体精度误差
-                                       std::vector<double> &errgroup);      //输出单个精度误差
+    static bool hand_out_yes_point2RT(std::vector<Eigen::Vector3d> &p1,     //输入眼坐标
+                                      std::vector<Eigen::Vector3d> &p2,    //输入手坐标
+                                      Eigen::Matrix3d &R,                  //输出旋转矩阵
+                                      Eigen::Vector3d &T,                  //输出平移举证
+                                      double &err,                         //输出总体精度误差
+                                      std::vector<double> &errgroup);      //输出单个精度误差
 
     //眼在手上的标定,计算旋转和标定矩阵
     static bool hand_on_yes_point2RT(CAL_POSTURE robot,                     //输入姿态标准
@@ -36,6 +36,21 @@ public:
                                      cv::Mat &matrix_plane2robot,           //输出中间矩阵到机器人矩阵
                                      double &err,                           //输出总体精度误差
                                      std::vector<double> &errgroup);        //输出单个精度误差
+
+    //眼在手外的标定,计算眼到手输出点
+    static bool hand_out_yes_eyetohand(Eigen::Vector3d p_eys,  //输入眼坐标
+                                       Eigen::Matrix3d R,      //输入旋转矩阵
+                                       Eigen::Vector3d T,      //输入平移举证
+                                       Eigen::Vector3d &p_hand //输出手坐标
+                                       );
+
+    //眼在手上的标定,计算眼到手输出点
+    static bool hand_on_yes_eyetohand (CAL_POSTURE robot,                     //输入姿态标准
+                                       TCP_Leaserpos data_group,              //输入标定点眼坐标
+                                       cv::Mat &matrix_camera2plane,          //输出眼到中间矩阵
+                                       cv::Mat &matrix_plane2robot,           //输出中间矩阵到机器人矩阵
+                                       Eigen::Vector3d &p_hand                //输出手坐标
+                                       );
 
 protected:
 

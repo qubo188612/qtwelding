@@ -23,12 +23,14 @@ SOURCES += \
         cambuilddlg.cpp \
         craft.cpp \
         demarcatedlg.cpp \
+        editcratfdlg.cpp \
         editprojectdlg.cpp \
         global.cpp \
         ipaddress.cpp \
         main.cpp \
         my_cmd.cpp \
         my_parameters.cpp \
+        newcratfdlg.cpp \
         newprojectdlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
@@ -41,6 +43,7 @@ SOURCES += \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp \
+        synchronous.cpp \
         tosendbuffer.cpp \
         traceeditdlg.cpp
 
@@ -52,7 +55,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 FORMS += \
     cambuilddlg.ui \
     demarcatedlg.ui \
+    editcratfdlg.ui \
     editprojectdlg.ui \
+    newcratfdlg.ui \
     newprojectdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
@@ -73,11 +78,13 @@ HEADERS += \
     cambuilddlg.h \
     craft.h \
     demarcatedlg.h \
+    editcratfdlg.h \
     editprojectdlg.h \
     global.h \
     ipaddress.h \
     my_cmd.h \
     my_parameters.h \
+    newcratfdlg.h \
     newprojectdlg.h \
     process.h \
     process1_scanbeforetrace.h \
@@ -90,6 +97,7 @@ HEADERS += \
     showtasknumdlg.h \
     soptocameratcpip.h \
     soptopcamera.h \
+    synchronous.h \
     tistdtypes.h \
     tosendbuffer.h \
     traceeditdlg.h

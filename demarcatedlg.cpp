@@ -11,10 +11,10 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
 
     switch(m_mcs->e2proomdata.demdlg_radio_mod)
     {
-        case 0:
+        case HAND_IN_EYE:
             ui->radio1->setChecked(1);
         break;
-        case 1:
+        case HAND_OUT_EYE:
             ui->radio2->setChecked(1);
         break;
     }
@@ -41,14 +41,14 @@ void demarcateDlg::close_dlg_show()
 
 void demarcateDlg::on_radio1_clicked()      //眼在手上
 {
-    m_mcs->e2proomdata.demdlg_radio_mod=0;
+    m_mcs->e2proomdata.demdlg_radio_mod=HAND_IN_EYE;
     updataUi();
 }
 
 
 void demarcateDlg::on_radio2_clicked()      //眼在手外
 {
-    m_mcs->e2proomdata.demdlg_radio_mod=1;
+    m_mcs->e2proomdata.demdlg_radio_mod=HAND_OUT_EYE;
     updataUi();
 }
 
@@ -261,7 +261,7 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
     m_mcs->e2proomdata.write_demdlg_para();
     switch(m_mcs->e2proomdata.demdlg_radio_mod)
     {
-        case 0://眼在手上
+        case HAND_IN_EYE://眼在手上
         {
             if(m_mcs->e2proomdata.demdlg_Robotpos.size()!=1)
             {
@@ -293,7 +293,7 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
             }
         }
         break;
-        case 1://眼在手外
+        case HAND_OUT_EYE://眼在手外
         {
             if(m_mcs->e2proomdata.demdlg_Leaserpos.size()!=m_mcs->e2proomdata.demdlg_Robotpos.size())
             {
@@ -407,7 +407,7 @@ void demarcateDlg::updataUi()
 {
     switch(m_mcs->e2proomdata.demdlg_radio_mod)
     {
-        case 0:
+        case HAND_IN_EYE:
         {
             ui->a00_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(0,0),'f',3));
             ui->a01_label->setText(QString::number(m_mcs->e2proomdata.matrix_camera2plane.at<double>(0,1),'f',3));
@@ -438,7 +438,7 @@ void demarcateDlg::updataUi()
             ui->t22_label->show();
         }
         break;
-        case 1:
+        case HAND_OUT_EYE:
         {
             ui->a00_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,0),'f',3));
             ui->a01_label->setText(QString::number(m_mcs->e2proomdata.demdlg_R(0,1),'f',3));

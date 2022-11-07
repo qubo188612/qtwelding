@@ -11,9 +11,11 @@
 #include "process.h"
 #include "tosendbuffer.h"
 #include "craft.h"
+#include "synchronous.h"
 
 class Process;
 class toSendbuffer;
+class Synchronous;
 
 class my_parameters
 {
@@ -39,6 +41,8 @@ public:
     toSendbuffer *tosendbuffer; //转以太网协议
 
     std::vector<QString> main_record;//主页显示列表信息
+
+    Synchronous *synchronous;    //手眼转换计算
 
 protected:
     my_parameters();

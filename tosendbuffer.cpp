@@ -294,6 +294,17 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             QString name=cmd.cmd_creat_name;//获取到的生成的轨迹名字
             Trace_edit_mode mode=cmd.cmd_creat_mode;//获取到的轨迹生成模式
             std::vector<QString> scanname=cmd.cmd_creat_scanname;//获取到生成轨迹所需要的轨迹名字
+            int weld_trace_num;//搜索到的焊接轨道序号
+            std::vector<RobPos> weld;//轨道
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_weld_trace[n].name)
+                {
+                    weld_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+
             switch(mode)
             {
                 case TRACE_EDIT_MODE_ONE_TO_ONE://单扫单轨
@@ -309,11 +320,27 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         }
                     }
                     //这里添加轨迹拟合
-                    std::vector<Scan_trace_line> scan_trace=m_mcs->project->project_scan_trace[n].point;
-
+                    std::vector<Scan_trace_line> scan_trace=m_mcs->project->project_scan_trace[scan_trace_num].point;
+                    std::vector<Eigen::Vector3d> weld_trace;
+                    if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                    {
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        line=n;
+                        return 1;
+                    }
+                    weld.resize(weld_trace.size());
+                    for(int n=0;n<weld.size();n++)
+                    {
+                        weld[n].X=weld_trace[n].x();
+                        weld[n].Y=weld_trace[n].y();
+                        weld[n].Z=weld_trace[n].z();
+                    }
                 }
                 break;
             }
+            //规划后的轨道
+            m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
         }
         else if(key==CMD_TRACE_KEY)//跟踪命令
         {
@@ -321,8 +348,34 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             float speed=cmd.cmd_trace_speed;//获取到的跟踪速度
             int tcp=cmd.cmd_trace_tcp;//获取到跟踪TCP
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
+            int weld_trace_num;//搜索到的焊接轨道序号
+            std::vector<RobPos> weld;//轨道
             //这里添加移动命令
-
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_weld_trace[n].name)
+                {
+                    weld_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+        #if _MSC_VER
+            QTextCodec *code = QTextCodec::codecForName("GBK");
+        #else
+            QTextCodec *code = QTextCodec::codecForName("UTF-8");
+        #endif
+            std::string fname = code->fromUnicode(craftfilepath).data();
+            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            if(rc!=0)
+            {
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
+                m_mcs->main_record.push_back(return_msg);
+                line=n;
+                return 1;
+            }
+            weld=m_mcs->project->project_weld_trace[weld_trace_num].point;
+            //这里添加姿态
+            m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
         }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {

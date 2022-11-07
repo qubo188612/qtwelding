@@ -45,6 +45,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     editproject=new editprojectDlg(m_mcs);
     newproject=new newprojectDlg(m_mcs);
     setproject=new setprojectDlg(m_mcs);
+    editcratf=new editcratfDlg(m_mcs);
+    newcratf=new newcratfDlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -139,6 +141,8 @@ qtweldingDlg::~qtweldingDlg()
     delete editproject;
     delete newproject;
     delete setproject;
+    delete editcratf;
+    delete newcratf;
     delete ui;
 }
 
@@ -336,9 +340,37 @@ void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
     thread2->start();
 }
 
-void qtweldingDlg::on_weldersetBtn_clicked()//焊机设置
+void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
 {
+    int rc;
+    editcratf->init_dlg_show();
+    editcratf->setWindowTitle(QString::fromLocal8Bit("焊接工艺设置"));
+    rc=editcratf->exec();
+    editcratf->close_dlg_show();
+    switch(rc)
+    {
+        case EDITCRATFDLG_BTN1:   //新建工艺
+        {
+            int rc2;
+            newcratf->init_dlg_show();
+            newcratf->setWindowTitle(QString::fromLocal8Bit("新建工艺"));
+            rc2=newcratf->exec();
+            newcratf->close_dlg_show();
+            if(rc2!=0)//保存成功返回
+            {
 
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消新建工艺"));
+            }
+        }
+        break;
+        case EDITCRATFDLG_BTN2:   //选择现有工艺
+        {
+        }
+        break;
+    }
 }
 
 void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
@@ -872,5 +904,8 @@ void qtrecordThread::Stop()
     }
   }
 }
+
+
+
 
 

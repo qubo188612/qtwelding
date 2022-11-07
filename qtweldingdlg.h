@@ -20,6 +20,8 @@
 #include "editprojectdlg.h"
 #include "newprojectdlg.h"
 #include "setprojectdlg.h"
+#include "editcratfdlg.h"
+#include "newcratfdlg.h"
 
 
 namespace Ui {
@@ -65,6 +67,8 @@ public:
     editprojectDlg *editproject;
     newprojectDlg *newproject;
     setprojectDlg *setproject;
+    editcratfDlg *editcratf;
+    newcratfDlg *newcratf;
 
 
     unsigned short leaser_rcv_data[15];
@@ -97,9 +101,9 @@ private slots:
 
     void on_demarcateBtn_clicked();
 
-    void on_weldersetBtn_clicked();
-
     void on_runpausedBtn_clicked();
+
+    void on_editweldprocessBtn_clicked();
 
 private:
     Ui::qtweldingDlg *ui;

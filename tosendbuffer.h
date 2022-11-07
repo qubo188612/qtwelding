@@ -1,6 +1,7 @@
 #ifndef TOSENDBUFFER_H
 #define TOSENDBUFFER_H
 
+#include <QTextCodec>
 #include "global.h"
 #include "modbus/modbus.h"
 #include "my_parameters.h"

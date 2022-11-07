@@ -10,8 +10,8 @@ Calibration::~Calibration()
 
 }
 
-bool Calibration::hand_out_yes_point2RT(std::vector<Eigen::Vector3d> &p1,    //输入手坐标
-                                       std::vector<Eigen::Vector3d> &p2,    //输入眼坐标
+bool Calibration::hand_out_yes_point2RT(std::vector<Eigen::Vector3d> &p1,   //输入眼坐标
+                                       std::vector<Eigen::Vector3d> &p2,    //输入手坐标
                                        Eigen::Matrix3d &R,                  //输出旋转矩阵
                                        Eigen::Vector3d &T,                  //输出平移举证
                                        double &err,                         //输出总体精度误差
@@ -149,6 +149,32 @@ bool Calibration::hand_on_yes_point2RT(CAL_POSTURE robot,                     //
         err=err+errgroup[n];
     }
     err=err/data_group.size();
+    return true;
+}
+
+bool Calibration::hand_out_yes_eyetohand(Eigen::Vector3d p_eye,     //输入手坐标
+                                         Eigen::Matrix3d R,         //输入旋转矩阵
+                                         Eigen::Vector3d T,         //输入平移举证
+                                         Eigen::Vector3d &p_hand    //输出手坐标
+                                         )
+{
+    p_hand = R * p_eye + T;
+    return true;
+}
+
+bool Calibration::hand_on_yes_eyetohand (CAL_POSTURE robot,                     //输入姿态标准
+                                         TCP_Leaserpos data_group,              //输入标定点眼坐标
+                                         cv::Mat &matrix_camera2plane,          //输出眼到中间矩阵
+                                         cv::Mat &matrix_plane2robot,           //输出中间矩阵到机器人矩阵
+                                         Eigen::Vector3d &p_hand                //输出手坐标
+                                        )
+{
+    cv::Point3f testrob;
+    /**********************error:计算结果需要小盒子坐标与机器人坐标***************************/
+    testrob=ComputePosition(robot,data_group,matrix_camera2plane,matrix_plane2robot);
+    p_hand.x()=testrob.x;
+    p_hand.y()=testrob.y,
+    p_hand.z()=testrob.z;
     return true;
 }
 

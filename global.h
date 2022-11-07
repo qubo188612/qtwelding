@@ -375,4 +375,12 @@ typedef enum TRACE_EDIT_MODE_ID
     TRACE_EDIT_MODE_ONE_TO_ONE=0,       //单扫对单轨道模式
 }Trace_edit_mode;
 
+//手眼标定模式
+typedef enum EYE_HAND_CALIBRATIONMODE_ID
+{
+    HAND_IN_EYE=0,      //眼在手上
+    HAND_OUT_EYE=1,     //眼在手外
+}Eye_Hand_calibrationmode;
+
+
 #endif // GLOBAL_H
