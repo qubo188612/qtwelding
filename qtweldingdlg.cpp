@@ -47,6 +47,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     setproject=new setprojectDlg(m_mcs);
     editcraft=new editcraftDlg(m_mcs);
     newcraft=new newcraftDlg(m_mcs);
+    setcraft=new setcraftDlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -143,6 +144,7 @@ qtweldingDlg::~qtweldingDlg()
     delete setproject;
     delete editcraft;
     delete newcraft;
+    delete setcraft;
     delete ui;
 }
 
@@ -342,6 +344,11 @@ void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
 
 void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
 {
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
     int rc;
     editcraft->init_dlg_show();
     editcraft->setWindowTitle(QString::fromLocal8Bit("焊接工艺设置"));
@@ -358,7 +365,19 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
             newcraft->close_dlg_show();
             if(rc2!=0)//保存成功返回
             {
-
+                QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
+                            +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
+                switch(m_mcs->craft->craft_id)
+                {
+                    case CRAFT_ID_FIXED_POSTURE:
+                    {
+                        setcraft->init_dlg_show();
+                        setcraft->setWindowTitle(msg);
+                        setcraft->exec();
+                        setcraft->close_dlg_show();
+                    }
+                    break;
+                }
             }
             else
             {
@@ -368,6 +387,36 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
         break;
         case EDITCRAFTDLG_BTN2:   //选择现有工艺
         {
+            QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要编辑的工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
+        #if _MSC_VER
+            QTextCodec *code = QTextCodec::codecForName("GBK");
+        #else
+            QTextCodec *code = QTextCodec::codecForName("UTF-8");
+        #endif
+            std::string name = code->fromUnicode(fileName).data();
+            if(name.size()>0)
+            {
+                if(0!=m_mcs->craft->LoadCraft((char*)name.c_str()))
+                {
+                    ui->record->append(QString::fromLocal8Bit("工艺文件内容格式错误,读取失败"));
+                }
+                else
+                {
+                    QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
+                                +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
+                    switch(m_mcs->craft->craft_id)
+                    {
+                        case CRAFT_ID_FIXED_POSTURE:
+                        {
+                            setcraft->init_dlg_show();
+                            setcraft->setWindowTitle(msg);
+                            setcraft->exec();
+                            setcraft->close_dlg_show();
+                        }
+                        break;
+                    }
+                }
+            }
         }
         break;
     }

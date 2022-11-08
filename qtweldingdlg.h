@@ -22,6 +22,7 @@
 #include "setprojectdlg.h"
 #include "editcraftdlg.h"
 #include "newcraftdlg.h"
+#include "setcraftdlg.h"
 
 
 namespace Ui {
@@ -69,6 +70,7 @@ public:
     setprojectDlg *setproject;
     editcraftDlg *editcraft;
     newcraftDlg *newcraft;
+    setcraftDlg *setcraft;
 
 
     unsigned short leaser_rcv_data[15];

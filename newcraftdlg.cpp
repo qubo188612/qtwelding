@@ -25,7 +25,6 @@ void newcraftDlg::init_dlg_show()
 {
     now_craft_Id=ui->craft_Id->count();
     ui->craft_Id->setCurrentRow(now_craft_Id);//设置当前选项无效，也不选中其他
-    ui->craft_name->clear();
 }
 
 void newcraftDlg::close_dlg_show()
@@ -35,12 +34,7 @@ void newcraftDlg::close_dlg_show()
 
 void newcraftDlg::on_pushButton_clicked()
 {
-    QString craft_name=ui->craft_name->text();
-    if(craft_name.size()==0)
-    {
-        ui->record->append(QString::fromLocal8Bit("请先选填写要新建的工艺名称"));
-    }
-    else if(now_craft_Id>=ui->craft_Id->count())
+    if(now_craft_Id>=ui->craft_Id->count())
     {
         ui->record->append(QString::fromLocal8Bit("请先选中要新建的工艺类型"));
     }
@@ -49,21 +43,19 @@ void newcraftDlg::on_pushButton_clicked()
         QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工艺路径"), "./CRAFT/.craft", "CRAFT(*.craft)");
         if(fileName.size()>0)
         {
-            m_mcs->craft->craft_name=craft_name;
             m_mcs->craft->craft_id=(Craft_ID)now_craft_Id;
             QString msg=fileName;
-            if(fileName.size()>=5)
+            if(fileName.size()>=6)
             {
                 QString tem1=".craft";
                 QString tem2=".CRAFT";
-                QString tem=fileName.mid(fileName.size()-5,5);
+                QString tem=fileName.mid(fileName.size()-6,6);
                 if(tem!=tem1&&tem!=tem2)//文件名末尾不是".craft"或".CRAFT"
                 {
                     msg=msg+".craft";
                 }
             }
-            m_mcs->project->project_path=msg;
-            m_mcs->project->SaveProject((char*)msg.toStdString().c_str());
+            m_mcs->craft->craft_path=msg;
             done(1);
         }
         else

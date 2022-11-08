@@ -39,6 +39,7 @@ SOURCES += \
         qtweldingdlg.cpp \
         robotdata.cpp \
         robotsetdlg.cpp \
+        setcraftdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
@@ -62,6 +63,7 @@ FORMS += \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
+    setcraftdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
     traceeditdlg.ui
@@ -93,6 +95,7 @@ HEADERS += \
     qtweldingdlg.h \
     robotdata.h \
     robotsetdlg.h \
+    setcraftdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \
     soptocameratcpip.h \
