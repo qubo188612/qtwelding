@@ -72,6 +72,10 @@ E2proomData::E2proomData()
     demdlg_radio_mod_max=E2POOM_DEMDLG_RADIO_MOD_MAX;
     demdlg_radio_mod_use=E2POOM_DEMDLG_RADIO_MOD_USE;
 
+    maindlg_SaveDatacheckBox_min=E2POOM_MAINDLG_SAVEDATA_MIN;
+    maindlg_SaveDatacheckBox_max=E2POOM_MAINDLG_SAVEDATA_MAX;
+    maindlg_SaveDatacheckBox_use=E2POOM_MAINDLG_SAVEDATA_USE;
+
     read_para();
 }
 
@@ -117,12 +121,16 @@ void E2proomData::check_para()
 
     if(demdlg_radio_mod<demdlg_radio_mod_min||demdlg_radio_mod>demdlg_radio_mod_max)
         demdlg_radio_mod=(Eye_Hand_calibrationmode)demdlg_radio_mod_use;
+
+    if(maindlg_SaveDatacheckBox<maindlg_SaveDatacheckBox_min||maindlg_SaveDatacheckBox>maindlg_SaveDatacheckBox_max)
+        maindlg_SaveDatacheckBox=maindlg_SaveDatacheckBox_use;
 }
 
 void E2proomData::read_para()
 {
     read_camdlg_para();
     read_demdlg_para();
+    read_maindlg_para();
 
     check_para();
 }
@@ -511,10 +519,73 @@ void E2proomData::init_demdlg_para()
     demdlg_radio_mod=(Eye_Hand_calibrationmode)demdlg_radio_mod_use;
 }
 
+void E2proomData::read_maindlg_para()
+{
+    Uint8 *buff=NULL;
+    CFileOut fo;
+
+    buff=new Uint8[E2POOM_MAINDLG_SAVEBUFF];
+    if(buff==NULL)
+        return;
+    if(0 > fo.ReadFile((char*)E2POOM_MAINDLG_SYSPATH_MOTO,buff,E2POOM_MAINDLG_SAVEBUFF))
+    {
+        init_maindlg_para();
+        if(buff!=NULL)
+        {
+          delete []buff;
+          buff=NULL;
+        }
+    }
+    else
+    {
+      Int32 *i32_p;
+
+      i32_p = (Int32*)buff;
+      maindlg_SaveDatacheckBox=*i32_p;
+      i32_p++;
+    }
+    if(buff!=NULL)
+    {
+      delete []buff;
+      buff=NULL;
+    }
+}
+
+void E2proomData::write_maindlg_para()
+{
+    Uint8 *buff=NULL;
+    CFileOut fo;
+
+    check_para();
+    buff=new Uint8[E2POOM_MAINDLG_SAVEBUFF];
+    if(buff==NULL)
+      return;
+
+    Int32 *i32_p;
+
+    i32_p = (Int32*)buff;
+    *i32_p=maindlg_SaveDatacheckBox;
+    i32_p++;
+
+    fo.WriteFile((char*)E2POOM_MAINDLG_SYSPATH_MOTO,buff,E2POOM_MAINDLG_SAVEBUFF);
+
+    if(buff!=NULL)
+    {
+      delete []buff;
+      buff=NULL;
+    }
+}
+
+void E2proomData::init_maindlg_para()
+{
+    maindlg_SaveDatacheckBox=maindlg_SaveDatacheckBox_use;
+}
+
 void E2proomData::write()
 {
     write_camdlg_para();
     write_demdlg_para();
+    write_maindlg_para();
 }
 
 int E2proomData::Loadjsonfile(char* filename,QJsonDocument &jsonDoc)

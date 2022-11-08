@@ -16,6 +16,10 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     QDir dir(filePath);
     if(!dir.exists())
         QDir().mkdir(filePath);
+    filePath =  "./log";
+    QDir dir(filePath);
+    if(!dir.exists())
+        QDir().mkdir(filePath);
 #else
     std::string dir;
     dir = "./DATA";
@@ -27,6 +31,11 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     if (access(dir.c_str(), 0) == -1)
     {
       mkdir("./CRAFT",S_IRWXU);
+    }
+    dir = "./log";
+    if (access(dir.c_str(), 0) == -1)
+    {
+      mkdir("./log",S_IRWXU);
     }
 #endif
     m_mcs=m_mcs->Get();
@@ -80,6 +89,16 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->weld_current->setText(QString::fromLocal8Bit("0.000"));
     ui->weld_process->setText(QString::fromLocal8Bit("平焊"));
     ui->weld_alternating->setText(QString::fromLocal8Bit("直流"));
+
+    if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox==0)
+    {
+        ui->SaveDatacheckBox->setCheckState(Qt::Unchecked);
+    }
+    else
+    {
+        ui->SaveDatacheckBox->setCheckState(Qt::Checked);
+    }
+
 
     thread1 = new qtweldingThread(this);
     connect(thread1, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
@@ -453,6 +472,22 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
     }
 }
+
+void qtweldingDlg::on_SaveDatacheckBox_stateChanged(int arg1)//保存数据
+{
+    if(arg1==0)
+    {
+        m_mcs->e2proomdata.maindlg_SaveDatacheckBox=0;
+        ui->record->append(QString::fromLocal8Bit("开启轨迹数据保存功能"));
+    }
+    else
+    {
+        m_mcs->e2proomdata.maindlg_SaveDatacheckBox=1;
+        ui->record->append(QString::fromLocal8Bit("关闭轨迹数据保存功能"));
+    }
+    m_mcs->e2proomdata.write_maindlg_para();
+}
+
 
 void qtweldingDlg::ConnectCamer()
 {
@@ -953,8 +988,4 @@ void qtrecordThread::Stop()
     }
   }
 }
-
-
-
-
 

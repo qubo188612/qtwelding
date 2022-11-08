@@ -1,10 +1,17 @@
 #ifndef TOSENDBUFFER_H
 #define TOSENDBUFFER_H
 
+#include <QFile>
 #include <QTextCodec>
 #include "global.h"
 #include "modbus/modbus.h"
 #include "my_parameters.h"
+#include "TimeFunction.h"
+
+#define SAVELOGFILE_SCANNAME_HEAD     "SCAN_"       //保存的扫描轨迹类型的文件前缀名称
+#define SAVELOGFILE_CREATNAME_HEAD    "CREAT_"      //保存的焊接轨迹类型(未添加姿态前)的文件前缀名称
+#define SAVELOGFILE_TRACENAME_HEAD    "TRACE_"      //保存的焊接轨迹类型的文件前缀名称
+
 
 class my_parameters;
 
@@ -39,6 +46,9 @@ protected:
 
     u_int16_t u16data_elec_work;     //焊机启停寄存器值
 
+    int savelog_scan(QString filename,std::vector<Scan_trace_line> trace);    //保存扫描轨迹
+    int savelog_creat(QString filename,std::vector<RobPos> trace); //保存跟踪(未添加姿态前)轨迹
+    int savelog_trace(QString filename,std::vector<RobPos> trace); //保存跟踪轨迹
 };
 
 #endif // TOSENDBUFFER_H

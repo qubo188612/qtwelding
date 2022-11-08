@@ -166,11 +166,29 @@ int toSendbuffer::cmdlist_check()
             return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
             m_mcs->main_record.push_back(return_msg);
         }
+        if(key==CMD_TRACE_KEY)//跟踪命令时查看是否能找到工艺路径
+        {
+            QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
+        #if _MSC_VER
+            QTextCodec *code = QTextCodec::codecForName("GBK");
+        #else
+            QTextCodec *code = QTextCodec::codecForName("UTF-8");
+        #endif
+            std::string fname = code->fromUnicode(craftfilepath).data();
+            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            if(rc!=0)
+            {
+                err=1;
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
+                m_mcs->main_record.push_back(return_msg);
+            }
+        }
     }
-    if(0!=cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+    if(0!=cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))//查看是否有重名轨迹
     {
         err=1;//轨道命名出错
     }
+
     return err;
 }
 
@@ -287,6 +305,18 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 //开始采集检测数据
                 usleep(0);
             }
+            if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存扫描轨迹
+            {
+                QString dir="./log/";
+                QString key=SAVELOGFILE_SCANNAME_HEAD;
+                QString time;
+                std::string s_time;
+                TimeFunction to;
+                to.get_time_ms(&s_time);
+                time=QString::fromStdString(s_time);
+                dir=dir+time+key+name;
+                savelog_scan(dir,m_mcs->project->project_scan_trace[scan_trace_num].point);
+            }
         }
         else if(key==CMD_CREAT_KEY)//生成轨迹命令
         {
@@ -341,6 +371,19 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             }
             //规划后的轨道
             m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
+
+            if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
+            {
+                QString dir="./log/";
+                QString key=SAVELOGFILE_CREATNAME_HEAD;
+                QString time;
+                std::string s_time;
+                TimeFunction to;
+                to.get_time_ms(&s_time);
+                time=QString::fromStdString(s_time);
+                dir=dir+time+key+name;
+                savelog_creat(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
+            }
         }
         else if(key==CMD_TRACE_KEY)//跟踪命令
         {
@@ -350,6 +393,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
             int weld_trace_num;//搜索到的焊接轨道序号
             std::vector<RobPos> weld;//轨道
+
             //这里添加移动命令
             for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
             {
@@ -365,17 +409,64 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             QTextCodec *code = QTextCodec::codecForName("UTF-8");
         #endif
             std::string fname = code->fromUnicode(craftfilepath).data();
-            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
-            if(rc!=0)
-            {
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
-                m_mcs->main_record.push_back(return_msg);
-                line=n;
-                return 1;
-            }
+            m_mcs->craft->LoadCraft((char*)fname.c_str());
             weld=m_mcs->project->project_weld_trace[weld_trace_num].point;
             //这里添加姿态
+            switch(m_mcs->craft->craft_id)
+            {
+                case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                {
+                    for(int n=0;n<weld.size();n++)
+                    {
+                        weld[n].RX=m_mcs->craft->posturelist[0].RX;
+                        weld[n].RY=m_mcs->craft->posturelist[0].RY;
+                        weld[n].RZ=m_mcs->craft->posturelist[0].RZ;
+                        weld[n].nEn=true;
+                    }
+                }
+                break;
+            }
+
+            switch(m_mcs->craft->pendulum_mode)
+            {
+                case PENDULUM_ID_FLAT://平焊
+                {
+                }
+                break;
+            }
+
             m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
+
+            if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
+            {
+                QString dir="./log/";
+                QString key=SAVELOGFILE_TRACENAME_HEAD;
+                QString time;
+                std::string s_time;
+                TimeFunction to;
+                to.get_time_ms(&s_time);
+                time=QString::fromStdString(s_time);
+                dir=dir+time+key+name;
+                savelog_trace(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
+            }
+            for(int n=0;n<m_mcs->project->project_weld_trace[weld_trace_num].point.size();n++)
+            {
+                RobPos pos=m_mcs->project->project_weld_trace[weld_trace_num].point[n];
+                cmd_move(pos,MOVEL,speed,tcp);//这里考虑暂停如何加
+            }
+            usleep(ROB_WORK_DELAY);
+            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+            {
+                if(b_cmdlist_build==false)     //停止
+                {
+                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    cmd_lock(true);
+                    line=n;
+                    return 1;
+                }
+                usleep(ROB_WORK_DELAY_STEP);
+            }
         }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {
@@ -495,3 +586,109 @@ void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,int work)
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
 }
 
+int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> trace)
+{
+    QString msg;
+    QString format=".txt";
+    QString pointUV="_pointUV";     //UV点
+    QString pointYZ="_pointYZ";     //结果点
+    QString linecloud="_linecloud"; //激光线点
+    std::string name;
+
+    QString filenamepointUV=filename+pointUV+format;
+    QFile fp1(filenamepointUV);
+    if(!fp1.open(QIODevice::WriteOnly))
+        return -1;
+    for(int n=0;n<trace.size();n++)
+    {
+        QString pointdata;
+        for(int m=0;m<trace[n].ros_line.targetpointoutcloud.size();m++)
+        {
+            int u=trace[n].ros_line.targetpointoutcloud[m].u;
+            int v=trace[n].ros_line.targetpointoutcloud[m].v;
+            pointdata="pointUV"+QString::number(m)+"("+QString::number(u)+","+QString::number(v)+")";
+        }
+        msg="Line"+QString::number(n)+": "+pointdata+"\n";
+        fp1.write(msg.toStdString().c_str());
+    }
+    fp1.close();
+
+    QString filenamepointYZ=filename+pointYZ+format;
+    QFile fp2(filenamepointYZ);
+    if(!fp2.open(QIODevice::WriteOnly))
+        return -1;
+    for(int n=0;n<trace.size();n++)
+    {
+        QString pointdata;
+        for(int m=0;m<trace[n].ros_line.targetpointoutcloud.size();m++)
+        {
+            float Y=trace[n].ros_line.targetpointoutcloud[m].x;
+            float Z=trace[n].ros_line.targetpointoutcloud[m].y;
+            pointdata="pointYZ"+QString::number(m)+"("+QString::number(Y,'f',3)+","+QString::number(Z,'f',3)+")";
+        }
+        msg="Line"+QString::number(n)+": "+pointdata+"\n";
+        fp2.write(msg.toStdString().c_str());
+    }
+    fp2.close();
+
+    QString filenamepointlinecloud=filename+linecloud+format;
+    QFile fp3(filenamepointlinecloud);
+    if(!fp3.open(QIODevice::WriteOnly))
+        return -1;
+    for(int n=0;n<trace.size();n++)
+    {
+        msg="Line"+QString::number(n)+":\n";
+        fp3.write(msg.toStdString().c_str());
+        for(int m=0;m<trace[n].ros_line.lasertrackoutcloud.size();m++)
+        {
+            int u=trace[n].ros_line.lasertrackoutcloud[m].u;
+            int v=trace[n].ros_line.lasertrackoutcloud[m].v;
+            float Y=trace[n].ros_line.lasertrackoutcloud[m].x;
+            float Z=trace[n].ros_line.lasertrackoutcloud[m].y;
+            QString linedata="U="+QString::number(u)+",V="+QString::number(v)+",Y="+QString::number(Y,'f',3)+",Z="+QString::number(Z,'f',3)+"\n";
+            fp3.write(linedata.toStdString().c_str());
+        }
+    }
+    fp3.close();;
+
+    return 0;
+}
+
+int toSendbuffer::savelog_creat(QString filename,std::vector<RobPos> trace)
+{
+    QString msg;
+    QString format=".txt";
+    QString rob="_RobXYZ";
+
+    QString filenamerob=filename+rob+format;
+    QFile fp(filenamerob);
+    if(!fp.open(QIODevice::WriteOnly))
+        return -1;
+    for(int n=0;n<trace.size();n++)
+    {
+        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',3)+","+QString::number(trace[n].Y,'f',3)+","+QString::number(trace[n].Z,'f',3)+")\n";
+        fp.write(msg.toStdString().c_str());
+    }
+    fp.close();
+    return 0;
+}
+
+int toSendbuffer::savelog_trace(QString filename,std::vector<RobPos> trace)
+{
+    QString msg;
+    QString format=".txt";
+    QString rob="_RobXYZRXRYRZ";
+
+    QString filenamerob=filename+rob+format;
+    QFile fp(filenamerob);
+    if(!fp.open(QIODevice::WriteOnly))
+        return -1;
+    for(int n=0;n<trace.size();n++)
+    {
+        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',3)+","+QString::number(trace[n].Y,'f',3)+","+QString::number(trace[n].Z,'f',3)+","+
+                  QString::number(trace[n].RX,'f',3)+","+QString::number(trace[n].RY,'f',3)+","+QString::number(trace[n].RZ,'f',3)+")\n";
+        fp.write(msg.toStdString().c_str());
+    }
+    fp.close();
+    return 0;
+}

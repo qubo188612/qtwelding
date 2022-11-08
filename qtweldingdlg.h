@@ -107,6 +107,8 @@ private slots:
 
     void on_editweldprocessBtn_clicked();
 
+    void on_SaveDatacheckBox_stateChanged(int arg1);
+
 private:
     Ui::qtweldingDlg *ui;
 

@@ -664,7 +664,7 @@ void setprojectDlg::on_OKBtn_clicked()//保存指令
 
 void setprojectDlg::on_tracefilepathBtn_clicked()//修改路径
 {
-    QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "JSON(*.json)");
+    QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
 #if _MSC_VER
     QTextCodec *code = QTextCodec::codecForName("GBK");
 #else

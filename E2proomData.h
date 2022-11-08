@@ -80,6 +80,12 @@
 #define E2POOM_DEMDLG_RADIO_MOD_MAX         1
 #define E2POOM_DEMDLG_RADIO_MOD_USE         0
 
+#define E2POOM_MAINDLG_SAVEBUFF             8
+#define E2POOM_MAINDLG_SYSPATH_MOTO         "./SAVE/E2P_MAINDLG.bsd"
+#define E2POOM_MAINDLG_SAVEDATA_MIN         0
+#define E2POOM_MAINDLG_SAVEDATA_MAX         1
+#define E2POOM_MAINDLG_SAVEDATA_USE         0
+
 
 class E2proomData
 {
@@ -176,6 +182,18 @@ public:
     void read_demdlg_para();
     void write_demdlg_para();
     void init_demdlg_para();
+ /***************************/
+    //主页面
+    Int32 maindlg_SaveDatacheckBox;             //0:不保存轨道处理数据，1:保存轨道处理数据
+
+    void read_maindlg_para();
+    void write_maindlg_para();
+    void init_maindlg_para();
+
+    Int32 maindlg_SaveDatacheckBox_min;
+    Int32 maindlg_SaveDatacheckBox_max;
+    Int32 maindlg_SaveDatacheckBox_use;
+
  /***************************/
     void write();
 private:
