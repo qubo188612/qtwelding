@@ -33,6 +33,7 @@ public:
     float fps;          //算法帧率
     float camfps;       //相机帧率
     uint16_t state;     //有效位
+    uint16_t task;      //任务号
 
 
     uint8_t link_result_state;

@@ -337,6 +337,11 @@ void SoptopCamera::DisConnect()
     if(b_connect==true)
     {
         stop_b_connect=false;
+        /*********************/
+        rclcpp::shutdown();
+        b_connect=false;
+        stop_b_connect=true;
+        /*
         b_connect=false;
         while (stop_b_connect==false||b_stopthred==false)
         {
@@ -348,8 +353,9 @@ void SoptopCamera::DisConnect()
               break;
           }
         }
+        */
+        /*********************/
         killTimer(timerid1);
-
         if(StartCamera_thread!=NULL)
         {
             StartCamera_thread->quit();

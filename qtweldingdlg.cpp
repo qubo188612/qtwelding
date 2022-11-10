@@ -478,12 +478,12 @@ void qtweldingDlg::on_SaveDatacheckBox_stateChanged(int arg1)//保存数据
     if(arg1==0)
     {
         m_mcs->e2proomdata.maindlg_SaveDatacheckBox=0;
-        ui->record->append(QString::fromLocal8Bit("开启轨迹数据保存功能"));
+        ui->record->append(QString::fromLocal8Bit("关闭轨迹数据保存功能"));
     }
     else
     {
         m_mcs->e2proomdata.maindlg_SaveDatacheckBox=1;
-        ui->record->append(QString::fromLocal8Bit("关闭轨迹数据保存功能"));
+        ui->record->append(QString::fromLocal8Bit("开启轨迹数据保存功能"));
     }
     m_mcs->e2proomdata.write_maindlg_para();
 }
@@ -509,18 +509,6 @@ void qtweldingDlg::ConnectCamer()
     //  RunAlgCamer();
     }
 
-    u_int16_t task;
-    real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_result,ALS_TASKNUM_REG_ADD,1,&task);
-    if(real_readnum<0)
-    {
-        ui->record->append(QString::fromLocal8Bit("激光头获取当前任务号信息失败"));
-    }
-    else
-    {
-        ui->leaser_tasknum->setText(QString::number(task));
-        QString msg=QString::fromLocal8Bit("激光头获取当前内部任务号:")+QString::number(task);
-        ui->record->append(msg);
-    }
 }
 
 void qtweldingDlg::DisconnectCamer()
@@ -672,6 +660,7 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
 
     ui->leaser_camera_fps->setText(QString::number(m_mcs->resultdata.fps,'f',2));
     ui->leaser_result_fps->setText(QString::number(m_mcs->resultdata.camfps,'f',2));
+    ui->leaser_tasknum->setText(QString::number(m_mcs->resultdata.task));
 
     b_init_show_ui_list=true;
 }
@@ -819,6 +808,11 @@ void qtweldingThread::run()
                             _p->m_mcs->resultdata.pos2.nEn=true;
                             _p->m_mcs->resultdata.pos3.nEn=true;
                         }
+                    }
+                    if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,ALS_TASKNUM_REG_ADD,1,_p->leaser_rcv_data3))
+                    {
+                        int tasknum=(int16_t)_p->leaser_rcv_data3[0];
+                        _p->m_mcs->resultdata.task=tasknum;
                     }
                 }
             }

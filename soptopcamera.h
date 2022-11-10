@@ -50,8 +50,8 @@ public:
     void InitConnect(PictureBox *lab_show); //连接相机显示图像
     void InitConnect();//连接相机不显示图像
     void DisConnect();
-    bool b_connect;
-    bool stop_b_connect;
+    volatile bool b_connect;
+    volatile bool stop_b_connect;
     bool b_connetc_noimage;     //是否显示图像的连接
 
     int i32_exposure;
@@ -88,7 +88,7 @@ public:
 
     volatile int callbacknumber;
 
-    bool callback_error;
+    volatile bool callback_error;
 
     bool luzhi;
     cv::VideoWriter writer;
