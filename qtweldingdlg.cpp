@@ -100,7 +100,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     }
 
     /************************************************/
+#ifdef USE_MYROBOT_CONTROL      //是否使用程序自带接口
     m_mcs->robotcontrol->Creat_control_modbus();//创建自带接口
+#endif
     /*************************************************/
 
     thread1 = new qtweldingThread(this);

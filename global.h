@@ -6,6 +6,8 @@
 
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
+#define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
+
 #if _MSC_VER
 #include "tistdtypes.h"
 
