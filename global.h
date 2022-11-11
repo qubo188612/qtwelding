@@ -3,6 +3,8 @@
 
 #include "tutorial_interfaces/msg/if_algorhmitcloud.hpp"
 #include "QString"
+
+
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #if _MSC_VER
 #include "tistdtypes.h"
@@ -43,7 +45,14 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_WORK_DELAY_STEP 10000       //机器人每步循环等待时间(微秒)
 
 /*****************************/
+//自带机器人控制接口
+#define PORT_ROB_MYSELF_CONTROL_IP            "127.0.0.2"
+#define PORT_ROB_MYSELF_CONTROL_PORT          1496
+/******************************/
+
 //机器人信息和指令传输端口                        (1477-1496)
+#define ROB_CONTROL_REG_TOTALNUM              0x500         //机器人控制器寄存器总个数
+
 
 #define ROB_X_POS_FH_REG_ADD                  0x0000       //机器人当前坐标
 #define ROB_X_POS_FL_REG_ADD                  0x0001
@@ -71,7 +80,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_MOVEFIER_REG_ADD                  0x0103        //是否起弧移动
 #define ROB_MOVESPEED_FH_REG_ADD              0x0104        //移动速度
 #define ROB_MOVESPEED_FL_REG_ADD              0x0105
-#define ROB_MOVE_X_POS_FH_REG_ADD             0x0106       //移动终点
+#define ROB_MOVE_X_POS_FH_REG_ADD             0x0106        //移动终点
 #define ROB_MOVE_X_POS_FL_REG_ADD             0x0107
 #define ROB_MOVE_Y_POS_FH_REG_ADD             0x0108
 #define ROB_MOVE_Y_POS_FL_REG_ADD             0x0109

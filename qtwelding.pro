@@ -37,6 +37,7 @@ SOURCES += \
         project.cpp \
         qtmysunnydlg.cpp \
         qtweldingdlg.cpp \
+        robotcontrol.cpp \
         robotdata.cpp \
         robotsetdlg.cpp \
         setcraftdlg.cpp \
@@ -93,6 +94,7 @@ HEADERS += \
     project.h \
     qtmysunnydlg.h \
     qtweldingdlg.h \
+    robotcontrol.h \
     robotdata.h \
     robotsetdlg.h \
     setcraftdlg.h \

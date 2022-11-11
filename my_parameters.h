@@ -12,7 +12,10 @@
 #include "tosendbuffer.h"
 #include "craft.h"
 #include "synchronous.h"
+#include "robotcontrol.h"
 
+
+class Robotcontrol;
 class Process;
 class toSendbuffer;
 class Synchronous;
@@ -43,6 +46,8 @@ public:
     std::vector<QString> main_record;//主页显示列表信息
 
     Synchronous *synchronous;    //手眼转换计算
+
+    Robotcontrol *robotcontrol;     //自带机器人协议
 
 protected:
     my_parameters();

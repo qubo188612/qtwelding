@@ -17,6 +17,7 @@ my_parameters::my_parameters()
     process=process->Get(this);
     process->process1_scanbeforetrace=process->process1_scanbeforetrace->Get(this);
     synchronous=synchronous->Get(this);
+    robotcontrol=robotcontrol->Get(this);
     for(int n=0;n<CAMTOTALNUM;n++)
     {
         cam->sop_cam[n].ipaddress=ip->camer_ip[n].ip;

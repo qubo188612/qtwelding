@@ -418,6 +418,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     for(int n=0;n<weld.size();n++)
                     {
+                        weld[n].X=weld[n].X+m_mcs->craft->posturelist[0].X;
+                        weld[n].Y=weld[n].Y+m_mcs->craft->posturelist[0].Y;
+                        weld[n].Z=weld[n].Z+m_mcs->craft->posturelist[0].Z;
                         weld[n].RX=m_mcs->craft->posturelist[0].RX;
                         weld[n].RY=m_mcs->craft->posturelist[0].RY;
                         weld[n].RZ=m_mcs->craft->posturelist[0].RZ;

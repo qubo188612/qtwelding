@@ -27,6 +27,8 @@ IPaddress::IPaddress()
         robot_ip[0].robot_ip.port=1496;
         robot_ip[0].remote_ip.ip="192.168.1.3";
     }
+    robotmyselfcontrol_ip[0].ip=PORT_ROB_MYSELF_CONTROL_IP;
+    robotmyselfcontrol_ip[0].port=PORT_ROB_MYSELF_CONTROL_PORT;
 }
 
 IPaddress::~IPaddress()

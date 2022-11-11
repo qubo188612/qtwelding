@@ -99,6 +99,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
         ui->SaveDatacheckBox->setCheckState(Qt::Checked);
     }
 
+    /************************************************/
+    m_mcs->robotcontrol->Creat_control_modbus();//创建自带接口
+    /*************************************************/
 
     thread1 = new qtweldingThread(this);
     connect(thread1, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
@@ -421,6 +424,7 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                 }
                 else
                 {
+                    m_mcs->craft->craft_path=fileName;
                     QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
                                 +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
                     switch(m_mcs->craft->craft_id)
@@ -461,10 +465,23 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         m_mcs->resultdata.send_group_leaser.push_back(sentdata);
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
 
+
+        m_mcs->cam->sop_cam[0].DisConnect();
+
         demarcate->init_dlg_show();
         demarcate->setWindowTitle(QString::fromLocal8Bit("标定设置"));
         demarcate->exec();
         demarcate->close_dlg_show();
+
+        m_mcs->cam->sop_cam[0].InitConnect();
+        if(m_mcs->cam->sop_cam[0].b_connect==true)
+        {
+            ui->record->append(QString::fromLocal8Bit("激光头连接成功"));
+        }
+        else if(m_mcs->cam->sop_cam[0].b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("激光头连接失败"));
+        }
 
         sentdata.data={0x00};
         m_mcs->resultdata.b_send_group_leaser=false;

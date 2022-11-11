@@ -25,12 +25,18 @@ void setcraftDlg::init_dlg_show()
     ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()==1)
     {
+        ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[0].X,'f',3));
+        ui->lineEdit_Y->setText(QString::number(m_mcs->craft->posturelist[0].Y,'f',3));
+        ui->lineEdit_Z->setText(QString::number(m_mcs->craft->posturelist[0].Z,'f',3));
         ui->lineEdit_RX->setText(QString::number(m_mcs->craft->posturelist[0].RX,'f',3));
         ui->lineEdit_RY->setText(QString::number(m_mcs->craft->posturelist[0].RY,'f',3));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->craft->posturelist[0].RZ,'f',3));
     }
     else
     {
+        ui->lineEdit_X->setText(QString::number(0,'f',3));
+        ui->lineEdit_Y->setText(QString::number(0,'f',3));
+        ui->lineEdit_Z->setText(QString::number(0,'f',3));
         ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
         ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
@@ -81,6 +87,24 @@ void setcraftDlg::on_pushButton_2_clicked()//确定并保存
 {
     bool ok;
     m_mcs->craft->posturelist.resize(1);
+    m_mcs->craft->posturelist[0].X=ui->lineEdit_X->text().toFloat(&ok);
+    if(ok==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("X内容格式错误"));
+        return;
+    }
+    m_mcs->craft->posturelist[0].Y=ui->lineEdit_Y->text().toFloat(&ok);
+    if(ok==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("Y内容格式错误"));
+        return;
+    }
+    m_mcs->craft->posturelist[0].Z=ui->lineEdit_Z->text().toFloat(&ok);
+    if(ok==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("Z内容格式错误"));
+        return;
+    }
     m_mcs->craft->posturelist[0].RX=ui->lineEdit_RX->text().toFloat(&ok);
     if(ok==false)
     {

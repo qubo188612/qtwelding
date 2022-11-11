@@ -10,6 +10,8 @@ namespace Ui {
 class demarcateDlg;
 }
 
+class demarcateThread;
+
 class demarcateDlg : public QDialog
 {
     Q_OBJECT
@@ -22,6 +24,11 @@ public:
 
     void init_dlg_show();
     void close_dlg_show();
+
+    demarcateThread *thread1;
+    bool b_thread1;
+    bool b_stop_thread1;
+    bool b_init_show_demarcate_inlab_finish;
 
 private slots:
     void on_radio1_clicked();
@@ -61,6 +68,27 @@ private:
     void updataUi();
 
     std::vector<double> errgroup;
+
+private slots:
+    void init_show_demarcate_inlab(cv::Mat);
 };
+
+class demarcateThread : public QThread
+{
+    Q_OBJECT
+
+public:
+    demarcateThread(demarcateDlg *statci_p);
+    void Stop();
+protected:
+    void run();
+private:
+    demarcateDlg *_p;
+
+signals:
+    // 自定义信号
+    void Send_show_demarcate_inlab(cv::Mat);
+};
+
 
 #endif // DEMARCATEDLG_H

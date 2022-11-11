@@ -26,6 +26,10 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
     ROBOT_MODEL_DOBOT=2,               //越彊机器人
 }ROBOT_MODEL;
 
+#define ROBOT_DOBOT_INFO_PORT               30004    //越彊机器人数据信息获取端口
+#define ROBOT_DOBOT_SEND_PORT               30003    //越彊机器人数据信息发送端口
+#define ROBOT_DOBOT_INFO_RECVBUFFER_MAX     1440     //越彊机器人数据信息最大个数
+
 typedef enum ROBOT_STATE_ID            //机器人状态
 {
     ROBOT_STATE_UNLINK=-1,              //未连接

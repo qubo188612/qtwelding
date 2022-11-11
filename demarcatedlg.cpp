@@ -9,6 +9,7 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
 
     m_mcs=mcs;  
 
+
     switch(m_mcs->e2proomdata.demdlg_radio_mod)
     {
         case HAND_IN_EYE:
@@ -28,6 +29,33 @@ demarcateDlg::~demarcateDlg()
 
 void demarcateDlg::init_dlg_show()
 {
+    b_init_show_demarcate_inlab_finish=true;
+    thread1 = new demarcateThread(this);
+    connect(thread1, SIGNAL(Send_show_demarcate_inlab(cv::Mat)), this, SLOT(init_show_demarcate_inlab(cv::Mat)));
+    b_thread1=true;
+    thread1->start();
+
+    m_mcs->cam->sop_cam[0].InitConnect(ui->widget);
+
+    if(m_mcs->resultdata.link_param_state==false)
+    {
+        QString server_ip=m_mcs->ip->camer_ip->ip;
+        QString server_port1=QString::number(PORT_ALS_PARAMETER);
+        m_mcs->resultdata.ctx_param = modbus_new_tcp(server_ip.toUtf8(), server_port1.toInt());
+        if (modbus_connect(m_mcs->resultdata.ctx_param) == -1)
+        {
+            ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+            modbus_free(m_mcs->resultdata.ctx_param);
+            return;
+        }
+        m_mcs->resultdata.link_param_state=true;
+        ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+    }
+
+    u_int16_t tab_reg[1];
+    tab_reg[0]=1;
+    modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
+
     now_robpos=m_mcs->e2proomdata.demdlg_Robotpos.size()-1;
     now_leaserpos=m_mcs->e2proomdata.demdlg_Leaserpos.size()-1;
     updataRoblistUi();
@@ -36,6 +64,27 @@ void demarcateDlg::init_dlg_show()
 
 void demarcateDlg::close_dlg_show()
 {
+    thread1->Stop();
+    thread1->quit();
+    thread1->wait();
+    delete thread1;
+
+    if(m_mcs->resultdata.link_param_state==true)
+    {
+        u_int16_t tab_reg[1];
+        tab_reg[0]=0;
+        modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
+    }
+    if(m_mcs->resultdata.link_param_state==true)
+    {
+        modbus_close(m_mcs->resultdata.ctx_param);
+        modbus_free(m_mcs->resultdata.ctx_param);
+        m_mcs->resultdata.link_param_state=false;
+        QString msg=QString::number(PORT_ALS_PARAMETER);
+        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+    }
+
+    m_mcs->cam->sop_cam[0].DisConnect();
 
 }
 
@@ -476,3 +525,79 @@ void demarcateDlg::on_leaserposlist_itemClicked(QListWidgetItem *item)
     now_leaserpos=ui->leaserposlist->currentRow();
 }
 
+void demarcateDlg::init_show_demarcate_inlab(cv::Mat cvimg)
+{
+    if(!cvimg.empty())
+    {
+         if(cvimg.rows!=CAMBUILD_IMAGE_HEIGHT||
+            cvimg.cols!=CAMBUILD_IMAGE_WIDTH)
+            cv::resize(cvimg,cvimg,cv::Size(CAMBUILD_IMAGE_WIDTH,CAMBUILD_IMAGE_HEIGHT));
+         if(cvimg.type()==CV_8UC1)
+            cv::cvtColor(cvimg,cvimg,cv::COLOR_GRAY2BGR);
+
+         QImage::Format format = QImage::Format_RGB888;
+         switch (cvimg.type())
+         {
+         case CV_8UC1:
+           format = QImage::Format_RGB888;
+           cv::cvtColor(cvimg,cvimg,cv::COLOR_GRAY2BGR);
+           break;
+         case CV_8UC3:
+           format = QImage::Format_RGB888;
+           break;
+         case CV_8UC4:
+           format = QImage::Format_ARGB32;
+           break;
+         }
+         QImage img = QImage((const uchar*)cvimg.data,
+                                           cvimg.cols,
+                                           cvimg.rows,
+                                           cvimg.cols * cvimg.channels(), format);
+         img = img.scaled(ui->widget->width(),ui->widget->height(),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);//图片自适应lab大小
+         ui->widget->setImage(img);
+    }
+    b_init_show_demarcate_inlab_finish=true;
+    m_mcs->cam->sop_cam[0].b_int_show_image_inlab=false;
+    m_mcs->cam->sop_cam[0].b_updataimage_finish=false;
+}
+
+
+demarcateThread::demarcateThread(demarcateDlg *statci_p)
+{
+    _p=statci_p;
+}
+
+void demarcateThread::run()
+{
+    while (1)
+    {
+        if(_p->b_thread1==true)
+        {
+            if(_p->b_init_show_demarcate_inlab_finish==true)
+            {
+                _p->b_init_show_demarcate_inlab_finish=false;
+                qRegisterMetaType< cv::Mat >("cv::Mat"); //传递自定义类型信号时要添加注册
+                emit Send_show_demarcate_inlab(_p->m_mcs->cam->sop_cam[0].cv_image);
+            }
+            sleep(0);
+        }
+        else
+        {
+            _p->b_stop_thread1=true;
+            break;
+        }
+    }
+}
+
+void demarcateThread::Stop()
+{
+  if(_p->b_thread1==true)
+  {
+    _p->b_stop_thread1=false;
+    _p->b_thread1=false;
+    while (_p->b_stop_thread1==false)
+    {
+      sleep(0);
+    }
+  }
+}

@@ -139,6 +139,8 @@ void cambuilddlg::close_dlg_show()
     thread1->Stop();
     thread1->quit();
     thread1->wait();
+
+    delete thread1;
 }
 
 void cambuilddlg::drow_point(cv::Mat cvimg)

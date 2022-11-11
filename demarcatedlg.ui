@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
+    <width>1742</width>
     <height>700</height>
    </rect>
   </property>
@@ -511,7 +511,25 @@
     <string>t33</string>
    </property>
   </widget>
+  <widget class="PictureBox" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1210</x>
+     <y>10</y>
+     <width>521</width>
+     <height>681</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PictureBox</class>
+   <extends>QWidget</extends>
+   <header location="global">PictureBox.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
