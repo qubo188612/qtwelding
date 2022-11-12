@@ -26,6 +26,7 @@ my_parameters::my_parameters()
     {
         cam->sop_cam[n].ipaddress=ip->camer_ip[n].ip;
     }
+//  main_record.reserve(600000);
 }
 
 my_parameters::~my_parameters()

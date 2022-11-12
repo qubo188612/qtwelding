@@ -1,5 +1,9 @@
 #include "tosendbuffer.h"
 
+extern QMutex send_group_leaser;
+extern QMutex send_group_robot;
+extern QMutex main_record;
+
 toSendbuffer *toSendbuffer::Get(my_parameters *mcs)
 {
     static toSendbuffer fun;
@@ -52,9 +56,11 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 if(b_find==1)
                 {
                     err=1;
+                    main_record.lock();
                     return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
+                    main_record.unlock();
                 }
                 else
                 {
@@ -80,8 +86,10 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 if(b_find==1)
                 {
                     err=1;
+                    main_record.lock();
                     return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
                     errmsg.push_back(return_msg);
                 }
                 else
@@ -93,10 +101,12 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             if(scannames.size()!=1)
                             {
                                 err=1;
+                                main_record.lock();
                                 return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
                                            QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_ONE_TO_ONE)+
                                            QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有1个");
                                 m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
                                 errmsg.push_back(return_msg);
                                 break;
                             }
@@ -126,8 +136,10 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             if(b_find==false)
                             {
                                 err=1;
+                                main_record.lock();
                                 return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
                                 m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
                                 errmsg.push_back(return_msg);
                                 break;
                             }
@@ -136,8 +148,10 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     default:
                         {
                             err=1;
+                            main_record.lock();
                             return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 不支持当前轨道生成模式");
                             m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
                             errmsg.push_back(return_msg);
                         }
                         break;
@@ -163,8 +177,10 @@ int toSendbuffer::cmdlist_check()
         {
             //语法出错
             err=1;
+            main_record.lock();
             return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
             m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
         }
         if(key==CMD_TRACE_KEY)//跟踪命令时查看是否能找到工艺路径
         {
@@ -179,8 +195,10 @@ int toSendbuffer::cmdlist_check()
             if(rc!=0)
             {
                 err=1;
+                main_record.lock();
                 return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
                 m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
             }
         }
     }
@@ -197,8 +215,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     QString return_msg;
     if(line<0||line>=m_mcs->project->project_cmdlist.size())
     {
+        main_record.lock();
         return_msg=QString::fromLocal8Bit("已经执行完全部命令");
         m_mcs->main_record.push_back(return_msg);
+        main_record.unlock();
         return 1;
     }
     b_cmdlist_build=true;
@@ -206,14 +226,18 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     {
         QString msg,key;
         my_cmd cmd;
+        main_record.lock();
         return_msg=QString::fromLocal8Bit("执行Line")+QString::number(n)+QString::fromLocal8Bit(": ")+m_mcs->project->project_cmdlist[n];
         m_mcs->main_record.push_back(return_msg);
+        main_record.unlock();
         int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
         if(rc>0)
         {
             //语法出错
+            main_record.lock();
             return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
             m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
             line=n;
             return 1;
         }
@@ -233,8 +257,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             {
                 if(b_cmdlist_build==false)     //停止
                 {
+                    main_record.lock();
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
                     cmd_lock(true);
                     line=n;
                     return 1;
@@ -251,6 +277,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         {
             int task=cmd.cmd_cam_task;
             int work=cmd.cmd_cam_work_d;
+
             cmd_cam(task,work);
         }
         else if(key==CMD_WELD_KEY)//起光弧指令
@@ -283,8 +310,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             {
                 if(b_cmdlist_build==false)     //停止
                 {
+                    main_record.lock();
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
                     cmd_lock(true);
                     line=n;
                     return 1;
@@ -354,8 +383,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     std::vector<Eigen::Vector3d> weld_trace;
                     if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                     {
+                        main_record.lock();
                         return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
                         m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
                         line=n;
                         return 1;
                     }
@@ -462,8 +493,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             {
                 if(b_cmdlist_build==false)     //停止
                 {
+                    main_record.lock();
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
                     cmd_lock(true);
                     line=n;
                     return 1;
@@ -473,16 +506,20 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {
+            main_record.lock();
             return_msg=QString::fromLocal8Bit("手动停止进程");
             m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
             line=n;
             return 1;
         }
     }
     b_cmdlist_build=false;
     u16data_elec_work=0;
+    main_record.lock();
     return_msg=QString::fromLocal8Bit("指令执行结束");
     m_mcs->main_record.push_back(return_msg);
+    main_record.unlock();
     line=m_mcs->project->project_cmdlist.size();
     return 0;
 }
@@ -495,6 +532,7 @@ void toSendbuffer::cmdlist_stopbuild()
 
 void toSendbuffer::cmd_lock(bool lock)
 {
+    send_group_robot.lock();
     sent_info_robot sendrob;
     sendrob.addr=ROB_STOP_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
@@ -510,10 +548,12 @@ void toSendbuffer::cmd_lock(bool lock)
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
 }
 
 void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp)
 {
+    send_group_robot.lock();
     sent_info_robot sendrob;
     sendrob.addr=ROB_TCP_NUM_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
@@ -539,6 +579,7 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
 }
 
 void toSendbuffer::cmd_delay(int time)
@@ -549,6 +590,7 @@ void toSendbuffer::cmd_delay(int time)
 
 void toSendbuffer::cmd_cam(int task,int work)
 {
+    send_group_leaser.lock();
     sent_info_leaser sentcam;
     sentcam.ctx=m_mcs->resultdata.ctx_result;
     sentcam.addr=ALS_OPEN_REG_ADD;
@@ -565,10 +607,12 @@ void toSendbuffer::cmd_cam(int task,int work)
     m_mcs->resultdata.b_send_group_leaser=false;
     m_mcs->resultdata.send_group_leaser.push_back(sentcam);
     m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
+    send_group_leaser.unlock();
 }
 
 void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,int work)
 {
+    send_group_robot.lock();
     sent_info_robot sendrob;
     sendrob.addr=ROB_WELD_CURRENT_FH_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
@@ -587,6 +631,7 @@ void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,int work)
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
 }
 
 int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> trace)

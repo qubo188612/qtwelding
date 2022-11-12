@@ -23,6 +23,7 @@
 #include "editcraftdlg.h"
 #include "newcraftdlg.h"
 #include "setcraftdlg.h"
+#include <QMutex>
 
 
 namespace Ui {

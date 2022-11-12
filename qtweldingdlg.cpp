@@ -2,6 +2,10 @@
 #include "ui_qtweldingdlg.h"
 #include<QGridLayout>
 
+QMutex send_group_leaser;
+QMutex send_group_robot;
+QMutex main_record;
+
 qtweldingDlg::qtweldingDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::qtweldingDlg)
@@ -100,6 +104,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     }
 
     /************************************************/
+
 #ifdef USE_MYROBOT_CONTROL      //是否使用程序自带接口
     m_mcs->robotcontrol->Creat_control_modbus();//创建自带接口
 #endif
@@ -748,6 +753,7 @@ void qtweldingThread::run()
             {
                 if(_p->m_mcs->resultdata.ctx_result_dosomeing==DO_WRITE_TASK)
                 {
+                    send_group_leaser.lock();
                     if(_p->m_mcs->resultdata.send_group_leaser.size()!=0)
                     {
                         sent_info_leaser sentdata=_p->m_mcs->resultdata.send_group_leaser[0];
@@ -776,6 +782,7 @@ void qtweldingThread::run()
                     {
                         _p->m_mcs->resultdata.ctx_result_dosomeing=DO_NOTHING;
                     }
+                    send_group_leaser.unlock();
                 }
                 else if(_p->m_mcs->resultdata.ctx_result_dosomeing==DO_NOTHING)
                 {
@@ -878,6 +885,7 @@ void qtgetrobThread::run()
             {
                 if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_WRITE_TASK)
                 {
+                    send_group_robot.lock();
                     if(_p->m_mcs->rob->send_group_robot.size()!=0)
                     {
                         sent_info_robot sentdata=_p->m_mcs->rob->send_group_robot[0];
@@ -906,6 +914,7 @@ void qtgetrobThread::run()
                     {
                         _p->m_mcs->rob->ctx_robot_dosomeing=DO_NOTHING;
                     }
+                    send_group_robot.unlock();
                 }
                 else if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
                 {
@@ -967,6 +976,7 @@ void qtrecordThread::run()
     {
         if(_p->b_thread3==true)
         {
+            main_record.lock();
             if(_p->m_mcs->main_record.size()!=0)
             {
                 if(_p->b_init_show_record_list==true)
@@ -979,6 +989,7 @@ void qtrecordThread::run()
                     emit Send_show_record_list(msg);
                 }
             }
+            main_record.unlock();
         }
         else
         {

@@ -83,6 +83,7 @@ void Process1Thread::run()
         {
             goto OUT_THREAD_ERROR;
         }
+        _p->m_mcs->robotcontrol->RobotOPEN_ELE();//机器人上电
         rc=_p->m_mcs->tosendbuffer->cmdlist_build(_p->buildline);
         if(rc!=0)
         {
@@ -94,6 +95,8 @@ OUT_THREAD_ERROR:
     _p->thread->quit();
     _p->thread->wait();
     _p->b_thread=false;
+    _p->m_mcs->robotcontrol->RobotCLOSE_ELE();//机器人断电
+ // 以后用停止
 }
 
 void Process1Thread::Stop()
