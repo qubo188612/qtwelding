@@ -77,12 +77,12 @@ public:
 
     void RobotOPEN_ELE(); //机器人上电
     void RobotCLOSE_ELE(); //机器人断电
+
+
 protected:
 
     Robotcontrol();
     ~Robotcontrol();
-
-
 };
 
 class RobotcontrolThread1 : public QThread      //查看上位机控制信息线程

@@ -53,6 +53,9 @@ QString RobotData::robot_model_toQString()
     case ROBOT_MODEL_EMERGEN:
         msg="智昌";
         break;
+    case ROBOT_MODEL_DOBOT:
+        msg="越彊";
+        break;
     }
     return msg;
 }

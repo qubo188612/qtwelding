@@ -17,11 +17,13 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     }
 
     traceedit=new traceeditDlg(mcs);
+    traceedit3=new traceedit3Dlg(mcs);
 }
 
 setprojectDlg::~setprojectDlg()
 {
     delete traceedit;
+    delete traceedit3;
     delete ui;
 }
 
@@ -435,7 +437,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
         Trace_edit_mode trace_edit_mode=(Trace_edit_mode)ui->traceeditcombo->currentIndex();
         switch(trace_edit_mode)
         {
-            case TRACE_EDIT_MODE_ONE_TO_ONE:
+            case TRACE_EDIT_MODE_ONE_TO_ONE://单扫对单轨道模式
             {
                 traceedit->init_dlg_show();
                 traceedit->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
@@ -447,6 +449,35 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
                     std::vector<QString> scanname(1);
 
                     scanname[0]=traceedit->name;
+                    QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
+                    if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                    {
+                        m_mcs->project->project_cmdlist.push_back(msg);
+                    }
+                    else
+                    {
+                        m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                    }
+                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    now_cmdline++;
+                    updatacmdlistUi();
+                }
+            }
+            break;
+            case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
+            {
+                traceedit3->init_dlg_show();
+                traceedit3->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三扫对单轨模式)"));
+                int rc=traceedit3->exec();
+                traceedit3->close_dlg_show();
+                if(rc!=0)//确定保存生成轨迹
+                {
+                    my_cmd cmd;
+                    std::vector<QString> scanname(3);
+
+                    scanname[0]=traceedit3->name0;
+                    scanname[1]=traceedit3->name1;
+                    scanname[2]=traceedit3->name2;
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
                     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                     {

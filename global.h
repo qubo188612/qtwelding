@@ -7,6 +7,7 @@
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
+//#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
 
 #if _MSC_VER
 #include "tistdtypes.h"
@@ -43,8 +44,8 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DO_NOTHING         0
 #define DO_WRITE_TASK      1
 
-#define ROB_WORK_DELAY      50000       //机器人通讯反映时间(微秒)
-#define ROB_WORK_DELAY_STEP 10000       //机器人每步循环等待时间(微秒)
+#define ROB_WORK_DELAY      1000000       //机器人通讯反映时间(微秒)
+#define ROB_WORK_DELAY_STEP 10000         //机器人每步循环等待时间(微秒)
 
 /*****************************/
 //自带机器人控制接口
@@ -384,6 +385,7 @@ typedef enum Alternatingcurrent_ID    //交变电流
 typedef enum TRACE_EDIT_MODE_ID
 {
     TRACE_EDIT_MODE_ONE_TO_ONE=0,       //单扫对单轨道模式
+    TRACE_EDIT_MODE_THREE_TO_ONE=1,     //三扫对单轨道模式
 }Trace_edit_mode;
 
 //手眼标定模式

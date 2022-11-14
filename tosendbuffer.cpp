@@ -145,7 +145,12 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             }
                         }
                         break;
-                    default:
+                        case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
+                        {
+
+                        }
+                        break;
+                        default:
                         {
                             err=1;
                             main_record.lock();
@@ -221,6 +226,23 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         main_record.unlock();
         return 1;
     }
+    while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待机器人空闲才能执行之后的命令
+    {
+        if(b_cmdlist_build==false)     //手动停止
+        {
+            main_record.lock();
+            return_msg=QString::fromLocal8Bit("手动停止进程");
+            m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+            if(line>0)
+            {
+                line=line-1;//恢复到上一条指令
+            }
+            cmd_lock(1);
+            return 1;
+        }
+        usleep(ROB_WORK_DELAY_STEP);
+    }
     b_cmdlist_build=true;
     for(int n=line;n<m_mcs->project->project_cmdlist.size();n++)
     {
@@ -261,7 +283,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
-                    cmd_lock(true);
+                    cmd_lock(1);
                     line=n;
                     return 1;
                 }
@@ -314,7 +336,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
-                    cmd_lock(true);
+                    cmd_lock(1);
                     line=n;
                     return 1;
                 }
@@ -397,6 +419,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         weld[n].Y=weld_trace[n].y();
                         weld[n].Z=weld_trace[n].z();
                     }
+                }
+                break;
+                case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
+                {
+
                 }
                 break;
             }
@@ -497,7 +524,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
-                    cmd_lock(true);
+                    cmd_lock(1);
                     line=n;
                     return 1;
                 }
@@ -530,21 +557,14 @@ void toSendbuffer::cmdlist_stopbuild()
     u16data_elec_work=0;
 }
 
-void toSendbuffer::cmd_lock(bool lock)
+void toSendbuffer::cmd_lock(int lock)
 {
     send_group_robot.lock();
     sent_info_robot sendrob;
     sendrob.addr=ROB_STOP_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
     sendrob.data.resize(1);
-    if(lock==true)
-    {
-        sendrob.data[0]=1;
-    }
-    else
-    {
-        sendrob.data[0]=0;
-    }
+    sendrob.data[0]=lock;
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;

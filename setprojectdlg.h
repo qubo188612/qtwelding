@@ -9,6 +9,7 @@
 #include "my_parameters.h"
 #include "my_cmd.h"
 #include "traceeditdlg.h"
+#include "traceedit3dlg.h"
 
 namespace Ui {
 class setprojectDlg;
@@ -23,6 +24,7 @@ public:
     ~setprojectDlg();
 
     traceeditDlg *traceedit;
+    traceedit3Dlg *traceedit3;
 
     my_parameters *m_mcs;
 

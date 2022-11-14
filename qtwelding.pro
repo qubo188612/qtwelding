@@ -47,6 +47,7 @@ SOURCES += \
         soptopcamera.cpp \
         synchronous.cpp \
         tosendbuffer.cpp \
+        traceedit3dlg.cpp \
         traceeditdlg.cpp
 
 # Default rules for deployment.
@@ -67,6 +68,7 @@ FORMS += \
     setcraftdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
+    traceedit3dlg.ui \
     traceeditdlg.ui
 
 HEADERS += \
@@ -105,6 +107,7 @@ HEADERS += \
     synchronous.h \
     tistdtypes.h \
     tosendbuffer.h \
+    traceedit3dlg.h \
     traceeditdlg.h
 
 

@@ -801,6 +801,11 @@
       <string>单扫对单轨模式</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>三扫对单轨模式</string>
+     </property>
+    </item>
    </widget>
   </widget>
  </widget>

@@ -30,7 +30,7 @@ void Process1_scanbeforetrace::init_start_process()
 {
     buildline=0;    //从首命令启动
     m_mcs->tosendbuffer->cmd_clear_elec_work(); //清除当前起弧状态
-    m_mcs->tosendbuffer->cmd_lock(false);   //解锁机器人
+    m_mcs->tosendbuffer->cmd_lock(0);   //解锁机器人
     m_mcs->tosendbuffer->cmd_cam(0,0);      //关相机
     usleep(ROB_WORK_DELAY);
     b_thread=true;
@@ -61,8 +61,12 @@ void Process1_scanbeforetrace::paused_process()
 
 void Process1_scanbeforetrace::continue_process()
 {
-    m_mcs->tosendbuffer->cmd_lock(false);   //解锁机器人
+    m_mcs->tosendbuffer->cmd_lock(2);   //解锁机器人
     usleep(ROB_WORK_DELAY);
+    if(buildline<m_mcs->project->project_cmdlist.size())
+    {
+        buildline=buildline+1;//此处越界1没问题，之后会判断
+    }
     b_thread=true;
     thread->start();//继续从当前命令往下走
 }

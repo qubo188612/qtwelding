@@ -22,7 +22,7 @@ public:
 
     my_parameters *m_mcs;
 
-    void cmd_lock(bool lock);   //机器人是否锁住命令
+    void cmd_lock(int lock);   //机器人是否锁住命令:0允许运行(不继续之前的缓存)，1暂停，2继续运行(继续之前的缓存)
 
     void cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
     void cmd_delay(int time);//延时命令
