@@ -147,7 +147,51 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         break;
                         case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
                         {
+                            if(scannames.size()!=3)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
+                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_THREE_TO_ONE)+
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有3个");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            bool b_find=false;
+                            int m=0;
+                            for(m=0;m<scannames.size();m++)
+                            {
+                                b_find=false;
+                                for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                                {
+                                    if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
+                                    {
+                                        b_find=true;
 
+                                        Weld_trace_result trace;
+                                        trace.name=name;
+                                        m_mcs->project->project_weld_trace.push_back(trace);
+
+                                        break;
+                                    }
+                                }
+                                if(b_find==false)//没找到这个名字的扫描轨道
+                                {
+                                    break;
+                                }
+                            }
+                            if(b_find==false)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
                         }
                         break;
                         default:
@@ -423,6 +467,34 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 break;
                 case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
                 {
+                    int scan_trace_num_0,scan_trace_num_1,scan_trace_num_2;//搜索到的扫描轨道序号
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[0]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_0=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[1]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_1=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[2]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_2=n;
+                            break;
+                        }
+                    }
+                    //这里添加轨迹拟合
+
+
 
                 }
                 break;
