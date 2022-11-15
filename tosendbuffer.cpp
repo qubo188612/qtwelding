@@ -493,8 +493,70 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         }
                     }
                     //这里添加轨迹拟合
-
-
+                    std::vector<Scan_trace_line> scan_trace0,scan_trace1,scan_trace2;
+                    std::vector<Eigen::Vector3d> weld_trace0,weld_trace1,weld_trace2;
+                    scan_trace0=m_mcs->project->project_scan_trace[scan_trace_num_0].point;
+                    if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace0,weld_trace0)||
+                       false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace1,weld_trace1)||
+                       false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace2,weld_trace2))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    std::vector<Eigen::VectorXd> linePoints,SidePoints;
+                    for(int n=0;n<weld_trace0.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace0[n].x();
+                        sing_linepoint(1)=weld_trace0[n].y();
+                        sing_linepoint(2)=weld_trace0[n].z();
+                        linePoints.push_back(sing_linepoint);
+                    }
+                    for(int n=0;n<weld_trace1.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace1[n].x();
+                        sing_linepoint(1)=weld_trace1[n].y();
+                        sing_linepoint(2)=weld_trace1[n].z();
+                        SidePoints.push_back(sing_linepoint);
+                    }
+                    for(int n=0;n<weld_trace2.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace2[n].x();
+                        sing_linepoint(1)=weld_trace2[n].y();
+                        sing_linepoint(2)=weld_trace2[n].z();
+                        SidePoints.push_back(sing_linepoint);
+                    }
+                    if(linePoints.size()<=2&&SidePoints.size()<=4)
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标数据太少");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    FitlineSide fitlineside;
+                    Eigen::Vector3d endpoint=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints);//交点
+                    float f_headdis=(weld_trace0[0].x()-endpoint.x())*(weld_trace0[0].x()-endpoint.x())+
+                                    (weld_trace0[0].y()-endpoint.y())*(weld_trace0[0].y()-endpoint.y())+
+                                    (weld_trace0[0].z()-endpoint.z())*(weld_trace0[0].z()-endpoint.z());
+                    float f_tiledis=(weld_trace0[weld_trace0.size()-1].x()-endpoint.x())*(weld_trace0[weld_trace0.size()-1].x()-endpoint.x())+
+                                    (weld_trace0[weld_trace0.size()-1].y()-endpoint.y())*(weld_trace0[weld_trace0.size()-1].y()-endpoint.y())+
+                                    (weld_trace0[weld_trace0.size()-1].z()-endpoint.z())*(weld_trace0[weld_trace0.size()-1].z()-endpoint.z());
+                    if(f_tiledis>f_headdis)//距离平面越来越远,说明交点放在头部
+                    {
+                        weld_trace0.insert(weld_trace0.begin(),endpoint);
+                    }
+                    else//距离平面越来越近，说明交点放在尾部
+                    {
+                        weld_trace0.push_back(endpoint);
+                    }
 
                 }
                 break;

@@ -25,6 +25,7 @@ SOURCES += \
         demarcatedlg.cpp \
         editcraftdlg.cpp \
         editprojectdlg.cpp \
+        fitlineside.cpp \
         global.cpp \
         ipaddress.cpp \
         main.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     demarcatedlg.h \
     editcraftdlg.h \
     editprojectdlg.h \
+    fitlineside.h \
     global.h \
     ipaddress.h \
     my_cmd.h \
