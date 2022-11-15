@@ -136,7 +136,7 @@ void Robotcontrol::RobotCLOSE_ELE()
         break;
         case ROBOT_MODEL_DOBOT://越彊机器人
         {
-            if(b_send_thread==true)
+            if(b_totalcontrol_Thread==true)
             {
                 mutexsend_buf_group.lock();
                 QString msg="ResetRobot()";    //机器人停止
@@ -161,7 +161,7 @@ void RobotcontrolThread1::run() //接到上位机命令
     {
         QString server_ip=_p->m_mcs->ip->robotmyselfcontrol_ip[0].ip;
         QString server_port=QString::number(_p->m_mcs->ip->robotmyselfcontrol_ip[0].port);
-        _p->ctx_robotcontrol = modbus_new_tcp(NULL, server_port.toInt());
+        _p->ctx_robotcontrol = modbus_new_tcp(server_ip.toStdString().c_str(), server_port.toInt());
         _p->sock = modbus_tcp_listen(_p->ctx_robotcontrol, 1);//最大监听1路
         modbus_tcp_accept(_p->ctx_robotcontrol, &_p->sock);
         while(_p->server_state==true)

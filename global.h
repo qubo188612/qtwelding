@@ -221,9 +221,10 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS102_XIELVFANWEI_REG_ADD             0x0063
 #define ALS102_UPLONG2_REG_ADD                 0x0064
 #define ALS102_CEBANKONGDONGDIS_REG_ADD        0x0065
+#define ALS102_QIATOUQUWEI_REG_ADD             0x0066
 
 
-#define ALS102_REG_TOTALNUM                    0x0026
+#define ALS102_REG_TOTALNUM                    0x0027
 
 #define ALS102_INIT_REG_ADD                    0x006f
 
