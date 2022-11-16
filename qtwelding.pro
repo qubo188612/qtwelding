@@ -41,6 +41,7 @@ SOURCES += \
         robotcontrol.cpp \
         robotdata.cpp \
         robotsetdlg.cpp \
+        setcraft1dlg.cpp \
         setcraftdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
@@ -66,6 +67,7 @@ FORMS += \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
+    setcraft1dlg.ui \
     setcraftdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
@@ -101,6 +103,7 @@ HEADERS += \
     robotcontrol.h \
     robotdata.h \
     robotsetdlg.h \
+    setcraft1dlg.h \
     setcraftdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \

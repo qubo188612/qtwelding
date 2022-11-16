@@ -207,19 +207,19 @@ int Project::decoed_json(QByteArray allData)
                 else if(keyString=="project_cmdlist")//项目指令集
                 {
                     QJsonObject obj = it_obj->toObject();
-                    QJsonObject::Iterator it;
                     project_cmdlist.reserve(obj.size());
                     for(int t=0;t<obj.size();t++)
                     {
                         QString s_key="line"+QString::number(t);
-                        for(it=obj.begin();it!=obj.end();it++)//遍历Key
+                        if(obj.contains(s_key))
                         {
-                            QString keyString=it.key();
-                            if(keyString==s_key)
-                            {
-                                QString msg=it.value().toString();
-                                project_cmdlist.push_back(msg);
-                            }
+                            QJsonValue value = obj.value(s_key);
+                            QString msg=value.toString();
+                            project_cmdlist.push_back(msg);
+                        }
+                        else
+                        {
+                            return 1;
                         }
                     }
                 }

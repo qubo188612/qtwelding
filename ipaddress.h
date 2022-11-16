@@ -33,7 +33,7 @@ public:
     IP camer_ip[CAMTOTALNUM];           //相机ip
     RobotIP robot_ip[ROBOTTALNUM];      //机器人ip和端口
 
-    IP_port robotmyselfcontrol_ip[ROBOTTALNUM]; //自带的机器人控制ip和端口
+    int robotmyselfcontrol_port[ROBOTTALNUM]; //自带的机器人控制端口
 
     int SaveIP(char* filename);    //保存项目
 

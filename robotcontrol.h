@@ -28,15 +28,18 @@ public:
     ROBOT_MODEL_ID rob_mod;     //机器人型号
 
     void Creat_control_modbus();        //启动服务器
+    void Close_control_modbus();        //关闭服务器
 
     RobotcontrolThread1 *thread1;
     bool server_state;
+    bool b_stop_server_state;
     modbus_t *ctx_robotcontrol;
     int sock;
     modbus_mapping_t * mb_mapping;
 
     RobotlinkThread *linkthread;
     bool link_state;
+    bool b_stop_link_state;
 
     XTcp m_client;      //机器人信息数据sock
     bool b_client;

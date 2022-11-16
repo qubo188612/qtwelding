@@ -120,11 +120,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                     if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
                                     {
                                         b_find=true;
-
                                         Weld_trace_result trace;
                                         trace.name=name;
                                         m_mcs->project->project_weld_trace.push_back(trace);
-
                                         break;
                                     }
                                 }
@@ -145,7 +143,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             }
                         }
                         break;
-                        case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
+                        case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
                         {
                             if(scannames.size()!=3)
                             {
@@ -169,11 +167,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                     if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
                                     {
                                         b_find=true;
-
                                         Weld_trace_result trace;
                                         trace.name=name;
                                         m_mcs->project->project_weld_trace.push_back(trace);
-
                                         break;
                                     }
                                 }
@@ -465,7 +461,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                 }
                 break;
-                case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
+                case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
                 {
                     int scan_trace_num_0,scan_trace_num_1,scan_trace_num_2;//搜索到的扫描轨道序号
                     for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
@@ -618,6 +614,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         weld[n].RZ=m_mcs->craft->posturelist[0].RZ;
                         weld[n].nEn=true;
                     }
+                }
+                break;
+                case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
+                {
+
                 }
                 break;
             }

@@ -14,7 +14,9 @@ Robotcontrol *Robotcontrol::Get(my_parameters *mcs)
 Robotcontrol::Robotcontrol()
 {
     server_state=false;
+    b_stop_server_state=false;
     link_state=false;
+    b_stop_link_state=false;
     b_client=false;
     b_rcv_thread=false;
     b_stop_rcv_thread=false;
@@ -58,6 +60,95 @@ void Robotcontrol::Creat_control_modbus()
         sendrcv_Thread = new RobotsendrcvThread(this);
         totalcontrol_Thread = new RobottotalcontrolThread(this);
         totalcontrolrcv_Thread = new RobottotalcontrolrcvThread(this);
+    }
+}
+
+void Robotcontrol::Close_control_modbus()
+{
+    if(server_state==true)
+    {
+        b_stop_link_state=false;
+        link_state=false;
+        while (b_stop_link_state==false)
+        {
+          sleep(0);
+        }
+
+        if(b_client==true)
+        {
+            rcv_thread->Stop();
+            rcv_thread->quit();
+            rcv_thread->wait();
+            m_client.Close();
+            if(rcv_buf!=NULL)
+            {
+                delete []rcv_buf;
+                rcv_buf=NULL;
+            }
+            b_client=false;
+        }
+        if(b_sendent==true)
+        {
+            send_Thread->Stop();
+            send_Thread->quit();
+            send_Thread->wait();
+        #ifdef OPEN_SHOW_ROBOTSOCKDATA
+            sendrcv_Thread->Stop();
+            sendrcv_Thread->quit();
+            sendrcv_Thread->wait();
+        #endif
+            m_sendent.Close();
+        #ifdef OPEN_SHOW_ROBOTSOCKDATA
+            if(sendrcv_buf!=NULL)
+            {
+                delete []sendrcv_buf;
+                sendrcv_buf=NULL;
+            }
+        #endif
+            b_sendent=false;
+        }
+        if(b_totalcontrolent==true)
+        {
+            totalcontrol_Thread->Stop();
+            totalcontrol_Thread->quit();
+            totalcontrol_Thread->wait();
+        #ifdef OPEN_SHOW_ROBOTSOCKDATA
+            totalcontrolrcv_Thread->Stop();
+            totalcontrolrcv_Thread->quit();
+            totalcontrolrcv_Thread->wait();
+        #endif
+            m_totalcontrolent.Close();
+        #ifdef OPEN_SHOW_ROBOTSOCKDATA
+            if(totalcontrolrcv_buf!=NULL)
+            {
+                delete []totalcontrolrcv_buf;
+                totalcontrolrcv_buf=NULL;
+            }
+        #endif
+            b_totalcontrolent=false;
+        }
+
+        linkthread->quit();
+        linkthread->wait();
+
+        b_stop_server_state=false;
+        server_state=false;
+        while (b_stop_server_state==false)
+        {
+          sleep(0);
+        }
+        thread1->quit();
+        thread1->wait();
+        close(sock);
+
+        delete rcv_thread;
+        delete send_Thread;
+        delete sendrcv_Thread;
+        delete totalcontrol_Thread;
+        delete totalcontrolrcv_Thread;
+        delete linkthread;
+        delete thread1;
+
     }
 }
 
@@ -157,194 +248,251 @@ RobotcontrolThread1::RobotcontrolThread1(Robotcontrol *statci_p)
 
 void RobotcontrolThread1::run() //接到上位机命令
 {
+    QString server_port=QString::number(_p->m_mcs->ip->robotmyselfcontrol_port[0]);
+    _p->ctx_robotcontrol = modbus_new_tcp(NULL, server_port.toInt());
+    _p->sock = modbus_tcp_listen(_p->ctx_robotcontrol, 1);//最大监听1路
+    std::set<int> fds {_p->sock};
+    fd_set refset;
+    FD_ZERO(&refset);
+    FD_SET(_p->sock, &refset);
+    int fdmax = _p->sock;
     while(_p->server_state==true)
     {
-        QString server_ip=_p->m_mcs->ip->robotmyselfcontrol_ip[0].ip;
-        QString server_port=QString::number(_p->m_mcs->ip->robotmyselfcontrol_ip[0].port);
-        _p->ctx_robotcontrol = modbus_new_tcp(server_ip.toStdString().c_str(), server_port.toInt());
-        _p->sock = modbus_tcp_listen(_p->ctx_robotcontrol, 1);//最大监听1路
-        modbus_tcp_accept(_p->ctx_robotcontrol, &_p->sock);
-        while(_p->server_state==true)
+        auto rdset = refset;
+        timeval tv;
+        tv.tv_sec = 0;
+        tv.tv_usec = 100000;
+        int ret = select(fdmax + 1, &rdset, NULL, NULL, &tv);
+        if(ret==-1)
         {
-            int rc;
-            uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
-            rc = modbus_receive(_p->ctx_robotcontrol, query);
-            if (rc > 0)
+            main_record.lock();
+            QString return_msg=QString::fromLocal8Bit("机器人控制服务器申请失败");
+            _p->m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+            continue;
+        }
+        else if(ret==0)
+        {
+            continue;//时间到了
+        }
+        auto fds_bak = fds;
+        for (auto fd : fds_bak)
+        {
+            if (!FD_ISSET(fd, &rdset))
+            {continue;}
+
+            if (fd == _p->sock)
             {
-                _p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]=65535;
-                _p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]=65535;
-
-                rc=modbus_reply(_p->ctx_robotcontrol, query, rc, _p->mb_mapping);
-                if(rc>=0)
+                ret = modbus_tcp_accept(_p->ctx_robotcontrol, &_p->sock);
+                if (ret != -1)
                 {
-                    if(_p->b_send_thread==true)//远端机器人发送命令已经启动
+                    FD_SET(ret, &refset);
+                    fds.insert(fds.end(), ret);
+                    fdmax = *fds.rbegin();
+                }
+                else
+                {
+                    main_record.lock();
+                    QString return_msg=QString::fromLocal8Bit("机器人控制服务器建立连接失败");
+                    _p->m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    break;
+                }
+            }
+            else
+            {
+                ret = modbus_set_socket(_p->ctx_robotcontrol, fd);
+                if (ret == -1)
+                {
+                    main_record.lock();
+                    QString return_msg=QString::fromLocal8Bit("机器人控制服务器设置socket三失败");
+                    _p->m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    break;
+                }
+                uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
+                ret = modbus_receive(_p->ctx_robotcontrol, query);
+                if (ret == -1)
+                {
+                    // Connection closed by the client or error
+                    close(fd);
+                    FD_CLR(fd, &refset);
+                    fds.erase(fd);
+                    fdmax = *fds.rbegin();
+                    ret = 0;
+                }
+                else if (ret > 0)
+                {
+                    _p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]=65535;
+                    _p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]=65535;
+                    int rc=modbus_reply(_p->ctx_robotcontrol, query, ret, _p->mb_mapping);
+                    if(rc>=0)
                     {
-                        if(_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]!=65535)//机器人要移动
+                        if(_p->b_send_thread==true)//远端机器人发送命令已经启动
                         {
-                            uint16_t tcp=_p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD];
-                            Robmovemodel_ID movemod=(Robmovemodel)_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD];
-                            uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
-                            float f_speed=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVESPEED_FH_REG_ADD];
-                            float f_movX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_X_POS_FH_REG_ADD];
-                            float f_movY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Y_POS_FH_REG_ADD];
-                            float f_movZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Z_POS_FH_REG_ADD];
-                            float f_movRX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RX_POS_FH_REG_ADD];
-                            float f_movRY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY_POS_FH_REG_ADD];
-                            float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
-
-                            switch(_p->rob_mod)
+                            if(_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]!=65535)//机器人要移动
                             {
-                                case ROBOT_MODEL_NULL://无机器人
-                                {
+                                uint16_t tcp=_p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD];
+                                Robmovemodel_ID movemod=(Robmovemodel)_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD];
+                                uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
+                                float f_speed=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVESPEED_FH_REG_ADD];
+                                float f_movX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_X_POS_FH_REG_ADD];
+                                float f_movY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Y_POS_FH_REG_ADD];
+                                float f_movZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Z_POS_FH_REG_ADD];
+                                float f_movRX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RX_POS_FH_REG_ADD];
+                                float f_movRY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY_POS_FH_REG_ADD];
+                                float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
 
-                                }
-                                break;
-                                case ROBOT_MODEL_EMERGEN://智昌机器人
+                                switch(_p->rob_mod)
                                 {
-
-                                }
-                                break;
-                                case ROBOT_MODEL_DOBOT://越彊机器人
-                                {
-                                    switch(movemod)
+                                    case ROBOT_MODEL_NULL://无机器人
                                     {
-                                        case MOVEL:
-                                        {
-                                            mutexsend_buf_group.lock();
-                                            QString msg="MovL("+QString::number(f_movX,'f',3)+","+
-                                                                QString::number(f_movY,'f',3)+","+
-                                                                QString::number(f_movZ,'f',3)+","+
-                                                                QString::number(f_movRX,'f',3)+","+
-                                                                QString::number(f_movRY,'f',3)+","+
-                                                                QString::number(f_movRZ,'f',3)+",User=0,Tool="+
-                                                                QString::number(tcp)+",SpeedL="+
-                                                                QString::number((int)f_speed)+")";
-                                            std::string str=msg.toStdString();
-                                        //  std::string str="MovL(1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2)"; 
-                                            _p->send_buf_group.push_back(str);
-                                            mutexsend_buf_group.unlock();
-                                        }
-                                        break;
-                                        case MOVEJ:
-                                        {
-                                            mutexsend_buf_group.lock();
-                                            QString msg="MovJ("+QString::number(f_movX,'f',3)+","+
-                                                                QString::number(f_movY,'f',3)+","+
-                                                                QString::number(f_movZ,'f',3)+","+
-                                                                QString::number(f_movRX,'f',3)+","+
-                                                                QString::number(f_movRY,'f',3)+","+
-                                                                QString::number(f_movRZ,'f',3)+",User=0,Tool="+
-                                                                QString::number(tcp)+")";
-                                            std::string str=msg.toStdString();
-                                        //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2)";
-                                            _p->send_buf_group.push_back(str);
-                                            mutexsend_buf_group.unlock();
-                                        }
-                                        break;
+
                                     }
+                                    break;
+                                    case ROBOT_MODEL_EMERGEN://智昌机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_DOBOT://越彊机器人
+                                    {
+                                        switch(movemod)
+                                        {
+                                            case MOVEL:
+                                            {
+                                                mutexsend_buf_group.lock();
+                                                QString msg="MovL("+QString::number(f_movX,'f',3)+","+
+                                                                    QString::number(f_movY,'f',3)+","+
+                                                                    QString::number(f_movZ,'f',3)+","+
+                                                                    QString::number(f_movRX,'f',3)+","+
+                                                                    QString::number(f_movRY,'f',3)+","+
+                                                                    QString::number(f_movRZ,'f',3)+",User=0,Tool="+
+                                                                    QString::number(tcp)+",SpeedL="+
+                                                                    QString::number((int)f_speed)+")";
+                                                std::string str=msg.toStdString();
+                                            //  std::string str="MovL(1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2)";
+                                                _p->send_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
+                                            }
+                                            break;
+                                            case MOVEJ:
+                                            {
+                                                mutexsend_buf_group.lock();
+                                                QString msg="MovJ("+QString::number(f_movX,'f',3)+","+
+                                                                    QString::number(f_movY,'f',3)+","+
+                                                                    QString::number(f_movZ,'f',3)+","+
+                                                                    QString::number(f_movRX,'f',3)+","+
+                                                                    QString::number(f_movRY,'f',3)+","+
+                                                                    QString::number(f_movRZ,'f',3)+",User=0,Tool="+
+                                                                    QString::number(tcp)+")";
+                                                std::string str=msg.toStdString();
+                                            //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2)";
+                                                _p->send_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    break;
                                 }
-                                break;
                             }
-                        }
-                        if(_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]!=65535)//机器人要暂停或继续运行
-                        {
-                            uint16_t stopreg=_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD];
-                            switch(stopreg)
+                            if(_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]!=65535)//机器人要暂停或继续运行
                             {
-                                case 0://机器人可以清空运行缓存脚本,并准备运行
+                                uint16_t stopreg=_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD];
+                                switch(stopreg)
                                 {
-                                    switch(_p->rob_mod)
+                                    case 0://机器人可以清空运行缓存脚本,并准备运行
                                     {
-                                        case ROBOT_MODEL_NULL://无机器人
+                                        switch(_p->rob_mod)
                                         {
+                                            case ROBOT_MODEL_NULL://无机器人
+                                            {
 
-                                        }
-                                        break;
-                                        case ROBOT_MODEL_EMERGEN://智昌机器人
-                                        {
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_EMERGEN://智昌机器人
+                                            {
 
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_DOBOT://越彊机器人
+                                            {
+                                                mutexsend_buf_group.lock();
+                                                QString msg="StopScript()";
+                                                std::string str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
+                                            }
+                                            break;
                                         }
-                                        break;
-                                        case ROBOT_MODEL_DOBOT://越彊机器人
-                                        {
-                                            mutexsend_buf_group.lock();
-                                            QString msg="StopScript()";
-                                            std::string str=msg.toStdString();
-                                            _p->totalcontrol_buf_group.push_back(str);
-                                            mutexsend_buf_group.unlock();
-                                        }
-                                        break;
                                     }
-                                }
-                                break;
-                                case 1://机器人暂停缓存脚本
-                                {
-                                    switch(_p->rob_mod)
+                                    break;
+                                    case 1://机器人暂停缓存脚本
                                     {
-                                        case ROBOT_MODEL_NULL://无机器人
+                                        switch(_p->rob_mod)
                                         {
+                                            case ROBOT_MODEL_NULL://无机器人
+                                            {
 
-                                        }
-                                        break;
-                                        case ROBOT_MODEL_EMERGEN://智昌机器人
-                                        {
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_EMERGEN://智昌机器人
+                                            {
 
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_DOBOT://越彊机器人
+                                            {
+                                                mutexsend_buf_group.lock();
+                                                QString msg="PauseScript()";
+                                                std::string str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
+                                            }
+                                            break;
                                         }
-                                        break;
-                                        case ROBOT_MODEL_DOBOT://越彊机器人
-                                        {
-                                            mutexsend_buf_group.lock();
-                                            QString msg="PauseScript()";
-                                            std::string str=msg.toStdString();
-                                            _p->totalcontrol_buf_group.push_back(str);
-                                            mutexsend_buf_group.unlock();
-                                        }
-                                        break;
                                     }
-                                }
-                                break;
-                                case 2://机器人继续缓存脚本
-                                {
-                                    switch(_p->rob_mod)
+                                    break;
+                                    case 2://机器人继续缓存脚本
                                     {
-                                        case ROBOT_MODEL_NULL://无机器人
+                                        switch(_p->rob_mod)
                                         {
+                                            case ROBOT_MODEL_NULL://无机器人
+                                            {
 
-                                        }
-                                        break;
-                                        case ROBOT_MODEL_EMERGEN://智昌机器人
-                                        {
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_EMERGEN://智昌机器人
+                                            {
 
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_DOBOT://越彊机器人
+                                            {
+                                                mutexsend_buf_group.lock();
+                                                QString msg="ContinueScript()";
+                                                std::string str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
+                                            }
+                                            break;
                                         }
-                                        break;
-                                        case ROBOT_MODEL_DOBOT://越彊机器人
-                                        {
-                                            mutexsend_buf_group.lock();
-                                            QString msg="ContinueScript()";
-                                            std::string str=msg.toStdString();
-                                            _p->totalcontrol_buf_group.push_back(str);
-                                            mutexsend_buf_group.unlock();
-                                        }
-                                        break;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
                 }
+                sleep(0);
             }
-            else if (rc == -1)
-            {
-              /* Connection closed by the client or error */
-                break;
-            }
-            sleep(0);
         }
-        close(_p->sock);
-        modbus_close(_p->ctx_robotcontrol);
-        modbus_free(_p->ctx_robotcontrol);
     }
+    close(_p->sock);
+    modbus_close(_p->ctx_robotcontrol);
+    modbus_free(_p->ctx_robotcontrol);
+    _p->b_stop_server_state=true;
 }
 
 RobotlinkThread::RobotlinkThread(Robotcontrol *statci_p)
@@ -357,7 +505,7 @@ void RobotlinkThread::run() //连接机器人命令
     while(_p->link_state==true)
     {
         sleep(5);//每隔5秒查看一次机器人
-        static QString old_rodb_ip="0.0.0.0.0";
+        static QString old_rodb_ip="0.0.0.0";
         u_int16_t ip[4];
         ip[0]=_p->mb_mapping->tab_registers[ROB_IPADDR_1_REG_ADD];
         ip[1]=_p->mb_mapping->tab_registers[ROB_IPADDR_2_REG_ADD];
@@ -530,11 +678,12 @@ void RobotlinkThread::run() //连接机器人命令
             }
             _p->RobotInit();
             main_record.lock();
-            QString return_msg=QString::fromLocal8Bit("机器人启动成功");
+            QString return_msg=QString::fromLocal8Bit("机器人状态获取成功");
             _p->m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
         }
     }
+    _p->b_stop_link_state=true;
 }
 
 RobotrcvThread::RobotrcvThread(Robotcontrol *statci_p)

@@ -27,6 +27,9 @@ QString Craft::craft_Id_toQString(Craft_ID craft_id)
         case CRAFT_ID_FIXED_POSTURE:
             msg=QString::fromLocal8Bit("固定焊接姿态");
         break;
+        case CRAFT_ID_STARTENDCHANGE_POSTURE:
+            msg=QString::fromLocal8Bit("起终点变姿态");
+        break;
     }
     return msg;
 }
@@ -97,9 +100,16 @@ QVariantHash Craft::encoed_json()
     switch(craft_id)
     {
         case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
-            p_id="CRAFT_ID_FIXED_POSTURE";
+        {
+            p_id="CRAFT_ID_FIXED_POSTURE";            
+        }
         break;
-    }
+        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+        {
+            p_id="CRAFT_ID_STARTENDCHANGE_POSTURE";
+        }
+        break;
+    } 
     data.insert("craft_id", p_id);
     for(int n=0;n<posturelist.size();n++)
     {
@@ -116,7 +126,7 @@ QVariantHash Craft::encoed_json()
     data.insert("posturelist", subData1);
     switch(pendulum_mode)
     {
-        case PENDULUM_ID_FLAT:    //固定焊接姿态
+        case PENDULUM_ID_FLAT:    //平焊
             p_id="PENDULUM_ID_FLAT";
         break;
     }
@@ -124,6 +134,19 @@ QVariantHash Craft::encoed_json()
     data.insert("pendulum_swing",pendulum_swing);
     data.insert("pendulum_phaseangle",pendulum_phaseangle);
 
+    /****************************/
+    //这里添加补充参数
+    switch(craft_id)
+    {
+        case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
+        break;
+        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+        {
+
+        }
+        break;
+    }
+    /****************************/
     return data;
 }
 
@@ -139,56 +162,64 @@ int Craft::decoed_json(QByteArray allData)
         qDebug() << "JSON error!";
         return 1;
     }
-
     QJsonObject rootObj = jsonDoc.object();
     QJsonObject::Iterator it;
+    if(rootObj.contains("craft_id"))//工艺类型
+    {
+        QJsonValue value = rootObj.value("craft_id");
+        QString msg=value.toString();
+        if(msg=="CRAFT_ID_FIXED_POSTURE")
+        {
+            craft_id=CRAFT_ID_FIXED_POSTURE;
+        }
+        else if(msg=="CRAFT_ID_STARTENDCHANGE_POSTURE")
+        {
+            craft_id=CRAFT_ID_STARTENDCHANGE_POSTURE;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    else
+    {
+        return 1;
+    }
     for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
     {
         QString keyString=it.key();
-        if(keyString=="craft_id")//工艺类型
-        {
-            QString msg=it.value().toString();
-            if(msg=="CRAFT_ID_FIXED_POSTURE")
-            {
-                craft_id=CRAFT_ID_FIXED_POSTURE;
-            }
-            else
-            {
-
-            }
-        }
-        else if(keyString=="posturelist")//项目指令集
+        if(keyString=="posturelist")//姿态指令集
         {
             QJsonObject obj = it->toObject();
-            QJsonObject::Iterator it;
             posturelist.resize(obj.size());
             for(int t=0;t<obj.size();t++)
             {
                 QString s_key="lineposture"+QString::number(t);
-                for(it=obj.begin();it!=obj.end();it++)//遍历Key
+                if(obj.contains(s_key))
                 {
-                    QString keyString=it.key();
-                    if(keyString==s_key)
+                    QJsonValue value = obj.value(s_key);
+                    QJsonArray arrData=value.toArray();
+                    if(arrData.size()!=6)
                     {
-                        QJsonArray arrData=it.value().toArray();
-                        if(arrData.size()!=6)
-                        {
-                            return 1;
-                        }
-                        posturelist[t].X=arrData[0].toDouble();
-                        posturelist[t].Y=arrData[1].toDouble();
-                        posturelist[t].Z=arrData[2].toDouble();
-                        posturelist[t].RX=arrData[3].toDouble();
-                        posturelist[t].RY=arrData[4].toDouble();
-                        posturelist[t].RZ=arrData[5].toDouble();
+                        return 1;
                     }
+                    posturelist[t].X=arrData[0].toDouble();
+                    posturelist[t].Y=arrData[1].toDouble();
+                    posturelist[t].Z=arrData[2].toDouble();
+                    posturelist[t].RX=arrData[3].toDouble();
+                    posturelist[t].RY=arrData[4].toDouble();
+                    posturelist[t].RZ=arrData[5].toDouble();
+                }
+                else
+                {
+                    return 1;
                 }
             }
         }
         else if(keyString=="pendulum_mode")//工艺类型
         {
             QString msg=it.value().toString();
-            if(msg=="PENDULUM_ID_FLAT")
+            if(msg=="PENDULUM_ID_FLAT")     //平焊
             {
                 pendulum_mode=PENDULUM_ID_FLAT;
             }
@@ -207,7 +238,7 @@ int Craft::decoed_json(QByteArray allData)
         }
     }
     /*********************/
-    //判断数据合理性
+    //判断数据合理性,补充其他数据
     switch(craft_id)
     {
         case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
@@ -216,6 +247,11 @@ int Craft::decoed_json(QByteArray allData)
             {
                 return 1;
             }
+        }
+        break;
+        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+        {
+
         }
         break;
     }

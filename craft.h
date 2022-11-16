@@ -10,10 +10,11 @@
 #include <QByteArray>
 #include "global.h"
 
-#define CRAFT_ID_TOTAL_NUM       1      //工艺类型总数
+#define CRAFT_ID_TOTAL_NUM       2      //工艺类型总数
 typedef enum CRAFT_ID
 {
-    CRAFT_ID_FIXED_POSTURE=0,       //固定焊接姿态
+    CRAFT_ID_FIXED_POSTURE=0,               //固定焊接姿态
+    CRAFT_ID_STARTENDCHANGE_POSTURE=1,      //起终点变姿态
 }Craft_ID;
 
 #define PENDULUM_ID_TOTAL_NUM     1     //摆焊接模式总数

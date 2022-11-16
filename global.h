@@ -386,7 +386,7 @@ typedef enum Alternatingcurrent_ID    //交变电流
 typedef enum TRACE_EDIT_MODE_ID
 {
     TRACE_EDIT_MODE_ONE_TO_ONE=0,       //单扫对单轨道模式
-    TRACE_EDIT_MODE_THREE_TO_ONE=1,     //三扫对单轨道模式
+    TRACE_EDIT_MODE_THREE_TO_ONE=1,     //三直线交点模式
 }Trace_edit_mode;
 
 //手眼标定模式

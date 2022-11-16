@@ -803,7 +803,7 @@
     </item>
     <item>
      <property name="text">
-      <string>三扫对单轨模式</string>
+      <string>三直线交点模式</string>
      </property>
     </item>
    </widget>

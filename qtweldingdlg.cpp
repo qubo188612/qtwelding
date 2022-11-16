@@ -61,6 +61,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     editcraft=new editcraftDlg(m_mcs);
     newcraft=new newcraftDlg(m_mcs);
     setcraft=new setcraftDlg(m_mcs);
+    setcraft1=new setcraft1Dlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -140,6 +141,10 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
 qtweldingDlg::~qtweldingDlg()
 {
+#ifdef USE_MYROBOT_CONTROL      //是否使用程序自带接口
+    m_mcs->robotcontrol->Close_control_modbus();//创建自带接口
+#endif
+
     if(b_thread1==true)
     {
         thread1->Stop();
@@ -174,6 +179,7 @@ qtweldingDlg::~qtweldingDlg()
     delete editcraft;
     delete newcraft;
     delete setcraft;
+    delete setcraft1;
     delete ui;
 }
 
@@ -398,12 +404,20 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                             +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
                 switch(m_mcs->craft->craft_id)
                 {
-                    case CRAFT_ID_FIXED_POSTURE:
+                    case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
                     {
                         setcraft->init_dlg_show();
                         setcraft->setWindowTitle(msg);
                         setcraft->exec();
                         setcraft->close_dlg_show();
+                    }
+                    break;
+                    case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
+                    {
+                        setcraft1->init_dlg_show();
+                        setcraft1->setWindowTitle(msg);
+                        setcraft1->exec();
+                        setcraft1->close_dlg_show();
                     }
                     break;
                 }
@@ -436,12 +450,20 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                                 +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
                     switch(m_mcs->craft->craft_id)
                     {
-                        case CRAFT_ID_FIXED_POSTURE:
+                        case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
                         {
                             setcraft->init_dlg_show();
                             setcraft->setWindowTitle(msg);
                             setcraft->exec();
                             setcraft->close_dlg_show();
+                        }
+                        break;
+                        case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
+                        {
+                            setcraft1->init_dlg_show();
+                            setcraft1->setWindowTitle(msg);
+                            setcraft1->exec();
+                            setcraft1->close_dlg_show();
                         }
                         break;
                     }

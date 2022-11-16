@@ -23,6 +23,7 @@
 #include "editcraftdlg.h"
 #include "newcraftdlg.h"
 #include "setcraftdlg.h"
+#include "setcraft1dlg.h"
 #include <QMutex>
 
 
@@ -72,6 +73,7 @@ public:
     editcraftDlg *editcraft;
     newcraftDlg *newcraft;
     setcraftDlg *setcraft;
+    setcraft1Dlg *setcraft1;
 
 
     unsigned short leaser_rcv_data[15];

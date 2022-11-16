@@ -464,10 +464,10 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
                 }
             }
             break;
-            case TRACE_EDIT_MODE_THREE_TO_ONE:  //三扫对单轨道模式
+            case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
             {
                 traceedit3->init_dlg_show();
-                traceedit3->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三扫对单轨模式)"));
+                traceedit3->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三直线交点模式)"));
                 int rc=traceedit3->exec();
                 traceedit3->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
