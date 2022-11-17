@@ -222,6 +222,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">

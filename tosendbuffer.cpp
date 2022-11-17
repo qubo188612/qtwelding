@@ -827,7 +827,7 @@ int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> tra
         {
             float Y=trace[n].ros_line.targetpointoutcloud[m].x;
             float Z=trace[n].ros_line.targetpointoutcloud[m].y;
-            pointdata="pointYZ"+QString::number(m)+"("+QString::number(Y,'f',3)+","+QString::number(Z,'f',3)+")";
+            pointdata="pointYZ"+QString::number(m)+"("+QString::number(Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")";
         }
         msg="Line"+QString::number(n)+": "+pointdata+"\n";
         fp2.write(msg.toStdString().c_str());
@@ -848,7 +848,7 @@ int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> tra
             int v=trace[n].ros_line.lasertrackoutcloud[m].v;
             float Y=trace[n].ros_line.lasertrackoutcloud[m].x;
             float Z=trace[n].ros_line.lasertrackoutcloud[m].y;
-            QString linedata="U="+QString::number(u)+",V="+QString::number(v)+",Y="+QString::number(Y,'f',3)+",Z="+QString::number(Z,'f',3)+"\n";
+            QString linedata="U="+QString::number(u)+",V="+QString::number(v)+",Y="+QString::number(Y,'f',ROBOT_POSE_DECIMAL_PLACE)+",Z="+QString::number(Z,'f',ROBOT_POSE_DECIMAL_PLACE)+"\n";
             fp3.write(linedata.toStdString().c_str());
         }
     }
@@ -869,7 +869,7 @@ int toSendbuffer::savelog_creat(QString filename,std::vector<RobPos> trace)
         return -1;
     for(int n=0;n<trace.size();n++)
     {
-        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',3)+","+QString::number(trace[n].Y,'f',3)+","+QString::number(trace[n].Z,'f',3)+")\n";
+        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")\n";
         fp.write(msg.toStdString().c_str());
     }
     fp.close();
@@ -888,8 +888,8 @@ int toSendbuffer::savelog_trace(QString filename,std::vector<RobPos> trace)
         return -1;
     for(int n=0;n<trace.size();n++)
     {
-        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',3)+","+QString::number(trace[n].Y,'f',3)+","+QString::number(trace[n].Z,'f',3)+","+
-                  QString::number(trace[n].RX,'f',3)+","+QString::number(trace[n].RY,'f',3)+","+QString::number(trace[n].RZ,'f',3)+")\n";
+        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                  QString::number(trace[n].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")\n";
         fp.write(msg.toStdString().c_str());
     }
     fp.close();

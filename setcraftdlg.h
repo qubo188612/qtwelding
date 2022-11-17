@@ -2,6 +2,7 @@
 #define SETCRAFTDLG_H
 
 #include <QDialog>
+#include <QDoubleValidator>
 #include <my_parameters.h>
 
 namespace Ui {
@@ -29,6 +30,10 @@ private slots:
 
 private:
     Ui::setcraftDlg *ui;
+
+    QDoubleValidator *adoubleValidator_pose;    //机器人坐标小数
+    QDoubleValidator *adoubleValidator_posture; //机器人姿态小数
+    QDoubleValidator *adoubleValidator_3;//3位小数
 
     void UpdataUi();
 };

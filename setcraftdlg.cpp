@@ -6,6 +6,20 @@ setcraftDlg::setcraftDlg(my_parameters *mcs,QWidget *parent) :
     ui(new Ui::setcraftDlg)
 {
     ui->setupUi(this);
+
+    adoubleValidator_3 = new QDoubleValidator(0,0,3,this);//限制3位小数
+    adoubleValidator_pose = new QDoubleValidator(0,0,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_posture = new QDoubleValidator(0,0,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
+    ui->lineEdit_X->setValidator(adoubleValidator_pose);
+    ui->lineEdit_Y->setValidator(adoubleValidator_pose);
+    ui->lineEdit_Z->setValidator(adoubleValidator_pose);
+    ui->lineEdit_RX->setValidator(adoubleValidator_posture);
+    ui->lineEdit_RY->setValidator(adoubleValidator_posture);
+    ui->lineEdit_RZ->setValidator(adoubleValidator_posture);
+    ui->lineEdit_pendulum_swing->setValidator(adoubleValidator_3);
+    ui->lineEdit_pendulum_phaseangle->setValidator(adoubleValidator_3);
+
+
     m_mcs=mcs;
 
     for(int n=0;n<PENDULUM_ID_TOTAL_NUM;n++)
@@ -17,6 +31,9 @@ setcraftDlg::setcraftDlg(my_parameters *mcs,QWidget *parent) :
 
 setcraftDlg::~setcraftDlg()
 {
+    delete adoubleValidator_3;
+    delete adoubleValidator_pose;
+    delete adoubleValidator_posture;
     delete ui;
 }
 
@@ -25,23 +42,23 @@ void setcraftDlg::init_dlg_show()
     ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()==1)
     {
-        ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[0].X,'f',3));
-        ui->lineEdit_Y->setText(QString::number(m_mcs->craft->posturelist[0].Y,'f',3));
-        ui->lineEdit_Z->setText(QString::number(m_mcs->craft->posturelist[0].Z,'f',3));
-        ui->lineEdit_RX->setText(QString::number(m_mcs->craft->posturelist[0].RX,'f',3));
-        ui->lineEdit_RY->setText(QString::number(m_mcs->craft->posturelist[0].RY,'f',3));
-        ui->lineEdit_RZ->setText(QString::number(m_mcs->craft->posturelist[0].RZ,'f',3));
+        ui->lineEdit_X->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Y->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Z->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_RX->setText(QString::number(m_mcs->craft->posturelist[0].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RY->setText(QString::number(m_mcs->craft->posturelist[0].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RZ->setText(QString::number(m_mcs->craft->posturelist[0].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     }
     else
     {
-        ui->lineEdit_X->setText(QString::number(0,'f',3));
-        ui->lineEdit_Y->setText(QString::number(0,'f',3));
-        ui->lineEdit_Z->setText(QString::number(0,'f',3));
-        ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
-        ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
-        ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
+        ui->lineEdit_X->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Y->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Z->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     }
-    ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',3));
+    ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',ROBOT_POSE_DECIMAL_PLACE));
     ui->lineEdit_pendulum_phaseangle->setText(QString::number(m_mcs->craft->pendulum_phaseangle,'f',3));
     UpdataUi();
 }
@@ -70,9 +87,9 @@ void setcraftDlg::on_pushButton_clicked()//获取当前焊接姿态
     }
     else
     {
-        ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
-        ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
-        ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
+        ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->record->append(QString::fromLocal8Bit("获取当前机器人坐标完成"));
     }
 }

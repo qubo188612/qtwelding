@@ -5,6 +5,7 @@
 #if _MSC_VER||WINDOWS_TCP
 #else
 #include <QDialog>
+#include <QDoubleValidator>
 #include <my_parameters.h>
 #include <QKeyEvent>
 
@@ -46,6 +47,8 @@ public:
 
 private:
     Ui::cambuilddlg *ui;
+
+    QDoubleValidator *adoubleValidator_3;//3位小数
 
 protected:
     virtual void keyPressEvent(QKeyEvent *ev);

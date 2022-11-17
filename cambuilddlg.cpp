@@ -14,6 +14,7 @@ cambuilddlg::cambuilddlg(my_parameters *mcs,QWidget *parent) :
     ui(new Ui::cambuilddlg)
 {
     ui->setupUi(this);
+
     m_mcs=mcs;
 
     b_key_1_push=false;

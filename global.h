@@ -18,6 +18,9 @@ typedef uint32_t u_int32_t; /* u_int32_t is defined in <machine/types.h> */
 typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #endif
 
+#define ROBOT_POSE_DECIMAL_PLACE            3       //机器人坐标保留小数后几位
+#define ROBOT_POSTURE_DECIMAL_PLACE         4       //机器人姿态保留小数点后几位
+
 //#define DEBUG_TEST
 #define DEBUG_MYINTERFACES
 

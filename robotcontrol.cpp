@@ -60,6 +60,8 @@ void Robotcontrol::Creat_control_modbus()
         sendrcv_Thread = new RobotsendrcvThread(this);
         totalcontrol_Thread = new RobottotalcontrolThread(this);
         totalcontrolrcv_Thread = new RobottotalcontrolrcvThread(this);
+
+        usleep(100000);
     }
 }
 
@@ -362,12 +364,12 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             case MOVEL:
                                             {
                                                 mutexsend_buf_group.lock();
-                                                QString msg="MovL("+QString::number(f_movX,'f',3)+","+
-                                                                    QString::number(f_movY,'f',3)+","+
-                                                                    QString::number(f_movZ,'f',3)+","+
-                                                                    QString::number(f_movRX,'f',3)+","+
-                                                                    QString::number(f_movRY,'f',3)+","+
-                                                                    QString::number(f_movRZ,'f',3)+",User=0,Tool="+
+                                                QString msg="MovL("+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                                                     QString::number(tcp)+",SpeedL="+
                                                                     QString::number((int)f_speed)+")";
                                                 std::string str=msg.toStdString();
@@ -379,12 +381,12 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             case MOVEJ:
                                             {
                                                 mutexsend_buf_group.lock();
-                                                QString msg="MovJ("+QString::number(f_movX,'f',3)+","+
-                                                                    QString::number(f_movY,'f',3)+","+
-                                                                    QString::number(f_movZ,'f',3)+","+
-                                                                    QString::number(f_movRX,'f',3)+","+
-                                                                    QString::number(f_movRY,'f',3)+","+
-                                                                    QString::number(f_movRZ,'f',3)+",User=0,Tool="+
+                                                QString msg="MovJ("+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                    QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                                                     QString::number(tcp)+")";
                                                 std::string str=msg.toStdString();
                                             //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2)";

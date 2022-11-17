@@ -141,9 +141,6 @@ QVariantHash Craft::encoed_json()
         case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
         break;
         case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
-        {
-
-        }
         break;
     }
     /****************************/
@@ -251,7 +248,10 @@ int Craft::decoed_json(QByteArray allData)
         break;
         case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
         {
-
+            if(posturelist.size()<2)    //起终点变姿态至少要有起终点
+            {
+                return 1;
+            }
         }
         break;
     }

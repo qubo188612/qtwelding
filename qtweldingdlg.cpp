@@ -75,12 +75,12 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->robot_ip_port->setText(QString::fromLocal8Bit("0.0.0.0"));
     ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
     ui->robot_speed->setText(QString::number(m_mcs->rob->robot_speed,'f',3));
-    ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',3));
-    ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',3));
-    ui->robot_pos_z->setText(QString::number(m_mcs->rob->TCPpos.Z,'f',3));
-    ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
-    ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
-    ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
+    ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->robot_pos_z->setText(QString::number(m_mcs->rob->TCPpos.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     ui->leaser_ip->setText(QString::fromLocal8Bit("0.0.0.0"));
     ui->leaser_pos_y->setText(QString::fromLocal8Bit("0.000"));
     ui->leaser_pos_z->setText(QString::fromLocal8Bit("0.000"));
@@ -110,6 +110,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     m_mcs->robotcontrol->Creat_control_modbus();//创建自带接口
 #endif
     /*************************************************/
+
 
     thread1 = new qtweldingThread(this);
     connect(thread1, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
@@ -729,12 +730,12 @@ void qtweldingDlg::init_show_robpos_list()
     ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
 
     ui->robot_speed->setText(QString::number(m_mcs->rob->robot_speed,'f',3));
-    ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',3));
-    ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',3));
-    ui->robot_pos_z->setText(QString::number(m_mcs->rob->TCPpos.Z,'f',3));
-    ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',3));
-    ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',3));
-    ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',3));
+    ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->robot_pos_z->setText(QString::number(m_mcs->rob->TCPpos.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->robot_pos_rx->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->robot_pos_ry->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->robot_pos_rz->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     msg=QString::number(m_mcs->rob->robtime.hour)+":"+
                 QString::number(m_mcs->rob->robtime.min)+":"+
                 QString::number(m_mcs->rob->robtime.sec)+":"+

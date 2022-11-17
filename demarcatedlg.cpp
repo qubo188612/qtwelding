@@ -389,12 +389,12 @@ void demarcateDlg::updataRoblistUi()
     {
         QString msg;
         msg="TCP"+QString::number(n)+":"+
-            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].X,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].Y,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].Z,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RX,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RY,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RZ,'f',3);
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Robotpos[n].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE);
         ui->robposlist->addItem(msg);
     }
     if(m_mcs->e2proomdata.demdlg_Robotpos.size()>0)
@@ -412,12 +412,12 @@ void demarcateDlg::updataLeaserlistUi()
         msg="CAM"+QString::number(n)+":"+
             QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Y,'f',2)+","+
             QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Z,'f',2)+" TCP:"+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.X,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Y,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Z,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RX,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RY,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RZ,'f',3);
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE);
 
         ui->leaserposlist->addItem(msg);
     }
@@ -436,12 +436,12 @@ void demarcateDlg::updataDemarcateResult()
         msg="CAM"+QString::number(n)+":"+
             QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Y,'f',2)+","+
             QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].leaserpos.Z,'f',2)+" TCP:"+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.X,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Y,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Z,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RX,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RY,'f',3)+","+
-            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RZ,'f',3)+" Precision:"+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+            QString::number(m_mcs->e2proomdata.demdlg_Leaserpos[n].robotpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+" Precision:"+
             QString::number(errgroup[n],'f',2);
 
         ui->leaserposlist->addItem(msg);

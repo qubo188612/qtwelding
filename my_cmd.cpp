@@ -849,12 +849,12 @@ QString my_cmd::rc_move(RobPos pos,Robmovemodel movemodel)
         }
         break;
     }
-    msg=msg1+"["+QString::number(pos.X,'f',3)+","+
-                 QString::number(pos.Y,'f',3)+","+
-                 QString::number(pos.Z,'f',3)+","+
-                 QString::number(pos.RX,'f',3)+","+
-                 QString::number(pos.RY,'f',3)+","+
-                 QString::number(pos.RZ,'f',3)+"]";
+    msg=msg1+"["+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"]";
     return msg;
 }
 
