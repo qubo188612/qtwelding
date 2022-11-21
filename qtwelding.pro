@@ -22,6 +22,7 @@ SOURCES += \
         cam_sen.cpp \
         cambuilddlg.cpp \
         craft.cpp \
+        cweldtarject.cpp \
         demarcatedlg.cpp \
         editcraftdlg.cpp \
         editprojectdlg.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     cam_sen.h \
     cambuilddlg.h \
     craft.h \
+    cweldtarject.h \
     demarcatedlg.h \
     editcraftdlg.h \
     editprojectdlg.h \

@@ -51,6 +51,8 @@ public:
 
     std::vector<Weld_trace_result> project_weld_trace;  //跟踪轨迹
 
+    std::vector<Weld_trace_result> project_interweld_trace; //机器人插值后的跟踪轨迹
+
 protected:
     Project();
     ~Project();

@@ -19,6 +19,46 @@ Craft::~Craft()
 
 }
 
+int Craft::tidyup_posturelist(std::vector<RobPos> posturelistIn,std::vector<RobPos> &posturelistOut,QString &returnmsg)
+{
+    std::vector<RobPos> tempposture(posturelistIn.size());
+    int pointnum=posturelistIn.size();
+    if(pointnum<2)
+    {
+        returnmsg=QString::fromLocal8Bit("姿态个数至少需要2个");
+        return 1;
+    }
+    Eigen::Vector3d pointst(posturelistIn[0].X,posturelistIn[0].Y,posturelistIn[0].Z),pointed(posturelistIn[pointnum-1].X,posturelistIn[pointnum-1].Y,posturelistIn[pointnum-1].Z);
+    Eigen::Vector3d pointvector=pointed-pointst;//直线向量
+    double dis=pointvector.norm();//直线距离
+    Eigen::Vector3d pointsingvector=pointvector/dis;//单位向量
+    tempposture[0]=posturelistIn[0];
+    tempposture[pointnum-1]=posturelistIn[pointnum-1];//把头尾姿态放入
+
+    std::vector<d_Mysort> gropu;//向量大小集合
+    for(int n=1;n<pointnum-1;n++)
+    {
+        Eigen::Vector3d pointcenter(posturelistIn[n].X,posturelistIn[n].Y,posturelistIn[n].Z);
+        Eigen::Vector3d pointcentervector=pointcenter-pointst;
+        double result=pointvector.dot(pointcentervector);
+        if(result<0)
+        {
+            returnmsg=QString::fromLocal8Bit("第")+QString::number(n)+QString::fromLocal8Bit("个姿态点坐标没有位于起点和终点之间");
+            return 1;
+        }
+        d_Mysort s_gropu;
+        s_gropu.data=(result*pointsingvector).norm();
+        s_gropu.subscript=n;
+        gropu.push_back(s_gropu);
+    }
+//这里排序
+
+
+
+    posturelistOut=tempposture;
+    return 0;
+}
+
 QString Craft::craft_Id_toQString(Craft_ID craft_id)
 {
     QString msg;

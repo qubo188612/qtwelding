@@ -48,7 +48,7 @@ public:
 private:
     Ui::cambuilddlg *ui;
 
-    QDoubleValidator *adoubleValidator_3;//3位小数
+    QDoubleValidator *adoubleValidator_2;//3位小数
 
 protected:
     virtual void keyPressEvent(QKeyEvent *ev);

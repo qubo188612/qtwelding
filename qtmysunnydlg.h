@@ -73,6 +73,8 @@ private:
     cambuilddlg *cambuild;
 #endif
 
+    QIntValidator *aIntValidator;   //限制输入整数
+
 private slots:
     void init_show_pos_list();
     void init_show_pos_failed();

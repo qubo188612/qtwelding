@@ -22,6 +22,19 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     ui->setupUi(this);
 
+    aIntValidator = new QIntValidator;
+
+    ui->cam_width->setValidator(aIntValidator);
+    ui->cam_height->setValidator(aIntValidator);
+    ui->cam_fps->setValidator(aIntValidator);
+    ui->robotport->setValidator(aIntValidator);
+    ui->tasknum->setValidator(aIntValidator);
+    ui->alg0_99_threshold->setValidator(aIntValidator);
+    ui->alg100_threshold->setValidator(aIntValidator);
+    ui->alg101_threshold->setValidator(aIntValidator);
+    ui->alg102_threshold->setValidator(aIntValidator);
+    ui->alg103_threshold->setValidator(aIntValidator);
+
     ui->label_3->hide();
     ui->label_4->hide();
     ui->label_43->hide();
@@ -981,6 +994,8 @@ qtmysunnyDlg::~qtmysunnyDlg()
 #else
     delete cambuild;
 #endif
+
+    delete aIntValidator;
     delete ui;
 }
 

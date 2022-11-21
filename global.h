@@ -297,6 +297,14 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 
 /*****************************/
+//64位浮点排序类
+class d_Mysort
+{
+public:
+    double data;        //值
+    int subscript;      //下标
+};
+
 
 class IP                //ip
 {

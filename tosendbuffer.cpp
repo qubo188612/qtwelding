@@ -580,7 +580,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int tcp=cmd.cmd_trace_tcp;//获取到跟踪TCP
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
             int weld_trace_num;//搜索到的焊接轨道序号
-            std::vector<RobPos> weld;//轨道
+            std::vector<RobPos> weld,interpolatweld;//轨道
 
             //这里添加移动命令
             for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
@@ -599,20 +599,38 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             std::string fname = code->fromUnicode(craftfilepath).data();
             m_mcs->craft->LoadCraft((char*)fname.c_str());
             weld=m_mcs->project->project_weld_trace[weld_trace_num].point;
+
+            switch(m_mcs->craft->pendulum_mode)
+            {
+                case PENDULUM_ID_FLAT://平焊
+                {
+                    CWeldTarject tarjectMath;
+                    if(!tarjectMath.pos_interpolation(weld,interpolatweld))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹插值出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                }
+                break;
+            }
             //这里添加姿态
             switch(m_mcs->craft->craft_id)
             {
                 case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
                 {
-                    for(int n=0;n<weld.size();n++)
+                    for(int n=0;n<interpolatweld.size();n++)
                     {
-                        weld[n].X=weld[n].X+m_mcs->craft->posturelist[0].X;
-                        weld[n].Y=weld[n].Y+m_mcs->craft->posturelist[0].Y;
-                        weld[n].Z=weld[n].Z+m_mcs->craft->posturelist[0].Z;
-                        weld[n].RX=m_mcs->craft->posturelist[0].RX;
-                        weld[n].RY=m_mcs->craft->posturelist[0].RY;
-                        weld[n].RZ=m_mcs->craft->posturelist[0].RZ;
-                        weld[n].nEn=true;
+                        interpolatweld[n].X=interpolatweld[n].X+m_mcs->craft->posturelist[0].X;
+                        interpolatweld[n].Y=interpolatweld[n].Y+m_mcs->craft->posturelist[0].Y;
+                        interpolatweld[n].Z=interpolatweld[n].Z+m_mcs->craft->posturelist[0].Z;
+                        interpolatweld[n].RX=m_mcs->craft->posturelist[0].RX;
+                        interpolatweld[n].RY=m_mcs->craft->posturelist[0].RY;
+                        interpolatweld[n].RZ=m_mcs->craft->posturelist[0].RZ;
+                        interpolatweld[n].nEn=true;
                     }
                 }
                 break;
@@ -622,16 +640,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 break;
             }
-
-            switch(m_mcs->craft->pendulum_mode)
-            {
-                case PENDULUM_ID_FLAT://平焊
-                {
-                }
-                break;
-            }
-
-            m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
+            m_mcs->project->project_interweld_trace.resize( m_mcs->project->project_weld_trace.size());
+            m_mcs->project->project_interweld_trace[weld_trace_num].point=interpolatweld;
 
             if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
             {
@@ -643,11 +653,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 to.get_time_ms(&s_time);
                 time=QString::fromStdString(s_time);
                 dir=dir+time+key+name;
-                savelog_trace(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
+                savelog_trace(dir,m_mcs->project->project_interweld_trace[weld_trace_num].point);
             }
-            for(int n=0;n<m_mcs->project->project_weld_trace[weld_trace_num].point.size();n++)
+            for(int n=0;n<m_mcs->project->project_interweld_trace[weld_trace_num].point.size();n++)
             {
-                RobPos pos=m_mcs->project->project_weld_trace[weld_trace_num].point[n];
+                RobPos pos=m_mcs->project->project_interweld_trace[weld_trace_num].point[n];
                 cmd_move(pos,MOVEL,speed,tcp);//这里考虑暂停如何加
             }
             usleep(ROB_WORK_DELAY);

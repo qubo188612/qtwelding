@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QDoubleValidator>
+#include <QListWidgetItem>
 #include <my_parameters.h>
 
 namespace Ui {
@@ -21,6 +22,8 @@ public:
 
     void init_dlg_show();
     void close_dlg_show();
+
+
 private slots:
     void on_pushButton_get_stpos_clicked();
 
@@ -38,12 +41,17 @@ private slots:
 
     void on_pushButtonOK_clicked();
 
+    void on_robposlist_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::setcraft1Dlg *ui;
 
     QDoubleValidator *adoubleValidator_pose;    //机器人坐标小数
     QDoubleValidator *adoubleValidator_posture; //机器人姿态小数
     QDoubleValidator *adoubleValidator_3;//3位小数
+
+    int now_robpos;         //当前指向TCP修改位置
+    void updataRoblistUi();
 };
 
 #endif // SETCRAFT1DLG_H

@@ -8,11 +8,11 @@
 #include "my_parameters.h"
 #include "TimeFunction.h"
 #include "fitlineside.h"
+#include "cweldtarject.h"
 
-#define SAVELOGFILE_SCANNAME_HEAD     "SCAN_"       //保存的扫描轨迹类型的文件前缀名称
-#define SAVELOGFILE_CREATNAME_HEAD    "CREAT_"      //保存的焊接轨迹类型(未添加姿态前)的文件前缀名称
-#define SAVELOGFILE_TRACENAME_HEAD    "TRACE_"      //保存的焊接轨迹类型的文件前缀名称
-
+#define SAVELOGFILE_SCANNAME_HEAD          "SCAN_"               //保存的扫描轨迹类型的文件前缀名称
+#define SAVELOGFILE_CREATNAME_HEAD         "CREAT_"              //保存的焊接轨迹类型(未添加姿态前)的文件前缀名称
+#define SAVELOGFILE_TRACENAME_HEAD         "TRACE_"              //保存的焊接轨迹类型的文件前缀名称
 
 class my_parameters;
 

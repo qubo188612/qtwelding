@@ -708,16 +708,6 @@
     <string>姿态列表:</string>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>340</y>
-     <width>661</width>
-     <height>201</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_del">
    <property name="geometry">
     <rect>
@@ -768,6 +758,16 @@
    </property>
    <property name="text">
     <string>插入中间点坐标姿态</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="robposlist">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>340</y>
+     <width>661</width>
+     <height>201</height>
+    </rect>
    </property>
   </widget>
  </widget>

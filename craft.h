@@ -1,6 +1,7 @@
 #ifndef CRAFT_H
 #define CRAFT_H
 
+#include <Eigen/Core>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QFile>
@@ -49,6 +50,10 @@ public:
     std::vector<RobPos> posturelist;        //焊接姿态
                                             //craft_id=CRAFT_ID_FIXED_POSTURE时，posturelist.size()=1,且posturelist[0]为这个轨迹的焊接姿态
 
+    //整理posturelist姿态
+    int tidyup_posturelist(std::vector<RobPos> posturelistIn,           //输入姿态值
+                           std::vector<RobPos> &posturelistOut,         //输出整理后的姿态值
+                           QString &returnmsg);                         //输出报警信息
 
 
 protected:
