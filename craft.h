@@ -11,6 +11,8 @@
 #include <QByteArray>
 #include "global.h"
 
+#define STARTENDCHANGE_POSTURE_ALLOWERROR       100     //变姿态工艺与实际轨迹长度允许的误差(mm)
+
 #define CRAFT_ID_TOTAL_NUM       2      //工艺类型总数
 typedef enum CRAFT_ID
 {

@@ -180,17 +180,17 @@
    </property>
    <item>
     <property name="text">
-     <string>内旋 RX-RY-RZ</string>
+     <string>内旋 RX-RY-RZ (如:安川/ABB)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>外旋 RZ-RY-RX</string>
+     <string>外旋 RZ-RY-RX (如:库卡/OTC)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>内旋 RX-&quot;RY&quot;-RZ</string>
+     <string>内旋 RX-&quot;RY&quot;-RZ (如:松下)</string>
     </property>
    </item>
   </widget>

@@ -21,7 +21,6 @@ Craft::~Craft()
 
 int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,std::vector<ChangeRobPosVariable> &posturelistOut,QString &returnmsg)
 {
-    std::vector<ChangeRobPosVariable> tempposture(posturelistIn.size());
     int pointnum=posturelistIn.size();
     if(pointnum<2)
     {
@@ -31,7 +30,12 @@ int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,st
     Eigen::Vector3d pointst(posturelistIn[0].posture.X,posturelistIn[0].posture.Y,posturelistIn[0].posture.Z),pointed(posturelistIn[pointnum-1].posture.X,posturelistIn[pointnum-1].posture.Y,posturelistIn[pointnum-1].posture.Z);
     Eigen::Vector3d pointvector=pointed-pointst;//直线向量
     double dis=pointvector.norm();//直线距离
-    Eigen::Vector3d pointsingvector=pointvector/dis;//单位向量
+    if(dis==0)
+    {
+        returnmsg=QString::fromLocal8Bit("姿态起点与终点位置距离不能等于0");
+        return 1;
+    }
+    std::vector<ChangeRobPosVariable> tempposture(posturelistIn.size());
     tempposture[0]=posturelistIn[0];
     tempposture[pointnum-1]=posturelistIn[pointnum-1];//把头尾姿态放入
 
@@ -47,7 +51,7 @@ int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,st
             return 1;
         }
         d_Mysort s_gropu;
-        s_gropu.data=(result*pointsingvector).norm();
+        s_gropu.data=result;
         s_gropu.subscript=n;
         gropu.push_back(s_gropu);
     }

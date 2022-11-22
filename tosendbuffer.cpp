@@ -638,7 +638,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     std::vector<ChangeRobPosVariable> tempposturelist;
                     QString msg;
-                    //检查姿态位置是否合理
+                    //整理姿态位置
                     if(0!=m_mcs->craft->tidyup_posturelist(m_mcs->craft->posturelist,tempposturelist,msg))
                     {
                         main_record.lock();
@@ -648,7 +648,107 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         line=n;
                         return 1;
                     }
+                    if(interpolatweld.size()>=1)
+                    {
+                        interpolatweld[0].X=interpolatweld[0].X+tempposturelist[0].Variable.X;
+                        interpolatweld[0].Y=interpolatweld[0].Y+tempposturelist[0].Variable.Y;
+                        interpolatweld[0].Z=interpolatweld[0].Z+tempposturelist[0].Variable.Z;
+                        interpolatweld[0].RX=tempposturelist[0].posture.RX;
+                        interpolatweld[0].RY=tempposturelist[0].posture.RY;
+                        interpolatweld[0].RZ=tempposturelist[0].posture.RZ;
+                        interpolatweld[0].nEn=true;
+                    }
+                    else if(interpolatweld.size()>=2)
+                    {
+                        Eigen::Vector3d RealpointST(interpolatweld[0].X,interpolatweld[0].Y,interpolatweld[0].Z);
+                        Eigen::Vector3d RealpointED(interpolatweld[interpolatweld.size()-1].X,interpolatweld[interpolatweld.size()-1].Y,interpolatweld[interpolatweld.size()-1].Z);
+                        Eigen::Vector3d Realpointvector=RealpointED-RealpointST;//实际焊缝方向
+                        double Realdistance=Realpointvector.norm();//实际焊缝长度
+                        Eigen::Vector3d Realpointsingvector=Realpointvector/Realdistance;
 
+                        Eigen::Vector3d PointST(tempposturelist[0].posture.X,tempposturelist[0].posture.Y,tempposturelist[0].posture.Z);
+                        Eigen::Vector3d PointED(tempposturelist[tempposturelist.size()-1].posture.X,tempposturelist[tempposturelist.size()-1].posture.Y,tempposturelist[tempposturelist.size()-1].posture.Z);
+                        Eigen::Vector3d Pointvector=PointED-PointST;//示教姿态方向
+                        double Distance=Pointvector.norm();//示教姿态长度
+
+                        if(fabs(Realdistance-Distance)>STARTENDCHANGE_POSTURE_ALLOWERROR)
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 工艺的变姿态轨迹长度与实际测得的轨迹长度误差大于")+QString::number(STARTENDCHANGE_POSTURE_ALLOWERROR);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+
+                        if(Distance!=0)
+                        {
+                            int N=1;
+                            int lastN=0;
+                            std::vector<RobPos> tempinterpolatweld(tempposturelist.size());
+                            for(int t=1;t<tempposturelist.size()-1;t++)
+                            {
+                                Eigen::Vector3d pointcenter(tempposturelist[t].posture.X,tempposturelist[t].posture.Y,tempposturelist[t].posture.Z);
+                                Eigen::Vector3d pointcentervector=pointcenter-PointST;
+                                double distance=Pointvector.dot(pointcentervector);
+                                double specific=distance/Distance;//比例
+                                double realdistance=Realdistance*specific;
+                                for(;N<interpolatweld.size()-1;N++)
+                                {
+                                    Eigen::Vector3d realpointcenter(interpolatweld[N].X,interpolatweld[N].Y,interpolatweld[N].Z);
+                                    Eigen::Vector3d realpointcentervector=realpointcenter-RealpointST;
+                                    double temprealdistance=Realpointvector.dot(realpointcentervector);
+                                    if(temprealdistance>realdistance)//定位成功
+                                    {
+                                        Eigen::Vector3d st(interpolatweld[lastN].X+tempposturelist[t-1].Variable.X,interpolatweld[lastN].Y+tempposturelist[t-1].Variable.Y,interpolatweld[lastN].Z+tempposturelist[t-1].Variable.Z);//起点
+                                        Eigen::Vector3d ed(interpolatweld[N].X+tempposturelist[t].Variable.X,interpolatweld[N].Y+tempposturelist[t].Variable.Y,interpolatweld[N].Z+tempposturelist[t].Variable.Z);//终点
+                                        Eigen::Vector3d stepdif=(ed-st)/(N-lastN);//变姿态补偿
+                                        Eigen::Vector3d stR(tempposturelist[t-1].posture.RX,tempposturelist[t-1].posture.RY,tempposturelist[t-1].posture.RZ);
+                                        Eigen::Vector3d edR(tempposturelist[t].posture.RX,tempposturelist[t].posture.RY,tempposturelist[t].posture.RZ);
+                                        std::vector<Eigen::Vector3d> posR=Calibration::Attitudedifference(m_mcs->rob->cal_posture_model,stR,edR,N-lastN+1);
+                                        for(int m=lastN;m<=N;m++)
+                                        {
+                                            Eigen::Vector3d p=stepdif*(m-lastN)+st;
+                                            tempinterpolatweld[m].X=p.x();
+                                            tempinterpolatweld[m].Y=p.y();
+                                            tempinterpolatweld[m].Z=p.z();
+                                            tempinterpolatweld[m].RX=posR[m][0];
+                                            tempinterpolatweld[m].RY=posR[m][1];
+                                            tempinterpolatweld[m].RZ=posR[m][2];
+                                        }
+                                        lastN=N;
+                                        break;
+                                    }
+                                }
+                            }
+                            //加上终点姿态
+                            Eigen::Vector3d st(interpolatweld[lastN].X+tempposturelist[tempposturelist.size()-2].Variable.X,interpolatweld[lastN].Y+tempposturelist[tempposturelist.size()-2].Variable.Y,interpolatweld[lastN].Z+tempposturelist[tempposturelist.size()-2].Variable.Z);//起点
+                            Eigen::Vector3d ed(interpolatweld[interpolatweld.size()-1].X+tempposturelist[tempposturelist.size()-1].Variable.X,interpolatweld[interpolatweld.size()-1].Y+tempposturelist[tempposturelist.size()-1].Variable.Y,interpolatweld[interpolatweld.size()-1].Z+tempposturelist[tempposturelist.size()-1].Variable.Z);//终点
+                            Eigen::Vector3d stepdif=(ed-st)/(interpolatweld.size()-1-lastN);//变姿态补偿
+                            Eigen::Vector3d stR(tempposturelist[tempposturelist.size()-2].posture.RX,tempposturelist[tempposturelist.size()-2].posture.RY,tempposturelist[tempposturelist.size()-2].posture.RZ);
+                            Eigen::Vector3d edR(tempposturelist[tempposturelist.size()-1].posture.RX,tempposturelist[tempposturelist.size()-1].posture.RY,tempposturelist[tempposturelist.size()-1].posture.RZ);
+                            std::vector<Eigen::Vector3d> posR=Calibration::Attitudedifference(m_mcs->rob->cal_posture_model,stR,edR,interpolatweld.size()-lastN);
+                            for(int m=lastN;m<interpolatweld.size();m++)
+                            {
+                                Eigen::Vector3d p=stepdif*(m-lastN)+st;
+                                tempinterpolatweld[m].X=p.x();
+                                tempinterpolatweld[m].Y=p.y();
+                                tempinterpolatweld[m].Z=p.z();
+                                tempinterpolatweld[m].RX=posR[m][0];
+                                tempinterpolatweld[m].RY=posR[m][1];
+                                tempinterpolatweld[m].RZ=posR[m][2];
+                            }
+                            interpolatweld=tempinterpolatweld;
+                        }
+                        else
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹姿态插值出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                    }
                 }
                 break;
             }

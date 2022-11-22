@@ -178,6 +178,75 @@ bool Calibration::hand_on_yes_eyetohand (CAL_POSTURE robot,                     
     return true;
 }
 
+std::vector<Eigen::Vector3d> Calibration::Attitudedifference(CAL_POSTURE robot,Eigen::Vector3d PosR_st,Eigen::Vector3d PosR_ed,int differenceNum)
+{
+    std::vector<Eigen::Vector3d> tempResult;
+    std::vector<Eigen::Vector3d> Result;
+    Eigen::Matrix3d _3x3_PosR_st,_3x3_PosR_ed,_3x3_PosR_ed_T,_3x3_PosR_st_T;
+    Eigen::Matrix3d addvalue;
+    double d_add=1.0/(differenceNum+1);
+    //把姿态转化为旋转矩阵
+    std::array<double,3> pstst,psted;
+    Eigen::Vector3d tm_PosR_st,tm_PosR_ed;
+    char b_fan[3]={0,0,0};
+
+    tm_PosR_st=PosR_st;
+    tm_PosR_ed=PosR_ed;
+
+
+    pstst[0]=tm_PosR_st[0];
+    pstst[1]=tm_PosR_st[1];
+    pstst[2]=tm_PosR_st[2];
+    psted[0]=tm_PosR_ed[0];
+    psted[1]=tm_PosR_ed[1];
+    psted[2]=tm_PosR_ed[2];
+
+    _3x3_PosR_st=Euler2RotMatrixXYZ(robot,pstst);
+    _3x3_PosR_ed=Euler2RotMatrixXYZ(robot,psted);
+
+    //旋转矩阵变四元数
+    Eigen::Quaterniond quaternion_st,quaternion_ed;
+    quaternion_st = _3x3_PosR_st;
+    quaternion_ed = _3x3_PosR_ed;
+
+    double pointfilt;
+    pointfilt=quaternion_st.x()*quaternion_ed.x()+quaternion_st.y()*quaternion_ed.y()+quaternion_st.z()*quaternion_ed.z()+quaternion_st.w()*quaternion_ed.w();
+
+    if(pointfilt<0)
+    {
+        quaternion_ed.x()=-quaternion_ed.x();
+        quaternion_ed.y()=-quaternion_ed.y();
+        quaternion_ed.z()=-quaternion_ed.z();
+        quaternion_ed.w()=-quaternion_ed.w();
+    }
+
+    for(int i=0;i<differenceNum;i++)
+    {
+        Eigen::Vector3d sing;
+        Eigen::Quaterniond tempaddvalue;
+        Eigen::Matrix3d tempres;
+        std::array<double, 3> s;
+        double dis;
+        tempaddvalue=quaternion_st;
+        tempaddvalue.x()=quaternion_st.x()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.x();
+        tempaddvalue.y()=quaternion_st.y()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.y();
+        tempaddvalue.z()=quaternion_st.z()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.z();
+        tempaddvalue.w()=quaternion_st.w()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.w();
+        dis=sqrt(tempaddvalue.x()*tempaddvalue.x()+tempaddvalue.y()*tempaddvalue.y()+tempaddvalue.z()*tempaddvalue.z()+tempaddvalue.w()*tempaddvalue.w());
+        tempaddvalue.x()=tempaddvalue.x()/dis;
+        tempaddvalue.y()=tempaddvalue.y()/dis;
+        tempaddvalue.z()=tempaddvalue.z()/dis;
+        tempaddvalue.w()=tempaddvalue.w()/dis;
+        tempres=tempaddvalue;
+        s=RotMatrixXYZ2Euler(robot,tempres);
+        sing[0]=s[0]*CAL_ANGLE;
+        sing[1]=s[1]*CAL_ANGLE;
+        sing[2]=s[2]*CAL_ANGLE;
+        tempResult.push_back(sing);
+    }
+    return tempResult;
+}
+
 cv::Point3f Calibration::ComputePosition(CAL_POSTURE robot,TCP_Leaserpos Pic,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot)
 {
     std::vector<cv::Point2d > org_uv;
@@ -490,6 +559,100 @@ Eigen::Matrix3d Calibration::Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<dou
         break;
     }
     return posture_matrix;
+}
+
+std::array<double, 3> Calibration::Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r21,r31,r32,r33;
+    r11 = rot_matrix(0,0);
+    r21 = rot_matrix(1,0);
+    r31 = rot_matrix(2,0);
+    r32 = rot_matrix(2,1);
+    r33 = rot_matrix(2,2);
+    double rx = atan2(r32,r33);
+    double ry = atan2(-r31,sqrt(r11*r11 + r21*r21));
+    double rz = atan2(r21,r11);
+
+    std::array<double,3> temp;
+    temp[0]= rx;
+    temp[1]= ry;
+    temp[2]= rz;
+    return temp;
+}
+
+std::array<double, 3> Calibration::Kuka_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r21,r31,r32,r33;
+    r11 = rot_matrix(0,0);
+    r21 = rot_matrix(1,0);
+    r31 = rot_matrix(2,0);
+    r32 = rot_matrix(2,1);
+    r33 = rot_matrix(2,2);
+    double rx = atan2(r32,r33);
+    //double rz = atan2(r21,r11)
+    double ry = atan2(-r31,sqrt(r11*r11 + r21*r21));
+    double rz = atan2(r21,r11);
+
+    std::array<double,3> temp;
+    temp[0]= rz;
+    temp[1]= ry;
+    temp[2]= rx;
+    //return array<double, 3>{rz, ry, rx};
+    return temp;
+}
+
+std::array<double, 3> Calibration::Panasonic_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r12,r13,r21,r23,r31,r32,r33;
+    r11 = rot_matrix(0,0);
+    r12 = rot_matrix(0,1);
+    r13 = rot_matrix(0,2);
+    r21 = rot_matrix(1,0);
+    r23 = rot_matrix(1,2);
+    r31 = rot_matrix(2,0);
+    r32 = rot_matrix(2,1);
+    r33 = rot_matrix(2,2);
+    double ry = atan2(sqrt(r31*r31+r32*r32),r33);
+    //double rz = atan2(r21,r11)
+    double rx,rz;
+    if(ry*CAL_ANGLE == 0)
+    {
+        rx = 0;
+        rz = atan2(-r12,r11);
+    }
+    else if(ry*CAL_ANGLE == 180)
+    {
+        rx = 0;
+        rz = atan2(r12,-r11);
+    }
+    else
+    {
+        rx = atan2(r23/sin(ry),r13/sin(ry));
+        rz = atan2(r32/sin(ry),-r31/sin(ry));
+    }
+    std::array<double,3> temp;
+    temp[0]= rz;
+    temp[1]= ry;
+    temp[2]= rx;
+    return temp;
+}
+
+std::array<double, 3> Calibration::RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::Matrix3d rot_matrix)
+{
+    std::array<double, 3> temp;
+    switch(robot)
+    {
+    case CAL_ROBOT_YASKAWA:
+        temp = Yaskawa_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_KUKA:
+        temp = Kuka_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_PANASONIC:
+        temp = Panasonic_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    }
+    return temp;
 }
 
 bool Calibration::computeMatrix(CAL_POSTURE robot,RobPos robpos,std::vector<TCP_Leaserpos> data_group,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot)
