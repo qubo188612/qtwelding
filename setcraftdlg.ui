@@ -104,7 +104,7 @@
   <widget class="QComboBox" name="comboBox_pendulum_mode">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>520</x>
      <y>30</y>
      <width>121</width>
      <height>25</height>
@@ -114,7 +114,7 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>450</x>
      <y>30</y>
      <width>67</width>
      <height>17</height>
@@ -127,7 +127,7 @@
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>450</x>
      <y>70</y>
      <width>41</width>
      <height>17</height>
@@ -140,7 +140,7 @@
   <widget class="QLineEdit" name="lineEdit_pendulum_swing">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>520</x>
      <y>70</y>
      <width>121</width>
      <height>25</height>
@@ -150,7 +150,7 @@
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>450</x>
      <y>110</y>
      <width>71</width>
      <height>17</height>
@@ -163,7 +163,7 @@
   <widget class="QLineEdit" name="lineEdit_pendulum_phaseangle">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>520</x>
      <y>110</y>
      <width>121</width>
      <height>25</height>
@@ -186,7 +186,7 @@
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>470</x>
+     <x>650</x>
      <y>110</y>
      <width>21</width>
      <height>17</height>
@@ -229,7 +229,7 @@
   <widget class="QLabel" name="label_13">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>270</x>
      <y>30</y>
      <width>51</width>
      <height>17</height>
@@ -242,7 +242,7 @@
   <widget class="QLabel" name="label_14">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>270</x>
      <y>70</y>
      <width>51</width>
      <height>17</height>
@@ -255,7 +255,7 @@
   <widget class="QLabel" name="label_15">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>270</x>
      <y>110</y>
      <width>51</width>
      <height>17</height>
@@ -268,7 +268,7 @@
   <widget class="QLineEdit" name="lineEdit_X">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>320</x>
      <y>30</y>
      <width>121</width>
      <height>25</height>
@@ -278,7 +278,7 @@
   <widget class="QLineEdit" name="lineEdit_Y">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>320</x>
      <y>70</y>
      <width>121</width>
      <height>25</height>
@@ -288,7 +288,7 @@
   <widget class="QLineEdit" name="lineEdit_Z">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>320</x>
      <y>110</y>
      <width>121</width>
      <height>25</height>

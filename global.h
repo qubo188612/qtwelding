@@ -304,6 +304,8 @@ public:
     double data;        //值
     int subscript;      //下标
 };
+//64位浮点排序函数
+bool d_Mysortcompare(d_Mysort &a,d_Mysort &b);
 
 
 class IP                //ip
@@ -317,6 +319,15 @@ class IP_port      //ip和port
 public:
     QString ip;         //ip地址
     int port;           //ip端口
+};
+
+class Pos3f         //3维坐标
+{
+public:
+   Pos3f();
+   float X;
+   float Y;
+   float Z;
 };
 
 class RobPos        //机器人坐标
@@ -379,6 +390,14 @@ class Weld_trace_result  //跟踪轨迹
 public:
     std::vector<RobPos> point;//跟踪轨迹结果
     QString name; //跟踪轨迹名字
+};
+
+//姿态类补偿类
+class ChangeRobPosVariable
+{
+public:
+    RobPos posture; //姿态
+    Pos3f Variable;//补偿
 };
 
 typedef enum Robmovemodel_ID            //机器人移动方式

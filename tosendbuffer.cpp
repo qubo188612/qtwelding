@@ -624,18 +624,30 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     for(int n=0;n<interpolatweld.size();n++)
                     {
-                        interpolatweld[n].X=interpolatweld[n].X+m_mcs->craft->posturelist[0].X;
-                        interpolatweld[n].Y=interpolatweld[n].Y+m_mcs->craft->posturelist[0].Y;
-                        interpolatweld[n].Z=interpolatweld[n].Z+m_mcs->craft->posturelist[0].Z;
-                        interpolatweld[n].RX=m_mcs->craft->posturelist[0].RX;
-                        interpolatweld[n].RY=m_mcs->craft->posturelist[0].RY;
-                        interpolatweld[n].RZ=m_mcs->craft->posturelist[0].RZ;
+                        interpolatweld[n].X=interpolatweld[n].X+m_mcs->craft->posturelist[0].Variable.X;
+                        interpolatweld[n].Y=interpolatweld[n].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                        interpolatweld[n].Z=interpolatweld[n].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                        interpolatweld[n].RX=m_mcs->craft->posturelist[0].posture.RX;
+                        interpolatweld[n].RY=m_mcs->craft->posturelist[0].posture.RY;
+                        interpolatweld[n].RZ=m_mcs->craft->posturelist[0].posture.RZ;
                         interpolatweld[n].nEn=true;
                     }
                 }
                 break;
                 case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
                 {
+                    std::vector<ChangeRobPosVariable> tempposturelist;
+                    QString msg;
+                    //检查姿态位置是否合理
+                    if(0!=m_mcs->craft->tidyup_posturelist(m_mcs->craft->posturelist,tempposturelist,msg))
+                    {
+                        main_record.lock();
+                        return_msg=msg;
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
 
                 }
                 break;

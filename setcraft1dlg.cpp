@@ -56,12 +56,12 @@ void setcraft1Dlg::init_dlg_show()
     ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()>=2)
     {
-        ui->lineEdit_stX->setText(QString::number(m_mcs->craft->posturelist[0].X,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_stY->setText(QString::number(m_mcs->craft->posturelist[0].Y,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_stZ->setText(QString::number(m_mcs->craft->posturelist[0].Z,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_stRX->setText(QString::number(m_mcs->craft->posturelist[0].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_stRY->setText(QString::number(m_mcs->craft->posturelist[0].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_stRZ->setText(QString::number(m_mcs->craft->posturelist[0].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_stX->setText(QString::number(m_mcs->craft->posturelist[0].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_stY->setText(QString::number(m_mcs->craft->posturelist[0].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_stZ->setText(QString::number(m_mcs->craft->posturelist[0].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_stRX->setText(QString::number(m_mcs->craft->posturelist[0].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_stRY->setText(QString::number(m_mcs->craft->posturelist[0].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_stRZ->setText(QString::number(m_mcs->craft->posturelist[0].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
 
         ui->lineEdit_centerX->setText(QString::number(m_mcs->rob->TCPpos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
         ui->lineEdit_centerY->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -70,12 +70,13 @@ void setcraft1Dlg::init_dlg_show()
         ui->lineEdit_centerRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
 
-        ui->lineEdit_edX->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].X,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_edY->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Y,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_edZ->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Z,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_edRX->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_edRY->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_edRZ->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_edX->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_edY->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_edZ->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_edRX->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_edRY->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_edRZ->setText(QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+
     }
     else
     {
@@ -100,6 +101,13 @@ void setcraft1Dlg::init_dlg_show()
         ui->lineEdit_edRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     }
+    ui->lineEdit_X->setText(QString::number(0,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->lineEdit_Y->setText(QString::number(0,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->lineEdit_Z->setText(QString::number(0,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+
+    ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->lineEdit_pendulum_phaseangle->setText(QString::number(m_mcs->craft->pendulum_phaseangle,'f',3));
+
     if(m_mcs->craft->posturelist.size()>1)
     {
         now_robpos=0;
@@ -148,13 +156,16 @@ void setcraft1Dlg::on_pushButton_get_stpos_clicked()//获取起点坐标姿态
 
 void setcraft1Dlg::on_pushButton_updata_stpos_clicked()//更新起点坐标姿态
 {
-    RobPos robpos;
-    robpos.X=ui->lineEdit_stX->text().toFloat();
-    robpos.Y=ui->lineEdit_stY->text().toFloat();
-    robpos.Z=ui->lineEdit_stZ->text().toFloat();
-    robpos.RX=ui->lineEdit_stRX->text().toFloat();
-    robpos.RY=ui->lineEdit_stRY->text().toFloat();
-    robpos.RZ=ui->lineEdit_stRZ->text().toFloat();
+    ChangeRobPosVariable robpos;
+    robpos.posture.X=ui->lineEdit_stX->text().toFloat();
+    robpos.posture.Y=ui->lineEdit_stY->text().toFloat();
+    robpos.posture.Z=ui->lineEdit_stZ->text().toFloat();
+    robpos.posture.RX=ui->lineEdit_stRX->text().toFloat();
+    robpos.posture.RY=ui->lineEdit_stRY->text().toFloat();
+    robpos.posture.RZ=ui->lineEdit_stRZ->text().toFloat();
+    robpos.Variable.X=ui->lineEdit_X->text().toFloat();
+    robpos.Variable.Y=ui->lineEdit_Y->text().toFloat();
+    robpos.Variable.Z=ui->lineEdit_Z->text().toFloat();
     if(m_mcs->craft->posturelist.size()>=1)
     {
         m_mcs->craft->posturelist[0]=robpos;
@@ -206,13 +217,16 @@ void setcraft1Dlg::on_pushButton_updata_edpos_clicked()//更新终点坐标姿�
         ui->record->append(QString::fromLocal8Bit("请先添加起点坐标"));
         return;
     }
-    RobPos robpos;
-    robpos.X=ui->lineEdit_edX->text().toFloat();
-    robpos.Y=ui->lineEdit_edY->text().toFloat();
-    robpos.Z=ui->lineEdit_edZ->text().toFloat();
-    robpos.RX=ui->lineEdit_edRX->text().toFloat();
-    robpos.RY=ui->lineEdit_edRY->text().toFloat();
-    robpos.RZ=ui->lineEdit_edRZ->text().toFloat();
+    ChangeRobPosVariable robpos;
+    robpos.posture.X=ui->lineEdit_edX->text().toFloat();
+    robpos.posture.Y=ui->lineEdit_edY->text().toFloat();
+    robpos.posture.Z=ui->lineEdit_edZ->text().toFloat();
+    robpos.posture.RX=ui->lineEdit_edRX->text().toFloat();
+    robpos.posture.RY=ui->lineEdit_edRY->text().toFloat();
+    robpos.posture.RZ=ui->lineEdit_edRZ->text().toFloat();
+    robpos.Variable.X=ui->lineEdit_X->text().toFloat();
+    robpos.Variable.Y=ui->lineEdit_Y->text().toFloat();
+    robpos.Variable.Z=ui->lineEdit_Z->text().toFloat();
     if(m_mcs->craft->posturelist.size()>=2)
     {
         m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1]=robpos;
@@ -271,14 +285,16 @@ void setcraft1Dlg::on_pushButton_updata_centerpos_clicked()//插入中间点坐�
         ui->record->append(QString::fromLocal8Bit("请先添加终点坐标"));
         return;
     }
-    RobPos robpos;
-    robpos.X=ui->lineEdit_centerX->text().toFloat();
-    robpos.Y=ui->lineEdit_centerY->text().toFloat();
-    robpos.Z=ui->lineEdit_centerZ->text().toFloat();
-    robpos.RX=ui->lineEdit_centerRX->text().toFloat();
-    robpos.RY=ui->lineEdit_centerRY->text().toFloat();
-    robpos.RZ=ui->lineEdit_centerRZ->text().toFloat();
-
+    ChangeRobPosVariable robpos;
+    robpos.posture.X=ui->lineEdit_centerX->text().toFloat();
+    robpos.posture.Y=ui->lineEdit_centerY->text().toFloat();
+    robpos.posture.Z=ui->lineEdit_centerZ->text().toFloat();
+    robpos.posture.RX=ui->lineEdit_centerRX->text().toFloat();
+    robpos.posture.RY=ui->lineEdit_centerRY->text().toFloat();
+    robpos.posture.RZ=ui->lineEdit_centerRZ->text().toFloat();
+    robpos.Variable.X=ui->lineEdit_X->text().toFloat();
+    robpos.Variable.Y=ui->lineEdit_Y->text().toFloat();
+    robpos.Variable.Z=ui->lineEdit_Z->text().toFloat();
     if(now_robpos==m_mcs->craft->posturelist.size()-1)
     {
         ui->record->append(QString::fromLocal8Bit("不能在终点后方插入中间点坐标姿态"));
@@ -321,15 +337,21 @@ void setcraft1Dlg::on_pushButton_del_clicked()//删除选中姿态
 
 void setcraft1Dlg::on_pushButtonOK_clicked()//确定并保存
 {
+    std::vector<ChangeRobPosVariable> tempposturelist;
+    QString msg;
     if(m_mcs->craft->posturelist.size()<2)
     {
         ui->record->append(QString::fromLocal8Bit("至少添加起点和终点姿态坐标"));
+        return;
     }
-    else
+    //检查姿态位置是否合理
+    if(0!=m_mcs->craft->tidyup_posturelist(m_mcs->craft->posturelist,tempposturelist,msg))
     {
-        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
-        done(1);
+        ui->record->append(msg);
+        return;
     }
+    m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    done(1);
 }
 
 void setcraft1Dlg::updataRoblistUi()
@@ -340,32 +362,41 @@ void setcraft1Dlg::updataRoblistUi()
     {
         if(n==0)
         {
-            QString msg=QString::fromLocal8Bit("起点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[0].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[0].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[0].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[0].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[0].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[0].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")";
+            QString msg=QString::fromLocal8Bit("起点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[0].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+") 补偿: ("+
+                                                                QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].Variable.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[0].Variable.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")";
             ui->robposlist->addItem(msg);
         }
         else if(n==m_mcs->craft->posturelist.size()-1)
         {
-            QString msg=QString::fromLocal8Bit("终点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")";
+            QString msg=QString::fromLocal8Bit("终点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+") 补偿: ("+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Variable.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].Variable.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")";
             ui->robposlist->addItem(msg);
         }
         else
         {
-            QString msg=QString::fromLocal8Bit("中间姿态")+QString::number(n)+": ("+QString::number(m_mcs->craft->posturelist[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                                   QString::number(m_mcs->craft->posturelist[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                                   QString::number(m_mcs->craft->posturelist[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                                   QString::number(m_mcs->craft->posturelist[n].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                                   QString::number(m_mcs->craft->posturelist[n].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                                   QString::number(m_mcs->craft->posturelist[n].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")";
+            QString msg=QString::fromLocal8Bit("中间姿态")+QString::number(n)+": ("+QString::number(m_mcs->craft->posturelist[n].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+") 补偿: ("+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].Variable.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                   QString::number(m_mcs->craft->posturelist[n].Variable.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")";
             ui->robposlist->addItem(msg);
         }
     }
@@ -378,5 +409,38 @@ void setcraft1Dlg::updataRoblistUi()
 void setcraft1Dlg::on_robposlist_itemClicked(QListWidgetItem *item)
 {
     now_robpos=ui->robposlist->currentRow();
+    if(m_mcs->craft->posturelist.size()>2&&now_robpos>0&&now_robpos<m_mcs->craft->posturelist.size()-1)
+    {
+        ui->lineEdit_centerX->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerY->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerZ->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerRX->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_centerRY->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_centerRZ->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    }
+    else if(m_mcs->craft->posturelist.size()>=2&&now_robpos==m_mcs->craft->posturelist.size())
+    {
+        ui->lineEdit_centerX->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerY->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerZ->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerRX->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_centerRY->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_centerRZ->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    }
+    else if(m_mcs->craft->posturelist.size()>=1&&now_robpos==0)
+    {
+        ui->lineEdit_centerX->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerY->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerZ->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_centerRX->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_centerRY->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_centerRZ->setText(QString::number(m_mcs->craft->posturelist[now_robpos].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    }
+    if(now_robpos>=0&&now_robpos<m_mcs->craft->posturelist.size())
+    {
+        ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[now_robpos].Variable.X,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_Y->setText(QString::number(m_mcs->craft->posturelist[now_robpos].Variable.Y,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_Z->setText(QString::number(m_mcs->craft->posturelist[now_robpos].Variable.Z,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    }
 }
 

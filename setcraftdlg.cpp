@@ -42,12 +42,12 @@ void setcraftDlg::init_dlg_show()
     ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()==1)
     {
-        ui->lineEdit_X->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_Y->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_Z->setText(QString::number(0,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_RX->setText(QString::number(m_mcs->craft->posturelist[0].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_RY->setText(QString::number(m_mcs->craft->posturelist[0].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_RZ->setText(QString::number(m_mcs->craft->posturelist[0].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Y->setText(QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Z->setText(QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_RX->setText(QString::number(m_mcs->craft->posturelist[0].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RY->setText(QString::number(m_mcs->craft->posturelist[0].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RZ->setText(QString::number(m_mcs->craft->posturelist[0].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     }
     else
     {
@@ -102,56 +102,16 @@ void setcraftDlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)//摆�
 
 void setcraftDlg::on_pushButton_2_clicked()//确定并保存
 {
-    bool ok;
     m_mcs->craft->posturelist.resize(1);
-    m_mcs->craft->posturelist[0].X=ui->lineEdit_X->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("X内容格式错误"));
-        return;
-    }
-    m_mcs->craft->posturelist[0].Y=ui->lineEdit_Y->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("Y内容格式错误"));
-        return;
-    }
-    m_mcs->craft->posturelist[0].Z=ui->lineEdit_Z->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("Z内容格式错误"));
-        return;
-    }
-    m_mcs->craft->posturelist[0].RX=ui->lineEdit_RX->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("RX内容格式错误"));
-        return;
-    }
-    m_mcs->craft->posturelist[0].RY=ui->lineEdit_RY->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("RY内容格式错误"));
-        return;
-    }
-    m_mcs->craft->posturelist[0].RZ=ui->lineEdit_RZ->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("RZ内容格式错误"));
-        return;
-    }
-    m_mcs->craft->pendulum_phaseangle=ui->lineEdit_pendulum_phaseangle->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("XY相角内容格式错误"));
-        return;
-    }
-    m_mcs->craft->pendulum_swing=ui->lineEdit_pendulum_swing->text().toFloat(&ok);
-    if(ok==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("摆幅内容格式错误"));
-        return;
-    }
+    m_mcs->craft->posturelist[0].Variable.X=ui->lineEdit_X->text().toFloat();
+    m_mcs->craft->posturelist[0].Variable.Y=ui->lineEdit_Y->text().toFloat();
+    m_mcs->craft->posturelist[0].Variable.Z=ui->lineEdit_Z->text().toFloat();
+    m_mcs->craft->posturelist[0].posture.RX=ui->lineEdit_RX->text().toFloat();
+    m_mcs->craft->posturelist[0].posture.RY=ui->lineEdit_RY->text().toFloat();
+    m_mcs->craft->posturelist[0].posture.RZ=ui->lineEdit_RZ->text().toFloat();
+
+    m_mcs->craft->pendulum_phaseangle=ui->lineEdit_pendulum_phaseangle->text().toFloat();
+    m_mcs->craft->pendulum_swing=ui->lineEdit_pendulum_swing->text().toFloat();
     m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
     done(1);
 }

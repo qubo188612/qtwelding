@@ -17,3 +17,15 @@ leaser_pos::leaser_pos()
     Z=0;
     nEn=0;
 }
+
+Pos3f::Pos3f()
+{
+    X=0;
+    Y=0;
+    Z=0;
+}
+
+bool d_Mysortcompare(d_Mysort &a,d_Mysort &b)
+{
+    return a.data<b.data;
+}

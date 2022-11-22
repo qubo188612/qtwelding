@@ -19,16 +19,16 @@ Craft::~Craft()
 
 }
 
-int Craft::tidyup_posturelist(std::vector<RobPos> posturelistIn,std::vector<RobPos> &posturelistOut,QString &returnmsg)
+int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,std::vector<ChangeRobPosVariable> &posturelistOut,QString &returnmsg)
 {
-    std::vector<RobPos> tempposture(posturelistIn.size());
+    std::vector<ChangeRobPosVariable> tempposture(posturelistIn.size());
     int pointnum=posturelistIn.size();
     if(pointnum<2)
     {
         returnmsg=QString::fromLocal8Bit("姿态个数至少需要2个");
         return 1;
     }
-    Eigen::Vector3d pointst(posturelistIn[0].X,posturelistIn[0].Y,posturelistIn[0].Z),pointed(posturelistIn[pointnum-1].X,posturelistIn[pointnum-1].Y,posturelistIn[pointnum-1].Z);
+    Eigen::Vector3d pointst(posturelistIn[0].posture.X,posturelistIn[0].posture.Y,posturelistIn[0].posture.Z),pointed(posturelistIn[pointnum-1].posture.X,posturelistIn[pointnum-1].posture.Y,posturelistIn[pointnum-1].posture.Z);
     Eigen::Vector3d pointvector=pointed-pointst;//直线向量
     double dis=pointvector.norm();//直线距离
     Eigen::Vector3d pointsingvector=pointvector/dis;//单位向量
@@ -38,12 +38,12 @@ int Craft::tidyup_posturelist(std::vector<RobPos> posturelistIn,std::vector<RobP
     std::vector<d_Mysort> gropu;//向量大小集合
     for(int n=1;n<pointnum-1;n++)
     {
-        Eigen::Vector3d pointcenter(posturelistIn[n].X,posturelistIn[n].Y,posturelistIn[n].Z);
+        Eigen::Vector3d pointcenter(posturelistIn[n].posture.X,posturelistIn[n].posture.Y,posturelistIn[n].posture.Z);
         Eigen::Vector3d pointcentervector=pointcenter-pointst;
         double result=pointvector.dot(pointcentervector);
         if(result<0)
         {
-            returnmsg=QString::fromLocal8Bit("第")+QString::number(n)+QString::fromLocal8Bit("个姿态点坐标没有位于起点和终点之间");
+            returnmsg=QString::fromLocal8Bit("中间姿态")+QString::number(n)+QString::fromLocal8Bit("坐标没有位于起点和终点之间");
             return 1;
         }
         d_Mysort s_gropu;
@@ -52,9 +52,11 @@ int Craft::tidyup_posturelist(std::vector<RobPos> posturelistIn,std::vector<RobP
         gropu.push_back(s_gropu);
     }
 //这里排序
-
-
-
+    sort(gropu.begin(),gropu.end(),d_Mysortcompare);
+    for(int n=1;n<pointnum-1;n++)
+    {
+        tempposture[n]=posturelistIn[gropu[n-1].subscript];
+    }
     posturelistOut=tempposture;
     return 0;
 }
@@ -154,12 +156,15 @@ QVariantHash Craft::encoed_json()
     for(int n=0;n<posturelist.size();n++)
     {
         QJsonArray arrData;
-        arrData.append(posturelist[n].X);
-        arrData.append(posturelist[n].Y);
-        arrData.append(posturelist[n].Z);
-        arrData.append(posturelist[n].RX);
-        arrData.append(posturelist[n].RY);
-        arrData.append(posturelist[n].RZ);
+        arrData.append(posturelist[n].posture.X);
+        arrData.append(posturelist[n].posture.Y);
+        arrData.append(posturelist[n].posture.Z);
+        arrData.append(posturelist[n].posture.RX);
+        arrData.append(posturelist[n].posture.RY);
+        arrData.append(posturelist[n].posture.RZ);
+        arrData.append(posturelist[n].Variable.X);
+        arrData.append(posturelist[n].Variable.Y);
+        arrData.append(posturelist[n].Variable.Z);
         QString line="lineposture"+QString::number(n);
         subData1.insert(line,arrData);
     }
@@ -236,16 +241,19 @@ int Craft::decoed_json(QByteArray allData)
                 {
                     QJsonValue value = obj.value(s_key);
                     QJsonArray arrData=value.toArray();
-                    if(arrData.size()!=6)
+                    if(arrData.size()!=9)
                     {
                         return 1;
                     }
-                    posturelist[t].X=arrData[0].toDouble();
-                    posturelist[t].Y=arrData[1].toDouble();
-                    posturelist[t].Z=arrData[2].toDouble();
-                    posturelist[t].RX=arrData[3].toDouble();
-                    posturelist[t].RY=arrData[4].toDouble();
-                    posturelist[t].RZ=arrData[5].toDouble();
+                    posturelist[t].posture.X=arrData[0].toDouble();
+                    posturelist[t].posture.Y=arrData[1].toDouble();
+                    posturelist[t].posture.Z=arrData[2].toDouble();
+                    posturelist[t].posture.RX=arrData[3].toDouble();
+                    posturelist[t].posture.RY=arrData[4].toDouble();
+                    posturelist[t].posture.RZ=arrData[5].toDouble();
+                    posturelist[t].Variable.X=arrData[6].toDouble();
+                    posturelist[t].Variable.Y=arrData[7].toDouble();
+                    posturelist[t].Variable.Z=arrData[8].toDouble();
                 }
                 else
                 {

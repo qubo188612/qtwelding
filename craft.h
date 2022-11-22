@@ -47,12 +47,12 @@ public:
 
     int SaveProject(char* filename);    //保存工艺
 
-    std::vector<RobPos> posturelist;        //焊接姿态
+    std::vector<ChangeRobPosVariable> posturelist;        //焊接姿态
                                             //craft_id=CRAFT_ID_FIXED_POSTURE时，posturelist.size()=1,且posturelist[0]为这个轨迹的焊接姿态
 
-    //整理posturelist姿态
-    int tidyup_posturelist(std::vector<RobPos> posturelistIn,           //输入姿态值
-                           std::vector<RobPos> &posturelistOut,         //输出整理后的姿态值
+    //整理posturelist姿态,把姿态坐标点沿着起点到终点的方向排序
+    int tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,           //输入姿态值
+                           std::vector<ChangeRobPosVariable> &posturelistOut,         //输出整理后的姿态值
                            QString &returnmsg);                         //输出报警信息
 
 
