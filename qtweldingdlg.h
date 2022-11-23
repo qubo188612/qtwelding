@@ -112,6 +112,8 @@ private slots:
 
     void on_SaveDatacheckBox_stateChanged(int arg1);
 
+    void on_setweldBtn_clicked();
+
 private:
     Ui::qtweldingDlg *ui;
 

@@ -327,16 +327,40 @@ void RobotcontrolThread1::run() //接到上位机命令
                 {
                     _p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]=65535;
+                    _p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD]=65535;
                     int rc=modbus_reply(_p->ctx_robotcontrol, query, ret, _p->mb_mapping);
                     if(rc>=0)
                     {
                         if(_p->b_send_thread==true)//远端机器人发送命令已经启动
                         {
+                            if(_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD]!=65535)//机器人要起弧或者息弧或者送丝送气
+                            {
+                                uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
+                                float eled=*(float*)&_p->mb_mapping->tab_registers[ROB_WELD_CURRENT_FH_REG_ADD];//电流
+                                Alternatingcurrent elem=(Alternatingcurrent)_p->mb_mapping->tab_registers[ROB_WELD_CURRENTMOD_REG_ADD];//交变电流模式
+                                switch(u16data_elec_work)
+                                {
+                                    case STATIC:    //空闲
+
+                                    break;
+                                    case FIRE:         //起弧
+
+                                    break;
+                                    case WIND:         //送丝
+
+                                    break;
+                                    case REWIND:       //退丝
+
+                                    break;
+                                    case GASS:         //出气
+
+                                    break;
+                                }
+                            }
                             if(_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]!=65535)//机器人要移动
                             {
                                 uint16_t tcp=_p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD];
                                 Robmovemodel_ID movemod=(Robmovemodel)_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD];
-                                uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
                                 float f_speed=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVESPEED_FH_REG_ADD];
                                 float f_movX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_X_POS_FH_REG_ADD];
                                 float f_movY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Y_POS_FH_REG_ADD];

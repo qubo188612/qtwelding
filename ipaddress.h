@@ -23,6 +23,7 @@ class RobotIP
 public:
     IP_port robot_ip;       //机器人服务器IP
     IP remote_ip;           //机器人远程IP
+    IP weld_ip;             //焊机远程IP
 };
 
 class IPaddress

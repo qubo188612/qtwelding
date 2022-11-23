@@ -391,7 +391,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         }
         else if(key==CMD_WELD_KEY)//起光弧指令
         {
-            int work=cmd.cmd_elec_work_d;//获取到焊机启停
+            Weldworkmodel_ID work=(Weldworkmodel_ID)cmd.cmd_elec_work_d;//获取到焊机启停
             Alternatingcurrent elem=cmd.cmd_elec_elem;  //获取到焊机交变电流模式
             float eled=cmd.cmd_elec_eled; //获取到焊机电流
             cmd_elec(eled,elem,work);
@@ -1000,6 +1000,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     }
     b_cmdlist_build=false;
     u16data_elec_work=0;
+    cmd_elec(STATIC);
     main_record.lock();
     return_msg=QString::fromLocal8Bit("指令执行结束");
     m_mcs->main_record.push_back(return_msg);
@@ -1012,6 +1013,13 @@ void toSendbuffer::cmdlist_stopbuild()
 {
     b_cmdlist_build=false;
     u16data_elec_work=0;
+    cmd_elec(STATIC);
+}
+
+void toSendbuffer::cmdlist_pausedbuild()
+{
+    b_cmdlist_build=false;
+    cmd_elec(STATIC);
 }
 
 void toSendbuffer::cmd_lock(int lock)
@@ -1087,7 +1095,21 @@ void toSendbuffer::cmd_cam(int task,int work)
     send_group_leaser.unlock();
 }
 
-void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,int work)
+void toSendbuffer::cmd_elec(Weldworkmodel_ID work)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_MOVEFIER_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(1);
+    sendrob.data[0]=work;
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel_ID work)
 {
     send_group_robot.lock();
     sent_info_robot sendrob;
@@ -1097,15 +1119,12 @@ void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,int work)
     sendrob.data[0]=*((u_int16_t*)&eled);
     sendrob.data[1]=*((u_int16_t*)&eled+1);
     sendrob.data[2]=elem;
-    if(work==0)
-    {
-        u16data_elec_work=0;
-    }
-    else
-    {
-        u16data_elec_work=1;
-    }
     m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    u16data_elec_work=work;
+    sendrob.addr=ROB_MOVEFIER_REG_ADD;
+    sendrob.data.resize(1);
+    sendrob.data[0]=work;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
     send_group_robot.unlock();

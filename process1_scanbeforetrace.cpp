@@ -50,7 +50,7 @@ void Process1_scanbeforetrace::stop_process()
 
 void Process1_scanbeforetrace::paused_process()
 {
-    m_mcs->tosendbuffer->cmdlist_stopbuild();
+    m_mcs->tosendbuffer->cmdlist_pausedbuild();
     if(b_thread==true)
     {
         thread->Stop();

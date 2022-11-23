@@ -20,13 +20,14 @@ IPaddress::IPaddress()
       mkdir("./SAVE",S_IRWXU);
     }
 #endif
-    if(0!=LoadIP(IPADDRESS_PATH_MOTO))
-    {
-        camer_ip[0].ip="192.168.1.2";
-        robot_ip[0].robot_ip.ip="127.0.0.1";
-        robot_ip[0].robot_ip.port=1496;
-        robot_ip[0].remote_ip.ip="192.168.1.3";
-    }
+    camer_ip[0].ip="192.168.1.2";
+    robot_ip[0].robot_ip.ip="127.0.0.1";
+    robot_ip[0].robot_ip.port=1496;
+    robot_ip[0].remote_ip.ip="192.168.1.3";
+    robot_ip[0].weld_ip.ip="192.168.1.4";
+
+    LoadIP(IPADDRESS_PATH_MOTO);
+
     robotmyselfcontrol_port[0]=1496;
 }
 
@@ -90,6 +91,7 @@ QVariantHash IPaddress::encoed_json()
     subData1.insert("robot_ip", robot_ip[0].robot_ip.ip);
     subData1.insert("robot_port", robot_ip[0].robot_ip.port);
     subData1.insert("robot_remote_ip", robot_ip[0].remote_ip.ip);
+    subData1.insert("robot_weld_ip", robot_ip[0].weld_ip.ip);
     data.insert("robot", subData1);
 
     return data;
@@ -129,6 +131,10 @@ int IPaddress::decoed_json(QByteArray allData)
                 else if(keyString=="robot_remote_ip")
                 {
                     robot_ip[0].remote_ip.ip=it_obj.value().toString();
+                }
+                else if(keyString=="robot_weld_ip")
+                {
+                    robot_ip[0].weld_ip.ip=it_obj.value().toString();
                 }
             }
         }

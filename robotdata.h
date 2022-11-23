@@ -19,6 +19,11 @@
 
 #define ROBOTDATA_PATH_MOTO       "./SAVE/robdata.bsd"
 
+typedef enum WELD_MODEL_ID          //焊机型号
+{
+    WELD_ROBOT_LINK=0,              //机器人直连
+}WELD_MODEL;
+
 typedef enum ROBOT_MODEL_ID            //机器人型号
 {
     ROBOT_MODEL_NULL=0,                //无机器人
@@ -53,6 +58,7 @@ class RobotData
 {
 public:
     static RobotData *Get();
+
     RobPos TCPpos;      //机器人当前TCP坐标
 
     systime robtime;    //机器人时间
@@ -79,6 +85,10 @@ public:
     std::vector<sent_info_robot> send_group_robot;    //发送机器人数据队列
     volatile bool b_send_group_robot;       //发送机器人数据是否异常
     int ctx_robot_dosomeing;    //机器人端口忙
+
+
+    WELD_MODEL weld_model;    //焊机型号
+    QString weld_model_toQString();  //焊机型号字符串输出
 
     int SaveRob(char* filename);    //保存项目
 

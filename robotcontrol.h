@@ -25,7 +25,8 @@ public:
 
     my_parameters *m_mcs;
 
-    ROBOT_MODEL_ID rob_mod;     //机器人型号
+    ROBOT_MODEL rob_mod;     //机器人型号
+    WELD_MODEL weld_mod;     //焊机型号
 
     void Creat_control_modbus();        //启动服务器
     void Close_control_modbus();        //关闭服务器

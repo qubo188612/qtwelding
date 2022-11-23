@@ -34,6 +34,7 @@ RobotData::RobotData()
     {
         robot_model=ROBOT_MODEL_NULL;
         cal_posture_model=CAL_ROBOT_YASKAWA;
+        weld_model=WELD_ROBOT_LINK;
     }
 }
 
@@ -76,6 +77,18 @@ QString RobotData::robot_state_toQString()
         break;
     case ROBOT_STATE_STOP:
         msg="扫描";
+        break;
+    }
+    return msg;
+}
+
+QString RobotData::weld_model_toQString()
+{
+    QString msg;
+    switch(weld_model)
+    {
+    case WELD_ROBOT_LINK:
+        msg="机器人直连";
         break;
     }
     return msg;
@@ -164,6 +177,8 @@ QVariantHash RobotData::encoed_json()
 
     data.insert("robot_model", robot_model);
     data.insert("cal_posture_model",cal_posture_model);
+    data.insert("weld_model", weld_model);
+
     return data;
 }
 
@@ -190,6 +205,10 @@ int RobotData::decoed_json(QByteArray allData)
         else if(keyString=="cal_posture_model")//机器人姿态标准
         {
             cal_posture_model=(CAL_POSTURE)it.value().toInt();
+        }
+        else if(keyString=="weld_model")//机器人型号
+        {
+            weld_model=(WELD_MODEL)it.value().toInt();
         }
     }
 

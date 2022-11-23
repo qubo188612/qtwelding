@@ -103,6 +103,12 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_WELD_CURRENT_FL_REG_ADD           0x0201
 #define ROB_WELD_CURRENTMOD_REG_ADD           0x0202        //交变电流
 
+#define ROB_WELD_MODEL_REG_ADD                0x0250        //焊机型号
+#define ROB_WELD_IPADDR_1_REG_ADD             0x0251        //焊机远程IP
+#define ROB_WELD_IPADDR_2_REG_ADD             0x0252        //焊机远程IP
+#define ROB_WELD_IPADDR_3_REG_ADD             0x0253        //焊机远程IP
+#define ROB_WELD_IPADDR_4_REG_ADD             0x0254        //焊机远程IP
+
 #define ROB_IPADDR_1_REG_ADD                  0x0300        //远程IP
 #define ROB_IPADDR_2_REG_ADD                  0x0301        //远程IP
 #define ROB_IPADDR_3_REG_ADD                  0x0302        //远程IP
@@ -405,6 +411,15 @@ typedef enum Robmovemodel_ID            //机器人移动方式
     MOVEL=0,        //直线运动
     MOVEJ=1,        //关节运动
 }Robmovemodel;
+
+typedef enum Weldworkmodel_ID       //焊机工作状态
+{
+    STATIC=0,       //空闲
+    FIRE=1,         //起弧
+    WIND=2,         //送丝
+    REWIND=3,       //退丝
+    GASS=4,         //出气
+}Weldworkmodel;
 
 typedef enum Alternatingcurrent_ID    //交变电流
 {

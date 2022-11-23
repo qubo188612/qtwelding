@@ -90,6 +90,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->leaser_timestamp->setText(QString::fromLocal8Bit("00:00:00:000"));
     ui->leaser_camera_fps->setText(QString::fromLocal8Bit("0.00"));
     ui->leaser_result_fps->setText(QString::fromLocal8Bit("0.00"));
+    ui->weld_model->setText(m_mcs->rob->weld_model_toQString());
+    ui->weld_ip_port->setText(QString::fromLocal8Bit("0.0.0.0"));
     ui->weld_state->setText(QString::fromLocal8Bit("待机"));
     ui->weld_current->setText(QString::fromLocal8Bit("0.000"));
     ui->weld_process->setText(QString::fromLocal8Bit("平焊"));
@@ -475,6 +477,11 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
     }
 }
 
+void qtweldingDlg::on_setweldBtn_clicked()//焊机设置
+{
+
+}
+
 void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
 {
     if(m_mcs->resultdata.link_result_state==false)
@@ -666,6 +673,30 @@ void qtweldingDlg::ConnectRobot()
         {
             ui->record->append(QString::fromLocal8Bit("机器人启停设置失败"));
         }
+        //写入焊机型号和远程地址
+        u16_data[0]=m_mcs->rob->weld_model;
+        rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_WELD_MODEL_REG_ADD,1,u16_data);
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("焊机型号设置失败"));
+        }
+        sections=m_mcs->ip->robot_ip[0].weld_ip.ip.split(".");
+        if(sections.size()==4)
+        {
+            for(int n=0;n<sections.size();n++)
+            {
+                u16_data[n]=sections[n].toInt();
+            }
+            rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_WELD_IPADDR_1_REG_ADD,4,u16_data);
+            if(rc!=4)
+            {
+                ui->record->append(QString::fromLocal8Bit("焊机远程IP地址设置失败"));
+            }
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("焊机远程IP地址格式错误"));
+        }
     }
     else
     {
@@ -741,6 +772,9 @@ void qtweldingDlg::init_show_robpos_list()
                 QString::number(m_mcs->rob->robtime.sec)+":"+
                 QString::number(m_mcs->rob->robtime.msec);
     ui->robot_time->setText(msg);
+
+    ui->weld_model->setText(m_mcs->rob->weld_model_toQString());
+    ui->weld_ip_port->setText(m_mcs->ip->robot_ip[0].weld_ip.ip);
 
     b_init_show_robpos_list=true;
 }
@@ -1035,4 +1069,3 @@ void qtrecordThread::Stop()
     }
   }
 }
-

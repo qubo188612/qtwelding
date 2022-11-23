@@ -28,11 +28,13 @@ public:
     void cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
     void cmd_delay(int time);//延时命令
     void cmd_cam(int task,int work);//相机启动停止命令
-    void cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令
+    void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel_ID work);//焊机电流和模式设置以及启停命令
+    void cmd_elec(Weldworkmodel_ID work);//焊机启停命令
 
     int cmdlist_check();//检查指令
     int cmdlist_build(volatile int &line);//把机器人文件命令编译,line为当前开始的编译步骤
     void cmdlist_stopbuild();//把机器人文件停止编译
+    void cmdlist_pausedbuild();//把机器人文件暂停编译
 
     int cmdlist_creat_tracename_mem(int beforeline,std::vector<QString> &errmsg);//创建beforeline之前的扫描\跟踪轨迹存放空间,beforeline值为1到m_mcs->project->project_cmdlist.size();
 

@@ -1010,174 +1010,6 @@
    </item>
    <item row="1" column="1">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0" rowspan="2">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="minimumSize">
-        <size>
-         <width>531</width>
-         <height>301</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>1062</width>
-         <height>602</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="title">
-        <string>焊机信息:</string>
-       </property>
-       <widget class="QLabel" name="label_27">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>70</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>焊接电流:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_current">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>70</y>
-          <width>221</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_28">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>120</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>焊接工艺:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_process">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>120</y>
-          <width>221</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_29">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>220</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>焊机状态:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_state">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>220</y>
-          <width>221</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_31">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>170</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>交变电流:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_alternating">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>170</y>
-          <width>221</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QLabel" name="label">
        <property name="minimumSize">
@@ -1242,6 +1074,246 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0" rowspan="2">
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="minimumSize">
+        <size>
+         <width>531</width>
+         <height>301</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1062</width>
+         <height>602</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="title">
+        <string>焊机信息:</string>
+       </property>
+       <widget class="QLabel" name="label_27">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>150</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊接电流:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_current">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>150</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_28">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>200</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊接工艺:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_process">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>200</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_29">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>300</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊机状态:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_state">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>300</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_31">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>250</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>交变电流:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_alternating">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>250</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_33">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊机型号:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_model">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>50</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_34">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>100</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊机IP(Port):</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_ip_port">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>100</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="0" column="0" rowspan="2">
@@ -1254,7 +1326,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1278,7 +1350,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1302,7 +1374,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1326,7 +1398,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1350,7 +1422,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1374,7 +1446,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1398,7 +1470,7 @@
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -1418,11 +1490,35 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="setweldBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>焊机设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="demarcateBtn">
        <property name="minimumSize">
         <size>
          <width>171</width>
-         <height>71</height>
+         <height>51</height>
         </size>
        </property>
        <property name="maximumSize">
