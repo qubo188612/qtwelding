@@ -8,8 +8,9 @@
 #include <QTextCodec>
 #include "my_parameters.h"
 #include "my_cmd.h"
-#include "traceeditdlg.h"
-#include "traceedit3dlg.h"
+#include "traceedit0dlg.h"
+#include "traceedit1dlg.h"
+#include "traceedit2dlg.h"
 
 namespace Ui {
 class setprojectDlg;
@@ -23,8 +24,9 @@ public:
     explicit setprojectDlg(my_parameters *mcs,QWidget *parent = nullptr);
     ~setprojectDlg();
 
-    traceeditDlg *traceedit;
-    traceedit3Dlg *traceedit3;
+    traceedit0Dlg *traceedit0;
+    traceedit1Dlg *traceedit1;
+    traceedit2Dlg *traceedit2;
 
     my_parameters *m_mcs;
 

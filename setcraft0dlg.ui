@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>setcraftDlg</class>
- <widget class="QDialog" name="setcraftDlg">
+ <class>setcraft0Dlg</class>
+ <widget class="QDialog" name="setcraft0Dlg">
   <property name="geometry">
    <rect>
     <x>0</x>

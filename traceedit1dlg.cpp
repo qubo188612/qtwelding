@@ -1,20 +1,20 @@
-#include "traceedit3dlg.h"
-#include "ui_traceedit3dlg.h"
+#include "traceedit1dlg.h"
+#include "ui_traceedit1dlg.h"
 
-traceedit3Dlg::traceedit3Dlg(my_parameters *mcs,QWidget *parent) :
+traceedit1Dlg::traceedit1Dlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::traceedit3Dlg)
+    ui(new Ui::traceedit1Dlg)
 {
     ui->setupUi(this);
     m_mcs=mcs;
 }
 
-traceedit3Dlg::~traceedit3Dlg()
+traceedit1Dlg::~traceedit1Dlg()
 {
     delete ui;
 }
 
-void traceedit3Dlg::init_dlg_show()
+void traceedit1Dlg::init_dlg_show()
 {
     ui->comboBox_0->clear();
     for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
@@ -33,12 +33,12 @@ void traceedit3Dlg::init_dlg_show()
     }
 }
 
-void traceedit3Dlg::close_dlg_show()
+void traceedit1Dlg::close_dlg_show()
 {
 
 }
 
-void traceedit3Dlg::on_pushButton_clicked()
+void traceedit1Dlg::on_pushButton_clicked()
 {
     if(ui->comboBox_0->currentIndex()>=0)
     {

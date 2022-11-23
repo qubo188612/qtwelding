@@ -42,16 +42,17 @@ SOURCES += \
         robotcontrol.cpp \
         robotdata.cpp \
         robotsetdlg.cpp \
+        setcraft0dlg.cpp \
         setcraft1dlg.cpp \
-        setcraftdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp \
         synchronous.cpp \
         tosendbuffer.cpp \
-        traceedit3dlg.cpp \
-        traceeditdlg.cpp
+        traceedit0dlg.cpp \
+        traceedit1dlg.cpp \
+        traceedit2dlg.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -68,12 +69,13 @@ FORMS += \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
+    setcraft0dlg.ui \
     setcraft1dlg.ui \
-    setcraftdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
-    traceedit3dlg.ui \
-    traceeditdlg.ui
+    traceedit0dlg.ui \
+    traceedit1dlg.ui \
+    traceedit2dlg.ui
 
 HEADERS += \
     E2proomData.h \
@@ -105,8 +107,8 @@ HEADERS += \
     robotcontrol.h \
     robotdata.h \
     robotsetdlg.h \
+    setcraft0dlg.h \
     setcraft1dlg.h \
-    setcraftdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \
     soptocameratcpip.h \
@@ -114,8 +116,9 @@ HEADERS += \
     synchronous.h \
     tistdtypes.h \
     tosendbuffer.h \
-    traceedit3dlg.h \
-    traceeditdlg.h
+    traceedit0dlg.h \
+    traceedit1dlg.h \
+    traceedit2dlg.h
 
 
 win32{

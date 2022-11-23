@@ -190,6 +190,53 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             }
                         }
                         break;
+                        case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
+                        {
+                            if(scannames.size()!=5)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
+                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE)+
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有5个");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            bool b_find=false;
+                            int m=0;
+                            for(m=0;m<scannames.size();m++)
+                            {
+                                b_find=false;
+                                for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                                {
+                                    if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
+                                    {
+                                        b_find=true;
+                                        Weld_trace_result trace;
+                                        trace.name=name;
+                                        m_mcs->project->project_weld_trace.push_back(trace);
+                                        break;
+                                    }
+                                }
+                                if(b_find==false)//没找到这个名字的扫描轨道
+                                {
+                                    break;
+                                }
+                            }
+                            if(b_find==false)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                        }
+                        break;
                         default:
                         {
                             err=1;
@@ -553,7 +600,160 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         weld_trace0.push_back(endpoint);
                     }
+                }
+                break;
+                case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
+                {
+                    int scan_trace_num_0,scan_trace_num_1,scan_trace_num_2,scan_trace_num_3,scan_trace_num_4;//搜索到的扫描轨道序号
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[0]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_0=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[1]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_1=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[2]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_2=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[3]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_3=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[4]==m_mcs->project->project_scan_trace[n].name)
+                        {
+                            scan_trace_num_4=n;
+                            break;
+                        }
+                    }
+                    //这里添加轨迹拟合
+                    std::vector<Scan_trace_line> scan_trace0,scan_trace1,scan_trace2,scan_trace3,scan_trace4;
+                    std::vector<Eigen::Vector3d> weld_trace0,weld_trace1,weld_trace2,weld_trace3,weld_trace4;
+                    scan_trace0=m_mcs->project->project_scan_trace[scan_trace_num_0].point;
+                    if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace0,weld_trace0)||
+                       false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace1,weld_trace1)||
+                       false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace2,weld_trace2)||
+                       false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace3,weld_trace3)||
+                       false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace4,weld_trace4))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    std::vector<Eigen::VectorXd> linePoints,SidePoints1,SidePoints2;
+                    for(int n=0;n<weld_trace0.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace0[n].x();
+                        sing_linepoint(1)=weld_trace0[n].y();
+                        sing_linepoint(2)=weld_trace0[n].z();
+                        linePoints.push_back(sing_linepoint);
+                    }
+                    for(int n=0;n<weld_trace1.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace1[n].x();
+                        sing_linepoint(1)=weld_trace1[n].y();
+                        sing_linepoint(2)=weld_trace1[n].z();
+                        SidePoints1.push_back(sing_linepoint);
+                    }
+                    for(int n=0;n<weld_trace2.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace2[n].x();
+                        sing_linepoint(1)=weld_trace2[n].y();
+                        sing_linepoint(2)=weld_trace2[n].z();
+                        SidePoints1.push_back(sing_linepoint);
+                    }
+                    for(int n=0;n<weld_trace3.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace3[n].x();
+                        sing_linepoint(1)=weld_trace3[n].y();
+                        sing_linepoint(2)=weld_trace3[n].z();
+                        SidePoints2.push_back(sing_linepoint);
+                    }
+                    for(int n=0;n<weld_trace4.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace2[n].x();
+                        sing_linepoint(1)=weld_trace2[n].y();
+                        sing_linepoint(2)=weld_trace2[n].z();
+                        SidePoints2.push_back(sing_linepoint);
+                    }
+                    if(linePoints.size()<=2&&SidePoints1.size()<=4)
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹端点1的坐标数据太少");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    if(linePoints.size()<=2&&SidePoints2.size()<=4)
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹端点2的坐标数据太少");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    FitlineSide fitlineside;
+                    Eigen::Vector3d endpoint1=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints1);//交点1
+                    Eigen::Vector3d endpoint2=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints2);//交点2
 
+                    float f_headdis1=(weld_trace0[0].x()-endpoint1.x())*(weld_trace0[0].x()-endpoint1.x())+
+                                    (weld_trace0[0].y()-endpoint1.y())*(weld_trace0[0].y()-endpoint1.y())+
+                                    (weld_trace0[0].z()-endpoint1.z())*(weld_trace0[0].z()-endpoint1.z());
+                    float f_tiledis1=(weld_trace0[weld_trace0.size()-1].x()-endpoint1.x())*(weld_trace0[weld_trace0.size()-1].x()-endpoint1.x())+
+                                    (weld_trace0[weld_trace0.size()-1].y()-endpoint1.y())*(weld_trace0[weld_trace0.size()-1].y()-endpoint1.y())+
+                                    (weld_trace0[weld_trace0.size()-1].z()-endpoint1.z())*(weld_trace0[weld_trace0.size()-1].z()-endpoint1.z());
+                    float f_headdis2=(weld_trace0[0].x()-endpoint2.x())*(weld_trace0[0].x()-endpoint2.x())+
+                                    (weld_trace0[0].y()-endpoint2.y())*(weld_trace0[0].y()-endpoint2.y())+
+                                    (weld_trace0[0].z()-endpoint2.z())*(weld_trace0[0].z()-endpoint2.z());
+                    float f_tiledis2=(weld_trace0[weld_trace0.size()-1].x()-endpoint2.x())*(weld_trace0[weld_trace0.size()-1].x()-endpoint2.x())+
+                                    (weld_trace0[weld_trace0.size()-1].y()-endpoint2.y())*(weld_trace0[weld_trace0.size()-1].y()-endpoint2.y())+
+                                    (weld_trace0[weld_trace0.size()-1].z()-endpoint2.z())*(weld_trace0[weld_trace0.size()-1].z()-endpoint2.z());
+
+                    if(f_tiledis1>f_headdis1)//距离平面越来越远,说明交点放在头部
+                    {
+                        weld_trace0.insert(weld_trace0.begin(),endpoint1);
+                    }
+                    else//距离平面越来越近，说明交点放在尾部
+                    {
+                        weld_trace0.push_back(endpoint1);
+                    }
+                    if(f_tiledis2>f_headdis2)//距离平面越来越远,说明交点放在头部
+                    {
+                        weld_trace0.insert(weld_trace0.begin(),endpoint2);
+                    }
+                    else//距离平面越来越近，说明交点放在尾部
+                    {
+                        weld_trace0.push_back(endpoint2);
+                    }
                 }
                 break;
             }

@@ -806,6 +806,11 @@
       <string>三直线交点模式</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>两端三直线交点模式</string>
+     </property>
+    </item>
    </widget>
   </widget>
  </widget>

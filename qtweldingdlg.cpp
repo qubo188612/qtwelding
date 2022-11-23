@@ -60,7 +60,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     setproject=new setprojectDlg(m_mcs);
     editcraft=new editcraftDlg(m_mcs);
     newcraft=new newcraftDlg(m_mcs);
-    setcraft=new setcraftDlg(m_mcs);
+    setcraft0=new setcraft0Dlg(m_mcs);
     setcraft1=new setcraft1Dlg(m_mcs);
 
     ui->setupUi(this);
@@ -179,7 +179,7 @@ qtweldingDlg::~qtweldingDlg()
     delete setproject;
     delete editcraft;
     delete newcraft;
-    delete setcraft;
+    delete setcraft0;
     delete setcraft1;
     delete ui;
 }
@@ -407,10 +407,10 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                 {
                     case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
                     {
-                        setcraft->init_dlg_show();
-                        setcraft->setWindowTitle(msg);
-                        setcraft->exec();
-                        setcraft->close_dlg_show();
+                        setcraft0->init_dlg_show();
+                        setcraft0->setWindowTitle(msg);
+                        setcraft0->exec();
+                        setcraft0->close_dlg_show();
                     }
                     break;
                     case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
@@ -453,10 +453,10 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                     {
                         case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
                         {
-                            setcraft->init_dlg_show();
-                            setcraft->setWindowTitle(msg);
-                            setcraft->exec();
-                            setcraft->close_dlg_show();
+                            setcraft0->init_dlg_show();
+                            setcraft0->setWindowTitle(msg);
+                            setcraft0->exec();
+                            setcraft0->close_dlg_show();
                         }
                         break;
                         case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态

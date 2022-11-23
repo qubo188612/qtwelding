@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>traceedit3Dlg</class>
- <widget class="QDialog" name="traceedit3Dlg">
+ <class>traceedit1Dlg</class>
+ <widget class="QDialog" name="traceedit1Dlg">
   <property name="geometry">
    <rect>
     <x>0</x>

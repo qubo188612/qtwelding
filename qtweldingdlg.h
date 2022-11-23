@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QTextCodec>
+#include <QMutex>
 #include "my_parameters.h"
 #include "qthread.h"
 #if _MSC_VER
@@ -22,9 +23,8 @@
 #include "setprojectdlg.h"
 #include "editcraftdlg.h"
 #include "newcraftdlg.h"
-#include "setcraftdlg.h"
+#include "setcraft0dlg.h"
 #include "setcraft1dlg.h"
-#include <QMutex>
 
 
 namespace Ui {
@@ -72,7 +72,7 @@ public:
     setprojectDlg *setproject;
     editcraftDlg *editcraft;
     newcraftDlg *newcraft;
-    setcraftDlg *setcraft;
+    setcraft0Dlg *setcraft0;
     setcraft1Dlg *setcraft1;
 
 

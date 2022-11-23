@@ -1,21 +1,21 @@
-#ifndef TRACEEDITDLG_H
-#define TRACEEDITDLG_H
+#ifndef TRACEEDIT0DLG_H
+#define TRACEEDIT0DLG_H
 
 #include <QDialog>
 #include <QMessageBox>
 #include "my_parameters.h"
 
 namespace Ui {
-class traceeditDlg;
+class traceedit0Dlg;
 }
 
-class traceeditDlg : public QDialog
+class traceedit0Dlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit traceeditDlg(my_parameters *mcs,QWidget *parent = nullptr);
-    ~traceeditDlg();
+    explicit traceedit0Dlg(my_parameters *mcs,QWidget *parent = nullptr);
+    ~traceedit0Dlg();
 
     my_parameters *m_mcs;
 
@@ -28,7 +28,7 @@ private slots:
     void on_pushButton_clicked();
 
 private:
-    Ui::traceeditDlg *ui;
+    Ui::traceedit0Dlg *ui;
 };
 
-#endif // TRACEEDITDLG_H
+#endif // TRACEEDIT0DLG_H

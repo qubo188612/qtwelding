@@ -1,9 +1,9 @@
-#include "setcraftdlg.h"
-#include "ui_setcraftdlg.h"
+#include "setcraft0dlg.h"
+#include "ui_setcraft0dlg.h"
 
-setcraftDlg::setcraftDlg(my_parameters *mcs,QWidget *parent) :
+setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::setcraftDlg)
+    ui(new Ui::setcraft0Dlg)
 {
     ui->setupUi(this);
 
@@ -29,7 +29,7 @@ setcraftDlg::setcraftDlg(my_parameters *mcs,QWidget *parent) :
     }
 }
 
-setcraftDlg::~setcraftDlg()
+setcraft0Dlg::~setcraft0Dlg()
 {
     delete adoubleValidator_3;
     delete adoubleValidator_pose;
@@ -37,7 +37,7 @@ setcraftDlg::~setcraftDlg()
     delete ui;
 }
 
-void setcraftDlg::init_dlg_show()
+void setcraft0Dlg::init_dlg_show()
 {
     ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()==1)
@@ -63,12 +63,12 @@ void setcraftDlg::init_dlg_show()
     UpdataUi();
 }
 
-void setcraftDlg::close_dlg_show()
+void setcraft0Dlg::close_dlg_show()
 {
 
 }
 
-void setcraftDlg::on_pushButton_clicked()//获取当前焊接姿态
+void setcraft0Dlg::on_pushButton_clicked()//获取当前焊接姿态
 {
     int num=0;
     m_mcs->rob->TCPpos.nEn=false;
@@ -94,13 +94,13 @@ void setcraftDlg::on_pushButton_clicked()//获取当前焊接姿态
     }
 }
 
-void setcraftDlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)//摆焊模式变化
+void setcraft0Dlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)//摆焊模式变化
 {
     m_mcs->craft->pendulum_mode=(Pendulum_mode)index;
     UpdataUi();
 }
 
-void setcraftDlg::on_pushButton_2_clicked()//确定并保存
+void setcraft0Dlg::on_pushButton_2_clicked()//确定并保存
 {
     m_mcs->craft->posturelist.resize(1);
     m_mcs->craft->posturelist[0].Variable.X=ui->lineEdit_X->text().toFloat();
@@ -116,7 +116,7 @@ void setcraftDlg::on_pushButton_2_clicked()//确定并保存
     done(1);
 }
 
-void setcraftDlg::UpdataUi()
+void setcraft0Dlg::UpdataUi()
 {
     switch(m_mcs->craft->pendulum_mode)
     {

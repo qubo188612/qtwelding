@@ -16,14 +16,16 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
         ui->scantcpcombo->addItem(msg);
     }
 
-    traceedit=new traceeditDlg(mcs);
-    traceedit3=new traceedit3Dlg(mcs);
+    traceedit0=new traceedit0Dlg(mcs);
+    traceedit1=new traceedit1Dlg(mcs);
+    traceedit2=new traceedit2Dlg(mcs);
 }
 
 setprojectDlg::~setprojectDlg()
 {
-    delete traceedit;
-    delete traceedit3;
+    delete traceedit0;
+    delete traceedit1;
+    delete traceedit2;
     delete ui;
 }
 
@@ -439,16 +441,16 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
         {
             case TRACE_EDIT_MODE_ONE_TO_ONE://单扫对单轨道模式
             {
-                traceedit->init_dlg_show();
-                traceedit->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
-                int rc=traceedit->exec();
-                traceedit->close_dlg_show();
+                traceedit0->init_dlg_show();
+                traceedit0->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
+                int rc=traceedit0->exec();
+                traceedit0->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
                 {
                     my_cmd cmd;
                     std::vector<QString> scanname(1);
 
-                    scanname[0]=traceedit->name;
+                    scanname[0]=traceedit0->name;
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
                     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                     {
@@ -466,18 +468,50 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
             break;
             case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
             {
-                traceedit3->init_dlg_show();
-                traceedit3->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三直线交点模式)"));
-                int rc=traceedit3->exec();
-                traceedit3->close_dlg_show();
+                traceedit1->init_dlg_show();
+                traceedit1->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三直线交点模式)"));
+                int rc=traceedit1->exec();
+                traceedit1->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
                 {
                     my_cmd cmd;
                     std::vector<QString> scanname(3);
 
-                    scanname[0]=traceedit3->name0;
-                    scanname[1]=traceedit3->name1;
-                    scanname[2]=traceedit3->name2;
+                    scanname[0]=traceedit1->name0;
+                    scanname[1]=traceedit1->name1;
+                    scanname[2]=traceedit1->name2;
+                    QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
+                    if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                    {
+                        m_mcs->project->project_cmdlist.push_back(msg);
+                    }
+                    else
+                    {
+                        m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                    }
+                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    now_cmdline++;
+                    updatacmdlistUi();
+                }
+            }
+            break;
+            case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
+            {
+                traceedit2->init_dlg_show();
+                traceedit2->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(两端点三直线交点模式)"));
+                int rc=traceedit2->exec();
+                traceedit2->close_dlg_show();
+                if(rc!=0)//确定保存生成轨迹
+                {
+                    my_cmd cmd;
+                    std::vector<QString> scanname(5);
+
+                    scanname[0]=traceedit2->name0;
+                    scanname[1]=traceedit2->name1;
+                    scanname[2]=traceedit2->name2;
+                    scanname[3]=traceedit2->name3;
+                    scanname[4]=traceedit2->name4;
+
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
                     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                     {
