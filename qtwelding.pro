@@ -52,7 +52,8 @@ SOURCES += \
         tosendbuffer.cpp \
         traceedit0dlg.cpp \
         traceedit1dlg.cpp \
-        traceedit2dlg.cpp
+        traceedit2dlg.cpp \
+        weldsetdlg.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -75,7 +76,8 @@ FORMS += \
     showtasknumdlg.ui \
     traceedit0dlg.ui \
     traceedit1dlg.ui \
-    traceedit2dlg.ui
+    traceedit2dlg.ui \
+    weldsetdlg.ui
 
 HEADERS += \
     E2proomData.h \
@@ -118,7 +120,8 @@ HEADERS += \
     tosendbuffer.h \
     traceedit0dlg.h \
     traceedit1dlg.h \
-    traceedit2dlg.h
+    traceedit2dlg.h \
+    weldsetdlg.h
 
 
 win32{

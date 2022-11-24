@@ -34,7 +34,7 @@ RobotData::RobotData()
     {
         robot_model=ROBOT_MODEL_NULL;
         cal_posture_model=CAL_ROBOT_YASKAWA;
-        weld_model=WELD_ROBOT_LINK;
+        weld_model=WELD_MODEL_NULL;
     }
 }
 
@@ -43,7 +43,7 @@ RobotData::~RobotData()
 
 }
 
-QString RobotData::robot_model_toQString()
+QString RobotData::robot_model_toQString(ROBOT_MODEL robot_model)
 {
     QString msg;
     switch(robot_model)
@@ -61,7 +61,7 @@ QString RobotData::robot_model_toQString()
     return msg;
 }
 
-QString RobotData::robot_state_toQString()
+QString RobotData::robot_state_toQString(ROBOT_STATE robot_state)
 {
     QString msg;
     switch(robot_state)
@@ -82,12 +82,15 @@ QString RobotData::robot_state_toQString()
     return msg;
 }
 
-QString RobotData::weld_model_toQString()
+QString RobotData::weld_model_toQString(WELD_MODEL weld_model)
 {
     QString msg;
     switch(weld_model)
     {
-    case WELD_ROBOT_LINK:
+    case WELD_MODEL_NULL:
+        msg="无";
+        break;
+    case WELD_MODEL_ROBOT_LINK:
         msg="机器人直连";
         break;
     }

@@ -18,6 +18,7 @@
 #include "qtmysunnydlg.h"
 #include "demarcatedlg.h"
 #include "robotsetdlg.h"
+#include "weldsetdlg.h"
 #include "editprojectdlg.h"
 #include "newprojectdlg.h"
 #include "setprojectdlg.h"
@@ -67,6 +68,7 @@ public:
     qtmysunnyDlg *qtmysunny;
     demarcateDlg *demarcate;
     robotsetDlg *robotset;
+    weldsetDlg *weldset;
     editprojectDlg *editproject;
     newprojectDlg *newproject;
     setprojectDlg *setproject;
@@ -113,6 +115,22 @@ private slots:
     void on_SaveDatacheckBox_stateChanged(int arg1);
 
     void on_setweldBtn_clicked();
+
+    void on_weld_windBtn_pressed();
+
+    void on_weld_windBtn_released();
+
+    void on_weld_rewindBtn_pressed();
+
+    void on_weld_rewindBtn_released();
+
+    void on_weld_gassBtn_pressed();
+
+    void on_weld_gassBtn_released();
+
+    void on_weld_fireBtn_pressed();
+
+    void on_weld_fireBtn_released();
 
 private:
     Ui::qtweldingDlg *ui;

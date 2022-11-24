@@ -18,12 +18,15 @@
 #endif
 
 #define ROBOTDATA_PATH_MOTO       "./SAVE/robdata.bsd"
-
-typedef enum WELD_MODEL_ID          //焊机型号
+/****************************************/
+#define WELD_MODEL_NUM      2  //焊机型号支持的总数
+typedef enum WELD_MODEL_ID            //焊机型号
 {
-    WELD_ROBOT_LINK=0,              //机器人直连
+    WELD_MODEL_NULL=0,                      //无焊机
+    WELD_MODEL_ROBOT_LINK=1,                //机器人直连
 }WELD_MODEL;
-
+/**************************************/
+#define ROBOT_MODEL_NUM     3  //机器人型号支持的总数
 typedef enum ROBOT_MODEL_ID            //机器人型号
 {
     ROBOT_MODEL_NULL=0,                //无机器人
@@ -37,6 +40,8 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
 #define ROBOT_DOBOT_INFO_SENDRECVBUFFER_MAX       1440     //越彊机器人运动值令发送数据回复信息最大个数
 #define ROBOT_DOBOT_INFO_PORT                     30004    //越彊机器人数据信息获取端口
 #define ROBOT_DOBOT_INFO_RECVBUFFER_MAX           1440     //越彊机器人数据信息最大个数
+
+/***************************************/
 
 typedef enum ROBOT_STATE_ID            //机器人状态
 {
@@ -64,10 +69,10 @@ public:
     systime robtime;    //机器人时间
 
     ROBOT_MODEL robot_model;    //机器人型号
-    QString robot_model_toQString();  //机器人型号字符串输出
+    QString robot_model_toQString(ROBOT_MODEL robot_model);  //机器人型号字符串输出
 
     ROBOT_STATE robot_state;    //机器人状态
-    QString robot_state_toQString();  //机器人状态字符串输出
+    QString robot_state_toQString(ROBOT_STATE robot_state);  //机器人状态字符串输出
 
     CAL_POSTURE cal_posture_model;  //机器人姿态标准
 
@@ -88,7 +93,7 @@ public:
 
 
     WELD_MODEL weld_model;    //焊机型号
-    QString weld_model_toQString();  //焊机型号字符串输出
+    QString weld_model_toQString(WELD_MODEL weld_model);  //焊机型号字符串输出
 
     int SaveRob(char* filename);    //保存项目
 

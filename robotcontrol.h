@@ -16,7 +16,8 @@ class RobotsendThread;
 class RobotsendrcvThread;
 class RobottotalcontrolThread;
 class RobottotalcontrolrcvThread;
-
+class WeldsendThread;
+class WeldsendrcvThread;
 
 class Robotcontrol
 {
@@ -26,7 +27,6 @@ public:
     my_parameters *m_mcs;
 
     ROBOT_MODEL rob_mod;     //机器人型号
-    WELD_MODEL weld_mod;     //焊机型号
 
     void Creat_control_modbus();        //启动服务器
     void Close_control_modbus();        //关闭服务器
@@ -81,8 +81,26 @@ public:
 
     void RobotOPEN_ELE(); //机器人上电
     void RobotCLOSE_ELE(); //机器人断电
+/******************************************/
+//以下焊机接口
+    WELD_MODEL weld_mod;     //焊机型号
 
+    XTcp m_weldsendent;     //焊机命令数据sock(非机器人直连时有效)
+    bool b_weldsendent;
 
+    WeldsendThread *weldsend_Thread;
+    bool b_weldsend_thread;
+    bool b_stop_weldsend_thread;
+    std::vector<std::string> weldsend_buf_group;    //发送焊机指令数据队列(非机器人直连时有效)
+
+    WeldsendrcvThread *weldsendrcv_Thread;
+    bool b_weldsendrcv_thread;
+    bool b_stop_weldsendrcv_thread;
+    uint8_t *weldsendrcv_buf;               //焊机接收发送数据回复信息(非机器人直连时有效)
+
+    void WeldInit();    //焊机初始化(非机器人直连时有效)
+
+/*******************************************/
 protected:
 
     Robotcontrol();
@@ -184,6 +202,35 @@ private:
     Robotcontrol *_p;
 
 };
+
+class WeldsendThread : public QThread       //发送焊机数据线程（非机器人直连）
+{
+    Q_OBJECT
+
+public:
+    WeldsendThread(Robotcontrol *statci_p);
+    void Stop();
+protected:
+    void run();
+private:
+    Robotcontrol *_p;
+
+};
+
+class WeldsendrcvThread : public QThread       //发送焊机数据后回复命令线程
+{
+    Q_OBJECT
+
+public:
+    WeldsendrcvThread(Robotcontrol *statci_p);
+    void Stop();
+protected:
+    void run();
+private:
+    Robotcontrol *_p;
+
+};
+
 
 
 

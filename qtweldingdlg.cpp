@@ -55,6 +55,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
     robotset=new robotsetDlg(m_mcs);
+    weldset=new weldsetDlg(m_mcs);
     editproject=new editprojectDlg(m_mcs);
     newproject=new newprojectDlg(m_mcs);
     setproject=new setprojectDlg(m_mcs);
@@ -71,9 +72,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->project_Id->setText(QString::fromLocal8Bit("无"));
     ui->project_scannum->setText(QString::fromLocal8Bit("0/0"));
     ui->project_weldnum->setText(QString::fromLocal8Bit("0/0"));
-    ui->robot_model->setText(m_mcs->rob->robot_model_toQString());
+    ui->robot_model->setText(m_mcs->rob->robot_model_toQString(m_mcs->rob->robot_model));
     ui->robot_ip_port->setText(QString::fromLocal8Bit("0.0.0.0"));
-    ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
+    ui->robot_state->setText(m_mcs->rob->robot_state_toQString(m_mcs->rob->robot_state));
     ui->robot_speed->setText(QString::number(m_mcs->rob->robot_speed,'f',3));
     ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
     ui->robot_pos_y->setText(QString::number(m_mcs->rob->TCPpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -90,7 +91,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->leaser_timestamp->setText(QString::fromLocal8Bit("00:00:00:000"));
     ui->leaser_camera_fps->setText(QString::fromLocal8Bit("0.00"));
     ui->leaser_result_fps->setText(QString::fromLocal8Bit("0.00"));
-    ui->weld_model->setText(m_mcs->rob->weld_model_toQString());
+    ui->weld_model->setText(m_mcs->rob->weld_model_toQString(m_mcs->rob->weld_model));
     ui->weld_ip_port->setText(QString::fromLocal8Bit("0.0.0.0"));
     ui->weld_state->setText(QString::fromLocal8Bit("待机"));
     ui->weld_current->setText(QString::fromLocal8Bit("0.000"));
@@ -176,6 +177,7 @@ qtweldingDlg::~qtweldingDlg()
     delete qtmysunny;
     delete demarcate;
     delete robotset;
+    delete weldset;
     delete editproject;
     delete newproject;
     delete setproject;
@@ -198,6 +200,10 @@ void qtweldingDlg::UpdataUi()
         ui->runpausedBtn->setDisabled(true);
         ui->setlaserheadBtn->setDisabled(false);
         ui->setrobotBtn->setDisabled(false);
+        ui->weld_fireBtn->setDisabled(false);
+        ui->weld_gassBtn->setDisabled(false);
+        ui->weld_windBtn->setDisabled(false);
+        ui->weld_rewindBtn->setDisabled(false);
     }
     else
     {
@@ -209,6 +215,10 @@ void qtweldingDlg::UpdataUi()
         ui->runpausedBtn->setDisabled(false);
         ui->setlaserheadBtn->setDisabled(true);
         ui->setrobotBtn->setDisabled(true);
+        ui->weld_fireBtn->setDisabled(true);
+        ui->weld_gassBtn->setDisabled(true);
+        ui->weld_windBtn->setDisabled(true);
+        ui->weld_rewindBtn->setDisabled(true);
     }
     if(m_mcs->process->b_processpaused==false)
     {
@@ -348,38 +358,6 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
     }
 }
 
-
-void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
-{
-    thread1->Stop();
-    thread1->quit();
-    thread1->wait();
-    DisconnectCamer();
-    qtmysunny->init_dlg_show();
-    qtmysunny->setWindowTitle(QString::fromLocal8Bit("激光头设置"));
-    qtmysunny->exec();
-    qtmysunny->close_dlg_show();
-    ConnectCamer();
-    b_thread1=true;
-    thread1->start();
-}
-
-
-void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
-{
-    thread2->Stop();
-    thread2->quit();
-    thread2->wait();
-    DisconnectRobot();
-    robotset->init_dlg_show();
-    robotset->setWindowTitle(QString::fromLocal8Bit("机器人设置"));
-    robotset->exec();
-    robotset->close_dlg_show();
-    ConnectRobot();
-    b_thread2=true;
-    thread2->start();
-}
-
 void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
@@ -477,9 +455,51 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
     }
 }
 
+void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
+{
+    thread1->Stop();
+    thread1->quit();
+    thread1->wait();
+    DisconnectCamer();
+    qtmysunny->init_dlg_show();
+    qtmysunny->setWindowTitle(QString::fromLocal8Bit("激光头设置"));
+    qtmysunny->exec();
+    qtmysunny->close_dlg_show();
+    ConnectCamer();
+    b_thread1=true;
+    thread1->start();
+}
+
+
+void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
+{
+    thread2->Stop();
+    thread2->quit();
+    thread2->wait();
+    DisconnectRobot();
+    robotset->init_dlg_show();
+    robotset->setWindowTitle(QString::fromLocal8Bit("机器人设置"));
+    robotset->exec();
+    robotset->close_dlg_show();
+    ConnectRobot();
+    b_thread2=true;
+    thread2->start();
+}
+
+
 void qtweldingDlg::on_setweldBtn_clicked()//焊机设置
 {
-
+    thread2->Stop();
+    thread2->quit();
+    thread2->wait();
+    DisconnectRobot();
+    weldset->init_dlg_show();
+    weldset->setWindowTitle(QString::fromLocal8Bit("焊机设置"));
+    weldset->exec();
+    weldset->close_dlg_show();
+    ConnectRobot();
+    b_thread2=true;
+    thread2->start();
 }
 
 void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
@@ -526,6 +546,102 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
     }
 }
+
+void qtweldingDlg::on_weld_windBtn_pressed()    //送丝按下
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(WIND);
+    ui->record->append(QString::fromLocal8Bit("开始送丝"));
+}
+
+
+void qtweldingDlg::on_weld_windBtn_released()   //送丝抬起
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(STATIC);
+    ui->record->append(QString::fromLocal8Bit("停止送丝"));
+}
+
+
+void qtweldingDlg::on_weld_rewindBtn_pressed()  //退丝按下
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(REWIND);
+    ui->record->append(QString::fromLocal8Bit("开始退丝"));
+}
+
+
+void qtweldingDlg::on_weld_rewindBtn_released()  //退丝抬起
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(STATIC);
+    ui->record->append(QString::fromLocal8Bit("停止退丝"));
+}
+
+
+void qtweldingDlg::on_weld_gassBtn_pressed()    //送气按下
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(GASS);
+    ui->record->append(QString::fromLocal8Bit("开始送气"));
+}
+
+
+void qtweldingDlg::on_weld_gassBtn_released()    //送气抬起
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(STATIC);
+    ui->record->append(QString::fromLocal8Bit("停止送气"));
+}
+
+
+void qtweldingDlg::on_weld_fireBtn_pressed()    //点焊按下
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(FIRE);
+    ui->record->append(QString::fromLocal8Bit("开始点焊"));
+}
+
+
+void qtweldingDlg::on_weld_fireBtn_released()   //点焊抬起
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_elec(STATIC);
+    ui->record->append(QString::fromLocal8Bit("停止点焊"));
+}
+
 
 void qtweldingDlg::on_SaveDatacheckBox_stateChanged(int arg1)//保存数据
 {
@@ -756,9 +872,9 @@ void qtweldingDlg::init_show_robpos_list()
 {
     //机器人信息
     QString msg;
-    ui->robot_ip_port->setText(m_mcs->ip->robot_ip[0].remote_ip.ip);
-    ui->robot_model->setText(m_mcs->rob->robot_model_toQString());
-    ui->robot_state->setText(m_mcs->rob->robot_state_toQString());
+
+    ui->robot_model->setText(m_mcs->rob->robot_model_toQString(m_mcs->rob->robot_model));
+    ui->robot_state->setText(m_mcs->rob->robot_state_toQString(m_mcs->rob->robot_state));
 
     ui->robot_speed->setText(QString::number(m_mcs->rob->robot_speed,'f',3));
     ui->robot_pos_x->setText(QString::number(m_mcs->rob->TCPpos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -773,8 +889,25 @@ void qtweldingDlg::init_show_robpos_list()
                 QString::number(m_mcs->rob->robtime.msec);
     ui->robot_time->setText(msg);
 
-    ui->weld_model->setText(m_mcs->rob->weld_model_toQString());
-    ui->weld_ip_port->setText(m_mcs->ip->robot_ip[0].weld_ip.ip);
+    ui->weld_model->setText(m_mcs->rob->weld_model_toQString(m_mcs->rob->weld_model));
+
+
+    if(m_mcs->rob->robot_model==ROBOT_MODEL_NULL)
+    {
+        ui->robot_ip_port->setText(QString::fromLocal8Bit("无"));
+    }
+    else
+    {
+        ui->robot_ip_port->setText(m_mcs->ip->robot_ip[0].remote_ip.ip);
+    }
+    if(m_mcs->rob->weld_model==WELD_MODEL_NULL||m_mcs->rob->weld_model==WELD_MODEL_ROBOT_LINK)
+    {
+        ui->weld_ip_port->setText(QString::fromLocal8Bit("无"));
+    }
+    else
+    {
+        ui->weld_ip_port->setText(m_mcs->ip->robot_ip[0].weld_ip.ip);
+    }
 
     b_init_show_robpos_list=true;
 }
@@ -1069,3 +1202,5 @@ void qtrecordThread::Stop()
     }
   }
 }
+
+

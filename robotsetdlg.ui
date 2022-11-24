@@ -114,21 +114,6 @@
      <height>25</height>
     </rect>
    </property>
-   <item>
-    <property name="text">
-     <string>无机器人</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>智昌机器人</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>越彊机器人</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">

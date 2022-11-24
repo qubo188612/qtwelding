@@ -239,7 +239,7 @@
          </font>
         </property>
         <property name="text">
-         <string>机器人IP(Port):</string>
+         <string>机器人IP:</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_8">
@@ -299,9 +299,9 @@
        <widget class="QLabel" name="robot_ip_port">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>140</x>
           <y>100</y>
-          <width>191</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -791,9 +791,9 @@
        <widget class="QLabel" name="leaser_tasknum">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>140</x>
           <y>100</y>
-          <width>171</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -809,7 +809,7 @@
        <widget class="QLabel" name="leaser_state">
         <property name="geometry">
          <rect>
-          <x>150</x>
+          <x>140</x>
           <y>150</y>
           <width>191</width>
           <height>21</height>
@@ -863,7 +863,7 @@
        <widget class="QLabel" name="leaser_time">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>140</x>
           <y>300</y>
           <width>201</width>
           <height>21</height>
@@ -899,7 +899,7 @@
        <widget class="QLabel" name="leaser_timestamp">
         <property name="geometry">
          <rect>
-          <x>120</x>
+          <x>140</x>
           <y>350</y>
           <width>221</width>
           <height>21</height>
@@ -989,7 +989,7 @@
        <widget class="QLabel" name="leaser_ip">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>140</x>
           <y>50</y>
           <width>211</width>
           <height>21</height>
@@ -1119,7 +1119,7 @@
          <rect>
           <x>130</x>
           <y>150</y>
-          <width>201</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -1155,7 +1155,7 @@
          <rect>
           <x>130</x>
           <y>200</y>
-          <width>201</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -1191,7 +1191,7 @@
          <rect>
           <x>130</x>
           <y>300</y>
-          <width>201</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -1227,7 +1227,7 @@
          <rect>
           <x>130</x>
           <y>250</y>
-          <width>201</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -1263,7 +1263,7 @@
          <rect>
           <x>130</x>
           <y>50</y>
-          <width>201</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -1291,7 +1291,7 @@
          </font>
         </property>
         <property name="text">
-         <string>焊机IP(Port):</string>
+         <string>焊机IP:</string>
         </property>
        </widget>
        <widget class="QLabel" name="weld_ip_port">
@@ -1299,7 +1299,7 @@
          <rect>
           <x>130</x>
           <y>100</y>
-          <width>201</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -1310,6 +1310,106 @@
         </property>
         <property name="text">
          <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_windBtn">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>80</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>送丝</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_rewindBtn">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>220</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>退丝</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_gassBtn">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>150</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>送气</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_fireBtn">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>150</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>点焊</string>
         </property>
        </widget>
       </widget>

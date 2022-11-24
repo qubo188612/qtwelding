@@ -23,6 +23,8 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_robot_model_currentIndexChanged(int index);
+
 private:
     Ui::robotsetDlg *ui;
 };

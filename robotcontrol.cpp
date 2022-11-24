@@ -2,6 +2,7 @@
 
 QMutex mutexsend_buf_group;
 QMutex mutextotalcontrol_buf_group;
+QMutex mutexweldsend_buf_group;
 extern QMutex main_record;
 
 Robotcontrol *Robotcontrol::Get(my_parameters *mcs)
@@ -35,6 +36,16 @@ Robotcontrol::Robotcontrol()
     b_stop_totalcontrolrcv_Thread=false;
 
     rob_mod=ROBOT_MODEL_NULL;
+
+/******************************************/
+    //以下焊机接口(非机器人直连)
+    b_weldsendent=false;
+    b_weldsendrcv_thread=false;
+    b_stop_weldsendrcv_thread=false;
+    weldsendrcv_buf=NULL;
+
+    weld_mod=WELD_MODEL_NULL;
+/*************************************/
 }
 
 Robotcontrol::~Robotcontrol()
@@ -60,7 +71,8 @@ void Robotcontrol::Creat_control_modbus()
         sendrcv_Thread = new RobotsendrcvThread(this);
         totalcontrol_Thread = new RobottotalcontrolThread(this);
         totalcontrolrcv_Thread = new RobottotalcontrolrcvThread(this);
-
+        weldsend_Thread = new WeldsendThread(this);
+        weldsendrcv_Thread = new WeldsendrcvThread(this);
         usleep(100000);
     }
 }
@@ -129,6 +141,29 @@ void Robotcontrol::Close_control_modbus()
         #endif
             b_totalcontrolent=false;
         }
+        /*************************/
+        //以下焊接线程(非机器人直连)
+        if(b_weldsendent==true)
+        {
+            weldsend_Thread->Stop();
+            weldsend_Thread->quit();
+            weldsend_Thread->wait();
+        #ifdef OPEN_SHOW_WELDSOCKDATA
+            weldsendrcv_Thread->Stop();
+            weldsendrcv_Thread->quit();
+            weldsendrcv_Thread->wait();
+        #endif
+            m_weldsendent.Close();
+        #ifdef OPEN_SHOW_WELDSOCKDATA
+            if(weldsendrcv_buf!=NULL)
+            {
+                delete []weldsendrcv_buf;
+                weldsendrcv_buf=NULL;
+            }
+        #endif
+            b_weldsendent=false;
+        }
+        /************************/
 
         linkthread->quit();
         linkthread->wait();
@@ -148,19 +183,38 @@ void Robotcontrol::Close_control_modbus()
         delete sendrcv_Thread;
         delete totalcontrol_Thread;
         delete totalcontrolrcv_Thread;
+        delete weldsend_Thread;
+        delete weldsendrcv_Thread;
         delete linkthread;
         delete thread1;
 
     }
 }
 
-void Robotcontrol:: RobotInit()//机器人初始化
+void Robotcontrol::WeldInit()//焊机初始化(非机器人直连时有效)
+{
+    switch(weld_mod)
+    {
+        case WELD_MODEL_NULL:                      //无焊机
+        {
+        //不做处理,无效
+        }
+        break;
+        case WELD_MODEL_ROBOT_LINK:                //机器人直连
+        {
+        //不做处理，无效
+        }
+        break;
+    }
+}
+
+void Robotcontrol::RobotInit()//机器人初始化
 {
     switch(rob_mod)
     {
         case ROBOT_MODEL_NULL://无机器人
         {
-
+        //不做处理
         }
         break;
         case ROBOT_MODEL_EMERGEN://智昌机器人
@@ -338,23 +392,110 @@ void RobotcontrolThread1::run() //接到上位机命令
                                 uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
                                 float eled=*(float*)&_p->mb_mapping->tab_registers[ROB_WELD_CURRENT_FH_REG_ADD];//电流
                                 Alternatingcurrent elem=(Alternatingcurrent)_p->mb_mapping->tab_registers[ROB_WELD_CURRENTMOD_REG_ADD];//交变电流模式
-                                switch(u16data_elec_work)
+                                switch(_p->weld_mod)
                                 {
-                                    case STATIC:    //空闲
+                                    case WELD_MODEL_NULL://无焊机
+                                    {
 
+                                    }
                                     break;
-                                    case FIRE:         //起弧
+                                    case WELD_MODEL_ROBOT_LINK://机器人直连
+                                    {
+                                        switch(_p->rob_mod)
+                                        {
+                                            case ROBOT_MODEL_NULL://无机器人
+                                            {
+                                                switch(u16data_elec_work)
+                                                {
+                                                    case STATIC:    //空闲
 
-                                    break;
-                                    case WIND:         //送丝
+                                                    break;
+                                                    case FIRE:         //起弧
 
-                                    break;
-                                    case REWIND:       //退丝
+                                                    break;
+                                                    case WIND:         //送丝
 
-                                    break;
-                                    case GASS:         //出气
+                                                    break;
+                                                    case REWIND:       //退丝
 
+                                                    break;
+                                                    case GASS:         //出气
+
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_EMERGEN://智昌机器人
+                                            {
+                                                switch(u16data_elec_work)
+                                                {
+                                                    case STATIC:    //空闲
+
+                                                    break;
+                                                    case FIRE:         //起弧
+
+                                                    break;
+                                                    case WIND:         //送丝
+
+                                                    break;
+                                                    case REWIND:       //退丝
+
+                                                    break;
+                                                    case GASS:         //出气
+
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_DOBOT://越彊机器人
+                                            {
+                                                switch(u16data_elec_work)
+                                                {
+                                                    case STATIC:    //空闲
+
+                                                    break;
+                                                    case FIRE:         //起弧
+
+                                                    break;
+                                                    case WIND:         //送丝
+
+                                                    break;
+                                                    case REWIND:       //退丝
+
+                                                    break;
+                                                    case GASS:         //出气
+
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
                                     break;
+                                    /*
+                                    case SOMEONE:   //非直连控制指令
+                                    {
+                                        switch(u16data_elec_work)
+                                        {
+                                            case STATIC:    //空闲
+
+                                            break;
+                                            case FIRE:         //起弧
+
+                                            break;
+                                            case WIND:         //送丝
+
+                                            break;
+                                            case REWIND:       //退丝
+
+                                            break;
+                                            case GASS:         //出气
+
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                    */
                                 }
                             }
                             if(_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]!=65535)//机器人要移动
@@ -531,19 +672,19 @@ void RobotlinkThread::run() //连接机器人命令
     while(_p->link_state==true)
     {
         sleep(5);//每隔5秒查看一次机器人
-        static QString old_rodb_ip="0.0.0.0";
+        static QString old_rodb_ip="0.0.0.0";   //老机器人IP
         u_int16_t ip[4];
         ip[0]=_p->mb_mapping->tab_registers[ROB_IPADDR_1_REG_ADD];
         ip[1]=_p->mb_mapping->tab_registers[ROB_IPADDR_2_REG_ADD];
         ip[2]=_p->mb_mapping->tab_registers[ROB_IPADDR_3_REG_ADD];
         ip[3]=_p->mb_mapping->tab_registers[ROB_IPADDR_4_REG_ADD];
-        QString rodb_ip=QString::number(ip[0])+"."+
+        QString rodb_ip=QString::number(ip[0])+"."+                 //机器人IP
                         QString::number(ip[1])+"."+
                         QString::number(ip[2])+"."+
                         QString::number(ip[3]);
-        static ROBOT_MODEL old_rob_mod=ROBOT_MODEL_NULL;
-        _p->rob_mod=(ROBOT_MODEL)_p->mb_mapping->tab_registers[ROB_MODEL_REG_ADD];
 
+        static ROBOT_MODEL old_rob_mod=ROBOT_MODEL_NULL;    //老机器人型号
+        _p->rob_mod=(ROBOT_MODEL)_p->mb_mapping->tab_registers[ROB_MODEL_REG_ADD];
         if(old_rodb_ip!=rodb_ip||old_rob_mod!=_p->rob_mod)
         {
             if(_p->b_client==true)
@@ -604,7 +745,8 @@ void RobotlinkThread::run() //连接机器人命令
             {
                 case ROBOT_MODEL_NULL://无机器人
                 {
-
+                    old_rodb_ip=rodb_ip;
+                    old_rob_mod=_p->rob_mod;
                 }
                 break;
                 case ROBOT_MODEL_EMERGEN://智昌机器人
@@ -667,6 +809,7 @@ void RobotlinkThread::run() //连接机器人命令
                     _p->b_sendrcv_thread=true;
                     _p->sendrcv_Thread->start();
                 #endif
+
                     _p->m_totalcontrolent.CreateSocket();
                     if(false==_p->m_totalcontrolent.Connect(rodb_ip.toStdString().c_str(),ROBOT_DOBOT_TOTALCONTROL_RORT))
                     {
@@ -698,13 +841,102 @@ void RobotlinkThread::run() //连接机器人命令
                 #endif
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
-
                 }
                 break;
             }
             _p->RobotInit();
             main_record.lock();
             QString return_msg=QString::fromLocal8Bit("机器人状态获取成功");
+            _p->m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+        }
+
+        static QString old_weld_ip="0.0.0.0";   //老焊机IP
+        ip[0]=_p->mb_mapping->tab_registers[ROB_WELD_IPADDR_1_REG_ADD];
+        ip[1]=_p->mb_mapping->tab_registers[ROB_WELD_IPADDR_2_REG_ADD];
+        ip[2]=_p->mb_mapping->tab_registers[ROB_WELD_IPADDR_3_REG_ADD];
+        ip[3]=_p->mb_mapping->tab_registers[ROB_WELD_IPADDR_4_REG_ADD];
+        QString weld_ip=QString::number(ip[0])+"."+                 //焊机IP
+                        QString::number(ip[1])+"."+
+                        QString::number(ip[2])+"."+
+                        QString::number(ip[3]);
+        static WELD_MODEL old_weld_mod=WELD_MODEL_NULL;     //老焊机型号
+        _p->weld_mod=(WELD_MODEL)_p->mb_mapping->tab_registers[ROB_WELD_MODEL_REG_ADD];
+        if(old_weld_ip!=weld_ip||old_weld_mod!=_p->weld_mod)
+        {
+            if(_p->b_weldsendent==true)
+            {
+                _p->weldsend_Thread->Stop();
+                _p->weldsend_Thread->quit();
+                _p->weldsend_Thread->wait();
+            #ifdef OPEN_SHOW_WELDSOCKDATA
+                _p->weldsendrcv_Thread->Stop();
+                _p->weldsendrcv_Thread->quit();
+                _p->weldsendrcv_Thread->wait();
+            #endif
+                _p->m_weldsendent.Close();
+            #ifdef OPEN_SHOW_WELDSOCKDATA
+                if(_p->weldsendrcv_buf!=NULL)
+                {
+                    delete []_p->weldsendrcv_buf;
+                    _p->weldsendrcv_buf=NULL;
+                }
+            #endif
+                _p->b_weldsendent=false;
+            }
+            switch(_p->weld_mod)
+            {
+                case WELD_MODEL_NULL://无焊机
+                {
+                    old_weld_ip=weld_ip;
+                    old_weld_mod=_p->weld_mod;
+                }
+                break;
+                case WELD_MODEL_ROBOT_LINK://机器人直连焊机
+                {
+                    old_weld_ip=weld_ip;
+                    old_weld_mod=_p->weld_mod;
+                }
+                break;
+                /*
+                case SOMEONE:       //(非直连焊机类似入下通信线程)
+                {
+                    _p->m_weldsendent.CreateSocket();
+                    if(false==_p->m_weldsendent.Connect(weld_ip.toStdString().c_str(),SOMEONEPORT))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("与远端焊机命令端口连接失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->m_weldsendent.SetBlock(0);
+                #ifdef OPEN_SHOW_WELDSOCKDATA
+                    _p->weldsendrcv_buf=new uint8_t[WELD_SOMEONE_INFO_SENDRECVBUFFER_MAX*2+1];
+                    if(0!=_p->m_weldsendent.SetRcvBufferlong(WELD_SOMEONE_INFO_SENDRECVBUFFER_MAX*2))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("接收远端焊机命令缓存申请失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                #endif
+                    _p->weldsend_buf_group.clear();
+                    _p->b_weldsendent=true;
+                    _p->b_weldsend_thread=true;
+                    _p->weldsend_Thread->start();
+                #ifdef OPEN_SHOW_WELDSOCKDATA
+                    _p->b_weldsendrcv_thread=true;
+                    _p->weldsendrcv_Thread->start();
+                #endif
+                }
+                break;
+                */
+            }
+            _p->WeldInit();
+            main_record.lock();
+            QString return_msg=QString::fromLocal8Bit("焊机状态获取成功");
             _p->m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
         }
@@ -1025,6 +1257,123 @@ void RobottotalcontrolrcvThread::Stop()
     _p->b_stop_sendrcv_thread=false;
     _p->b_sendrcv_thread=false;
     while (_p->b_stop_sendrcv_thread==false)
+    {
+      sleep(0);
+    }
+  }
+}
+
+
+WeldsendThread::WeldsendThread(Robotcontrol *statci_p)//发送给焊机命令(非机器人直连时有效)
+{
+    _p=statci_p;
+}
+
+void WeldsendThread::run()
+{
+    while (1)
+    {
+        if(_p->b_weldsend_thread==true)
+        {
+            mutexweldsend_buf_group.lock();
+            if(_p->weldsend_buf_group.size()>0)
+            {
+                std::string send_buf=_p->weldsend_buf_group[0];
+                _p->weldsend_buf_group.erase(_p->weldsend_buf_group.begin());
+                if(send_buf.size()!=_p->m_weldsendent.Send(send_buf.c_str(),send_buf.size()))
+                {
+                    main_record.lock();
+                    QString return_msg=QString::fromLocal8Bit("远端焊机发送命令失败");
+                    _p->m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                }
+            #ifdef OPEN_SHOW_WELDSOCKDATA
+                main_record.lock();
+                QString return_msg=send_buf.c_str();
+                _p->m_mcs->main_record.push_back("SendtoWeld:"+return_msg);
+                main_record.unlock();
+            #endif
+            }
+            mutexweldsend_buf_group.unlock();
+        }
+        else
+        {
+            _p->b_stop_weldsend_thread=true;
+            break;
+        }
+        sleep(0);
+    }
+}
+
+void WeldsendThread::Stop()
+{
+  if(_p->b_weldsend_thread==true)
+  {
+    _p->b_stop_weldsend_thread=false;
+    _p->b_weldsend_thread=false;
+    while (_p->b_stop_weldsend_thread==false)
+    {
+      sleep(0);
+    }
+  }
+}
+
+WeldsendrcvThread::WeldsendrcvThread(Robotcontrol *statci_p)
+{
+    _p=statci_p;
+}
+
+void WeldsendrcvThread::run()//获取焊机指令回复数据
+{
+    while (1)
+    {
+        if(_p->b_weldsendrcv_thread==true)
+        {
+            switch(_p->weld_mod)
+            {
+                case WELD_MODEL_NULL:                      //无焊机
+                {
+                //不做处理,无效
+                }
+                break;
+                case WELD_MODEL_ROBOT_LINK:                //机器人直连
+                {
+                //不做处理，无效
+                }
+                break;
+                /*
+                case SOMEWELD       //非直连焊机类似如下接收线程
+                {
+                    int rcvnum=_p->m_weldsendent.Recv((char*)_p->weldsendrcv_buf,WELD_SOMEONE_INFO_SENDRECVBUFFER_MAX*2);
+                    if(rcvnum>0)
+                    {
+                        main_record.lock();
+                        _p->weldsendrcv_buf[rcvnum]='\0';
+                        QString return_msg=(char*)_p->weldsendrcv_buf;
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                    }
+                }
+                break;
+                */
+            }
+        }
+        else
+        {
+            _p->b_stop_weldsendrcv_thread=true;
+            break;
+        }
+        sleep(0);
+    }
+}
+
+void WeldsendrcvThread::Stop()
+{
+  if(_p->b_weldsendrcv_thread==true)
+  {
+    _p->b_stop_weldsendrcv_thread=false;
+    _p->b_weldsendrcv_thread=false;
+    while (_p->b_stop_weldsendrcv_thread==false)
     {
       sleep(0);
     }
