@@ -12,11 +12,14 @@
 
 #if _MSC_VER
 #include "tistdtypes.h"
+#include <WinSock2.h>
 
 typedef uint8_t u_int8_t; /* u_int8_t is defined in <machine/types.h> */
 typedef uint16_t u_int16_t; /* u_int16_t is defined in <machine/types.h> */
 typedef uint32_t u_int32_t; /* u_int32_t is defined in <machine/types.h> */
 typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
+#else
+#include <arpa/inet.h>
 #endif
 
 #define ROBOT_POSE_DECIMAL_PLACE            3       //机器人坐标保留小数后几位
@@ -48,7 +51,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DO_NOTHING         0
 #define DO_WRITE_TASK      1
 
-#define ROB_WORK_DELAY      1000000       //机器人通讯反映时间(微秒)
+#define ROB_WORK_DELAY      100000       //机器人通讯反映时间(微秒)
 #define ROB_WORK_DELAY_STEP 10000         //机器人每步循环等待时间(微秒)
 
 /*****************************/
@@ -313,6 +316,12 @@ public:
 };
 //64位浮点排序函数
 bool d_Mysortcompare(d_Mysort &a,d_Mysort &b);
+
+//网络字节序64位大小端发送
+uint64_t htonll(uint64_t val);
+
+//网络字节序64位大小端接收
+uint64_t ntohll(uint64_t val);
 
 
 class IP                //ip

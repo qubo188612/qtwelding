@@ -6,6 +6,7 @@
 #include "XTcp.h"
 #include <QMutex>
 
+#define ROBOTCONTROL_PAUSE_DIS     2000 //暂停恢复时判断点离发送点最近的距离大于这个值时，得重新往起点移动，否则继续往下移动
 
 class my_parameters;
 
@@ -18,6 +19,16 @@ class RobottotalcontrolThread;
 class RobottotalcontrolrcvThread;
 class WeldsendThread;
 class WeldsendrcvThread;
+
+//移动点信息
+class Pause_PointInfo
+{
+public:
+    RobPos robpos;
+    uint16_t tcp;
+    Robmovemodel_ID movemod;
+    float f_speed;
+};
 
 class Robotcontrol
 {
@@ -81,6 +92,7 @@ public:
 
     void RobotOPEN_ELE(); //机器人上电
     void RobotCLOSE_ELE(); //机器人断电
+
 /******************************************/
 //以下焊机接口
     WELD_MODEL weld_mod;     //焊机型号
@@ -100,6 +112,10 @@ public:
 
     void WeldInit();    //焊机初始化(非机器人直连时有效)
 
+    std::vector<Pause_PointInfo> movepoint_buffer;     //这个时间段内接收到的全部移动点
+    std::vector<Pause_PointInfo> pause_movepoint_buffer;     //暂停期间的全部移动点
+    int pause_movepointN;                    //当前暂停的位置下标
+    void clear_movepoint_buffer();          //清空这个时间段内接收到的全部移动点
 /*******************************************/
 protected:
 
@@ -113,6 +129,8 @@ class RobotcontrolThread1 : public QThread      //查看上位机控制信息线
 
 public:
     RobotcontrolThread1(Robotcontrol *statci_p);
+
+    void RobotMove(float f_movX,float f_movY,float f_movZ,float f_movRX, float f_movRY,float f_movRZ,Robmovemodel_ID movemod,uint16_t tcp,float f_speed);
 protected:
     void run();
 private:

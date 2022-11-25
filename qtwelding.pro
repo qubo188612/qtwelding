@@ -145,6 +145,8 @@ LIBS += C:/opt/ros/foxy/x64/Lib/*.lib \
 INCLUDEPATH += D:/libmodbus/include \
 
 LIBS += D:/libmodbus/x64/lib/*.lib
+
+LIBS += -lws2_32
 }
 
 unix {

@@ -87,13 +87,21 @@ void Process1Thread::run()
         {
             goto OUT_THREAD_ERROR;
         }
+        if(_p->b_thread==false)
+        {
+            goto OUT_THREAD_ERROR;
+        }
         _p->m_mcs->robotcontrol->RobotOPEN_ELE();//机器人上电
+        if(_p->b_thread==false)
+        {
+            goto OUT_THREAD_ERROR;
+        }
         rc=_p->m_mcs->tosendbuffer->cmdlist_build(_p->buildline);
         if(rc!=0)
         {
             goto OUT_THREAD_ERROR;
         }
-        break;
+        break; 
     }    
 OUT_THREAD_ERROR:
     _p->thread->quit();
@@ -105,9 +113,12 @@ OUT_THREAD_ERROR:
 
 void Process1Thread::Stop()
 {
+    _p->b_thread=false;
+/*
   while(_p->b_thread==true)
   {
     sleep(0);
   }
+  */
 }
 

@@ -307,6 +307,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     QString return_msg;
     if(line<0||line>=m_mcs->project->project_cmdlist.size())
     {
+    #ifdef USE_MYROBOT_CONTROL
+        m_mcs->robotcontrol->clear_movepoint_buffer();
+        m_mcs->robotcontrol->pause_movepoint_buffer.clear();
+    #endif
         main_record.lock();
         return_msg=QString::fromLocal8Bit("已经执行完全部命令");
         m_mcs->main_record.push_back(return_msg);
@@ -323,13 +327,16 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             main_record.unlock();
             if(line>0)
             {
-                line=line-1;//恢复到上一条指令
+                line=line-1;//恢复到上一条指令???
             }
             cmd_lock(1);
             return 1;
         }
         usleep(ROB_WORK_DELAY_STEP);
     }
+#ifdef USE_MYROBOT_CONTROL
+    m_mcs->robotcontrol->clear_movepoint_buffer();
+#endif
     b_cmdlist_build=true;
     for(int n=line;n<m_mcs->project->project_cmdlist.size();n++)
     {
@@ -376,6 +383,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 usleep(ROB_WORK_DELAY_STEP);
             }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
         }
         else if(key==CMD_DELAY_KEY)//延时指令
         {
@@ -443,6 +453,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 //开始采集检测数据
                 usleep(0);
             }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
             if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存扫描轨迹
             {
                 QString dir="./log/";
@@ -987,6 +1000,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 usleep(ROB_WORK_DELAY_STEP);
             }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
         }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {
@@ -1006,6 +1022,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     m_mcs->main_record.push_back(return_msg);
     main_record.unlock();
     line=m_mcs->project->project_cmdlist.size();
+#ifdef USE_MYROBOT_CONTROL
+    m_mcs->robotcontrol->clear_movepoint_buffer();
+    m_mcs->robotcontrol->pause_movepoint_buffer.clear();
+#endif
     return 0;
 }
 
