@@ -877,7 +877,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                tab_reg[0]=alg104_threshold;
                for(int i=1;i<ALS104_REG_TOTALNUM;i++)
                {
-                   tab_reg[i]=(uint16_t)(ui->tab4tableWidget->item(i-1,2)->text().toInt());
+                   tab_reg[i]=(uint16_t)(ui->tab6tableWidget->item(i-1,2)->text().toInt());
                }
                int rc=modbus_write_registers(m_mcs->resultdata.ctx_param,ALS104_EXPOSURE_TIME_REG_ADD,ALS104_REG_TOTALNUM,tab_reg);
                if(rc!=ALS104_REG_TOTALNUM)
@@ -946,7 +946,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
                    for(int i=1;i<ALS104_REG_TOTALNUM;i++)
                    {
-                       ui->tab4tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
+                       ui->tab6tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
                    }
 
                    if(ui->checkBox->isChecked()==false)
@@ -990,7 +990,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
                for(int i=1;i<ALS104_REG_TOTALNUM;i++)
                {
-                   ui->tab4tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
+                   ui->tab6tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
                }
 
                if(ui->checkBox->isChecked()==false)
