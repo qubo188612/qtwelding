@@ -362,6 +362,40 @@ void showtasknumdlg::image_draw(int task_num)
         cv::putText(image,"2",p1_2,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
     }
     break;
+    case 104:
+    {
+        //Z角波
+        L_line line1,line2,line3;
+        line1.st.y=nnHeight/16.0;
+        line1.ed.y=nnHeight/4.0;
+        line1.st.x=nnWidth/2.0;
+        line1.ed.x=nnWidth/8.0*5;
+        cv::line(image,line1.st,line1.ed,cv::Scalar(255,0,0),9);
+        line2.st.y=nnHeight/4.0;
+        line2.ed.y=nnHeight/2.0-nnHeight/16.0;
+        line2.st.x=nnWidth/8.0*5;
+        line2.ed.x=nnWidth/2.0;
+        cv::line(image,line2.st,line2.ed,cv::Scalar(255,0,0),9);
+        line3.st.y=nnHeight/2.0;
+        line3.ed.y=nnHeight/16.0*15;
+        line3.st.x=nnWidth/2.0;
+        line3.ed.x=nnWidth/16.0*15;
+        cv::line(image,line3.st,line3.ed,cv::Scalar(255,0,0),9);
+        cv::Point focal;
+        GetLinefocal(line2,line3,&focal);
+        cv::Point2f p1=focal;
+        cv::Point2f p2=line2.ed;
+        draw_dotted_line2(image,p1,p2,cv::Scalar(0,255,0),3);
+        cv::Point2f p3=focal;
+        cv::Point2f p4=line3.st;
+        draw_dotted_line2(image,p3,p4,cv::Scalar(0,255,0),3);
+        cv::circle(image,focal,20,cv::Scalar(0,0,255),3);
+        cv::Point2f p1_1=p1;
+        p1_1.y=p1_1.y-25;
+        p1_1.x=p1_1.x-25;
+        cv::putText(image,"1",p1_1,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
+    }
+    break;
     default:
     break;
     }
