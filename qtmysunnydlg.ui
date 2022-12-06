@@ -2116,7 +2116,7 @@
      </item>
      <item row="9" column="1">
       <property name="text">
-       <string>[-255,255]</string>
+       <string>[0,5000]</string>
       </property>
      </item>
      <item row="9" column="2">
@@ -2131,7 +2131,7 @@
      </item>
      <item row="10" column="1">
       <property name="text">
-       <string>[-255,255]</string>
+       <string>[-2000,2000]</string>
       </property>
      </item>
      <item row="10" column="2">
@@ -2161,7 +2161,7 @@
      </item>
      <item row="12" column="1">
       <property name="text">
-       <string>[-255,255]</string>
+       <string>[-5000,0]</string>
       </property>
      </item>
      <item row="12" column="2">
@@ -2176,7 +2176,7 @@
      </item>
      <item row="13" column="1">
       <property name="text">
-       <string>[-255,255]</string>
+       <string>[-2000,2000]</string>
       </property>
      </item>
      <item row="13" column="2">
@@ -2221,7 +2221,7 @@
      </item>
      <item row="16" column="1">
       <property name="text">
-       <string>[0,500]</string>
+       <string>[0,1500]</string>
       </property>
      </item>
      <item row="16" column="2">
@@ -2251,7 +2251,7 @@
      </item>
      <item row="18" column="1">
       <property name="text">
-       <string>[0,500]</string>
+       <string>[0,1500]</string>
       </property>
      </item>
      <item row="18" column="2">
@@ -2536,7 +2536,7 @@
      </item>
      <item row="37" column="1">
       <property name="text">
-       <string>[0,30]</string>
+       <string>[0,120]</string>
       </property>
      </item>
      <item row="37" column="2">
