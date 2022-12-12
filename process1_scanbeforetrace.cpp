@@ -65,7 +65,10 @@ void Process1_scanbeforetrace::continue_process()
     usleep(ROB_WORK_DELAY);
     if(buildline<m_mcs->project->project_cmdlist.size())
     {
-        buildline=buildline+1;//此处越界1没问题，之后会判断
+        if(m_mcs->tosendbuffer->paused_key==CMD_TRACE_KEY)
+        {
+            buildline=buildline+1;//此处越界1没问题，之后会判断
+        }
     }
     b_thread=true;
     thread->start();//继续从当前命令往下走

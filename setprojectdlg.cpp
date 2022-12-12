@@ -297,9 +297,10 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         bool rc;
         float speed=ui->scanspeed->text().toFloat(&rc);
         RobPos robpos=m_mcs->rob->TCPpos;
+        Robmovemodel movemodel=(Robmovemodel)ui->scanmovemodecombo->currentIndex();
         my_cmd cmd;
         QString name=ui->scanname->text();
-        QString msg=cmd.cmd_scan(robpos,speed,tcp,name);
+        QString msg=cmd.cmd_scan(robpos,movemodel,speed,tcp,name);
         if(ui->scanspeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写采集速度"));

@@ -168,6 +168,11 @@
       <string>MOVEJ</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>MOVEP</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
@@ -324,6 +329,44 @@
       <width>91</width>
       <height>25</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="scanmovemodecombo">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>130</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>MOVEL</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>MOVEJ</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>MOVEP</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>41</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>模式:</string>
     </property>
    </widget>
   </widget>

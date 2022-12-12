@@ -24,8 +24,10 @@ public:
     my_parameters *m_mcs;
 
     void cmd_lock(int lock);   //机器人是否锁住命令:0允许运行(不继续之前的缓存)，1暂停，2继续运行(继续之前的缓存)
+    QString paused_key;     //暂停前的命令执行key
 
     void cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
+    void cmd_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp);//圆移动命令
     void cmd_delay(int time);//延时命令
     void cmd_cam(int task,int work);//相机启动停止命令
     void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel_ID work);//焊机电流和模式设置以及启停命令

@@ -31,6 +31,18 @@ QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp)
     return msg;
 }
 
+QString my_cmd::cmd_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
+{
+    QString msg;
+    QString msg1;
+
+    msg=QString(CMD_MOV_KEY)+" "+
+            rc_moveP(pos1,pos2,movemodel)+" "+
+            rc_speed(speed)+" "+
+            rc_tcp(tcp);
+    return msg;
+}
+
 QString my_cmd::cmd_delay(int time)
 {
     QString msg;
@@ -74,13 +86,26 @@ QString my_cmd::cmd_elec_work(int work)
     return msg;
 }
 
-QString my_cmd::cmd_scan(RobPos pos,float speed,int tcp,QString name)
+QString my_cmd::cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name)
 {
     QString msg;
     QString msg1;
 
     msg=QString(CMD_SCAN_KEY)+" "+
-            rc_move(pos,MOVEL)+" "+
+            rc_move(pos,movemodel)+" "+
+            rc_speed(speed)+" "+
+            rc_tcp(tcp)+" "+
+            rc_name(name);
+    return msg;
+}
+
+QString my_cmd::cmd_scanP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp,QString name)
+{
+    QString msg;
+    QString msg1;
+
+    msg=QString(CMD_SCAN_KEY)+" "+
+            rc_moveP(pos1,pos2,movemodel)+" "+
             rc_speed(speed)+" "+
             rc_tcp(tcp)+" "+
             rc_name(name);
@@ -203,6 +228,23 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
+                else if(paramname==CMD_MOVP)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robposP(paramname,param[n],data_fpos,data_bpos,cmd_move_pos1,cmd_move_pos2,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_move_movemod=MOVEP;
+                    }
+                    else
+                    {
+                        return_msg=("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
                 else if(paramname==CMD_TCP)
                 {
                     if(b_TCP==false)
@@ -238,7 +280,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+"'或'"+CMD_MOVJ+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+"'或'"+CMD_MOVJ+"'或'"+CMD_MOVP+QString::fromLocal8Bit("'项参数");
             return 1;
         }
         else if(b_TCP==false)
@@ -536,6 +578,23 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
+                else if(paramname==CMD_MOVP)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robposP(paramname,param[n],data_fpos,data_bpos,cmd_scan_pos1,cmd_scan_pos2,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_scan_movemod=MOVEP;
+                    }
+                    else
+                    {
+                        return_msg=("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
                 else if(paramname==CMD_TCP)
                 {
                     if(b_TCP==false)
@@ -587,7 +646,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+"'或'"+CMD_MOVJ+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+"'或'"+CMD_MOVJ+"'或'"+CMD_MOVP+QString::fromLocal8Bit("'项参数");
             return 1;
         }
         else if(b_TCP==false)
@@ -858,6 +917,33 @@ QString my_cmd::rc_move(RobPos pos,Robmovemodel movemodel)
     return msg;
 }
 
+QString my_cmd::rc_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel)
+{
+    QString msg;
+    QString msg1;
+    switch(movemodel)
+    {
+        case MOVEP:
+        {
+            msg1=QString(CMD_MOVP);
+        }
+        break;
+    }
+    msg=msg1+"["+QString::number(pos1.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos1.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos1.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos1.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos1.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos1.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"]";
+    return msg;
+}
+
 QString my_cmd::rc_time(int time)
 {
     QString msg;
@@ -1033,6 +1119,96 @@ int my_cmd::de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,Ro
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RZ项参数数据格式错误");
+        return 1;
+    }
+    return 0;
+}
+
+int my_cmd::de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos1,RobPos &pos2,QString &return_msg)
+{
+    QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
+    if(paramdata.size()==0)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return 1;
+    }
+    QStringList posgroup = paramdata.split(",");
+    if(posgroup.size()!=12)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据有且只有12个");
+        return 1;
+    }
+    bool ok;
+    pos1.X=posgroup[0].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的X1项参数数据格式错误");
+        return 1;
+    }
+    pos1.Y=posgroup[1].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的Y1项参数数据格式错误");
+        return 1;
+    }
+    pos1.Z=posgroup[2].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的Z1项参数数据格式错误");
+        return 1;
+    }
+    pos1.RX=posgroup[3].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的RX1项参数数据格式错误");
+        return 1;
+    }
+    pos1.RY=posgroup[4].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的RY1项参数数据格式错误");
+        return 1;
+    }
+    pos1.RZ=posgroup[5].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的RZ1项参数数据格式错误");
+        return 1;
+    }
+    pos2.X=posgroup[6].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的X2项参数数据格式错误");
+        return 1;
+    }
+    pos2.Y=posgroup[7].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的Y2项参数数据格式错误");
+        return 1;
+    }
+    pos2.Z=posgroup[8].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的Z2项参数数据格式错误");
+        return 1;
+    }
+    pos2.RX=posgroup[9].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的RX2项参数数据格式错误");
+        return 1;
+    }
+    pos2.RY=posgroup[10].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的RY2项参数数据格式错误");
+        return 1;
+    }
+    pos2.RZ=posgroup[11].toFloat(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的RZ2项参数数据格式错误");
         return 1;
     }
     return 0;

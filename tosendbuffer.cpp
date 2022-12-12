@@ -325,10 +325,6 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             return_msg=QString::fromLocal8Bit("手动停止进程");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
-            if(line>0)
-            {
-                line=line-1;//恢复到上一条指令???
-            }
             cmd_lock(1);
             return 1;
         }
@@ -363,11 +359,26 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         }
         if(key==CMD_MOV_KEY)//移动指令
         {
-            int tcp=cmd.cmd_move_tcp;//获取到移动TCP
-            RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+            int tcp=cmd.cmd_move_tcp;//获取到移动TCP  
             float speed=cmd.cmd_move_speed;//获取到速度值
             Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
-            cmd_move(pos,movemod,speed,tcp);//移动
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+                    cmd_move(pos,movemod,speed,tcp);//移动
+                }
+                break;
+                case MOVEP:
+                {
+                    RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
+                    RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
+                    cmd_moveP(pos1,pos2,movemod,speed,tcp);//移动
+                }
+                break;
+            }
             usleep(ROB_WORK_DELAY);
             while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
             {
@@ -377,6 +388,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
+                    paused_key=key;
                     cmd_lock(1);
                     line=n;
                     return 1;
@@ -408,8 +420,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             usleep(ROB_WORK_DELAY);//确保焊机设置完成
         }
         else if(key==CMD_SCAN_KEY)//采集指令
-        {
-            RobPos pos=cmd.cmd_scan_pos;//获取到扫描终点坐标
+        {    
             float speed=cmd.cmd_scan_speed;//获取到的扫描速度
             int tcp=cmd.cmd_scan_tcp;//获取到扫描TCP
             Robmovemodel movemod=cmd.cmd_scan_movemod;//获取到的扫描模式
@@ -423,7 +434,23 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     break;
                 }
             }
-            cmd_move(pos,movemod,speed,tcp);
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    RobPos pos=cmd.cmd_scan_pos;//获取到扫描终点坐标
+                    cmd_move(pos,movemod,speed,tcp);
+                }
+                break;
+                case MOVEP:
+                {
+                    RobPos pos1=cmd.cmd_scan_pos1;//获取到移动坐标
+                    RobPos pos2=cmd.cmd_scan_pos2;//获取到移动坐标
+                    cmd_moveP(pos1,pos2,movemod,speed,tcp);//移动
+                }
+                break;
+            }
             usleep(ROB_WORK_DELAY);
             while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待扫描到位
             {
@@ -433,6 +460,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
+                    paused_key=key;
                     cmd_lock(1);
                     line=n;
                     return 1;
@@ -818,7 +846,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 case PENDULUM_ID_FLAT://平焊
                 {
                     CWeldTarject tarjectMath;
-                    if(!tarjectMath.pos_interpolation(weld,interpolatweld))
+                    if(!tarjectMath.pos_interpolation(weld,interpolatweld,16,speed))
                     {
                         main_record.lock();
                         return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹插值出错");
@@ -994,6 +1022,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     return_msg=QString::fromLocal8Bit("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
+                    paused_key=key;
                     cmd_lock(1);
                     line=n;
                     return 1;
@@ -1085,6 +1114,11 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
     send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
+{
+
 }
 
 void toSendbuffer::cmd_delay(int time)

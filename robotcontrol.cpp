@@ -36,8 +36,8 @@ Robotcontrol::Robotcontrol()
     b_totalcontrolrcv_Thread=false;
     b_stop_totalcontrolrcv_Thread=false;
 
-    rob_mod=ROBOT_MODEL_NULL;
 
+    rob_mod=ROBOT_MODEL_NULL;
 /******************************************/
     //以下焊机接口(非机器人直连)
     b_weldsendent=false;
@@ -699,7 +699,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                                 float f_movRY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY_POS_FH_REG_ADD];
                                 float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
 
-                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);
+                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);   
                             }
                             if(_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]!=65535)//机器人要暂停或继续运行
                             {
@@ -743,30 +743,32 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     break;
                                     case 1://机器人暂停缓存脚本
                                     {
-                                        mutexmovepoint_buffer_group.lock();
-                                        _p->pause_movepoint_buffer=_p->movepoint_buffer;
-                                        if(_p->pause_movepoint_buffer.size()>0)
+                                        if(_p->m_mcs->tosendbuffer->paused_key==CMD_TRACE_KEY)
                                         {
-                                            RobPos robpos=_p->m_mcs->rob->TCPpos;//当前机器人的位置
-                                            Eigen::Vector3d P(robpos.X,robpos.Y,robpos.Z);
-                                            double mindis=DBL_MAX;
-                                            for(int n=0;n<_p->pause_movepoint_buffer.size();n++)
+                                            mutexmovepoint_buffer_group.lock();
+                                            _p->pause_movepoint_buffer=_p->movepoint_buffer;
+                                            if(_p->pause_movepoint_buffer.size()>0)
                                             {
-                                                Eigen::Vector3d p(_p->pause_movepoint_buffer[n].robpos.X,_p->pause_movepoint_buffer[n].robpos.Y,_p->pause_movepoint_buffer[n].robpos.Z);
-                                                double dis=(p-P).norm();
-                                                if(dis<mindis)
+                                                RobPos robpos=_p->m_mcs->rob->TCPpos;//当前机器人的位置
+                                                Eigen::Vector3d P(robpos.X,robpos.Y,robpos.Z);
+                                                double mindis=DBL_MAX;
+                                                for(int n=0;n<_p->pause_movepoint_buffer.size();n++)
                                                 {
-                                                    mindis=dis;
-                                                    _p->pause_movepointN=n;
+                                                    Eigen::Vector3d p(_p->pause_movepoint_buffer[n].robpos.X,_p->pause_movepoint_buffer[n].robpos.Y,_p->pause_movepoint_buffer[n].robpos.Z);
+                                                    double dis=(p-P).norm();
+                                                    if(dis<mindis)
+                                                    {
+                                                        mindis=dis;
+                                                        _p->pause_movepointN=n;
+                                                    }
+                                                }
+                                                if(mindis>ROBOTCONTROL_PAUSE_DIS)//说明还在往第0号点运动
+                                                {
+                                                    _p->pause_movepointN=0;
                                                 }
                                             }
-                                            if(mindis>ROBOTCONTROL_PAUSE_DIS)//说明还在往第0号点运动
-                                            {
-                                                _p->pause_movepointN=0;
-                                            }
+                                            mutexmovepoint_buffer_group.unlock();
                                         }
-                                        mutexmovepoint_buffer_group.unlock();
-
                                         switch(_p->rob_mod)
                                         {
                                             case ROBOT_MODEL_NULL://无机器人
@@ -835,24 +837,27 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             }
                                             break;
                                         }
-                                        /***************************/
-                                        //恢复暂停后的移动
-                                        for(int n=_p->pause_movepointN;n<_p->pause_movepoint_buffer.size();n++)//运动到一半暂停了
+                                        if(_p->m_mcs->tosendbuffer->paused_key==CMD_TRACE_KEY)
                                         {
-                                            uint16_t tcp=_p->pause_movepoint_buffer[n].tcp;
-                                            Robmovemodel_ID movemod=_p->pause_movepoint_buffer[n].movemod;
-                                            float f_speed=_p->pause_movepoint_buffer[n].f_speed;
+                                            /***************************/
+                                            //恢复暂停后的移动
+                                            for(int n=_p->pause_movepointN;n<_p->pause_movepoint_buffer.size();n++)//焊接运动到一半暂停了
+                                            {
+                                                uint16_t tcp=_p->pause_movepoint_buffer[n].tcp;
+                                                Robmovemodel_ID movemod=_p->pause_movepoint_buffer[n].movemod;
+                                                float f_speed=_p->pause_movepoint_buffer[n].f_speed;
 
-                                            float f_movX=_p->pause_movepoint_buffer[n].robpos.X;
-                                            float f_movY=_p->pause_movepoint_buffer[n].robpos.Y;
-                                            float f_movZ=_p->pause_movepoint_buffer[n].robpos.Z;
-                                            float f_movRX=_p->pause_movepoint_buffer[n].robpos.RX;
-                                            float f_movRY=_p->pause_movepoint_buffer[n].robpos.RY;
-                                            float f_movRZ=_p->pause_movepoint_buffer[n].robpos.RZ;
+                                                float f_movX=_p->pause_movepoint_buffer[n].robpos.X;
+                                                float f_movY=_p->pause_movepoint_buffer[n].robpos.Y;
+                                                float f_movZ=_p->pause_movepoint_buffer[n].robpos.Z;
+                                                float f_movRX=_p->pause_movepoint_buffer[n].robpos.RX;
+                                                float f_movRY=_p->pause_movepoint_buffer[n].robpos.RY;
+                                                float f_movRZ=_p->pause_movepoint_buffer[n].robpos.RZ;
 
-                                            RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);
+                                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);
+                                            }
+                                            /********************************/
                                         }
-                                        /********************************/
                                     }
                                     break;
                                 }
