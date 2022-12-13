@@ -371,11 +371,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     cmd_move(pos,movemod,speed,tcp);//移动
                 }
                 break;
-                case MOVEP:
+                case MOVEC:
                 {
                     RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
-                    cmd_moveP(pos1,pos2,movemod,speed,tcp);//移动
+                    cmd_moveC(pos1,pos2,movemod,speed,tcp);//移动
                 }
                 break;
             }
@@ -443,11 +443,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     cmd_move(pos,movemod,speed,tcp);
                 }
                 break;
-                case MOVEP:
+                case MOVEC:
                 {
                     RobPos pos1=cmd.cmd_scan_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_scan_pos2;//获取到移动坐标
-                    cmd_moveP(pos1,pos2,movemod,speed,tcp);//移动
+                    cmd_moveC(pos1,pos2,movemod,speed,tcp);//移动
                 }
                 break;
             }
@@ -1116,7 +1116,7 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
     send_group_robot.unlock();
 }
 
-void toSendbuffer::cmd_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
+void toSendbuffer::cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
 {
 
 }

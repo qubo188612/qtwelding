@@ -170,7 +170,7 @@
     </item>
     <item>
      <property name="text">
-      <string>MOVEP</string>
+      <string>MOVEC</string>
      </property>
     </item>
    </widget>
@@ -352,7 +352,7 @@
     </item>
     <item>
      <property name="text">
-      <string>MOVEP</string>
+      <string>MOVEC</string>
      </property>
     </item>
    </widget>

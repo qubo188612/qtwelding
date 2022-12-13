@@ -466,7 +466,7 @@ typedef enum Robmovemodel_ID            //机器人移动方式
 {
     MOVEL=0,        //直线运动
     MOVEJ=1,        //关节运动
-    MOVEP=2,        //圆运动
+    MOVEC=2,        //圆运动
 }Robmovemodel;
 
 typedef enum Weldworkmodel_ID       //焊机工作状态

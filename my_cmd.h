@@ -51,7 +51,7 @@ public:
     my_cmd();
 
     QString cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
-    QString cmd_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp);//移动圆命令
+    QString cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp);//移动圆命令
     QString cmd_delay(int time);//延时命令
     QString cmd_cam(int task,int work);//相机启停命令不
     QString cmd_cam_work(int work);//相机启停命令
@@ -104,7 +104,7 @@ protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
     QString rc_move(RobPos pos,Robmovemodel movemodel);
-    QString rc_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel);
+    QString rc_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel);
     QString rc_time(int time);
     QString rc_task(int task);
     QString rc_work(int work);

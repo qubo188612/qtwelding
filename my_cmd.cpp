@@ -31,13 +31,13 @@ QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp)
     return msg;
 }
 
-QString my_cmd::cmd_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
+QString my_cmd::cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
 {
     QString msg;
     QString msg1;
 
     msg=QString(CMD_MOV_KEY)+" "+
-            rc_moveP(pos1,pos2,movemodel)+" "+
+            rc_moveC(pos1,pos2,movemodel)+" "+
             rc_speed(speed)+" "+
             rc_tcp(tcp);
     return msg;
@@ -105,7 +105,7 @@ QString my_cmd::cmd_scanP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float s
     QString msg1;
 
     msg=QString(CMD_SCAN_KEY)+" "+
-            rc_moveP(pos1,pos2,movemodel)+" "+
+            rc_moveC(pos1,pos2,movemodel)+" "+
             rc_speed(speed)+" "+
             rc_tcp(tcp)+" "+
             rc_name(name);
@@ -237,7 +237,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         {
                             return 1;
                         }
-                        cmd_move_movemod=MOVEP;
+                        cmd_move_movemod=MOVEC;
                     }
                     else
                     {
@@ -587,7 +587,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         {
                             return 1;
                         }
-                        cmd_scan_movemod=MOVEP;
+                        cmd_scan_movemod=MOVEC;
                     }
                     else
                     {
@@ -917,13 +917,13 @@ QString my_cmd::rc_move(RobPos pos,Robmovemodel movemodel)
     return msg;
 }
 
-QString my_cmd::rc_moveP(RobPos pos1,RobPos pos2,Robmovemodel movemodel)
+QString my_cmd::rc_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel)
 {
     QString msg;
     QString msg1;
     switch(movemodel)
     {
-        case MOVEP:
+        case MOVEC:
         {
             msg1=QString(CMD_MOVP);
         }
