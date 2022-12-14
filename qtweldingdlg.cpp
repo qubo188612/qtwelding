@@ -309,7 +309,7 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
     {
         case EDITPROJECTDLG_BTN1:   //新建工程
         {
-            int rc2;
+            int rc2;           
             newproject->init_dlg_show();
             newproject->setWindowTitle(QString::fromLocal8Bit("新建工程"));
             rc2=newproject->exec();
@@ -319,6 +319,7 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                 QString msg=QString::fromLocal8Bit("工程名称: ")+m_mcs->project->project_name+
                             QString::fromLocal8Bit(" 工程类型")+QString::number(m_mcs->project->project_Id)+": "
                             +m_mcs->project->project_Id_toQString(m_mcs->project->project_Id);
+                m_mcs->cam->sop_cam[0].DisConnect();
                 switch(m_mcs->project->project_Id)
                 {
                     case PROGECT_ID_TEACH_SCAN:
@@ -330,6 +331,7 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                     }
                     break;
                 }
+                m_mcs->cam->sop_cam[0].InitConnect();
             }
             else
             {
@@ -342,6 +344,7 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
             QString msg=QString::fromLocal8Bit("工程名称: ")+m_mcs->project->project_name+
                         QString::fromLocal8Bit(" 工程类型")+QString::number(m_mcs->project->project_Id)+": "
                         +m_mcs->project->project_Id_toQString(m_mcs->project->project_Id);
+            m_mcs->cam->sop_cam[0].DisConnect();
             switch(m_mcs->project->project_Id)
             {
                 case PROGECT_ID_TEACH_SCAN:
@@ -353,6 +356,7 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                 }
                 break;
             }
+            m_mcs->cam->sop_cam[0].InitConnect();
         }
         break;
     }
@@ -521,7 +525,6 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         m_mcs->resultdata.b_send_group_leaser=false;
         m_mcs->resultdata.send_group_leaser.push_back(sentdata);
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
-
 
         m_mcs->cam->sop_cam[0].DisConnect();
 

@@ -99,7 +99,7 @@ QString my_cmd::cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,Q
     return msg;
 }
 
-QString my_cmd::cmd_scanP(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name)
+QString my_cmd::cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name)
 {
     QString msg;
     QString msg1;

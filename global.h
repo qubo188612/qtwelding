@@ -53,8 +53,8 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DO_NOTHING         0
 #define DO_WRITE_TASK      1
 
-#define ROB_WORK_DELAY      100000       //机器人通讯反映时间(微秒)
-#define ROB_WORK_DELAY_STEP 0            //10000         //机器人每步循环等待时间(微秒)
+#define ROB_WORK_DELAY          100000       //机器人通讯反映时间(微秒)
+#define ROB_WORK_DELAY_STEP     10000        //机器人每步循环等待时间(微秒)
 
 /*****************************/
 //自带机器人控制接口

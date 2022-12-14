@@ -58,7 +58,7 @@ public:
     QString cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令不
     QString cmd_elec_work(int work);//焊机启停命令
     QString cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name);//采集命令
-    QString cmd_scanP(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆采集命令
+    QString cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆采集命令
     QString cmd_trace(float speed,int tcp,QString craftfilepath,QString name);//跟踪命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
 

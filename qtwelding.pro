@@ -44,6 +44,7 @@ SOURCES += \
         robotsetdlg.cpp \
         setcraft0dlg.cpp \
         setcraft1dlg.cpp \
+        setmovecdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
@@ -72,6 +73,7 @@ FORMS += \
     robotsetdlg.ui \
     setcraft0dlg.ui \
     setcraft1dlg.ui \
+    setmovecdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
     traceedit0dlg.ui \
@@ -111,6 +113,7 @@ HEADERS += \
     robotsetdlg.h \
     setcraft0dlg.h \
     setcraft1dlg.h \
+    setmovecdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \
     soptocameratcpip.h \

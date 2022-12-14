@@ -350,7 +350,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             cmd_lock(1);
             return 1;
         }
-        usleep(ROB_WORK_DELAY_STEP);
+        sleep(0);
+    //  usleep(ROB_WORK_DELAY_STEP);
     }
 #ifdef USE_MYROBOT_CONTROL
     m_mcs->robotcontrol->clear_movepoint_buffer();
@@ -430,7 +431,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     line=n;
                     return 1;
                 }
-                usleep(ROB_WORK_DELAY_STEP);
+                sleep(0);
+            //  usleep(ROB_WORK_DELAY_STEP);
             }
         #ifdef USE_MYROBOT_CONTROL
             m_mcs->robotcontrol->clear_movepoint_buffer();
@@ -1079,7 +1081,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     line=n;
                     return 1;
                 }
-                usleep(ROB_WORK_DELAY_STEP);
+                sleep(0);
+            //  usleep(ROB_WORK_DELAY_STEP);
             }
         #ifdef USE_MYROBOT_CONTROL
             m_mcs->robotcontrol->clear_movepoint_buffer();

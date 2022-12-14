@@ -1,6 +1,8 @@
 #include "setprojectdlg.h"
 #include "ui_setprojectdlg.h"
 
+extern QMutex send_group_leaser;
+
 setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::setprojectDlg)
@@ -16,13 +18,17 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
         ui->scantcpcombo->addItem(msg);
     }
 
+    setmovec=new setmovecDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
-    traceedit2=new traceedit2Dlg(mcs);
+    traceedit2=new traceedit2Dlg(mcs); 
+
+    thread1=NULL;
 }
 
 setprojectDlg::~setprojectDlg()
 {
+    delete setmovec;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -37,7 +43,32 @@ void setprojectDlg::init_dlg_show()
 
 void setprojectDlg::close_dlg_show()
 {
+    if(thread1!=NULL)
+    {
+        thread1->Stop();
+        thread1->quit();
+        thread1->wait();
+        delete thread1;
+        thread1=NULL;
 
+        if(m_mcs->resultdata.link_param_state==true)
+        {
+            u_int16_t tab_reg[1];
+            tab_reg[0]=0;
+            modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
+        }
+        if(m_mcs->resultdata.link_param_state==true)
+        {
+            modbus_close(m_mcs->resultdata.ctx_param);
+            modbus_free(m_mcs->resultdata.ctx_param);
+            m_mcs->resultdata.link_param_state=false;
+            QString msg=QString::number(PORT_ALS_PARAMETER);
+            ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+        }
+
+        m_mcs->cam->sop_cam[0].DisConnect();
+        ui->ConnectCamBtn->setText(QString::fromLocal8Bit("连接相机"));
+    }
 }
 
 void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
@@ -91,7 +122,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         float speed=ui->movespeed->text().toFloat(&rc);
         RobPos robpos=m_mcs->rob->TCPpos;
         my_cmd cmd;
-        QString msg=cmd.cmd_move(robpos,movemodel,speed,tcp);
+        QString msg;
         if(ui->movespeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -101,6 +132,32 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         {
             ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
             return;
+        }
+        switch(movemodel)
+        {
+            case MOVEL:
+            case MOVEJ:
+            {
+                msg=cmd.cmd_move(robpos,movemodel,speed,tcp);
+            }
+            break;
+            case MOVEC:
+            {
+                setmovec->init_dlg_show();
+                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧移动设置"));
+                int rc=setmovec->exec();
+                setmovec->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    msg=cmd.cmd_moveC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp);
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消圆弧移动设置"));
+                    return;
+                }
+            }
+            break;
         }
         if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
         {
@@ -300,7 +357,6 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         Robmovemodel movemodel=(Robmovemodel)ui->scanmovemodecombo->currentIndex();
         my_cmd cmd;
         QString name=ui->scanname->text();
-        QString msg=cmd.cmd_scan(robpos,movemodel,speed,tcp,name);
         if(ui->scanspeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
@@ -315,6 +371,34 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         {
             ui->record->append(QString::fromLocal8Bit("请填写轨迹名称"));
             return;
+        }
+        QString msg;
+
+        switch(movemodel)
+        {
+            case MOVEL:
+            case MOVEJ:
+            {
+                msg=cmd.cmd_scan(robpos,movemodel,speed,tcp,name);
+            }
+            break;
+            case MOVEC:
+            {
+                setmovec->init_dlg_show();
+                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧采集设置"));
+                int rc=setmovec->exec();
+                setmovec->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    msg=cmd.cmd_scanC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,name);
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消圆弧采集设置"));
+                    return;
+                }
+            }
+            break;
         }
         std::vector<QString> err_msg;
         m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg);
@@ -749,6 +833,108 @@ void setprojectDlg::on_tracefilepathBtn_clicked()//修改路径
     }
 }
 
+void setprojectDlg::on_ConnectCamBtn_clicked()//连接相机
+{
+    if(m_mcs->resultdata.link_result_state==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("激光头未连接成功"));
+    }
+    else
+    {
+        if(thread1==NULL)
+        {
+            b_init_show_setproject_inlab_finish=true;
+            thread1 = new setprojectThread(this);
+            connect(thread1, SIGNAL(Send_show_setproject_inlab(cv::Mat)), this, SLOT(init_show_setproject_inlab(cv::Mat)));
+            b_thread1=true;
+            thread1->start();
+
+            m_mcs->cam->sop_cam[0].InitConnect(ui->widget);
+
+            m_mcs->tosendbuffer->cmd_cam(m_mcs->resultdata.task,1);
+
+            if(m_mcs->resultdata.link_param_state==false)
+            {
+                QString server_ip=m_mcs->ip->camer_ip->ip;
+                QString server_port1=QString::number(PORT_ALS_PARAMETER);
+                m_mcs->resultdata.ctx_param = modbus_new_tcp(server_ip.toUtf8(), server_port1.toInt());
+                if (modbus_connect(m_mcs->resultdata.ctx_param) == -1)
+                {
+                    ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+                    modbus_free(m_mcs->resultdata.ctx_param);
+                    return;
+                }
+                m_mcs->resultdata.link_param_state=true;
+                ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+            }
+
+            u_int16_t tab_reg[1];
+            tab_reg[0]=1;
+            modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
+            ui->ConnectCamBtn->setText(QString::fromLocal8Bit("断开相机"));
+            ui->Camtask->setText(QString::number(m_mcs->resultdata.task));
+        }
+        else
+        {
+            thread1->Stop();
+            thread1->quit();
+            thread1->wait();
+            delete thread1;
+            thread1=NULL;
+
+            m_mcs->tosendbuffer->cmd_cam(m_mcs->resultdata.task,0);
+
+            if(m_mcs->resultdata.link_param_state==true)
+            {
+                u_int16_t tab_reg[1];
+                tab_reg[0]=0;
+                modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
+            }
+            if(m_mcs->resultdata.link_param_state==true)
+            {
+                modbus_close(m_mcs->resultdata.ctx_param);
+                modbus_free(m_mcs->resultdata.ctx_param);
+                m_mcs->resultdata.link_param_state=false;
+                QString msg=QString::number(PORT_ALS_PARAMETER);
+                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+            }
+
+            m_mcs->cam->sop_cam[0].DisConnect();
+            ui->ConnectCamBtn->setText(QString::fromLocal8Bit("连接相机"));
+        }
+    }
+}
+
+void setprojectDlg::on_setCamtaskBtn_clicked()//设置任务号
+{
+    if(thread1==NULL)
+    {
+        ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
+    }
+    else
+    {
+        if(m_mcs->resultdata.link_result_state==true)
+        {
+            bool b_task;
+            uint16_t task=ui->Camtask->text().toInt(&b_task);
+            if(b_task==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("任务号格式错误"));
+            }
+            else
+            {
+                m_mcs->tosendbuffer->cmd_cam(task,1);
+                ui->record->append(QString::fromLocal8Bit("更新任务号成功"));
+            }
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
+        }
+    }
+}
+
+
 void setprojectDlg::updatacmdlistUi()
 {
     std::vector<QString> err_msg;
@@ -773,6 +959,80 @@ void setprojectDlg::updatacmdlistUi()
     }
 }
 
+void setprojectDlg::init_show_setproject_inlab(cv::Mat cvimg)
+{
+    if(!cvimg.empty())
+    {
+         if(cvimg.rows!=CAMBUILD_IMAGE_HEIGHT||
+            cvimg.cols!=CAMBUILD_IMAGE_WIDTH)
+            cv::resize(cvimg,cvimg,cv::Size(CAMBUILD_IMAGE_WIDTH,CAMBUILD_IMAGE_HEIGHT));
+         if(cvimg.type()==CV_8UC1)
+            cv::cvtColor(cvimg,cvimg,cv::COLOR_GRAY2BGR);
 
+         QImage::Format format = QImage::Format_RGB888;
+         switch (cvimg.type())
+         {
+         case CV_8UC1:
+           format = QImage::Format_RGB888;
+           cv::cvtColor(cvimg,cvimg,cv::COLOR_GRAY2BGR);
+           break;
+         case CV_8UC3:
+           format = QImage::Format_RGB888;
+           break;
+         case CV_8UC4:
+           format = QImage::Format_ARGB32;
+           break;
+         }
+         QImage img = QImage((const uchar*)cvimg.data,
+                                           cvimg.cols,
+                                           cvimg.rows,
+                                           cvimg.cols * cvimg.channels(), format);
+         img = img.scaled(ui->widget->width(),ui->widget->height(),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);//图片自适应lab大小
+         ui->widget->setImage(img);
+    }
+    b_init_show_setproject_inlab_finish=true;
+    m_mcs->cam->sop_cam[0].b_int_show_image_inlab=false;
+    m_mcs->cam->sop_cam[0].b_updataimage_finish=false;
+}
+
+setprojectThread::setprojectThread(setprojectDlg *statci_p)
+{
+    _p=statci_p;
+}
+
+void setprojectThread::run()
+{
+    while (1)
+    {
+        if(_p->b_thread1==true)
+        {
+            if(_p->b_init_show_setproject_inlab_finish==true)
+            {
+                _p->b_init_show_setproject_inlab_finish=false;
+                qRegisterMetaType< cv::Mat >("cv::Mat"); //传递自定义类型信号时要添加注册
+                emit Send_show_setproject_inlab(_p->m_mcs->cam->sop_cam[0].cv_image);
+            }
+            sleep(0);
+        }
+        else
+        {
+            _p->b_stop_thread1=true;
+            break;
+        }
+    }
+}
+
+void setprojectThread::Stop()
+{
+  if(_p->b_thread1==true)
+  {
+    _p->b_stop_thread1=false;
+    _p->b_thread1=false;
+    while (_p->b_stop_thread1==false)
+    {
+      sleep(0);
+    }
+  }
+}
 
 
