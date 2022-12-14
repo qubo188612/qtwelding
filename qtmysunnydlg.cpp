@@ -1275,6 +1275,13 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
                         ui->record->append(msg);
                     }
                     break;
+                    case 4:
+                    {
+                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:岗上机器人"));
+                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(msg);
+                    }
+                    break;
                 }
 
             }

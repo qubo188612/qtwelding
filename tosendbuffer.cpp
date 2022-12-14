@@ -293,6 +293,28 @@ int toSendbuffer::cmdlist_check()
                 main_record.unlock();
             }
         }
+        if(key==CMD_MOV_KEY)
+        {
+            int tcp=cmd.cmd_move_tcp;//获取到移动TCP
+            float speed=cmd.cmd_move_speed;//获取到速度值
+            Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+            if(movemod==MOVEC)
+            {
+                CWeldTarject tarjectMath;
+                std::vector<RobPos> interpolatPos;
+                RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
+                RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
+                RobPos pos3=cmd.cmd_move_pos3;//获取到移动坐标
+                if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                }
+            }
+        }
     }
     if(0!=cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))//查看是否有重名轨迹
     {
@@ -375,7 +397,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
-                    cmd_moveC(pos1,pos2,movemod,speed,tcp);//移动
+                    RobPos pos3=cmd.cmd_move_pos3;//获取到移动坐标
+                    CWeldTarject tarjectMath;
+                    std::vector<RobPos> interpolatPos;
+                    if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<interpolatPos.size();n++)
+                    {
+                        cmd_move(interpolatPos[n],MOVEL,speed,tcp);
+                    }
                 }
                 break;
             }
@@ -447,7 +484,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     RobPos pos1=cmd.cmd_scan_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_scan_pos2;//获取到移动坐标
-                    cmd_moveC(pos1,pos2,movemod,speed,tcp);//移动
+                    RobPos pos3=cmd.cmd_scan_pos3;//获取到移动坐标
+                    CWeldTarject tarjectMath;
+                    std::vector<RobPos> interpolatPos;
+                    if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<interpolatPos.size();n++)
+                    {
+                        cmd_move(interpolatPos[n],MOVEL,speed,tcp);
+                    }
                 }
                 break;
             }
@@ -1114,11 +1166,6 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
     send_group_robot.unlock();
-}
-
-void toSendbuffer::cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
-{
-
 }
 
 void toSendbuffer::cmd_delay(int time)

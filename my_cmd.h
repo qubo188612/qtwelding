@@ -30,7 +30,7 @@
 //参数项
 #define CMD_MOVL                            "MOVL"      //直线移动
 #define CMD_MOVJ                            "MOVJ"      //关节移动
-#define CMD_MOVP                            "MOVP"      //圆形移动
+#define CMD_MOVC                            "MOVC"      //圆形移动
 #define CMD_TCP                             "TCP"       //TCP
 #define CMD_SPEED                           "SPEED"     //速度
 #define CMD_TIME                            "TIME"      //时间         单位ms
@@ -51,14 +51,14 @@ public:
     my_cmd();
 
     QString cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
-    QString cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp);//移动圆命令
+    QString cmd_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp);//移动圆命令
     QString cmd_delay(int time);//延时命令
     QString cmd_cam(int task,int work);//相机启停命令不
     QString cmd_cam_work(int work);//相机启停命令
     QString cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令不
     QString cmd_elec_work(int work);//焊机启停命令
     QString cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name);//采集命令
-    QString cmd_scanP(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp,QString name);//圆采集命令
+    QString cmd_scanP(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆采集命令
     QString cmd_trace(float speed,int tcp,QString craftfilepath,QString name);//跟踪命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
 
@@ -68,8 +68,9 @@ public:
                                                                        //     返回值>0:异常
     int cmd_move_tcp;//获取到移动TCP
     RobPos cmd_move_pos;//获取到移动终点坐标
-    RobPos cmd_move_pos1;//获取到圆移动途径点坐标
-    RobPos cmd_move_pos2;//获取到圆移动终点坐标
+    RobPos cmd_move_pos1;//获取到圆移动起点坐标
+    RobPos cmd_move_pos2;//获取到圆移动途径点坐标
+    RobPos cmd_move_pos3;//获取到圆移动终点坐标
     float cmd_move_speed;//获取到速度值
     Robmovemodel cmd_move_movemod;//获取到的移动模式
 
@@ -84,8 +85,9 @@ public:
     float cmd_elec_eled; //获取到焊机电流
 
     RobPos cmd_scan_pos;//获取到扫描终点坐标
-    RobPos cmd_scan_pos1;//获取到圆扫描途径点坐标
-    RobPos cmd_scan_pos2;//获取到圆扫描终点坐标
+    RobPos cmd_scan_pos1;//获取到圆扫描起点坐标
+    RobPos cmd_scan_pos2;//获取到圆扫描途径点坐标
+    RobPos cmd_scan_pos3;//获取到圆扫描终点坐标
     float cmd_scan_speed;//获取到的扫描速度
     int cmd_scan_tcp;//获取到扫描TCP
     Robmovemodel cmd_scan_movemod;//获取到的扫描模式
@@ -104,7 +106,7 @@ protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
     QString rc_move(RobPos pos,Robmovemodel movemodel);
-    QString rc_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel);
+    QString rc_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel);
     QString rc_time(int time);
     QString rc_task(int task);
     QString rc_work(int work);
@@ -120,7 +122,7 @@ protected:
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
     int de_int(QString parakey,QString msg,int data_fpos,int data_bpos,int &intdata,QString &return_msg);
     int de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos,QString &return_msg);
-    int de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos1,RobPos &pos2,QString &return_msg);
+    int de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos1,RobPos &pos2,RobPos &pos3,QString &return_msg);
     int de_QString(QString parakey,QString msg,int data_fpos,int data_bpos,QString &QStringdata,QString &return_msg);
     int de_vector_QString(QString parakey,QString msg,int data_fpos,int data_bpos,std::vector<QString> &vector_QStringdata,QString &return_msg);
 };
