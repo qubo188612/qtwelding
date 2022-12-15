@@ -131,8 +131,8 @@ bool CWeldTarject::coord2RT(std::vector<Eigen::Vector3d> coor_new,std::vector<Ei
 
     Eigen::Matrix3d rotation = Eigen::Matrix3d::Zero();
 
-    Eigen::Vector3d i = coor_old[0], j = coor_old[1], k = coor_old[2];
-    Eigen::Vector3d x = coor_new[0], y = coor_new[1], z = coor_new[2];
+    Eigen::Vector3d i = coor_new[0], j = coor_new[1], k = coor_new[2];
+    Eigen::Vector3d x = coor_old[0], y = coor_old[1], z = coor_old[2];
 
     rotation(0, 0) = i.dot(x) / (i.norm()*x.norm());
     rotation(0, 1) = i.dot(y) / (i.norm()*y.norm());
@@ -143,6 +143,7 @@ bool CWeldTarject::coord2RT(std::vector<Eigen::Vector3d> coor_new,std::vector<Ei
     rotation(2, 0) = k.dot(x) / (k.norm()*x.norm());
     rotation(2, 1) = k.dot(y) / (k.norm()*y.norm());
     rotation(2, 2) = k.dot(z) / (k.norm()*z.norm());
+
 
     for (int i = 0 ; i < 3; i++)
     {
@@ -158,7 +159,7 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
 {
     double radius;//半径
     double rad;//每个扇形弧度
-    Eigen::Vector3d circlecenter;//圆心
+    Eigen::Vector3d circlecenter,circlecenter2;//圆心
     Eigen::Vector3d radius_st;//圆心到起点的向量
     Eigen::Vector3d radius_center;//圆心到途径点的向量
     Eigen::Vector3d radius_ed;//圆心到终点的向量
@@ -189,7 +190,8 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     //建立圆坐标系
     Eigen::Vector3d rz=cross_center/cross_center.norm();
     Eigen::Vector3d rx=radius_st/radius_st.norm();
-    Eigen::Vector3d ry=(rz.cross(rx))/rz.cross(rx).norm();
+    Eigen::Vector3d ry=rz.cross(rx)/rz.cross(rx).norm();
+
     //建立基坐标系
     Eigen::Vector3d Z(0,0,1);
     Eigen::Vector3d Y(0,1,0);
@@ -198,12 +200,13 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     Eigen::Matrix3d R,RT;		//旋转缩放矩阵
     Eigen::Vector3d T,TT;		//平移变量
     //计算圆坐标系和基坐标系的关系
-    T(0) = circlecenter.x();
-    T(1) = circlecenter.y();
-    T(2) = circlecenter.z();
-    TT(0) = -circlecenter.x();
-    TT(1) = -circlecenter.y();
-    TT(2) = -circlecenter.z();
+    T(0) = -circlecenter.x();
+    T(1) = -circlecenter.y();
+    T(2) = -circlecenter.z();
+
+    TT(0) = circlecenter.x();
+    TT(1) = circlecenter.y();
+    TT(2) = circlecenter.z();
 
     std::vector<Eigen::Vector3d> coord_new(3);
     std::vector<Eigen::Vector3d> coord_old(3);
@@ -214,12 +217,12 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     coord_old[1]=Y;
     coord_old[2]=Z;
 
-    if(false==coord2RT(coord_new,coord_old,R))
+    if(false==coord2RT(coord_old,coord_new,RT))
     {
         return false;
     }
 
-    if(false==coord2RT(coord_old,coord_new,RT))
+    if(false==coord2RT(coord_new,coord_old,R))
     {
         return false;
     }
@@ -228,23 +231,27 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
 
     for(int n=0;n<3;n++)
     {
-        r_circlepoints[n] = R*points[n]+T;
+        r_circlepoints[n] = R*(points[n]+T);
     }
+
     /***********/
     //3维转2维平面前半段
     double _2d_rand_1;//起点到途径点的夹角
     double _2d_rand_2;//起点到终点的夹角
-    double cross_temp;
-    _2d_rand_1=acos(r_circlepoints[0].dot(r_circlepoints[1])/(r_circlepoints[0].norm()*r_circlepoints[1].norm()));
-    _2d_rand_2=acos(r_circlepoints[0].dot(r_circlepoints[2])/(r_circlepoints[0].norm()*r_circlepoints[2].norm()));
-    cross_temp=r_circlepoints[0].cross(r_circlepoints[2]).dot(Z);
-    if(cross_temp<0)
-    {
-        _2d_rand_1=-_2d_rand_1;
-        _2d_rand_2=-_2d_rand_2;
-        rad=-rad;
+    double cross_temp1,cross_temp2;
+    _2d_rand_1=acos((r_circlepoints[0]).dot(r_circlepoints[1])/((r_circlepoints[0]).norm()*(r_circlepoints[1]).norm()));
+    _2d_rand_2=acos((r_circlepoints[0]).dot(r_circlepoints[2])/((r_circlepoints[0]).norm()*(r_circlepoints[2]).norm()));
+    cross_temp1=(r_circlepoints[0]).cross(r_circlepoints[2]).dot(Z);
+    if(cross_temp1<0)
+    {      
+        _2d_rand_1=2*CV_PI-_2d_rand_1;
     }
-    else if(cross_temp==0)
+    cross_temp2=(r_circlepoints[0]).cross(r_circlepoints[1]).dot(Z);
+    if(cross_temp2<0)
+    {
+        _2d_rand_2=2*CV_PI-_2d_rand_2;
+    }
+    else if(cross_temp2==0)
     {
         return false;
     }
@@ -256,6 +263,10 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     std::vector<Eigen::Vector3d> r_circlepoints_out;//r坐标系下的圆的插值点
     r_circlepoints_out.resize(addnum_1);
 
+    if(cross_temp2<0)
+    {
+        rad=-rad;
+    }
     for(int n=0;n<addnum_1;n++)
     {
         double radstep=rad*n;
@@ -263,11 +274,12 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
         point.x()=radius*cos(radstep);
         point.y()=radius*sin(radstep);
         point.z()=0;
-        r_circlepoints_out[n]=RT*point+TT;
+        r_circlepoints_out[n]=point;
     }
     std::vector<RobPos> head_pos(addnum_1);
     for(int n=0;n<addnum_1;n++)
     {
+        r_circlepoints_out[n]=RT*r_circlepoints_out[n]+TT;
         head_pos[n].X=r_circlepoints_out[n].x();
         head_pos[n].Y=r_circlepoints_out[n].y();
         head_pos[n].Z=r_circlepoints_out[n].z();
@@ -300,7 +312,7 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
         point.z()=0;
         r_circlepoints_out[n-addnum_1]=RT*point+TT;
     }
-    r_circlepoints_out[addnum+2-addnum_1-1]=RT*r_circlepoints[1]+TT;
+    r_circlepoints_out[addnum+2-addnum_1-1]=RT*r_circlepoints[2]+TT;
     std::vector<RobPos> tail_pos(addnum+2-addnum_1);
     for(int n=0;n<addnum+2-addnum_1;n++)
     {

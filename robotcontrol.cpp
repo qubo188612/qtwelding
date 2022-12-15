@@ -250,6 +250,11 @@ void Robotcontrol::RobotInit()//机器人初始化
 
         }
         break;
+        case ROBOT_MODEL_KUKA://库卡机器人
+        {
+
+        }
+        break;
     }
 }
 
@@ -296,6 +301,11 @@ void Robotcontrol::RobotOPEN_ELE()
             }
         }
         break;
+        case ROBOT_MODEL_KUKA://库卡机器人
+        {
+
+        }
+        break;
     }
 }
 
@@ -337,6 +347,11 @@ void Robotcontrol::RobotCLOSE_ELE()
                 mutexsend_buf_group.unlock();
                 usleep(ROB_WORK_DELAY);
             }
+        }
+        break;
+        case ROBOT_MODEL_KUKA://库卡机器人
+        {
+
         }
         break;
     }
@@ -459,6 +474,11 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                 }
                 break;
             }
+        }
+        break;
+        case ROBOT_MODEL_KUKA://库卡机器人
+        {
+
         }
         break;
     }
@@ -658,6 +678,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 }
                                             }
                                             break;
+                                            case ROBOT_MODEL_KUKA://库卡机器人
+                                            {
+
+                                            }
+                                            break;
                                         }
                                     }
                                     break;
@@ -738,6 +763,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 mutexsend_buf_group.unlock();
                                             }
                                             break;
+                                            case ROBOT_MODEL_KUKA://库卡机器人
+                                            {
+
+                                            }
+                                            break;
                                         }
                                     }
                                     break;
@@ -800,6 +830,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 mutexsend_buf_group.unlock();
                                             }
                                             break;
+                                            case ROBOT_MODEL_KUKA://库卡机器人
+                                            {
+
+                                            }
+                                            break;
                                         }
                                     }
                                     break;
@@ -834,6 +869,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
                                                 mutexsend_buf_group.unlock();
+                                            }
+                                            break;
+                                            case ROBOT_MODEL_KUKA://库卡机器人
+                                            {
+
                                             }
                                             break;
                                         }
@@ -1145,6 +1185,11 @@ void RobotlinkThread::run() //连接机器人命令
                     old_rob_mod=_p->rob_mod;
                 }
                 break;
+                case ROBOT_MODEL_KUKA://库卡机器人
+                {
+
+                }
+                break;
             }
             _p->RobotInit();
             main_record.lock();
@@ -1349,6 +1394,11 @@ void RobotrcvThread::run()//获取机器人数据
                     }
                 }
                 break;
+                case ROBOT_MODEL_KUKA://库卡机器人
+                {
+
+                }
+                break;
             }
         }
         else
@@ -1477,6 +1527,11 @@ void RobotsendrcvThread::run()//获取机器人命令回复数据
                     }
                 }
                 break;
+                case ROBOT_MODEL_KUKA://库卡机器人
+                {
+
+                }
+                break;
             }
         }
         else
@@ -1603,6 +1658,11 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                     }
+                }
+                break;
+                case ROBOT_MODEL_KUKA://库卡机器人
+                {
+
                 }
                 break;
             }

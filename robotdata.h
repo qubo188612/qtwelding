@@ -26,13 +26,14 @@ typedef enum WELD_MODEL_ID            //焊机型号
     WELD_MODEL_ROBOT_LINK=1,                //机器人直连
 }WELD_MODEL;
 /**************************************/
-#define ROBOT_MODEL_NUM     4  //机器人型号支持的总数
+#define ROBOT_MODEL_NUM     5  //机器人型号支持的总数
 typedef enum ROBOT_MODEL_ID            //机器人型号
 {
     ROBOT_MODEL_NULL=0,                //无机器人
     ROBOT_MODEL_EMERGEN=1,             //智昌机器人
     ROBOT_MODEL_DOBOT=2,               //越彊机器人
     ROBOT_MODEL_UR=3,                  //优傲机器人
+    ROBOT_MODEL_KUKA=4,                //库卡机器人
 }ROBOT_MODEL;
 
 #define ROBOT_DOBOT_TOTALCONTROL_RORT             29999    //越彊机器人总控值令数据信息发送端口

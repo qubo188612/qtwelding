@@ -60,6 +60,9 @@ QString RobotData::robot_model_toQString(ROBOT_MODEL robot_model)
     case ROBOT_MODEL_UR:
         msg="优傲";
         break;
+    case ROBOT_MODEL_KUKA:
+        msg="库卡";
+        break;
     }
     return msg;
 }

@@ -47,7 +47,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     ui->tabWidget->setTabText(2,QString::fromLocal8Bit("任务101"));
     ui->tabWidget->setTabText(3,QString::fromLocal8Bit("任务102"));
     ui->tabWidget->setTabText(4,QString::fromLocal8Bit("任务103"));
-    ui->tabWidget->setTabText(4,QString::fromLocal8Bit("任务104"));
+    ui->tabWidget->setTabText(5,QString::fromLocal8Bit("任务104"));
 
     ui->tabWidget->setCurrentIndex(0);
 
