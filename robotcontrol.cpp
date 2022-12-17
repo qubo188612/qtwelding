@@ -1187,7 +1187,27 @@ void RobotlinkThread::run() //连接机器人命令
                 break;
                 case ROBOT_MODEL_KUKA://库卡机器人
                 {
-
+                    _p->m_client.CreateSocket();
+                    if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_UR_INFO_PORT))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->m_client.SetBlock(0);
+                    if(0!=_p->m_client.SetRcvBufferlong(ROBOT_UR_INFO_RECVBUFFER_MAX*2))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->b_client=true;
+                    old_rodb_ip=rodb_ip;
+                    old_rob_mod=_p->rob_mod;
                 }
                 break;
             }

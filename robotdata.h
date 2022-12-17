@@ -50,6 +50,8 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
 #define ROBOT_UR_INFO_PORT                        30003    //优傲机器人数据信息获取端口
 #define ROBOT_UR_INFO_RECVBUFFER_MAX              1108     //优傲机器人数据信息最大个数
 
+#define ROBOT_KUKA_INFO_PORT                      30003    //库卡机器人信息端口
+
 /***************************************/
 
 typedef enum ROBOT_STATE_ID            //机器人状态
