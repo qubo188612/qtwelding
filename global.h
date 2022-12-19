@@ -314,7 +314,9 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 #define ALSROBOTCAM_ROBOTMOD_REG_ADD            0x0000  //机器人型号
 #define ALSROBOTCAM_ROBOTPORT_REG_ADD           0x0001  //机器人端口号
-
+#define ALSROBOTCAM_COMPENSATION_X              0x0002  //标定补偿X
+#define ALSROBOTCAM_COMPENSATION_Y              0x0003  //标定补偿Y
+#define ALSROBOTCAM_COMPENSATION_Z              0x0004  //标定补偿Z
 #define ALSROBOTCAM_CAMWIDTH_REG_ADD            0x0005  //相机宽度视野
 #define ALSROBOTCAM_CAMHEIGHT_REG_ADD           0x0006  //相机高度视野
 #define ALSROBOTCAM_CAMFPS_REG_ADD              0x0007  //相机帧率
@@ -349,6 +351,9 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS_Z_POINT4_REG_ADD                    0x0055  //Z坐标POINT4
 
 #define ALS_SOLDER_REG_ADD                      0x0060  //焊点
+
+#define ALS_X_POINT1_REG_ADD                    0x0070  //X坐标POINT
+#define ALS_WELD_LONG_REG_ADD                   0x0071  //焊缝X法向量
 
 #define ALS_OPEN_REG_ADD                        0x0101  //跟踪开关
 #define ALS_TASKNUM_REG_ADD                     0x0102  //任务号

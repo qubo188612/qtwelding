@@ -31,7 +31,7 @@
     <rect>
      <x>10</x>
      <y>650</y>
-     <width>671</width>
+     <width>361</width>
      <height>101</height>
     </rect>
    </property>
@@ -4044,6 +4044,88 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_58">
+   <property name="geometry">
+    <rect>
+     <x>374</x>
+     <y>690</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>补偿Y:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_59">
+   <property name="geometry">
+    <rect>
+     <x>374</x>
+     <y>720</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>补偿Z:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="dY">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>690</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_57">
+   <property name="geometry">
+    <rect>
+     <x>374</x>
+     <y>660</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>补偿X:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="dX">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>660</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="dZ">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>720</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="setdposBtn">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>700</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导入补偿设置</string>
    </property>
   </widget>
  </widget>

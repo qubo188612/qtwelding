@@ -233,6 +233,43 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再设置相机参数"));
         }
     });
+    connect(ui->setdposBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_robotset_state==true)
+        {
+             bool d_dX,d_dY,d_dZ;
+             float dX=ui->dX->text().toFloat(&d_dX);
+             float dY=ui->dY->text().toFloat(&d_dY);
+             float dZ=ui->dZ->text().toFloat(&d_dZ);
+             if(d_dX==true&&d_dY==true&&d_dZ==true)
+             {
+                 uint16_t tab_reg[3];
+                 tab_reg[0]=(uint16_t)((int16_t)((int)(dX*100)));
+                 tab_reg[1]=(uint16_t)((int16_t)((int)(dY*100)));
+                 tab_reg[2]=(uint16_t)((int16_t)((int)(dZ*100)));
+                 int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_COMPENSATION_X,3,tab_reg);
+                 if(rc!=3)
+                 {
+                     if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("更新补偿设置失败"));
+                 }
+                 else
+                 {
+                     if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("更新补偿设置成功"));
+                 }
+             }
+             else
+             {
+                 if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("补偿数据格式输入错误"));
+             }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置补偿参数"));
+        }
+    });
 #if _MSC_VER||WINDOWS_TCP
 #else
     connect(ui->writeTab1Btn,&QPushButton::clicked,[=](){
@@ -1286,6 +1323,32 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
 
             }
         }
+
+        real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_COMPENSATION_X,3,m_mcs->resultdata.red_robotset);
+        if(real_readnum<0)
+        {
+            if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("获取当前标定补偿信息失败"));
+        }
+        else
+        {
+            int16_t dX=(int16_t)m_mcs->resultdata.red_robotset[0];
+            int16_t dY=(int16_t)m_mcs->resultdata.red_robotset[1];
+            int16_t dZ=(int16_t)m_mcs->resultdata.red_robotset[2];
+            float f_dX=(float)dX/100.0;
+            float f_dY=(float)dY/100.0;
+            float f_dZ=(float)dZ/100.0;
+            ui->dX->setText(QString::number(f_dX,'f',2));
+            ui->dY->setText(QString::number(f_dY,'f',2));
+            ui->dZ->setText(QString::number(f_dZ,'f',2));
+            if(ui->checkBox->isChecked()==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("获取当前标定补偿: X="));
+                QString msg=QString::number(f_dX,'f',2)+" Y="+QString::number(f_dY,'f',2)+" Z="+QString::number(f_dZ,'f',2);
+                ui->record->append(msg);
+            }
+        }
+
 
         real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_CAMWIDTH_REG_ADD,5,m_mcs->resultdata.red_robotset);
         if(real_readnum<0)
