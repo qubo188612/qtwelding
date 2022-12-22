@@ -54,6 +54,7 @@ public:
     uint16_t alg102_threshold;
     uint16_t alg103_threshold;
     uint16_t alg104_threshold;
+    uint16_t alg105_threshold;
 
     std::vector<sent_info_leaser> send_group_leaser;    //发送相机数据队列
     volatile bool b_send_group_leaser;  //发送相机数据队列是否异常

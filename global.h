@@ -305,6 +305,36 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 #define ALS104_INIT_REG_ADD                    0x00af
 
+#define ALS105_EXPOSURE_TIME_REG_ADD           0x00b0
+#define ALS105_PINGJUN_REG_ADD                 0x00b1
+#define ALS105_B_YANMOFUZHU_REG_ADD            0x00b2
+#define ALS105_WIDTHLIANTONGDIS_REG_ADD        0x00b3
+#define ALS105_HIGHLIANTONGDIS_REG_ADD         0x00b4
+#define ALS105_GUJIAERZHI_REG_ADD              0x00b5
+#define ALS105_JIGUANGHIGHT_REG_ADD            0x00b6
+#define ALS105_JIGUANGLONG_REG_ADD             0x00b7
+#define ALS105_JIGUANGKUANDU_REG_ADD           0x00b8
+#define ALS105_UPDIF_REG_ADD                   0x00b9
+#define ALS105_UPDIFMIN_REG_ADD                0x00ba
+#define ALS105_UPLONG_REG_ADD                  0x00bb
+#define ALS105_DOWNDIF_REG_ADD                 0x00bc
+#define ALS105_DOWNDIFMIN_REG_ADD              0x00bd
+#define ALS105_DOWNDLONG_REG_ADD               0x00be
+#define ALS105_DIS_CENTER_ST_REG_ADD           0x00bf
+#define ALS105_DIS_CENTER_ED_REG_ADD           0x00c0
+#define ALS105_B_CUT_REG_ADD                   0x00c1
+#define ALS105_CUTLEFT_REG_ADD                 0x00c2
+#define ALS105_CUTRIGHT_REG_ADD                0x00c3
+#define ALS105_CUTTOP_REG_ADD                  0x00c4
+#define ALS105_CUTDEEP_REG_ADD                 0x00c5
+#define ALS105_GUAIDIANYUZHI_REG_ADD           0x00c6
+#define ALS105_DUANDIANJULI_REG_ADD            0x00c7
+#define ALS105_B_DIBUFAXIANGLIANG_REG_ADD      0x00c8
+
+#define ALS105_REG_TOTALNUM                    0x0019
+
+#define ALS105_INIT_REG_ADD                    0x00cf
+
 
 #define ALS_SHOW_STEP_REG_ADD                  0x018f
 
