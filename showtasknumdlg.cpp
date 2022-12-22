@@ -412,6 +412,48 @@ void showtasknumdlg::image_draw(int task_num)
         cv::putText(image,"1",p1_2,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
     }
     break;
+    case 105:
+    {
+        L_line line1,line2,line3;
+        line1.st.y=nnHeight/16.0;
+        line1.ed.y=nnHeight/64.0*31;
+        line1.st.x=nnWidth/7.0*3;
+        line1.ed.x=nnWidth/7.0*3;
+        cv::line(image,line1.st,line1.ed,cv::Scalar(255,0,0),9);
+        line2.st.y=nnHeight/16*15;
+        line2.ed.y=nnHeight/64.0*33;
+        line2.st.x=nnWidth/7.0*4;
+        line2.ed.x=nnWidth/7.0*4;
+        cv::line(image,line2.st,line2.ed,cv::Scalar(255,0,0),9);
+        cv::Point focal1,focal2,focal;
+        focal1.x=line1.ed.x;
+        focal1.y=line1.ed.y;
+        focal2.x=line2.ed.x;
+        focal2.y=line2.ed.y;
+        cv::circle(image,focal1,20,cv::Scalar(0,0,255),3);
+        cv::circle(image,focal2,20,cv::Scalar(0,0,255),3);
+        cv::Point2f p1=focal1;
+        p1.y=p1.y+25;
+        p1.x=p1.x-75;
+        cv::putText(image,"2",p1,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
+        cv::Point2f p2=focal2;
+        p2.y=p2.y+25;
+        p2.x=p2.x+50;
+        cv::putText(image,"3",p2,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
+        line1.st.y=focal1.y;
+        line1.ed.y=focal2.y;
+        line1.st.x=focal1.x;
+        line1.ed.x=focal2.x;
+        draw_dotted_line1(image,line1.st,line1.ed,cv::Scalar(0,255,0),3);
+        focal.y=(focal1.y+focal2.y)/2;
+        focal.x=(focal1.x+focal2.x)/2;
+        cv::circle(image,focal,20,cv::Scalar(0,0,255),3);
+        cv::Point2f p=focal;
+        p.y=p.y+75;
+        p.x=p.x-25;
+        cv::putText(image,"1",p,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
+    }
+    break;
     default:
     break;
     }
