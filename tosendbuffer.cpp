@@ -1199,7 +1199,7 @@ void toSendbuffer::cmd_cam(int task,int work)
     send_group_leaser.unlock();
 }
 
-void toSendbuffer::cmd_elec(Weldworkmodel_ID work)
+void toSendbuffer::cmd_elec(Weldworkmodel work)
 {
     send_group_robot.lock();
     sent_info_robot sendrob;
@@ -1210,10 +1210,11 @@ void toSendbuffer::cmd_elec(Weldworkmodel_ID work)
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    m_mcs->rob->weld_state=(Weldworkmodel)work;
     send_group_robot.unlock();
 }
 
-void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel_ID work)
+void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel work)
 {
     send_group_robot.lock();
     sent_info_robot sendrob;
@@ -1231,6 +1232,9 @@ void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel_ID 
     sendrob.data[0]=work;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    m_mcs->rob->weld_state=(Weldworkmodel)work;
+    m_mcs->rob->weld_eled=eled;
+    m_mcs->rob->weld_elem=elem;
     send_group_robot.unlock();
 }
 

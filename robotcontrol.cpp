@@ -279,11 +279,11 @@ void Robotcontrol::RobotOPEN_ELE()
         {
             if(b_totalcontrol_Thread==true)
             {
-                mutexsend_buf_group.lock();
+                mutextotalcontrol_buf_group.lock();
                 QString msg="EnableRobot()";    //机器人上电使能
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
-                mutexsend_buf_group.unlock();
+                mutextotalcontrol_buf_group.unlock();
                 sleep(3);
             }
         }
@@ -292,11 +292,11 @@ void Robotcontrol::RobotOPEN_ELE()
         {
             if(b_totalcontrol_Thread==true)
             {
-                mutexsend_buf_group.lock();
+                mutextotalcontrol_buf_group.lock();
                 QString msg="power on\r\n";    //机器人上电使能
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
-                mutexsend_buf_group.unlock();
+                mutextotalcontrol_buf_group.unlock();
                 sleep(3);
             }
         }
@@ -327,11 +327,11 @@ void Robotcontrol::RobotCLOSE_ELE()
         {
             if(b_totalcontrol_Thread==true)
             {
-                mutexsend_buf_group.lock();
+                mutextotalcontrol_buf_group.lock();
                 QString msg="ResetRobot()";    //机器人停止
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
-                mutexsend_buf_group.unlock();
+                mutextotalcontrol_buf_group.unlock();
                 usleep(ROB_WORK_DELAY);
             }
         }
@@ -340,11 +340,11 @@ void Robotcontrol::RobotCLOSE_ELE()
         {
             if(b_totalcontrol_Thread==true)
             {
-                mutexsend_buf_group.lock();
+                mutextotalcontrol_buf_group.lock();
                 QString msg="stop\r\n";    //机器人上电使能
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
-                mutexsend_buf_group.unlock();
+                mutextotalcontrol_buf_group.unlock();
                 usleep(ROB_WORK_DELAY);
             }
         }
@@ -478,7 +478,75 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
         break;
         case ROBOT_MODEL_KUKA://库卡机器人
         {
-
+            mutexmovepoint_buffer_group.lock();
+            Pause_PointInfo moveinfo;
+            moveinfo.robpos.X=f_movX;
+            moveinfo.robpos.Y=f_movY;
+            moveinfo.robpos.Z=f_movZ;
+            moveinfo.robpos.RX=f_movRX;
+            moveinfo.robpos.RY=f_movRY;
+            moveinfo.robpos.RZ=f_movRZ;
+            moveinfo.f_speed=f_speed;
+            moveinfo.movemod=movemod;
+            moveinfo.tcp=tcp;
+            _p->movepoint_buffer.push_back(moveinfo);
+            mutexmovepoint_buffer_group.unlock();
+            switch(movemod)
+            {
+                case MOVEL:
+                {
+                    mutexsend_buf_group.lock();
+                    QDomDocument doc;
+                    QDomText s_data;
+                    QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                    doc.appendChild(root_elem);
+                    QDomElement obj;
+                    obj=doc.createElement("TCP");
+                    s_data=doc.createTextNode(QString::number(tcp));
+                    obj.appendChild(s_data);
+                    root_elem.appendChild(obj);
+                    obj=doc.createElement("MOVEMOD");
+                    s_data=doc.createTextNode(QString::number(movemod));
+                    obj.appendChild(s_data);
+                    root_elem.appendChild(obj);
+                    obj=doc.createElement("MOVESPEED");
+                    s_data=doc.createTextNode(QString::number(f_speed,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    obj.appendChild(s_data);
+                    root_elem.appendChild(obj);
+                    obj=doc.createElement("MOVEPOS");
+                    QDomElement objmin;
+                    objmin=doc.createElement("X");
+                    s_data=doc.createTextNode(QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("Y");
+                    s_data=doc.createTextNode(QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("Z");
+                    s_data=doc.createTextNode(QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RX");
+                    s_data=doc.createTextNode(QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RY");
+                    s_data=doc.createTextNode(QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RZ");
+                    s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    root_elem.appendChild(obj);
+                    QString msg=doc.toString();
+                    std::string str=msg.toStdString();
+                    _p->send_buf_group.push_back(str);
+                    mutexsend_buf_group.unlock();
+                }
+                break;
+            }
         }
         break;
     }
@@ -680,7 +748,31 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_KUKA://库卡机器人
                                             {
-
+                                                mutexsend_buf_group.lock();
+                                                QDomDocument doc;
+                                                QDomText s_data;
+                                                QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                                doc.appendChild(root_elem);
+                                                QDomElement obj;
+                                                obj=doc.createElement("WELD");
+                                                s_data=doc.createTextNode(QString::number(u16data_elec_work));
+                                                obj.appendChild(s_data);
+                                                root_elem.appendChild(obj);
+                                                if(u16data_elec_work==FIRE)
+                                                {
+                                                    obj=doc.createElement("ELED");
+                                                    s_data=doc.createTextNode(QString::number(eled,'f',3));
+                                                    obj.appendChild(s_data);
+                                                    root_elem.appendChild(obj);
+                                                    obj=doc.createElement("ELEM");
+                                                    s_data=doc.createTextNode(QString::number(elem));
+                                                    obj.appendChild(s_data);
+                                                    root_elem.appendChild(obj);
+                                                }
+                                                QString msg=doc.toString();
+                                                std::string str=msg.toStdString();
+                                                _p->send_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
                                             }
                                             break;
                                         }
@@ -747,25 +839,38 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_DOBOT://越彊机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_UR://优傲机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="stop\r\n";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_KUKA://库卡机器人
                                             {
-
+                                                mutexsend_buf_group.lock();
+                                                QDomDocument doc;
+                                                QDomText s_data;
+                                                QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                                doc.appendChild(root_elem);
+                                                QDomElement obj;
+                                                obj=doc.createElement("RUNSTATE");
+                                                s_data=doc.createTextNode(QString::number(stopreg));
+                                                obj.appendChild(s_data);
+                                                root_elem.appendChild(obj);
+                                                QString msg=doc.toString();
+                                                std::string str=msg.toStdString();
+                                                _p->send_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
                                             }
                                             break;
                                         }
@@ -813,26 +918,39 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_DOBOT://越彊机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                              // QString msg="PauseScript()";
                                                 QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_UR://优傲机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="pause\r\n";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_KUKA://库卡机器人
                                             {
-
+                                                mutexsend_buf_group.lock();
+                                                QDomDocument doc;
+                                                QDomText s_data;
+                                                QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                                doc.appendChild(root_elem);
+                                                QDomElement obj;
+                                                obj=doc.createElement("RUNSTATE");
+                                                s_data=doc.createTextNode(QString::number(stopreg));
+                                                obj.appendChild(s_data);
+                                                root_elem.appendChild(obj);
+                                                QString msg=doc.toString();
+                                                std::string str=msg.toStdString();
+                                                _p->send_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
                                             }
                                             break;
                                         }
@@ -854,26 +972,39 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_DOBOT://越彊机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                             //  QString msg="ContinueScript()";
                                                 QString msg="ResetRobot()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_UR://优傲机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="play\r\n";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_KUKA://库卡机器人
                                             {
-
+                                                mutexsend_buf_group.lock();
+                                                QDomDocument doc;
+                                                QDomText s_data;
+                                                QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                                doc.appendChild(root_elem);
+                                                QDomElement obj;
+                                                obj=doc.createElement("RUNSTATE");
+                                                s_data=doc.createTextNode(QString::number(stopreg));
+                                                obj.appendChild(s_data);
+                                                root_elem.appendChild(obj);
+                                                QString msg=doc.toString();
+                                                std::string str=msg.toStdString();
+                                                _p->send_buf_group.push_back(str);
+                                                mutexsend_buf_group.unlock();
                                             }
                                             break;
                                         }
@@ -1188,7 +1319,7 @@ void RobotlinkThread::run() //连接机器人命令
                 case ROBOT_MODEL_KUKA://库卡机器人
                 {
                     _p->m_client.CreateSocket();
-                    if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_UR_INFO_PORT))
+                    if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_KUKA_INFO_PORT))
                     {
                         main_record.lock();
                         QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
@@ -1197,7 +1328,7 @@ void RobotlinkThread::run() //连接机器人命令
                         continue;
                     }
                     _p->m_client.SetBlock(0);
-                    if(0!=_p->m_client.SetRcvBufferlong(ROBOT_UR_INFO_RECVBUFFER_MAX*2))
+                    if(0!=_p->m_client.SetRcvBufferlong(ROBOT_KUKA_INFO_RECVBUFFER_MAX*2))
                     {
                         main_record.lock();
                         QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
@@ -1206,6 +1337,40 @@ void RobotlinkThread::run() //连接机器人命令
                         continue;
                     }
                     _p->b_client=true;
+
+                    _p->rcv_buf=new uint8_t[ROBOT_KUKA_INFO_RECVBUFFER_MAX*2+1];
+                    _p->b_rcv_thread=true;
+                    _p->rcv_thread->start();
+                    _p->m_sendent.CreateSocket();
+                    if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_KUKA_SEND_PORT))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->m_sendent.SetBlock(0);
+                #ifdef OPEN_SHOW_ROBOTSOCKDATA
+                    _p->sendrcv_buf=new uint8_t[ROBOT_UR_INFO_SENDRECVBUFFER_MAX*2+1];
+                    if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_UR_INFO_SENDRECVBUFFER_MAX*2))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                #endif
+                    _p->send_buf_group.clear();
+                    _p->b_sendent=true;
+                    _p->b_send_thread=true;
+                    _p->send_Thread->start();
+                #ifdef OPEN_SHOW_ROBOTSOCKDATA
+                    _p->b_sendrcv_thread=true;
+                    _p->sendrcv_Thread->start();
+                #endif
+
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
                 }
@@ -1416,7 +1581,87 @@ void RobotrcvThread::run()//获取机器人数据
                 break;
                 case ROBOT_MODEL_KUKA://库卡机器人
                 {
+                    int rcvnum=_p->m_client.Recv((char*)_p->rcv_buf,ROBOT_KUKA_INFO_RECVBUFFER_MAX*2);
+                    if(rcvnum>0)
+                    {
+                        uint8_t state;
+                        float f_robX;
+                        float f_robY;
+                        float f_robZ;
+                        float f_robRX;
+                        float f_robRY;
+                        float f_robRZ;
+                        float f_speed;
 
+                        QString rcvmsg=QString::fromLocal8Bit((char*)_p->rcv_buf,rcvnum);
+                        QDomDocument doc;
+                        if(true==doc.setContent(rcvmsg))
+                        {
+                            QDomElement root = doc.documentElement();
+                            if(root.tagName()=="ROBOTINFO")
+                            {
+                                auto child = root.childNodes();
+                                for(int i=0;i<child.size();i++)
+                                {
+                                    auto childobj=child.at(i).toElement();
+                                    if(childobj.tagName()=="POS")
+                                    {
+                                        auto child = childobj.childNodes();
+                                        for(int i=0;i<child.size();i++)
+                                        {
+                                            auto childobj=child.at(i).toElement();
+                                            if(childobj.tagName()=="X")
+                                            {
+                                                f_robX=childobj.text().toFloat();
+                                                _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&f_robX))[0];
+                                                _p->mb_mapping->tab_registers[ROB_X_POS_FL_REG_ADD]=((uint16_t*)(&f_robX))[1];
+                                            }
+                                            else if(childobj.tagName()=="Y")
+                                            {
+                                                f_robY=childobj.text().toFloat();
+                                                _p->mb_mapping->tab_registers[ROB_Y_POS_FH_REG_ADD]=((uint16_t*)(&f_robY))[0];
+                                                _p->mb_mapping->tab_registers[ROB_Y_POS_FL_REG_ADD]=((uint16_t*)(&f_robY))[1];
+                                            }
+                                            else if(childobj.tagName()=="Z")
+                                            {
+                                                f_robZ=childobj.text().toFloat();
+                                                _p->mb_mapping->tab_registers[ROB_Z_POS_FH_REG_ADD]=((uint16_t*)(&f_robZ))[0];
+                                                _p->mb_mapping->tab_registers[ROB_Z_POS_FL_REG_ADD]=((uint16_t*)(&f_robZ))[1];
+                                            }
+                                            else if(childobj.tagName()=="RX")
+                                            {
+                                                f_robRX=childobj.text().toFloat();
+                                                _p->mb_mapping->tab_registers[ROB_RX_POS_FH_REG_ADD]=((uint16_t*)(&f_robRX))[0];
+                                                _p->mb_mapping->tab_registers[ROB_RX_POS_FL_REG_ADD]=((uint16_t*)(&f_robRX))[1];
+                                            }
+                                            else if(childobj.tagName()=="RY")
+                                            {
+                                                f_robRY=childobj.text().toFloat();
+                                                _p->mb_mapping->tab_registers[ROB_RY_POS_FH_REG_ADD]=((uint16_t*)(&f_robRY))[0];
+                                                _p->mb_mapping->tab_registers[ROB_RY_POS_FL_REG_ADD]=((uint16_t*)(&f_robRY))[1];
+                                            }
+                                            else if(childobj.tagName()=="RZ")
+                                            {
+                                                f_robRZ=childobj.text().toFloat();
+                                                _p->mb_mapping->tab_registers[ROB_RZ_POS_FH_REG_ADD]=((uint16_t*)(&f_robRZ))[0];
+                                                _p->mb_mapping->tab_registers[ROB_RZ_POS_FL_REG_ADD]=((uint16_t*)(&f_robRZ))[1];
+                                            }
+                                        }
+                                    }
+                                    else if(childobj.tagName()=="SPEED")
+                                    {
+                                        f_speed=childobj.text().toFloat();
+                                        _p->mb_mapping->tab_registers[ROB_SPEED_FH_REG_ADD]=((uint16_t*)(&f_speed))[0];
+                                        _p->mb_mapping->tab_registers[ROB_SPEED_FL_REG_ADD]=((uint16_t*)(&f_speed))[1];
+                                    }
+                                    else if(childobj.tagName()=="STATE")
+                                    {
+                                        state=childobj.text().toInt();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 break;
             }
@@ -1509,6 +1754,7 @@ void RobotsendrcvThread::run()//获取机器人命令回复数据
     {
         if(_p->b_sendrcv_thread==true)
         {
+            int rcvnum=0;
             switch(_p->rob_mod)
             {
                 case ROBOT_MODEL_NULL://无机器人
@@ -1523,35 +1769,27 @@ void RobotsendrcvThread::run()//获取机器人命令回复数据
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人
                 {
-                    int rcvnum=_p->m_sendent.Recv((char*)_p->sendrcv_buf,ROBOT_DOBOT_INFO_SENDRECVBUFFER_MAX*2);
-                    if(rcvnum>0)
-                    {
-                        main_record.lock();
-                        _p->sendrcv_buf[rcvnum]='\0';
-                        QString return_msg=(char*)_p->sendrcv_buf;
-                        _p->m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                    }
+                    rcvnum=_p->m_sendent.Recv((char*)_p->sendrcv_buf,ROBOT_DOBOT_INFO_SENDRECVBUFFER_MAX*2);
                 }
                 break;
                 case ROBOT_MODEL_UR://优傲机器人
                 {
-                    int rcvnum=_p->m_sendent.Recv((char*)_p->sendrcv_buf,ROBOT_UR_INFO_SENDRECVBUFFER_MAX*2);
-                    if(rcvnum>0)
-                    {
-                        main_record.lock();
-                        _p->sendrcv_buf[rcvnum]='\0';
-                        QString return_msg=(char*)_p->sendrcv_buf;
-                        _p->m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                    }
+                    rcvnum=_p->m_sendent.Recv((char*)_p->sendrcv_buf,ROBOT_UR_INFO_SENDRECVBUFFER_MAX*2);
                 }
                 break;
                 case ROBOT_MODEL_KUKA://库卡机器人
                 {
-
+                    rcvnum=_p->m_sendent.Recv((char*)_p->sendrcv_buf,ROBOT_KUKA_INFO_SENDRECVBUFFER_MAX*2);
                 }
                 break;
+            }
+            if(rcvnum>0)
+            {
+                main_record.lock();
+                _p->sendrcv_buf[rcvnum]='\0';
+                QString return_msg=(char*)_p->sendrcv_buf;
+                _p->m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
             }
         }
         else
@@ -1642,6 +1880,7 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
     {
         if(_p->b_totalcontrolrcv_Thread==true)
         {
+            int rcvnum=0;
             switch(_p->rob_mod)
             {
                 case ROBOT_MODEL_NULL://无机器人
@@ -1656,28 +1895,12 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人
                 {
-                    int rcvnum=_p->m_totalcontrolent.Recv((char*)_p->totalcontrolrcv_buf,ROBOT_DOBOT_INFO_TOTALCONTROLCVBUFFER_MAX*2);
-                    if(rcvnum>0)
-                    {
-                        main_record.lock();
-                        _p->totalcontrolrcv_buf[rcvnum]='\0';
-                        QString return_msg=(char*)_p->totalcontrolrcv_buf;
-                        _p->m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                    }
+                    rcvnum=_p->m_totalcontrolent.Recv((char*)_p->totalcontrolrcv_buf,ROBOT_DOBOT_INFO_TOTALCONTROLCVBUFFER_MAX*2);
                 }
                 break;
                 case ROBOT_MODEL_UR://优傲机器人
                 {
-                    int rcvnum=_p->m_totalcontrolent.Recv((char*)_p->totalcontrolrcv_buf,ROBOT_UR_INFO_TOTALCONTROLCVBUFFER_MAX*2);
-                    if(rcvnum>0)
-                    {
-                        main_record.lock();
-                        _p->totalcontrolrcv_buf[rcvnum]='\0';
-                        QString return_msg=(char*)_p->totalcontrolrcv_buf;
-                        _p->m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                    }
+                    rcvnum=_p->m_totalcontrolent.Recv((char*)_p->totalcontrolrcv_buf,ROBOT_UR_INFO_TOTALCONTROLCVBUFFER_MAX*2);
                 }
                 break;
                 case ROBOT_MODEL_KUKA://库卡机器人
@@ -1685,6 +1908,14 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
 
                 }
                 break;
+            }
+            if(rcvnum>0)
+            {
+                main_record.lock();
+                _p->totalcontrolrcv_buf[rcvnum]='\0';
+                QString return_msg=(char*)_p->totalcontrolrcv_buf;
+                _p->m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
             }
         }
         else

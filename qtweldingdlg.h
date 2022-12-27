@@ -132,6 +132,10 @@ private slots:
 
     void on_weld_fireBtn_released();
 
+    void on_weld_elem_currentIndexChanged(int index);
+
+    void on_weld_eled_editingFinished();
+
 private:
     Ui::qtweldingDlg *ui;
 

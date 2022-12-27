@@ -58,7 +58,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 /*****************************/
 //自带机器人控制接口
-#define PORT_ROB_MYSELF_CONTROL_IP            "127.0.0.2"
+#define PORT_ROB_MYSELF_CONTROL_IP            "127.0.0.1"
 #define PORT_ROB_MYSELF_CONTROL_PORT          1496
 /******************************/
 

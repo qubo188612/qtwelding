@@ -49,19 +49,19 @@ QString RobotData::robot_model_toQString(ROBOT_MODEL robot_model)
     switch(robot_model)
     {
     case ROBOT_MODEL_NULL:
-        msg="无";
+        msg=QString::fromLocal8Bit("无");
         break;
     case ROBOT_MODEL_EMERGEN:
-        msg="智昌";
+        msg=QString::fromLocal8Bit("智昌");
         break;
     case ROBOT_MODEL_DOBOT:
-        msg="越彊";
+        msg=QString::fromLocal8Bit("越彊");
         break;
     case ROBOT_MODEL_UR:
-        msg="优傲";
+        msg=QString::fromLocal8Bit("优傲");
         break;
     case ROBOT_MODEL_KUKA:
-        msg="库卡";
+        msg=QString::fromLocal8Bit("库卡");
         break;
     }
     return msg;
@@ -73,16 +73,16 @@ QString RobotData::robot_state_toQString(ROBOT_STATE robot_state)
     switch(robot_state)
     {
     case ROBOT_STATE_UNLINK:
-        msg="未链接";
+        msg=QString::fromLocal8Bit("未链接");
         break;
     case ROBOT_STATE_IDLE:
-        msg="空闲";
+        msg=QString::fromLocal8Bit("空闲");
         break;
     case ROBOT_STATE_MOVE:
-        msg="忙碌";
+        msg=QString::fromLocal8Bit("忙碌");
         break;
     case ROBOT_STATE_STOP:
-        msg="扫描";
+        msg=QString::fromLocal8Bit("扫描");
         break;
     }
     return msg;
@@ -94,10 +94,49 @@ QString RobotData::weld_model_toQString(WELD_MODEL weld_model)
     switch(weld_model)
     {
     case WELD_MODEL_NULL:
-        msg="无";
+        msg=QString::fromLocal8Bit("无");
         break;
     case WELD_MODEL_ROBOT_LINK:
-        msg="机器人直连";
+        msg=QString::fromLocal8Bit("机器人直连");
+        break;
+    }
+    return msg;
+}
+
+QString RobotData::weldwork_elem_toQString(Alternatingcurrent weld_elem)
+{
+    QString msg;
+    switch(weld_elem)
+    {
+        case DIRECT:       //直流电
+            msg=QString::fromLocal8Bit("直流");
+        break;
+        case ALTERNATING:  //交流电
+            msg=QString::fromLocal8Bit("交流");
+        break;
+    }
+    return msg;
+}
+
+QString RobotData::weldwork_model_toQString(Weldworkmodel weld_model)
+{
+    QString msg;
+    switch(weld_model)
+    {
+        case STATIC:    //空闲
+            msg=QString::fromLocal8Bit("空闲");
+        break;
+        case FIRE:         //起弧
+            msg=QString::fromLocal8Bit("起弧");
+        break;
+        case WIND:         //送丝
+            msg=QString::fromLocal8Bit("送丝");
+        break;
+        case REWIND:       //退丝
+            msg=QString::fromLocal8Bit("退丝");
+        break;
+        case GASS:         //出气
+            msg=QString::fromLocal8Bit("出气");
         break;
     }
     return msg;

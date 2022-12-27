@@ -29,8 +29,8 @@ public:
     void cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
     void cmd_delay(int time);//延时命令
     void cmd_cam(int task,int work);//相机启动停止命令
-    void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel_ID work);//焊机电流和模式设置以及启停命令
-    void cmd_elec(Weldworkmodel_ID work);//焊机启停命令
+    void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel work);//焊机电流和模式设置以及启停命令
+    void cmd_elec(Weldworkmodel work);//焊机启停命令
 
     int cmdlist_check();//检查指令
     int cmdlist_build(volatile int &line);//把机器人文件命令编译,line为当前开始的编译步骤

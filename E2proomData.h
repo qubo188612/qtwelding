@@ -80,12 +80,16 @@
 #define E2POOM_DEMDLG_RADIO_MOD_MAX         1
 #define E2POOM_DEMDLG_RADIO_MOD_USE         0
 
-#define E2POOM_MAINDLG_SAVEBUFF             8
+#define E2POOM_MAINDLG_SAVEBUFF             12
 #define E2POOM_MAINDLG_SYSPATH_MOTO         "./SAVE/E2P_MAINDLG.bsd"
 #define E2POOM_MAINDLG_SAVEDATA_MIN         0
 #define E2POOM_MAINDLG_SAVEDATA_MAX         1
 #define E2POOM_MAINDLG_SAVEDATA_USE         0
-
+#define E2POOM_MAINDLG_WELDELED_MIN         0
+#define E2POOM_MAINDLG_WELDELED_USE         0
+#define E2POOM_MAINDLG_WELDELEM_MIN         0
+#define E2POOM_MAINDLG_WELDELEM_MAX         1
+#define E2POOM_MAINDLG_WELDELEM_USE         0
 
 class E2proomData
 {
@@ -185,6 +189,8 @@ public:
  /***************************/
     //主页面
     Int32 maindlg_SaveDatacheckBox;             //0:不保存轨道处理数据，1:保存轨道处理数据
+    float maindlg_Weldeled;                     //点焊电流
+    Alternatingcurrent_ID maindlg_Weldelem;     //点焊工艺
 
     void read_maindlg_para();
     void write_maindlg_para();
@@ -193,7 +199,11 @@ public:
     Int32 maindlg_SaveDatacheckBox_min;
     Int32 maindlg_SaveDatacheckBox_max;
     Int32 maindlg_SaveDatacheckBox_use;
-
+    Int32 maindlg_Weldeled_min;
+    Int32 maindlg_Weldeled_use;
+    Int32 maindlg_Weldelem_min;
+    Int32 maindlg_Weldelem_max;
+    Int32 maindlg_Weldelem_use;
  /***************************/
     void write();
 private:

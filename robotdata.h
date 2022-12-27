@@ -50,7 +50,10 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
 #define ROBOT_UR_INFO_PORT                        30003    //优傲机器人数据信息获取端口
 #define ROBOT_UR_INFO_RECVBUFFER_MAX              1108     //优傲机器人数据信息最大个数
 
+#define ROBOT_KUKA_SEND_PORT                      30001    //库卡机器人运动值令数据信息发送端口
+#define ROBOT_KUKA_INFO_SENDRECVBUFFER_MAX        1440     //库卡机器人运动值令发送数据回复信息最大个数
 #define ROBOT_KUKA_INFO_PORT                      30003    //库卡机器人信息端口
+#define ROBOT_KUKA_INFO_RECVBUFFER_MAX            1440     //库卡机器人数据信息最大个数
 
 /***************************************/
 
@@ -105,6 +108,12 @@ public:
 
     WELD_MODEL weld_model;    //焊机型号
     QString weld_model_toQString(WELD_MODEL weld_model);  //焊机型号字符串输出
+    float weld_eled;    //焊接电流
+    Alternatingcurrent weld_elem;   //焊接工艺
+    QString weldwork_elem_toQString(Alternatingcurrent weld_elem);//焊接工艺字符串输出
+    Weldworkmodel weld_state;   //焊接状态
+    QString weldwork_model_toQString(Weldworkmodel weld_model);//焊接状态字符串输出
+
 
     int SaveRob(char* filename);    //保存项目
 

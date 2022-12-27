@@ -106,6 +106,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     {
         ui->SaveDatacheckBox->setCheckState(Qt::Checked);
     }
+    ui->weld_eled->setText(QString::number(m_mcs->e2proomdata.maindlg_Weldeled,'f',3));
+    ui->weld_elem->setCurrentIndex(m_mcs->e2proomdata.maindlg_Weldelem);
 
     /************************************************/
 
@@ -629,7 +631,9 @@ void qtweldingDlg::on_weld_fireBtn_pressed()    //点焊按下
         ui->record->append(QString::fromLocal8Bit("焊机未连接成功"));
         return;
     }
-    m_mcs->tosendbuffer->cmd_elec(FIRE);
+    Alternatingcurrent_ID elem=(Alternatingcurrent_ID)ui->weld_elem->currentIndex();
+    float eled=ui->weld_eled->text().toFloat();
+    m_mcs->tosendbuffer->cmd_elec(eled,elem,FIRE);
     ui->record->append(QString::fromLocal8Bit("开始点焊"));
 }
 
@@ -645,6 +649,18 @@ void qtweldingDlg::on_weld_fireBtn_released()   //点焊抬起
     ui->record->append(QString::fromLocal8Bit("停止点焊"));
 }
 
+void qtweldingDlg::on_weld_elem_currentIndexChanged(int index)
+{
+    m_mcs->e2proomdata.maindlg_Weldelem=(Alternatingcurrent_ID)index;
+    m_mcs->e2proomdata.write_maindlg_para();
+}
+
+
+void qtweldingDlg::on_weld_eled_editingFinished()
+{
+    m_mcs->e2proomdata.maindlg_Weldeled=ui->weld_eled->text().toFloat();
+    m_mcs->e2proomdata.write_maindlg_para();
+}
 
 void qtweldingDlg::on_SaveDatacheckBox_stateChanged(int arg1)//保存数据
 {
@@ -911,7 +927,9 @@ void qtweldingDlg::init_show_robpos_list()
     {
         ui->weld_ip_port->setText(m_mcs->ip->robot_ip[0].weld_ip.ip);
     }
-
+    ui->weld_current->setText(QString::number(m_mcs->rob->weld_eled,'f',3));
+    ui->weld_alternating->setText(m_mcs->rob->weldwork_elem_toQString(m_mcs->rob->weld_elem));
+    ui->weld_state->setText(m_mcs->rob->weldwork_model_toQString(m_mcs->rob->weld_state));
     b_init_show_robpos_list=true;
 }
 
