@@ -1839,8 +1839,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             ui->dZ->setText(QString::number(f_dZ,'f',2));
             if(ui->checkBox->isChecked()==false)
             {
-                ui->record->append(QString::fromLocal8Bit("获取当前标定补偿: X="));
-                QString msg=QString::number(f_dX,'f',2)+" Y="+QString::number(f_dY,'f',2)+" Z="+QString::number(f_dZ,'f',2);
+                QString msg=QString::fromLocal8Bit("获取当前标定补偿: X=")+QString::number(f_dX,'f',2)+" Y="+QString::number(f_dY,'f',2)+" Z="+QString::number(f_dZ,'f',2);
                 ui->record->append(msg);
             }
         }

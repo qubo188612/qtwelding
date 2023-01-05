@@ -5,6 +5,7 @@
 #if _MSC_VER
 #include <Windows.h>
 #define socklen_t int
+#pragma comment(lib, "Ws2_32.lib")
 #else
 #include <arpa/inet.h>
 #define closesocket close    //宏定义替换函数

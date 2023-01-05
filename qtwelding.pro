@@ -135,14 +135,14 @@ INCLUDEPATH += D:/opencv-4.6.0/build/include \
 LIBS += D:/opencv-4.6.0/build/x64/vc16/lib/opencv*.lib \
 
 #自定义ROS接口添加
-INCLUDEPATH += C:/Users/34638/Documents/ros2topic/myRos2test/install/tutorial_interfaces/include \
+#INCLUDEPATH += C:/Users/34638/Documents/ros2topic/myRos2test/install/tutorial_interfaces/include \
 
-LIBS += C:/Users/34638/Documents/ros2topic/myRos2test/install/tutorial_interfaces/lib/*.lib \
+#LIBS += C:/Users/34638/Documents/ros2topic/myRos2test/install/tutorial_interfaces/lib/*.lib \
 
 #ROS库添加
-INCLUDEPATH += C:/opt/ros/foxy/x64/include \
+#INCLUDEPATH += C:/opt/ros/foxy/x64/include \
 
-LIBS += C:/opt/ros/foxy/x64/Lib/*.lib \
+#LIBS += C:/opt/ros/foxy/x64/Lib/*.lib \
 
 
 #modbustcp库的添加
