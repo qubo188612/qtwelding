@@ -321,7 +321,10 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                 QString msg=QString::fromLocal8Bit("工程名称: ")+m_mcs->project->project_name+
                             QString::fromLocal8Bit(" 工程类型")+QString::number(m_mcs->project->project_Id)+": "
                             +m_mcs->project->project_Id_toQString(m_mcs->project->project_Id);
-                m_mcs->cam->sop_cam[0].DisConnect();
+                if(m_mcs->resultdata.link_result_state==true)
+                {
+                    m_mcs->cam->sop_cam[0].DisConnect();
+                }
                 switch(m_mcs->project->project_Id)
                 {
                     case PROGECT_ID_TEACH_SCAN:
@@ -333,7 +336,10 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                     }
                     break;
                 }
-                m_mcs->cam->sop_cam[0].InitConnect();
+                if(m_mcs->resultdata.link_result_state==true)
+                {
+                    m_mcs->cam->sop_cam[0].InitConnect();
+                }
             }
             else
             {
@@ -346,7 +352,10 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
             QString msg=QString::fromLocal8Bit("工程名称: ")+m_mcs->project->project_name+
                         QString::fromLocal8Bit(" 工程类型")+QString::number(m_mcs->project->project_Id)+": "
                         +m_mcs->project->project_Id_toQString(m_mcs->project->project_Id);
-            m_mcs->cam->sop_cam[0].DisConnect();
+            if(m_mcs->resultdata.link_result_state==true)
+            {
+                m_mcs->cam->sop_cam[0].DisConnect();
+            }
             switch(m_mcs->project->project_Id)
             {
                 case PROGECT_ID_TEACH_SCAN:
@@ -358,7 +367,10 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                 }
                 break;
             }
-            m_mcs->cam->sop_cam[0].InitConnect();
+            if(m_mcs->resultdata.link_result_state==true)
+            {
+                m_mcs->cam->sop_cam[0].InitConnect();
+            }
         }
         break;
     }

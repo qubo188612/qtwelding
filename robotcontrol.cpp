@@ -1135,7 +1135,8 @@ void RobotlinkThread::run() //连接机器人命令
                 break;
                 case ROBOT_MODEL_EMERGEN://智昌机器人
                 {
-
+                    old_rodb_ip=rodb_ip;
+                    old_rob_mod=_p->rob_mod;
                 }
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人
@@ -1341,6 +1342,8 @@ void RobotlinkThread::run() //连接机器人命令
                     _p->rcv_buf=new uint8_t[ROBOT_KUKA_INFO_RECVBUFFER_MAX*2+1];
                     _p->b_rcv_thread=true;
                     _p->rcv_thread->start();
+
+
                     _p->m_sendent.CreateSocket();
                     if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_KUKA_SEND_PORT))
                     {

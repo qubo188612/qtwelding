@@ -123,6 +123,8 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_STOP_REG_ADD                      0x0400        //急停
 
 /*****************************/
+//相机任务号文件查询TCP传输端口
+#define PORT_ALSTCP_FTP                       1476
 //相机原图TCP传输端口
 #define PORT_ALSTCP_CAMIMAGE                  1497
 //相机处理结果图TCP传输端口

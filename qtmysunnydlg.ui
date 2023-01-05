@@ -580,7 +580,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>6</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1196,6 +1196,42 @@
       </property>
      </item>
     </widget>
+    <widget class="QLabel" name="tab2label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg100_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab2Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
@@ -1743,6 +1779,42 @@
        <string/>
       </property>
      </item>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab3Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab3label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg101_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_4">
@@ -2612,6 +2684,42 @@
       </property>
      </item>
     </widget>
+    <widget class="QLineEdit" name="alg102_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab4label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab4Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_5">
     <attribute name="title">
@@ -2859,6 +2967,42 @@
        <string/>
       </property>
      </item>
+    </widget>
+    <widget class="QLineEdit" name="alg103_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab5label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab5Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_6">
@@ -3728,6 +3872,42 @@
       </property>
      </item>
     </widget>
+    <widget class="QPushButton" name="othersaveTab6Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab6label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg104_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_7">
     <attribute name="title">
@@ -4316,6 +4496,42 @@
       <string>重置任务号105参数</string>
      </property>
     </widget>
+    <widget class="QLineEdit" name="alg105_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab7Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab7label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QLabel" name="label_30">
@@ -4462,7 +4678,7 @@
    <property name="geometry">
     <rect>
      <x>530</x>
-     <y>160</y>
+     <y>640</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -4714,6 +4930,19 @@
    </property>
    <property name="text">
     <string>导入补偿设置</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="tasklistshowBtn">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>160</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>当前任务号列表</string>
    </property>
   </widget>
  </widget>

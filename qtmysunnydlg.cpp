@@ -155,6 +155,8 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     connect(thread1, SIGNAL(Send_show_cvimage_inlab(cv::Mat)), this, SLOT(init_show_cvimage_inlab(cv::Mat)));
     connect(thread1, SIGNAL(Send_set_task()), this, SLOT(init_set_task()));
 
+    m_mcs->resultdata.client=new QTcpSocket(this);
+
     showtasknum=new showtasknumdlg;
 #if _MSC_VER||WINDOWS_TCP
 #else
@@ -213,6 +215,80 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(ui->checkBox->isChecked()==false)
                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
        }
+    });
+
+    connect(ui->tasklistshowBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            QJsonObject json;
+            json.insert("ls","task");
+            QString msg=JsonToQstring(json);
+            m_mcs->resultdata.client->write(msg.toUtf8());
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("查看任务号列表"));
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再查看任务号列表"));
+        }
+     });
+
+    //FTP端接收数据
+    connect(m_mcs->resultdata.client,&QTcpSocket::readyRead,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            QByteArray array=m_mcs->resultdata.client->readAll();
+            QString msg=array;
+            QJsonObject json=QstringToJson(msg);
+            QJsonObject::Iterator it;
+            for(it=json.begin();it!=json.end();it++)//遍历Key
+            {
+                QString keyString=it.key();
+                if(keyString=="ls")
+                {
+                    m_mcs->resultdata.taskfilename.clear();
+                    QJsonArray versionArray=it.value().toArray();
+                    for(int i=0;i<versionArray.size();i++)
+                    {
+                        taskinfo sing;
+                        QJsonObject qtask=versionArray[i].toObject();
+                        QJsonObject::Iterator oit;
+                        for(oit=qtask.begin();oit!=qtask.end();oit++)//遍历Key
+                        {
+                            QString qkey=oit.key();
+                            if(qkey=="taskname")
+                            {
+                                sing.taskname=oit.value().toInt();
+                            }
+                            else if(qkey=="alsnum")
+                            {
+                                sing.alsnum=oit.value().toInt();
+                            }
+                        }
+                        m_mcs->resultdata.taskfilename.push_back(sing);
+                    }
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                         QString msg=QString::fromLocal8Bit("当前任务号列表:共")+QString::number(m_mcs->resultdata.taskfilename.size())+QString::fromLocal8Bit("个");
+                         ui->record->append(msg);
+                         for(int i=0;i<m_mcs->resultdata.taskfilename.size();i++)
+                         {
+                             QString msg=QString::fromLocal8Bit("任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
+                                     QString::fromLocal8Bit(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
+                             ui->record->append(msg);
+                         }
+                    }
+                }
+                else if(keyString=="touch")
+                {
+                    if(it.value().toString()=="ok")
+                    {
+                        ui->record->append(QString::fromLocal8Bit("自定义任务号生成成功"));
+                    }
+                }
+            }
+        }
     });
 
     connect(ui->setcamsizeBtn,&QPushButton::clicked,[=](){
@@ -489,6 +565,47 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
        }
     });
 
+    connect(ui->othersaveTab2Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg100_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if(taskname>=200&&taskname<=1000)
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",100);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:100");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
+
     connect(ui->writeTab3Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
        {
@@ -631,6 +748,47 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
        }
     });
 
+    connect(ui->othersaveTab3Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg101_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if(taskname>=200&&taskname<=1000)
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",101);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:101");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
+
     connect(ui->writeTab4Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
        {
@@ -772,6 +930,48 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号102参数"));
        }
     });
+
+    connect(ui->othersaveTab4Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg102_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if(taskname>=200&&taskname<=1000)
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",102);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:102");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
+
     connect(ui->writeTab5Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
        {
@@ -913,6 +1113,47 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号103参数"));
        }
     });
+
+    connect(ui->othersaveTab5Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg103_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if(taskname>=200&&taskname<=1000)
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",103);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:103");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
 
     connect(ui->writeTab6Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
@@ -1056,6 +1297,47 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
        }
     });
 
+    connect(ui->othersaveTab6Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg104_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if(taskname>=200&&taskname<=1000)
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",104);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:104");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
+
     connect(ui->writeTab7Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
        {
@@ -1197,6 +1479,47 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号105参数"));
        }
     });
+
+    connect(ui->othersaveTab7Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg105_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if(taskname>=200&&taskname<=1000)
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",105);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:105");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
 
 
     connect(ui->tasknumshowBtn,&QPushButton::clicked,[=](){
@@ -1346,6 +1669,7 @@ qtmysunnyDlg::~qtmysunnyDlg()
     */
     delete thread1;
     delete showtasknum;
+    delete m_mcs->resultdata.client;
 #if _MSC_VER||WINDOWS_TCP
 #else
     delete cambuild;
@@ -1423,6 +1747,21 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
                 return;
             }
             m_mcs->resultdata.link_robotset_state=true;
+            if(ui->checkBox->isChecked()==false)
+                ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+        }
+        if(m_mcs->resultdata.link_ftp_state==false)
+        {
+            QString server_ip=ui->IPadd->text();
+            QString server_port1=QString::number(PORT_ALSTCP_FTP);
+            m_mcs->resultdata.client->connectToHost(server_ip.toUtf8(), server_port1.toInt());
+            if(!m_mcs->resultdata.client->waitForConnected(1000))
+            {
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+                return;
+            }
+            m_mcs->resultdata.link_ftp_state=true;
             if(ui->checkBox->isChecked()==false)
                 ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
         }
@@ -1613,6 +1952,14 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             ui->record->append(QString::fromLocal8Bit("相机关闭"));
 
 
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            m_mcs->resultdata.client->disconnectFromHost();
+            m_mcs->resultdata.link_ftp_state=false;
+            QString msg=QString::number(PORT_ALSTCP_FTP);
+            if(ui->checkBox->isChecked()==false)
+                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+        }
         if(m_mcs->resultdata.link_result_state==true)
         {
             close_camer_modbus();
@@ -2070,6 +2417,22 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
             break;
         }
     }
+}
+
+QJsonObject qtmysunnyDlg::QstringToJson(QString jsonString)
+{
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonString.toLocal8Bit().data());
+    if(jsonDocument.isNull())
+    {
+        qDebug()<< "String NULL"<< jsonString.toLocal8Bit().data();
+    }
+    QJsonObject jsonObject = jsonDocument.object();
+    return jsonObject;
+}
+
+QString qtmysunnyDlg::JsonToQstring(QJsonObject jsonObject)
+{
+    return QString(QJsonDocument(jsonObject).toJson());
 }
 
 getposThread::getposThread(qtmysunnyDlg *statci_p)

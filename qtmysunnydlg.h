@@ -18,6 +18,10 @@
 #endif
 #include "TimeFunction.h"
 #include "PictureBox.h"
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 namespace Ui {
 class qtmysunnyDlg;
@@ -43,6 +47,10 @@ public:
     void close_camer_modbus();      //关闭相机采集
 
     void showupdata_tabWidget(int index);
+
+    QString JsonToQstring(QJsonObject jsonObject);
+
+    QJsonObject QstringToJson(QString jsonString);
 
     getposThread *thread1;          //激光器线程
     bool b_thread1;

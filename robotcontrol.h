@@ -7,6 +7,8 @@
 #include <QMutex>
 #include <QtXml>
 #include <QDomDocument>
+#include <QTcpServer>
+#include <QTcpSocket>
 
 #define ROBOTCONTROL_PAUSE_DIS     2000 //暂停恢复时判断点离发送点最近的距离大于这个值时，得重新往起点移动，否则继续往下移动
 
