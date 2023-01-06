@@ -6,7 +6,7 @@
 
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
-#define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
+//#define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
 //#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 
