@@ -158,6 +158,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs->resultdata.client=new QTcpSocket(this);
 
     showtasknum=new showtasknumdlg;
+    taskclear=new taskcleardlg(m_mcs);
 #if _MSC_VER||WINDOWS_TCP
 #else
     cambuild=new cambuilddlg(m_mcs);
@@ -216,16 +217,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
        }
     });
-
-    connect(ui->tasklistshowBtn,&QPushButton::clicked,[=](){
+    connect(ui->taskclearBtn,&QPushButton::clicked,[=](){
         if(m_mcs->resultdata.link_ftp_state==true)
         {
-            QJsonObject json;
-            json.insert("ls","task");
-            QString msg=JsonToQstring(json);
-            m_mcs->resultdata.client->write(msg.toUtf8());
-            if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("查看任务号列表"));
+            taskclear->init_dlg_show();
+            taskclear->setWindowTitle(QString::fromLocal8Bit("查看任务号列表"));
+            taskclear->exec();
+            taskclear->close_dlg_show();
         }
         else
         {
@@ -279,13 +277,29 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                              ui->record->append(msg);
                          }
                     }
+                    taskclear->set_task_num();
                 }
                 else if(keyString=="touch")
                 {
                     if(it.value().toString()=="ok")
                     {
-                        ui->record->append(QString::fromLocal8Bit("自定义任务号生成成功"));
+                        if(ui->checkBox->isChecked()==false)
+                        {
+                            ui->record->append(QString::fromLocal8Bit("自定义任务号生成成功"));
+                        }
                     }
+                }
+                else if(keyString=="rm")
+                {
+                    if(it.value().toString()=="ok")
+                    {
+                        if(ui->checkBox->isChecked()==false)
+                        {
+                            ui->record->append(QString::fromLocal8Bit("删除自定义任务号完成"));
+                        }
+                    }
+                    taskclear->delete_task_num();
+                    taskclear->init_dlg_show();
                 }
             }
         }
@@ -1669,6 +1683,7 @@ qtmysunnyDlg::~qtmysunnyDlg()
     */
     delete thread1;
     delete showtasknum;
+    delete taskclear;
     delete m_mcs->resultdata.client;
 #if _MSC_VER||WINDOWS_TCP
 #else

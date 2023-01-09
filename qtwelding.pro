@@ -51,6 +51,7 @@ SOURCES += \
         soptocameratcpip.cpp \
         soptopcamera.cpp \
         synchronous.cpp \
+        taskcleardlg.cpp \
         tosendbuffer.cpp \
         traceedit0dlg.cpp \
         traceedit1dlg.cpp \
@@ -77,6 +78,7 @@ FORMS += \
     setmovecdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
+    taskcleardlg.ui \
     traceedit0dlg.ui \
     traceedit1dlg.ui \
     traceedit2dlg.ui \
@@ -120,6 +122,7 @@ HEADERS += \
     soptocameratcpip.h \
     soptopcamera.h \
     synchronous.h \
+    taskcleardlg.h \
     tistdtypes.h \
     tosendbuffer.h \
     traceedit0dlg.h \

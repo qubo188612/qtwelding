@@ -4,6 +4,7 @@
 #include "global.h"
 #include <QDialog>
 #include "showtasknumdlg.h"
+#include "taskcleardlg.h"
 #if _MSC_VER||WINDOWS_TCP
 #else
 #include "cambuilddlg.h"
@@ -76,6 +77,7 @@ private:
     Ui::qtmysunnyDlg *ui;
 
     showtasknumdlg *showtasknum;
+    taskcleardlg *taskclear;
 #if _MSC_VER||WINDOWS_TCP
 #else
     cambuilddlg *cambuild;

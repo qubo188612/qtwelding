@@ -4932,7 +4932,7 @@
     <string>导入补偿设置</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="tasklistshowBtn">
+  <widget class="QPushButton" name="taskclearBtn">
    <property name="geometry">
     <rect>
      <x>530</x>
