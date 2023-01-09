@@ -79,10 +79,7 @@ taskcleardlg::~taskcleardlg()
 
 void taskcleardlg::init_dlg_show()
 {
-    QJsonObject json;
-    json.insert("ls","task");
-    QString msg=QString(QJsonDocument(json).toJson());
-    m_mcs->resultdata.client->write(msg.toUtf8());
+    ui->record->clear();
 }
 
 void taskcleardlg::close_dlg_show()
@@ -115,4 +112,12 @@ void taskcleardlg::set_task_num()
 void taskcleardlg::delete_task_num()
 {
     ui->record->append(QString::fromLocal8Bit("删除自定义任务号完成"));
+}
+
+void taskcleardlg::get_task_list()
+{
+    QJsonObject json;
+    json.insert("ls","task");
+    QString msg=QString(QJsonDocument(json).toJson());
+    m_mcs->resultdata.client->write(msg.toUtf8());
 }

@@ -25,6 +25,7 @@ public:
 
     void set_task_num();
     void delete_task_num();
+    void get_task_list();
 
     void init_dlg_show();
     void close_dlg_show();
