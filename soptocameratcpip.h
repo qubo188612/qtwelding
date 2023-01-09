@@ -69,12 +69,6 @@ protected:
     void run();
 private:
     Soptocameratcpip *_p;
-
-    int myimgtcp(std::vector<uchar> decode,cv::Mat &image);
-
-    int myimgtcp2(std::vector<uchar> decode,cv::Mat &image);
-
-    cv::Mat image;
 };
 
 #endif

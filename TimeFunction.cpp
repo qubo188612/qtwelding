@@ -33,11 +33,13 @@ void TimeFunction::get_time_ms(std::string *timeOut)
     auto duration_in_us = std::chrono::duration_cast<std::chrono::microseconds>(time_now.time_since_epoch()).count();
     tv.tv_sec = duration_in_s;
     tv.tv_usec = duration_in_us;
+    ptm = localtime (&(tv.tv_sec));
+    milliseconds = (tv.tv_usec-tv.tv_sec*1000000) / 1000;
 #else
     gettimeofday(&tv, NULL);
-#endif
     ptm = localtime (&(tv.tv_sec));
     milliseconds = tv.tv_usec / 1000;
+#endif
     strftime (time_string, sizeof(time_string), "%Y_%m_%d_%H_%M_%S", ptm);
     snprintf (time_string2, sizeof(time_string2), "%s_%03ld", time_string, milliseconds);
     (*timeOut)=time_string2;

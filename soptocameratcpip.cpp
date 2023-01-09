@@ -69,7 +69,7 @@ void Soptocameratcpip::StartRecord(QString filename)
     double fps     = Getfps();
     int frameW  = cv_image.cols;
     int frameH  = cv_image.rows;
-    int codec=cv::VideoWriter::fourcc('X','V','I','D');
+    int codec=cv::VideoWriter::fourcc('M','J','P','G');
     writer.open(filename.toStdString(),codec,fps,cv::Size(frameW,frameH),isColor);
     luzhi=true;
 }
@@ -101,21 +101,13 @@ void tcprcvThread::run()
             {
                 std::vector<uchar> decode;
                 decode.insert(decode.end(),_p->rcv_buf,_p->rcv_buf+rcvnum);
-                image = cv::imdecode(decode, CV_LOAD_IMAGE_COLOR);//图像解码
-              //myimgtcp(decode,image);//图像自定义解码
-              //myimgtcp2(decode,image);//图像自定义解码
-                /*
-                if(!image.empty())
-                {
-                    cv::imshow("view", image);
-                }
-                */
+                _p->cv_image = cv::imdecode(decode, CV_LOAD_IMAGE_COLOR);//图像解码
+
                 if(_p->b_int_show_image_inlab==false&&_p->b_updataimage_finish==false)
                 {
-                    if(!image.empty())
+                    if(!_p->cv_image.empty())
                     {
                         _p->b_int_show_image_inlab=true;
-                        _p->cv_image=image;
                         _p->b_updataimage_finish=true;
                         _p->callbacknumber++;
                         if(_p->luzhi==true)
@@ -146,91 +138,6 @@ void tcprcvThread::Stop()
       sleep(0);
     }
   }
-}
-
-int tcprcvThread::myimgtcp(std::vector<uchar> decode,cv::Mat &image)
-{
-    int cols,rows,channels;
-    if(decode.size()<5)
-        return 1;
-    channels=decode[0];
-    if(channels!=1&&channels!=3)
-        return 1;
-    cols=(((int)decode[1])<<8)+decode[2];
-    rows=(((int)decode[3])<<8)+decode[4];
-    if(decode.size()!=cols*rows*channels+5)
-        return 1;
-    switch(channels)
-    {
-        case 1:
-            image=cv::Mat(rows,cols,CV_8UC1,decode.data()+5);
-        break;
-        case 3:
-            image=cv::Mat(rows,cols,CV_8UC3,decode.data()+5);
-        break;
-    }
-    _p->cv_image=image.clone();
-    return 0;
-}
-
-int tcprcvThread::myimgtcp2(std::vector<uchar> decode,cv::Mat &image)
-{
-    static int group=0;
-    static int cols,rows,channels;
-    static cv::Mat cv_temp;
-    static int type;
-    if(decode.size()==9&&decode[0]==0&&decode[1]==0&&decode[2]==0&&decode[3]==0)
-    {
-        if(!cv_temp.empty())
-            image=cv_temp.clone();
-        channels=decode[4];
-        if(channels!=1&&channels!=3)
-        {
-            channels=0;
-            return 1;
-        }
-        cols=(((int)decode[5])<<8)+decode[6];
-        rows=(((int)decode[7])<<8)+decode[8];
-        if(channels==1)
-        {
-            cv_temp=cv::Mat(rows,cols,CV_8UC1);
-            type=1;
-        }
-        else if(channels==3)
-        {
-            cv_temp=cv::Mat(rows,cols,CV_8UC3);
-            type=3;
-        }
-        else
-        {
-            type=0;
-            return 1;
-        }
-    }
-    else
-    {
-        if(decode.size()>4&&(type==1||type==3)&&(!cv_temp.empty()))
-        {
-            int longth = (((int)decode[4])<<8)+decode[5];
-            int addin=(((int)decode[0])<<24)+(((int)decode[1])<<16)+(((int)decode[2])<<8)+((int)decode[3])-1;
-            if(longth!=decode.size())
-            {
-                return 1;
-            }
-            if(addin>=0&&addin<rows*cols*channels&&addin+longth<=rows*cols*channels)
-            {
-                uchar *add= cv_temp.data+addin;
-                memcpy(add,&decode[6],longth);
-            }
-            return 1;
-        }
-        else
-        {
-            return 1;
-        }
-    }
-    _p->cv_image=image.clone();
-    return 0;
 }
 
 #endif
