@@ -580,7 +580,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -3084,6 +3084,42 @@
       <string>读取任务号104参数</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="othersaveTab6Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab6label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg104_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
     <widget class="QTableWidget" name="tab6tableWidget">
      <property name="geometry">
       <rect>
@@ -3179,111 +3215,6 @@
      <row>
       <property name="text">
        <string>17</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>18</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>19</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>20</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>21</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>22</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>23</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>24</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>25</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>26</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>27</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>28</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>29</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>30</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>31</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>32</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>33</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>34</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>35</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>36</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>37</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>38</string>
       </property>
      </row>
      <column>
@@ -3438,7 +3369,7 @@
      </item>
      <item row="9" column="0">
       <property name="text">
-       <string>侧板激光最大斜率</string>
+       <string>上半激光最大斜率</string>
       </property>
      </item>
      <item row="9" column="1">
@@ -3453,7 +3384,7 @@
      </item>
      <item row="10" column="0">
       <property name="text">
-       <string>侧板激光最小斜率</string>
+       <string>上半激光最大斜率</string>
       </property>
      </item>
      <item row="10" column="1">
@@ -3468,7 +3399,7 @@
      </item>
      <item row="11" column="0">
       <property name="text">
-       <string>侧板激光最大距离</string>
+       <string>上半激光最小长度</string>
       </property>
      </item>
      <item row="11" column="1">
@@ -3483,7 +3414,7 @@
      </item>
      <item row="12" column="0">
       <property name="text">
-       <string>底板激光最小斜率</string>
+       <string>下半激光最小斜率</string>
       </property>
      </item>
      <item row="12" column="1">
@@ -3498,7 +3429,7 @@
      </item>
      <item row="13" column="0">
       <property name="text">
-       <string>底板激光最大斜率</string>
+       <string>下半激光最大斜率</string>
       </property>
      </item>
      <item row="13" column="1">
@@ -3513,7 +3444,7 @@
      </item>
      <item row="14" column="0">
       <property name="text">
-       <string>底板激光最大距离</string>
+       <string>下半激光最小长度</string>
       </property>
      </item>
      <item row="14" column="1">
@@ -3528,7 +3459,7 @@
      </item>
      <item row="15" column="0">
       <property name="text">
-       <string>侧板激光最远起点</string>
+       <string>焊缝两侧最近统计点</string>
       </property>
      </item>
      <item row="15" column="1">
@@ -3543,12 +3474,12 @@
      </item>
      <item row="16" column="0">
       <property name="text">
-       <string>侧板激光最近终点</string>
+       <string>焊缝两侧最远统计点</string>
       </property>
      </item>
      <item row="16" column="1">
       <property name="text">
-       <string>[0,1500]</string>
+       <string>[0,500]</string>
       </property>
      </item>
      <item row="16" column="2">
@@ -3556,357 +3487,6 @@
        <string/>
       </property>
      </item>
-     <item row="17" column="0">
-      <property name="text">
-       <string>底板激光最远起点</string>
-      </property>
-     </item>
-     <item row="17" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="17" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="18" column="0">
-      <property name="text">
-       <string>底板激光最近终点</string>
-      </property>
-     </item>
-     <item row="18" column="1">
-      <property name="text">
-       <string>[0,1500]</string>
-      </property>
-     </item>
-     <item row="18" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="19" column="0">
-      <property name="text">
-       <string>焊缝二值阈值</string>
-      </property>
-     </item>
-     <item row="19" column="1">
-      <property name="text">
-       <string>[-255,255]</string>
-      </property>
-     </item>
-     <item row="19" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="20" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="20" column="1">
-      <property name="text">
-       <string>[-255,255]</string>
-      </property>
-     </item>
-     <item row="20" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="21" column="0">
-      <property name="text">
-       <string>侧板距焊缝统计起点</string>
-      </property>
-     </item>
-     <item row="21" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="21" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="22" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="22" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="22" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="23" column="0">
-      <property name="text">
-       <string>底板拟合</string>
-      </property>
-     </item>
-     <item row="23" column="1">
-      <property name="text">
-       <string>[0,1]</string>
-      </property>
-     </item>
-     <item row="23" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="24" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="24" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="24" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="25" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="25" column="1">
-      <property name="text">
-       <string>[1,99]</string>
-      </property>
-     </item>
-     <item row="25" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="26" column="0">
-      <property name="text">
-       <string>底板距焊缝统计起点</string>
-      </property>
-     </item>
-     <item row="26" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="26" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="27" column="0">
-      <property name="text">
-       <string>底板距焊缝统计终点</string>
-      </property>
-     </item>
-     <item row="27" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="27" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="28" column="0">
-      <property name="text">
-       <string>缝宽检测距离</string>
-      </property>
-     </item>
-     <item row="28" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="28" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="29" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="29" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="29" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="30" column="0">
-      <property name="text">
-       <string>底板拟合学习距离</string>
-      </property>
-     </item>
-     <item row="30" column="1">
-      <property name="text">
-       <string>[0,1000]</string>
-      </property>
-     </item>
-     <item row="30" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="31" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="31" column="1">
-      <property name="text">
-       <string>[0,1]</string>
-      </property>
-     </item>
-     <item row="31" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="32" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="32" column="1">
-      <property name="text">
-       <string>[0,255]</string>
-      </property>
-     </item>
-     <item row="32" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="33" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="33" column="1">
-      <property name="text">
-       <string>[0,1]</string>
-      </property>
-     </item>
-     <item row="33" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="34" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="34" column="1">
-      <property name="text">
-       <string>[0,255]</string>
-      </property>
-     </item>
-     <item row="34" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="35" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="35" column="1">
-      <property name="text">
-       <string>[1,500]</string>
-      </property>
-     </item>
-     <item row="35" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="36" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="36" column="1">
-      <property name="text">
-       <string>[0,500]</string>
-      </property>
-     </item>
-     <item row="36" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="37" column="0">
-      <property name="text">
-       <string>预留</string>
-      </property>
-     </item>
-     <item row="37" column="1">
-      <property name="text">
-       <string>[0,120]</string>
-      </property>
-     </item>
-     <item row="37" column="2">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-    </widget>
-    <widget class="QPushButton" name="othersaveTab6Btn">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>130</y>
-       <width>151</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>另存自定义任务号</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="tab6label_3">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>70</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>另存任务号:(200-1000)</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="alg104_othersave">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>90</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_7">

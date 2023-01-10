@@ -5,27 +5,10 @@
 		</EXTERNAL>
                 <INTERNAL>
                         <IP>192.168.1.3</IP>
-                        <PORT>1496</PORT>
+                        <PORT>30003</PORT>
                         <ALIVE Set_Flag="1"/>
                 </INTERNAL>
 	</CONFIGURATION>
-	<RECEIVE>
-		<XML>
-                        <ELEMENT Tag="ROBOTCONTROL/TCP" Type="INT"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEMOD" Type="INT"/>
-                        <ELEMENT Tag="ROBOTCONTROL/WELD" Type="INT"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVESPEED" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEPOS/X" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEPOS/Y" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEPOS/Z" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEPOS/RX" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEPOS/RY" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/MOVEPOS/RZ" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/ELED" Type="REAL"/>
-                        <ELEMENT Tag="ROBOTCONTROL/ELEM" Type="INT"/>
-                        <ELEMENT Tag="ROBOTCONTROL/RUNSTATE" Type="INT"/>
-		</XML>
-	</RECEIVE>
 	<SEND>
 		<XML>
                         <ELEMENT Tag="ROBOTINFO/POS/X"/>
