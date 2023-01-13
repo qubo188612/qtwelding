@@ -580,7 +580,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>7</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -4110,6 +4110,990 @@
      </property>
      <property name="text">
       <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_8">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+    <widget class="QTableWidget" name="tab8tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>391</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>11</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>12</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>13</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>14</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>15</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>16</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>17</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>18</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>19</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>20</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>21</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>22</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>23</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>24</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>25</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>26</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>27</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>28</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>29</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>30</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>31</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>32</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>33</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>34</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>35</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>36</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>37</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>38</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>39</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>40</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>41</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>43</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>取值范围</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <item row="0" column="0">
+      <property name="text">
+       <string>二值阈值</string>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>飞溅过滤</string>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="1" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>固定区域</string>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="2" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>激光横向类聚</string>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="3" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string>激光纵向类聚</string>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="4" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string>激光二值阈值</string>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="5" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="6" column="0">
+      <property name="text">
+       <string>激光最小高度</string>
+      </property>
+     </item>
+     <item row="6" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="6" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="7" column="0">
+      <property name="text">
+       <string>激光最小长度</string>
+      </property>
+     </item>
+     <item row="7" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="7" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="8" column="0">
+      <property name="text">
+       <string>激光最粗限制</string>
+      </property>
+     </item>
+     <item row="8" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="8" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="9" column="0">
+      <property name="text">
+       <string>检测区域开关</string>
+      </property>
+     </item>
+     <item row="9" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="9" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="10" column="0">
+      <property name="text">
+       <string>检测区域左</string>
+      </property>
+     </item>
+     <item row="10" column="1">
+      <property name="text">
+       <string>[0,2048)</string>
+      </property>
+     </item>
+     <item row="10" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="11" column="0">
+      <property name="text">
+       <string>检测区域右</string>
+      </property>
+     </item>
+     <item row="11" column="1">
+      <property name="text">
+       <string>[0,2048)</string>
+      </property>
+     </item>
+     <item row="11" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="12" column="0">
+      <property name="text">
+       <string>检测区域上</string>
+      </property>
+     </item>
+     <item row="12" column="1">
+      <property name="text">
+       <string>[0,3072)</string>
+      </property>
+     </item>
+     <item row="12" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="13" column="0">
+      <property name="text">
+       <string>检测区域下</string>
+      </property>
+     </item>
+     <item row="13" column="1">
+      <property name="text">
+       <string>[0,3072)</string>
+      </property>
+     </item>
+     <item row="13" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="14" column="0">
+      <property name="text">
+       <string>坡口判定阈值</string>
+      </property>
+     </item>
+     <item row="14" column="1">
+      <property name="text">
+       <string>[0,5000]</string>
+      </property>
+     </item>
+     <item row="14" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="15" column="0">
+      <property name="text">
+       <string>坡口两侧直线长度</string>
+      </property>
+     </item>
+     <item row="15" column="1">
+      <property name="text">
+       <string>[0,2000]</string>
+      </property>
+     </item>
+     <item row="15" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="16" column="0">
+      <property name="text">
+       <string>上坡口统计起点</string>
+      </property>
+     </item>
+     <item row="16" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="16" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="17" column="0">
+      <property name="text">
+       <string>上坡口统计终点</string>
+      </property>
+     </item>
+     <item row="17" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="17" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="18" column="0">
+      <property name="text">
+       <string>下坡口统计起点</string>
+      </property>
+     </item>
+     <item row="18" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="18" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="19" column="0">
+      <property name="text">
+       <string>下坡口统计终点</string>
+      </property>
+     </item>
+     <item row="19" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="19" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="20" column="0">
+      <property name="text">
+       <string>上坡口最远终点</string>
+      </property>
+     </item>
+     <item row="20" column="1">
+      <property name="text">
+       <string>[0,2000]</string>
+      </property>
+     </item>
+     <item row="20" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="21" column="0">
+      <property name="text">
+       <string>下坡口最远终点</string>
+      </property>
+     </item>
+     <item row="21" column="1">
+      <property name="text">
+       <string>[0,2000]</string>
+      </property>
+     </item>
+     <item row="21" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="22" column="0">
+      <property name="text">
+       <string>上坡口长度</string>
+      </property>
+     </item>
+     <item row="22" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="22" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="23" column="0">
+      <property name="text">
+       <string>下坡口长度</string>
+      </property>
+     </item>
+     <item row="23" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="23" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="24" column="0">
+      <property name="text">
+       <string>断点向后搜索距离</string>
+      </property>
+     </item>
+     <item row="24" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="24" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="25" column="0">
+      <property name="text">
+       <string>断点向前搜索距离</string>
+      </property>
+     </item>
+     <item row="25" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="25" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="26" column="0">
+      <property name="text">
+       <string>坡口模式</string>
+      </property>
+     </item>
+     <item row="26" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="26" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="27" column="0">
+      <property name="text">
+       <string>上斜坡斜度最大值</string>
+      </property>
+     </item>
+     <item row="27" column="1">
+      <property name="text">
+       <string>[0,5000]</string>
+      </property>
+     </item>
+     <item row="27" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="28" column="0">
+      <property name="text">
+       <string>上斜坡斜度最小值</string>
+      </property>
+     </item>
+     <item row="28" column="1">
+      <property name="text">
+       <string>[0,5000]</string>
+      </property>
+     </item>
+     <item row="28" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="29" column="0">
+      <property name="text">
+       <string>上斜坡统计起点</string>
+      </property>
+     </item>
+     <item row="29" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="29" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="30" column="0">
+      <property name="text">
+       <string>上斜坡统计终点</string>
+      </property>
+     </item>
+     <item row="30" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="30" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="31" column="0">
+      <property name="text">
+       <string>下斜坡斜度最小值</string>
+      </property>
+     </item>
+     <item row="31" column="1">
+      <property name="text">
+       <string>[-5000,0]</string>
+      </property>
+     </item>
+     <item row="31" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="32" column="0">
+      <property name="text">
+       <string>下斜坡斜度最大值</string>
+      </property>
+     </item>
+     <item row="32" column="1">
+      <property name="text">
+       <string>[-5000,0]</string>
+      </property>
+     </item>
+     <item row="32" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="33" column="0">
+      <property name="text">
+       <string>下斜坡统计起点</string>
+      </property>
+     </item>
+     <item row="33" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="33" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="34" column="0">
+      <property name="text">
+       <string>下斜坡统计终点</string>
+      </property>
+     </item>
+     <item row="34" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="34" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="35" column="0">
+      <property name="text">
+       <string>上斜坡长度</string>
+      </property>
+     </item>
+     <item row="35" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="35" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="36" column="0">
+      <property name="text">
+       <string>下斜坡长度</string>
+      </property>
+     </item>
+     <item row="36" column="1">
+      <property name="text">
+       <string>[0,500]</string>
+      </property>
+     </item>
+     <item row="36" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="37" column="0">
+      <property name="text">
+       <string>咬边检测</string>
+      </property>
+     </item>
+     <item row="37" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="37" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="38" column="0">
+      <property name="text">
+       <string>咬边检测范围</string>
+      </property>
+     </item>
+     <item row="38" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="38" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="39" column="0">
+      <property name="text">
+       <string>咬边阈值</string>
+      </property>
+     </item>
+     <item row="39" column="1">
+      <property name="text">
+       <string>[0,255]</string>
+      </property>
+     </item>
+     <item row="39" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="40" column="0">
+      <property name="text">
+       <string>咬边搜索终点</string>
+      </property>
+     </item>
+     <item row="40" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="40" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="41" column="0">
+      <property name="text">
+       <string>咬边搜索起点</string>
+      </property>
+     </item>
+     <item row="41" column="1">
+      <property name="text">
+       <string>[0,200]</string>
+      </property>
+     </item>
+     <item row="41" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="initTab8Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>10</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>重置任务号106参数</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="readTab8Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取任务号106参数</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab8label_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab8label_1">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab8label_2">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg106_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab8Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="writeTab8Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入任务号106参数</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg106_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
      </property>
     </widget>
    </widget>

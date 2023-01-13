@@ -313,9 +313,60 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS105_DUANDIANJULI_REG_ADD            0x00c7
 #define ALS105_B_DIBUFAXIANGLIANG_REG_ADD      0x00c8
 
+
 #define ALS105_REG_TOTALNUM                    0x0019
 
 #define ALS105_INIT_REG_ADD                    0x00cf
+
+
+#define ALS106_EXPOSURE_TIME_REG_ADD           0x00d0
+#define ALS106_PINGJUN_REG_ADD                 0x00d1
+#define ALS106_B_YANMOFUZHU_REG_ADD            0x00d2
+#define ALS106_B_GUDINGQUYU_REG_ADD            0x00d3
+#define ALS106_WIDTHLIANTONGDIS_REG_ADD        0x00d4
+#define ALS106_HIGHLIANTONGDIS_REG_ADD         0x00d5
+#define ALS106_GUJIAERZHI_REG_ADD              0x00d6
+#define ALS106_JIGUANGHIGHT_REG_ADD            0x00d7
+#define ALS106_JIGUANGLONG_REG_ADD             0x00d8
+#define ALS106_JIGUANGKUANDU_REG_ADD           0x00d9
+#define ALS106_B_CUT_REG_ADD                   0x00da
+#define ALS106_CUTLEFT_REG_ADD                 0x00db
+#define ALS106_CUTRIGHT_REG_ADD                0x00dc
+#define ALS106_CUTTOP_REG_ADD                  0x00dd
+#define ALS106_CUTDEEP_REG_ADD                 0x00de
+#define ALG106_DIFMIN_REG_ADD                  0x00df
+#define ALG106_SIDELONG_REG_ADD                0x00e0
+#define ALG106_UPBACK_ST_REG_ADD               0x00e1
+#define ALG106_UPBACK_ED_REG_ADD               0x00e2
+#define ALG106_DOWNBACK_ST_REG_ADD             0x00e3
+#define ALG106_DOWNBACK_ED_REG_ADD             0x00e4
+#define ALG106_UPMINDIS_REG_ADD                0x00e5
+#define ALG106_DOWNMINDIS_REG_ADD              0x00e6
+#define ALG106_UPLONG_REG_ADD                  0x00e7
+#define ALG106_DOWNDLONG_REG_ADD               0x00e8
+#define ALG106_DISCENTER_ED_REG_ADD            0x00e9
+#define ALG106_DUANDIANJULI_REG_ADD            0x00ea
+#define ALG106_POKOUMOD_REG_ADD                0x00eb
+#define ALG106_POKOUUPDIF_REG_ADD              0x00ec
+#define ALG106_POKOUUPDIFMIN_REG_ADD           0x00ed
+#define ALG106_POKOUUPBACK_ST_REG_ADD          0x00ee
+#define ALG106_POKOUUPBACK_ED_REG_ADD          0x00ef
+#define ALG106_POKOUDOWNDIF_REG_ADD            0x00f0
+#define ALG106_POKOUDOWNDIFMIN_REG_ADD         0x00f1
+#define ALG106_POKOUDOWNBACK_ST_REG_ADD        0x00f2
+#define ALG106_POKOUDOWNBACK_ED_REG_ADD        0x00f3
+#define ALG106_POKOUUPLONG_REG_ADD             0x00f4
+#define ALG106_POKOUDOWNLONG_REG_ADD           0x00f5
+#define ALG106_B_POKOUYAOBIAN_REG_ADD          0x00f6
+#define ALG106_POKOUYAOBIANHSIZE_REG_ADD       0x00f7
+#define ALG106_POKOUDUANXIANERZHI_REG_ADD      0x00f8
+#define ALG106_POKOUSEARCHDECTANCEMAX_REG_ADD  0x00f9
+#define ALG106_POKOUSEARCHDECTANCEMIN_REG_ADD  0x00fa
+
+
+#define ALS106_REG_TOTALNUM                    0x002b
+
+#define ALS106_INIT_REG_ADD                    0x00ff
 
 
 #define ALS_SHOW_STEP_REG_ADD                  0x018f
