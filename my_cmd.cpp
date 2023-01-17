@@ -170,7 +170,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
@@ -296,7 +296,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
@@ -341,7 +341,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
@@ -417,7 +417,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
@@ -520,7 +520,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
@@ -671,7 +671,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
@@ -786,7 +786,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
-            if(param[n]!=0)
+            if(param[n].size()!=0)
             {
                 QString paramname;
                 int data_fpos,data_bpos;
