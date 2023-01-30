@@ -22,6 +22,8 @@
 #include <Eigen/Dense>
 #include <opencv2/opencv.hpp>
 
+#define E2POOM_SSHDLG_SYSPATH_MOTO          "./SAVE/E2P_SSHDLG.bsd"
+
 #define E2POOM_CAMDLG_SAVEBUFF              64
 #define E2POOM_CAMDLG_SYSPATH_MOTO			"./SAVE/E2P_CAMDLG.bsd"
 
@@ -97,6 +99,15 @@ public:
     E2proomData();
     ~E2proomData();
 /***************************/
+    //相机升级界面
+    QString sshdlg_usename;
+    QString sshdlg_password;
+    void write_sshdlg_para();
+    void read_sshdlg_para();
+    void init_sshdlg_para();
+    QVariantHash sshdlg_enjson();
+    int sshdlg_dejson(QByteArray allData);
+
     //相机内参标定界面
     Int32 camdlg_modposX1;
     Int32 camdlg_modposY1;

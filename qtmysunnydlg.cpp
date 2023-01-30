@@ -174,6 +174,11 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     showtasknum=new showtasknumdlg;
     taskclear=new taskcleardlg(m_mcs);
+#ifdef DEBUS_SSH
+    sshpassword=new sshpasswordDlg(m_mcs);
+#else
+    ui->stepupBtn->hide();
+#endif
 #if _MSC_VER||WINDOWS_TCP
 #else
     cambuild=new cambuilddlg(m_mcs);
@@ -1870,6 +1875,24 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再录制视频"));
         }
     });
+
+#ifdef DEBUS_SSH
+
+    connect(ui->stepupBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->cam->sop_cam[0].b_connect==true)
+        {
+            sshpassword->init_dlg_show();
+            sshpassword->setWindowTitle(QString::fromLocal8Bit("激光器升级"));
+            sshpassword->exec();
+            sshpassword->close_dlg_show();
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再进行激光器升级"));
+        }
+    });
+#endif
 }
 
 qtmysunnyDlg::~qtmysunnyDlg()
@@ -1884,6 +1907,9 @@ qtmysunnyDlg::~qtmysunnyDlg()
     delete thread1;
     delete showtasknum;
     delete taskclear;
+#ifdef DEBUS_SSH
+    delete sshpassword;
+#endif
     delete m_mcs->resultdata.client;
 #if _MSC_VER||WINDOWS_TCP
 #else
@@ -2217,28 +2243,6 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
                 ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
         }
     }
-#ifdef DEBUG_TEST
-    if(b_show==true)
-    {
-        m_mcs->cam->sop_cam[0].b_connect=true;
-        if(ui->checkBox->isChecked()==false)
-            ui->record->append(QString::fromLocal8Bit("相机连接成功"));
-    }
-    else
-    {
-        if(m_mcs->resultdata.b_luzhi==true)
-        {
-            m_mcs->resultdata.b_luzhi=false;
-            m_mcs->cam->sop_cam[0].StopRecord();
-            ui->saveavishowBtn->setText("录制视频");
-            if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("视频录制完成"));
-        }
-        m_mcs->cam->sop_cam[0].b_connect=false;
-        if(ui->checkBox->isChecked()==false)
-            ui->record->append(QString::fromLocal8Bit("相机关闭"));
-    }
-#endif
     UpdataUi();
 }
 

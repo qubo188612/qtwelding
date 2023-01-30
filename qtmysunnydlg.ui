@@ -322,9 +322,9 @@
   <widget class="QPushButton" name="savebmpshowBtn">
    <property name="geometry">
     <rect>
-     <x>980</x>
+     <x>890</x>
      <y>700</y>
-     <width>111</width>
+     <width>101</width>
      <height>51</height>
     </rect>
    </property>
@@ -335,9 +335,9 @@
   <widget class="QPushButton" name="saveavishowBtn">
    <property name="geometry">
     <rect>
-     <x>1100</x>
+     <x>1000</x>
      <y>700</y>
-     <width>111</width>
+     <width>101</width>
      <height>51</height>
     </rect>
    </property>
@@ -348,9 +348,9 @@
   <widget class="QPushButton" name="savebmpstepBtn">
    <property name="geometry">
     <rect>
-     <x>800</x>
+     <x>780</x>
      <y>700</y>
-     <width>111</width>
+     <width>101</width>
      <height>51</height>
     </rect>
    </property>
@@ -363,7 +363,7 @@
     <rect>
      <x>690</x>
      <y>720</y>
-     <width>101</width>
+     <width>81</width>
      <height>25</height>
     </rect>
    </property>
@@ -5517,6 +5517,19 @@
    </property>
    <property name="text">
     <string>当前任务号列表</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stepupBtn">
+   <property name="geometry">
+    <rect>
+     <x>1110</x>
+     <y>700</y>
+     <width>101</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>激光器升级</string>
    </property>
   </widget>
  </widget>

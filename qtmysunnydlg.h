@@ -5,6 +5,9 @@
 #include <QDialog>
 #include "showtasknumdlg.h"
 #include "taskcleardlg.h"
+#ifdef DEBUS_SSH
+#include "sshpassworddlg.h"
+#endif
 #if _MSC_VER||WINDOWS_TCP
 #else
 #include "cambuilddlg.h"
@@ -78,6 +81,9 @@ private:
 
     showtasknumdlg *showtasknum;
     taskcleardlg *taskclear;
+#ifdef DEBUS_SSH
+    sshpasswordDlg *sshpassword;
+#endif
 #if _MSC_VER||WINDOWS_TCP
 #else
     cambuilddlg *cambuild;

@@ -660,3 +660,94 @@ int E2proomData::Savejsonfile(char* filename,QVariantHash data)
     file.close();   // 关闭file
     return 0;
 }
+
+void E2proomData::write_sshdlg_para()
+{
+    QVariantHash data=sshdlg_enjson();
+
+    QJsonObject rootObj = QJsonObject::fromVariantHash(data);
+    QJsonDocument document;
+    document.setObject(rootObj);
+
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    QString json_str(byte_array);
+    //根据实际填写路径
+    QFile file(E2POOM_SSHDLG_SYSPATH_MOTO);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "file error!";
+        return;
+    }
+    QTextStream in(&file);
+    in << json_str;
+
+    file.close();   // 关闭file
+
+    return;
+}
+
+void E2proomData::read_sshdlg_para()
+{
+    QFile loadFile(E2POOM_SSHDLG_SYSPATH_MOTO);
+
+    if (!loadFile.open(QIODevice::ReadOnly))
+    {
+        init_sshdlg_para();
+        return;
+    }
+
+    QByteArray allData = loadFile.readAll();
+    loadFile.close();
+
+    if(0!=sshdlg_dejson(allData))
+    {
+        init_sshdlg_para();
+        return;
+    }
+}
+
+void E2proomData::init_sshdlg_para()
+{
+    sshdlg_usename="pi";
+    sshdlg_password="123456";
+}
+
+QVariantHash E2proomData::sshdlg_enjson()
+{
+    QVariantHash data;
+    data.insert("sshdlg_usename", sshdlg_usename);
+    data.insert("sshdlg_password", sshdlg_password);
+
+    return data;
+}
+
+int E2proomData::sshdlg_dejson(QByteArray allData)
+{
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &json_error));
+
+    if (json_error.error != QJsonParseError::NoError)
+    {
+        qDebug() << "JSON error!";
+        return 1;
+    }
+
+    QJsonObject rootObj = jsonDoc.object();
+    QJsonObject::Iterator it;
+    for(it=rootObj.begin();it!=rootObj.end();it++)//遍历Key
+    {
+        QString keyString=it.key();
+        if(keyString=="sshdlg_usename")//相机
+        {
+            sshdlg_usename=it.value().toString();
+        }
+        if(keyString=="sshdlg_password")//相机
+        {
+            sshdlg_password=it.value().toString();
+        }
+    }
+
+    return 0;
+}
+

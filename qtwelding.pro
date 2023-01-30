@@ -13,6 +13,7 @@ QT       += xml
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        CConnectionForSshClient.cpp \
         E2proomData.cpp \
         FileOut.cpp \
         PictureBox.cpp \
@@ -50,6 +51,7 @@ SOURCES += \
         showtasknumdlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp \
+        sshpassworddlg.cpp \
         synchronous.cpp \
         taskcleardlg.cpp \
         tosendbuffer.cpp \
@@ -78,6 +80,7 @@ FORMS += \
     setmovecdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
+    sshpassworddlg.ui \
     taskcleardlg.ui \
     traceedit0dlg.ui \
     traceedit1dlg.ui \
@@ -85,6 +88,7 @@ FORMS += \
     weldsetdlg.ui
 
 HEADERS += \
+    CConnectionForSshClient.h \
     E2proomData.h \
     FileOut.h \
     PictureBox.h \
@@ -121,6 +125,7 @@ HEADERS += \
     showtasknumdlg.h \
     soptocameratcpip.h \
     soptopcamera.h \
+    sshpassworddlg.h \
     synchronous.h \
     taskcleardlg.h \
     tistdtypes.h \
@@ -154,6 +159,15 @@ INCLUDEPATH += D:/libmodbus/include \
 LIBS += D:/libmodbus/x64/lib/*.lib
 
 LIBS += -lws2_32
+
+#QSsh库的添加
+INCLUDEPATH += C:/Users/34638/Documents/QtProject/QSsh/src/libs/qssh \
+
+LIBS += C:/Users/34638/Documents/QtProject/QSsh/build/lib/QSsh.lib
+
+INCLUDEPATH += C:/Botan/include/botan-2 \
+
+LIBS += C:/Botan/lib/*.lib
 }
 
 unix {
@@ -180,4 +194,9 @@ LIBS += /home/qubo/modbus/libmodbus/install/lib/libmodbus.so
 
 #Eigen库的添加
 INCLUDEPATH += /usr/include/eigen3
+
+#QSsh库的添加
+INCLUDEPATH += /home/qubo/QSsh/src/libs/qssh \
+
+LIBS += /home/qubo/QSsh/build/lib/lib*
 }
