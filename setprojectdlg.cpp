@@ -934,6 +934,172 @@ void setprojectDlg::on_setCamtaskBtn_clicked()//设置任务号
     }
 }
 
+void setprojectDlg::on_IOoutputBtn_clicked()//输出IO口指令
+{
+    my_cmd cmd;
+    std::vector<int> io(ROBOTOUTPUTNUM);
+    QString msg;
+    if(ui->checkIO_1->isChecked())
+    {
+        io[0]=1;
+    }
+    else
+    {
+        io[0]=0;
+    }
+    if(ui->checkIO_2->isChecked())
+    {
+        io[1]=1;
+    }
+    else
+    {
+        io[1]=0;
+    }
+    if(ui->checkIO_3->isChecked())
+    {
+        io[2]=1;
+    }
+    else
+    {
+        io[2]=0;
+    }
+    if(ui->checkIO_4->isChecked())
+    {
+        io[3]=1;
+    }
+    else
+    {
+        io[3]=0;
+    }
+    if(ui->checkIO_5->isChecked())
+    {
+        io[4]=1;
+    }
+    else
+    {
+        io[4]=0;
+    }
+    if(ui->checkIO_6->isChecked())
+    {
+        io[5]=1;
+    }
+    else
+    {
+        io[5]=0;
+    }
+    if(ui->checkIO_7->isChecked())
+    {
+        io[6]=1;
+    }
+    else
+    {
+        io[6]=0;
+    }
+    if(ui->checkIO_8->isChecked())
+    {
+        io[7]=1;
+    }
+    else
+    {
+        io[7]=0;
+    }
+    msg=cmd.cmd_ioout(io);
+    if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+    {
+        m_mcs->project->project_cmdlist.push_back(msg);
+    }
+    else
+    {
+        m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+    }
+    ui->record->append(QString::fromLocal8Bit("插入IO口输出指令成功"));
+    now_cmdline++;
+    updatacmdlistUi();
+}
+
+void setprojectDlg::on_IOinputBtn_clicked()//等待输入IO口指令
+{
+    my_cmd cmd;
+    std::vector<int> io(ROBOTINPUTNUM);
+    QString msg;
+    if(ui->checkIO_1->isChecked())
+    {
+        io[0]=1;
+    }
+    else
+    {
+        io[0]=0;
+    }
+    if(ui->checkIO_2->isChecked())
+    {
+        io[1]=1;
+    }
+    else
+    {
+        io[1]=0;
+    }
+    if(ui->checkIO_3->isChecked())
+    {
+        io[2]=1;
+    }
+    else
+    {
+        io[2]=0;
+    }
+    if(ui->checkIO_4->isChecked())
+    {
+        io[3]=1;
+    }
+    else
+    {
+        io[3]=0;
+    }
+    if(ui->checkIO_5->isChecked())
+    {
+        io[4]=1;
+    }
+    else
+    {
+        io[4]=0;
+    }
+    if(ui->checkIO_6->isChecked())
+    {
+        io[5]=1;
+    }
+    else
+    {
+        io[5]=0;
+    }
+    if(ui->checkIO_7->isChecked())
+    {
+        io[6]=1;
+    }
+    else
+    {
+        io[6]=0;
+    }
+    if(ui->checkIO_8->isChecked())
+    {
+        io[7]=1;
+    }
+    else
+    {
+        io[7]=0;
+    }
+    msg=cmd.cmd_iowaitin(io);
+    if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+    {
+        m_mcs->project->project_cmdlist.push_back(msg);
+    }
+    else
+    {
+        m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+    }
+    ui->record->append(QString::fromLocal8Bit("插入等待IO口输入指令成功"));
+    now_cmdline++;
+    updatacmdlistUi();
+}
+
 
 void setprojectDlg::updatacmdlistUi()
 {
@@ -1034,5 +1200,7 @@ void setprojectThread::Stop()
     }
   }
 }
+
+
 
 

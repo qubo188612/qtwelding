@@ -6,7 +6,7 @@
 
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
-//#define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
+#define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
 //#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 
@@ -42,6 +42,9 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROBOTTCPNUM                 10  //每个机器人最多TCP上限
 
 #define CLOULD_POINT_NOTDATE        FLT_MAX
+
+#define ROBOTOUTPUTNUM              8   //机器人IO输出口总数
+#define ROBOTINPUTNUM               8   //机器人IO输入口总数
 
 /*************************/
 
@@ -85,6 +88,23 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_TIME_MINUTES_REG_ADD              0x0010        //当前时间分
 #define ROB_TIME_SECONDS_REG_ADD              0x0011        //当前时间秒
 #define ROB_TIME_MILLISECONDS_REG_ADD         0x0012        //当前时间毫秒
+#define ROB_IO_INPUT1_REG_ADD                 0x0013        //机器人IO输入口1
+#define ROB_IO_INPUT2_REG_ADD                 0x0014        //机器人IO输入口2
+#define ROB_IO_INPUT3_REG_ADD                 0x0015        //机器人IO输入口3
+#define ROB_IO_INPUT4_REG_ADD                 0x0016        //机器人IO输入口4
+#define ROB_IO_INPUT5_REG_ADD                 0x0017        //机器人IO输入口5
+#define ROB_IO_INPUT6_REG_ADD                 0x0018        //机器人IO输入口6
+#define ROB_IO_INPUT7_REG_ADD                 0x0019        //机器人IO输入口7
+#define ROB_IO_INPUT8_REG_ADD                 0x001a        //机器人IO输入口8
+
+#define ROB_IO_OUTPUT1_REG_ADD                0x0050        //机器人IO输出口1
+#define ROB_IO_OUTPUT2_REG_ADD                0x0051        //机器人IO输出口2
+#define ROB_IO_OUTPUT3_REG_ADD                0x0052        //机器人IO输出口3
+#define ROB_IO_OUTPUT4_REG_ADD                0x0053        //机器人IO输出口4
+#define ROB_IO_OUTPUT5_REG_ADD                0x0054        //机器人IO输出口5
+#define ROB_IO_OUTPUT6_REG_ADD                0x0055        //机器人IO输出口6
+#define ROB_IO_OUTPUT7_REG_ADD                0x0056        //机器人IO输出口7
+#define ROB_IO_OUTPUT8_REG_ADD                0x0057        //机器人IO输出口8
 
 #define ROB_MODEL_REG_ADD                     0x0100        //机器人型号
 #define ROB_TCP_NUM_REG_ADD                   0x0101        //TCP坐标系
@@ -538,6 +558,12 @@ typedef enum Robmovemodel_ID            //机器人移动方式
     MOVEJ=1,        //关节运动
     MOVEC=2,        //圆运动
 }Robmovemodel;
+
+typedef enum IOmodel_ID     //机器人IO口收发方式
+{
+    OUT=0,        //输出
+    WAITIN=1,     //等待输入
+}IOmodel;
 
 typedef enum Weldworkmodel_ID       //焊机工作状态
 {

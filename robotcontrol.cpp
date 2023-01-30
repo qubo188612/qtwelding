@@ -637,6 +637,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                     _p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD]=65535;
+                    _p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD]=65535;
                     int rc=modbus_reply(_p->ctx_robotcontrol, query, ret, _p->mb_mapping);
                     if(rc>=0)
                     {
@@ -817,6 +818,61 @@ void RobotcontrolThread1::run() //接到上位机命令
                                 float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
 
                                 RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);   
+                            }
+                            if(_p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD]!=65535)//机器人IO输出变化
+                            {
+                                std::vector<int> io_output(ROBOTOUTPUTNUM);
+                                for(int n=0;n<ROBOTOUTPUTNUM;n++)
+                                {
+                                    io_output[n]=_p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD+n];
+                                }
+                                switch(_p->rob_mod)
+                                {
+                                    case ROBOT_MODEL_NULL://无机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_EMERGEN://智昌机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_DOBOT://越彊机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_UR://优傲机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_KUKA://库卡机器人
+                                    {
+                                        mutexsend_buf_group.lock();
+                                        QDomDocument doc;
+                                        QDomText s_data;
+                                        QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                        doc.appendChild(root_elem);
+                                        QDomElement obj;
+                                        obj=doc.createElement("IO");
+                                        for(int n=0;n<io_output.size();n++)
+                                        {
+                                            QDomElement objmin;
+                                            objmin=doc.createElement("OUT"+QString::number(n+1));
+                                            s_data=doc.createTextNode(QString::number(io_output[0]));
+                                            objmin.appendChild(s_data);
+                                            obj.appendChild(objmin);
+                                        }
+                                        root_elem.appendChild(obj);
+                                        QString msg=doc.toString();
+                                        std::string str=msg.toStdString();
+                                        _p->send_buf_group.push_back(str);
+                                        mutexsend_buf_group.unlock();
+                                    }
+                                    break;
+                                }
                             }
                             if(_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]!=65535)//机器人要暂停或继续运行
                             {
@@ -1595,6 +1651,7 @@ void RobotrcvThread::run()//获取机器人数据
                         float f_robRY;
                         float f_robRZ;
                         float f_speed;
+                        int i_ioinput;
 
                         QString rcvmsg=QString::fromLocal8Bit((char*)_p->rcv_buf,rcvnum);
                         QDomDocument doc;
@@ -1660,6 +1717,20 @@ void RobotrcvThread::run()//获取机器人数据
                                     else if(childobj.tagName()=="STATE")
                                     {
                                         state=childobj.text().toInt();
+                                        _p->mb_mapping->tab_registers[ROB_STATE_REG_ADD]=state;
+                                    }
+                                    else if(childobj.tagName()=="IO")
+                                    {
+                                        auto child = childobj.childNodes();
+                                        for(int i=0;i<child.size();i++)
+                                        {
+                                            QString msg="IN"+QString::number(i+1);
+                                            if(childobj.hasAttribute(msg))
+                                            {
+                                                i_ioinput=childobj.attributeNode(msg).value().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD+i]=i_ioinput;
+                                            }
+                                        }
                                     }
                                 }
                             }

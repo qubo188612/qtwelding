@@ -17,6 +17,8 @@
 //采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3] SPEED[25] TCP[0] NAME[扫描第一条line]
 //跟踪指令，举例 TRACE: NAME[跟踪第一条line] SPEED[25] TCP[0] CRAFT[/home/qubo/caf.json]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
+//IO口输出指令，举例 IO: OUT[1,0,0,1,0,1,0,1]
+//IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1]
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
 #define CMD_DELAY_KEY                   "DELAY:"        //延时命令集合KEY
@@ -25,6 +27,7 @@
 #define CMD_SCAN_KEY                    "SCAN:"         //采集命令集合KEY
 #define CMD_TRACE_KEY                   "TRACE:"        //跟踪命令集合KEY
 #define CMD_CREAT_KEY                   "CREAT:"        //生成轨迹命令KEY
+#define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
 
 
 //参数项
@@ -42,6 +45,8 @@
 #define CMD_SCAN                            "SCAN"      //扫描轨迹参数
 #define CMD_MODE                            "MODE"      //模式参数
 #define CMD_CRAFT                           "CRAFT"     //工艺文件路径
+#define CMD_OUT                             "OUT"       //IO输出
+#define CMD_WAITIN                          "WAITIN"    //IO输入
 
 
 /************************/
@@ -61,7 +66,8 @@ public:
     QString cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆采集命令
     QString cmd_trace(float speed,int tcp,QString craftfilepath,QString name);//跟踪命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
-
+    QString cmd_ioout(std::vector<int> io);//输出IO信号
+    QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
 
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
                                                                        //     返回值-1:注释行
@@ -102,6 +108,11 @@ public:
     Trace_edit_mode cmd_creat_mode;//获取到的轨迹生成模式
     std::vector<QString> cmd_creat_scanname;//获取到生成轨迹所需要的轨迹名字
 
+    std::vector<int> cmd_io_output;//获取到的IO输出口信息
+    std::vector<int> cmd_io_input;//获取到的IO输入口信息
+    IOmodel cmd_io_workmod;//IO工作状态
+
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -116,11 +127,15 @@ protected:
     QString rc_mode(int mode);
     QString rc_scan(std::vector<QString> names);
     QString rc_craft(QString craftfilepath);
+    QString rc_ioout(std::vector<int> io);
+    QString rc_iowaitin(std::vector<int> io);
 
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
+    int de_vector_float(QString parakey,QString msg,int data_fpos,int data_bpos,std::vector<float> &vector_floatdata,QString &return_msg);
     int de_int(QString parakey,QString msg,int data_fpos,int data_bpos,int &intdata,QString &return_msg);
+    int de_vector_int(QString parakey,QString msg,int data_fpos,int data_bpos,std::vector<int> &vector_intdata,QString &return_msg);
     int de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos,QString &return_msg);
     int de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos1,RobPos &pos2,RobPos &pos3,QString &return_msg);
     int de_QString(QString parakey,QString msg,int data_fpos,int data_bpos,QString &QStringdata,QString &return_msg);

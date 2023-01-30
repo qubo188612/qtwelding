@@ -19,6 +19,14 @@
                         <ELEMENT Tag="ROBOTINFO/POS/RZ"/>
                         <ELEMENT Tag="ROBOTINFO/SPEED"/>
                         <ELEMENT Tag="ROBOTINFO/STATE"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN1"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN2"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN3"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN4"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN5"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN6"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN7"/>
+                        <ELEMENT Tag="ROBOTINFO/IO/IN8"/>
 		</XML>
 	</SEND>
 </ETHERNETKRL>

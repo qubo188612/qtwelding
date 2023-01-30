@@ -82,6 +82,8 @@ public:
 
     systime robtime;    //机器人时间
 
+    std::vector<int> robioinput;    //机器人输入口IO
+
     ROBOT_MODEL robot_model;    //机器人型号
     QString robot_model_toQString(ROBOT_MODEL robot_model);  //机器人型号字符串输出
 
@@ -98,8 +100,8 @@ public:
 
     void DisconnectRobot();
 
-    modbus_t *ctx_posget;       //机器人坐标访问
-    bool b_link_ctx_posget;     //机器人坐标访问连接
+    modbus_t *ctx_posget;       //机器人信息模块访问
+    bool b_link_ctx_posget;     //机器人信息模块访问连接
 
     std::vector<sent_info_robot> send_group_robot;    //发送机器人数据队列
     volatile bool b_send_group_robot;       //发送机器人数据是否异常

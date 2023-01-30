@@ -447,7 +447,6 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         {
             int task=cmd.cmd_cam_task;
             int work=cmd.cmd_cam_work_d;
-
             cmd_cam(task,work);
         }
         else if(key==CMD_WELD_KEY)//起光弧指令
@@ -457,6 +456,56 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             float eled=cmd.cmd_elec_eled; //获取到焊机电流
             cmd_elec(eled,elem,work);
             usleep(ROB_WORK_DELAY);//确保焊机设置完成
+        }
+        else if(key==CMD_IO_KEY)//IO指令
+        {
+            switch(cmd.cmd_io_workmod)
+            {
+                case OUT://输出IO
+                {
+                    std::vector<int> io_out=cmd.cmd_io_output;
+                    cmd_ioout(io_out);
+                }
+                break;
+                case WAITIN://等待IO输入
+                {
+                    std::vector<int> io_in=cmd.cmd_io_input;
+                    bool b_io=true;
+                    for(int n=0;n<ROBOTINPUTNUM;n++)
+                    {
+                        if(io_in[n]!=m_mcs->rob->robioinput[n])
+                        {
+                            b_io=false;
+                            break;
+                        }
+                    }
+                    while(b_io==false)
+                    {
+                        b_io=true;
+                        for(int n=0;n<ROBOTINPUTNUM;n++)
+                        {
+                            if(io_in[n]!=m_mcs->rob->robioinput[n])
+                            {
+                                b_io=false;
+                                break;
+                            }
+                        }
+                        if(b_cmdlist_build==false)     //停止
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("手动停止进程");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            paused_key=key;
+                            cmd_lock(1);
+                            line=n;
+                            return 1;
+                        }
+                        sleep(0);
+                    }
+                }
+                break;
+            }
         }
         else if(key==CMD_SCAN_KEY)//采集指令
         {    
@@ -1235,6 +1284,23 @@ void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel wor
     m_mcs->rob->weld_state=(Weldworkmodel)work;
     m_mcs->rob->weld_eled=eled;
     m_mcs->rob->weld_elem=elem;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_ioout(std::vector<int> io)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_IO_OUTPUT1_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(io.size());
+    for(int n=0;n<io.size();n++)
+    {
+        sendrob.data[n]=io[n];
+    }
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
     send_group_robot.unlock();
 }
 

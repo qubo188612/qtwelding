@@ -84,6 +84,10 @@ private slots:
 
     void init_show_setproject_inlab(cv::Mat);
 
+    void on_IOoutputBtn_clicked();
+
+    void on_IOinputBtn_clicked();
+
 private:
     Ui::setprojectDlg *ui;
     int now_cmdline;         //当前指向CMD行数

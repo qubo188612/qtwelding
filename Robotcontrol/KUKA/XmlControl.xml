@@ -24,6 +24,14 @@
                         <ELEMENT Tag="ROBOTCONTROL/ELED" Type="REAL"/>
                         <ELEMENT Tag="ROBOTCONTROL/ELEM" Type="INT"/>
                         <ELEMENT Tag="ROBOTCONTROL/RUNSTATE" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT1" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT2" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT3" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT4" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT5" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT6" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT7" Type="INT"/>
+                        <ELEMENT Tag="ROBOTCONTROL/IO/OUT8" Type="INT"/>
                         <ELEMENT Tag="ROBOTCONTROL" Set_Flag="3" />
 		</XML>
 	</RECEIVE>

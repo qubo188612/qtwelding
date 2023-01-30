@@ -137,6 +137,22 @@ QString my_cmd::cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QSt
     return msg;
 }
 
+QString my_cmd::cmd_ioout(std::vector<int> io)
+{
+    QString msg;
+    msg=QString(CMD_IO_KEY)+" "+
+        rc_ioout(io);
+    return msg;
+}
+
+QString my_cmd::cmd_iowaitin(std::vector<int> io)
+{
+    QString msg;
+    msg=QString(CMD_IO_KEY)+" "+
+        rc_iowaitin(io);
+    return msg;
+}
+
 int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -867,6 +883,78 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_IO_KEY)
+    {
+        int pn=0;
+        bool b_IO=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_OUT)
+                {
+                    if(b_IO==false)
+                    {
+                        b_IO=true;
+                        if(0!=de_vector_int(paramname,param[n],data_fpos,data_bpos,cmd_io_output,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_io_output.size()!=ROBOTOUTPUTNUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(ROBOTOUTPUTNUM)+QString::fromLocal8Bit("个");
+                            return 1;
+                        }
+                        cmd_io_workmod=OUT;
+                    }
+                    else
+                    {
+                        return_msg=CMD_OUT+QString::fromLocal8Bit("项和")+CMD_WAITIN+QString::fromLocal8Bit("项只能有一个");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_WAITIN)
+                {
+                    if(b_IO==false)
+                    {
+                        b_IO=true;
+                        if(0!=de_vector_int(paramname,param[n],data_fpos,data_bpos,cmd_io_input,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_io_input.size()!=ROBOTINPUTNUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(ROBOTINPUTNUM)+QString::fromLocal8Bit("个");
+                            return 1;
+                        }
+                        cmd_io_workmod=WAITIN;
+                    }
+                    else
+                    {
+                        return_msg=CMD_OUT+QString::fromLocal8Bit("项和")+CMD_WAITIN+QString::fromLocal8Bit("项只能有一个");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_IO==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_OUT+"'或'"+CMD_WAITIN+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
     else
     {
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
@@ -1019,6 +1107,38 @@ QString my_cmd::rc_craft(QString craftfilepath)
 {
     QString msg;
     msg=QString(CMD_CRAFT)+"["+craftfilepath+"]";
+    return msg;
+}
+
+QString my_cmd::rc_ioout(std::vector<int> io)
+{
+    QString msg;
+    QString data;
+    for(int i=0;i<io.size();i++)
+    {
+        data=data+QString::number(io[i]);
+        if(i<io.size()-1)
+        {
+            data=data+",";
+        }
+    }
+    msg=QString(CMD_OUT)+"["+data+"]";
+    return msg;
+}
+
+QString my_cmd::rc_iowaitin(std::vector<int> io)
+{
+    QString msg;
+    QString data;
+    for(int i=0;i<io.size();i++)
+    {
+        data=data+QString::number(io[i]);
+        if(i<io.size()-1)
+        {
+            data=data+",";
+        }
+    }
+    msg=QString(CMD_WAITIN)+"["+data+"]";
     return msg;
 }
 
@@ -1274,6 +1394,52 @@ int my_cmd::de_QString(QString parakey,QString msg,int data_fpos,int data_bpos,Q
     {
         return_msg=parakey+QString::fromLocal8Bit("','符号是保留字符，不能用于自定义字符");
         return 1;
+    }
+    return 0;
+}
+
+int my_cmd::de_vector_int(QString parakey,QString msg,int data_fpos,int data_bpos,std::vector<int> &vector_intdata,QString &return_msg)
+{
+    bool ok;
+    QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
+    if(paramdata.size()==0)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return 1;
+    }
+    QStringList posgroup = paramdata.split(",");
+    vector_intdata.resize(posgroup.size());
+    for(int n=0;n<posgroup.size();n++)
+    {
+        vector_intdata[n]=posgroup[n].toInt(&ok);
+        if(ok==false)
+        {
+            return_msg=parakey+QString::fromLocal8Bit("项的第")+QString::number(n+1)+QString::fromLocal8Bit("个参数数据格式错误");
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int my_cmd::de_vector_float(QString parakey,QString msg,int data_fpos,int data_bpos,std::vector<float> &vector_floatdata,QString &return_msg)
+{
+    bool ok;
+    QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
+    if(paramdata.size()==0)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return 1;
+    }
+    QStringList posgroup = paramdata.split(",");
+    vector_floatdata.resize(posgroup.size());
+    for(int n=0;n<posgroup.size();n++)
+    {
+        vector_floatdata[n]=posgroup[n].toFloat(&ok);
+        if(ok==false)
+        {
+            return_msg=parakey+QString::fromLocal8Bit("项的第")+QString::number(n+1)+QString::fromLocal8Bit("个参数数据格式错误");
+            return 1;
+        }
     }
     return 0;
 }
