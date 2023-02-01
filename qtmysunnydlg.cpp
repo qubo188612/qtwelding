@@ -607,7 +607,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg100_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -625,13 +625,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
@@ -790,7 +790,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg101_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -808,13 +808,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
@@ -973,7 +973,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg102_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -991,13 +991,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
@@ -1156,7 +1156,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg103_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -1174,13 +1174,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
@@ -1339,7 +1339,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg104_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -1357,13 +1357,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
@@ -1522,7 +1522,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg105_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -1540,13 +1540,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
@@ -1705,7 +1705,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             int taskname=ui->alg106_othersave->text().toInt(&ok);
             if(ok==true)
             {
-                if(taskname>=200&&taskname<=1000)
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
                 {
                     QJsonObject json;
                     QJsonObject sing;
@@ -1723,13 +1723,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间"));
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
