@@ -400,9 +400,13 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALSROBOTCAM_COMPENSATION_X              0x0002  //标定补偿X
 #define ALSROBOTCAM_COMPENSATION_Y              0x0003  //标定补偿Y
 #define ALSROBOTCAM_COMPENSATION_Z              0x0004  //标定补偿Z
-#define ALSROBOTCAM_CAMWIDTH_REG_ADD            0x0005  //相机宽度视野
-#define ALSROBOTCAM_CAMHEIGHT_REG_ADD           0x0006  //相机高度视野
+#define ALSROBOTCAM_CAMWIDTH_REG_ADD            0x0005  //相机算法宽度
+#define ALSROBOTCAM_CAMHEIGHT_REG_ADD           0x0006  //相机算法高度
 #define ALSROBOTCAM_CAMFPS_REG_ADD              0x0007  //相机帧率
+#define ALSROBOTCAM_VIEW_CAM_WIDTH_REG_ADD      0x0008  //相机视野宽度
+#define ALSROBOTCAM_VIEW_CAM_HEIGHT_REG_ADD     0x0009  //相机视野高度
+#define ALSROBOTCAM_REVERSE_Y_REG_ADD           0x000a  //相机Y数据反向
+#define ALSROBOTCAM_REVERSE_Z_REG_ADD           0x000b  //相机Z数据反向
 
 /*****************************/
 //激光头计算结果寄存器

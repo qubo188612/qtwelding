@@ -396,6 +396,105 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再设置补偿参数"));
         }
     });
+
+    connect(ui->checkBox_Y,&QCheckBox::clicked,[=](){
+        if(m_mcs->resultdata.link_robotset_state==true)
+        {
+            u_int16_t dY;
+            if(ui->checkBox_Y->isChecked()==false)
+            {
+                dY=0;
+            }
+            else
+            {
+                dY=1;
+            }
+            uint16_t tab_reg[1];
+            tab_reg[0]=dY;
+            int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_REVERSE_Y_REG_ADD,1,tab_reg);
+            if(rc!=1)
+            {
+                if(ui->checkBox_Y->isChecked()==false)
+                {
+                    ui->checkBox_Y->setChecked(true);
+                }
+                else
+                {
+                    ui->checkBox_Y->setChecked(false);
+                }
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("Y轴反向参数设置失败"));
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("Y轴反向参数设置成功"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox_Y->isChecked()==false)
+            {
+                ui->checkBox_Y->setChecked(true);
+            }
+            else
+            {
+                ui->checkBox_Y->setChecked(false);
+            }
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置Y轴反向参数"));
+        }
+    });
+
+    connect(ui->checkBox_Z,&QCheckBox::clicked,[=](){
+        if(m_mcs->resultdata.link_robotset_state==true)
+        {
+            u_int16_t dZ;
+            if(ui->checkBox_Z->isChecked()==false)
+            {
+                dZ=0;
+            }
+            else
+            {
+                dZ=1;
+            }
+            uint16_t tab_reg[1];
+            tab_reg[0]=dZ;
+            int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_REVERSE_Z_REG_ADD,1,tab_reg);
+            if(rc!=1)
+            {
+                if(ui->checkBox_Z->isChecked()==false)
+                {
+                    ui->checkBox_Z->setChecked(true);
+                }
+                else
+                {
+                    ui->checkBox_Z->setChecked(false);
+                }
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("Z轴反向参数设置失败"));
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("Z轴反向参数设置成功"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox_Z->isChecked()==false)
+            {
+                ui->checkBox_Z->setChecked(true);
+            }
+            else
+            {
+                ui->checkBox_Z->setChecked(false);
+            }
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置Z轴反向参数"));
+        }
+    });
+
 #if _MSC_VER||WINDOWS_TCP
 #else
     connect(ui->writeTab1Btn,&QPushButton::clicked,[=](){
@@ -2095,6 +2194,44 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if(ui->checkBox->isChecked()==false)
             {
                 QString msg=QString::fromLocal8Bit("获取当前标定补偿: X=")+QString::number(f_dX,'f',2)+" Y="+QString::number(f_dY,'f',2)+" Z="+QString::number(f_dZ,'f',2);
+                ui->record->append(msg);
+            }
+        }
+
+        real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_REVERSE_Y_REG_ADD,2,m_mcs->resultdata.red_robotset);
+        if(real_readnum<0)
+        {
+            if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("获取当前数据反向信息失败"));
+        }
+        else
+        {
+            QString msgY,msgZ;
+            u_int16_t dY=m_mcs->resultdata.red_robotset[0];
+            u_int16_t dZ=m_mcs->resultdata.red_robotset[1];
+            if(dY==0)
+            {
+                ui->checkBox_Y->setChecked(false);
+                msgY=QString::fromLocal8Bit("与标定同向");
+            }
+            else
+            {
+                ui->checkBox_Y->setChecked(true);
+                msgY=QString::fromLocal8Bit("与标定反向");
+            }
+            if(dZ==0)
+            {
+                ui->checkBox_Z->setChecked(false);
+                msgZ=QString::fromLocal8Bit("与标定同向");
+            }
+            else
+            {
+                ui->checkBox_Z->setChecked(true);
+                msgZ=QString::fromLocal8Bit("与标定反向");
+            }
+            if(ui->checkBox->isChecked()==false)
+            {
+                QString msg=QString::fromLocal8Bit("获取当前数据反向信息: Y")+msgY+" Z"+msgZ;
                 ui->record->append(msg);
             }
         }

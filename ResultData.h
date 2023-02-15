@@ -9,7 +9,7 @@
 #include <CConnectionForSshClient.h>
 #endif
 
-#define MODBUS_ROBOT_REGISTERS_NUM      10
+#define MODBUS_ROBOT_REGISTERS_NUM      0x10
 #define MODBUS_RESULT_MAXNUM            400
 #define MODBUS_PARAM_MAXNUM             400
 

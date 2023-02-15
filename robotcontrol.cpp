@@ -616,7 +616,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                 if (ret == -1)
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("机器人控制服务器设置socket三失败");
+                    QString return_msg=QString::fromLocal8Bit("机器人控制服务器设置socket连接失败");
                     _p->m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     break;
