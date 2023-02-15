@@ -164,6 +164,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     ctx_result_dosomeing=DO_NOTHING;
 
+    b_thread1=false;
     thread1 = new getposThread(this);
     connect(thread1, SIGNAL(Send_show_pos_list()), this, SLOT(init_show_pos_list()));
     connect(thread1, SIGNAL(Send_show_pos_failed()), this, SLOT(init_show_pos_failed()));
