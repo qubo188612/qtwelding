@@ -354,39 +354,53 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS106_CUTRIGHT_REG_ADD                0x00dc
 #define ALS106_CUTTOP_REG_ADD                  0x00dd
 #define ALS106_CUTDEEP_REG_ADD                 0x00de
-#define ALG106_DIFMIN_REG_ADD                  0x00df
-#define ALG106_SIDELONG_REG_ADD                0x00e0
-#define ALG106_UPBACK_ST_REG_ADD               0x00e1
-#define ALG106_UPBACK_ED_REG_ADD               0x00e2
-#define ALG106_DOWNBACK_ST_REG_ADD             0x00e3
-#define ALG106_DOWNBACK_ED_REG_ADD             0x00e4
-#define ALG106_UPMINDIS_REG_ADD                0x00e5
-#define ALG106_DOWNMINDIS_REG_ADD              0x00e6
-#define ALG106_UPLONG_REG_ADD                  0x00e7
-#define ALG106_DOWNDLONG_REG_ADD               0x00e8
-#define ALG106_DISCENTER_ED_REG_ADD            0x00e9
-#define ALG106_DUANDIANJULI_REG_ADD            0x00ea
-#define ALG106_POKOUMOD_REG_ADD                0x00eb
-#define ALG106_POKOUUPDIF_REG_ADD              0x00ec
-#define ALG106_POKOUUPDIFMIN_REG_ADD           0x00ed
-#define ALG106_POKOUUPBACK_ST_REG_ADD          0x00ee
-#define ALG106_POKOUUPBACK_ED_REG_ADD          0x00ef
-#define ALG106_POKOUDOWNDIF_REG_ADD            0x00f0
-#define ALG106_POKOUDOWNDIFMIN_REG_ADD         0x00f1
-#define ALG106_POKOUDOWNBACK_ST_REG_ADD        0x00f2
-#define ALG106_POKOUDOWNBACK_ED_REG_ADD        0x00f3
-#define ALG106_POKOUUPLONG_REG_ADD             0x00f4
-#define ALG106_POKOUDOWNLONG_REG_ADD           0x00f5
-#define ALG106_B_POKOUYAOBIAN_REG_ADD          0x00f6
-#define ALG106_POKOUYAOBIANHSIZE_REG_ADD       0x00f7
-#define ALG106_POKOUDUANXIANERZHI_REG_ADD      0x00f8
-#define ALG106_POKOUSEARCHDECTANCEMAX_REG_ADD  0x00f9
-#define ALG106_POKOUSEARCHDECTANCEMIN_REG_ADD  0x00fa
-
+#define ALS106_DIFMIN_REG_ADD                  0x00df
+#define ALS106_SIDELONG_REG_ADD                0x00e0
+#define ALS106_UPBACK_ST_REG_ADD               0x00e1
+#define ALS106_UPBACK_ED_REG_ADD               0x00e2
+#define ALS106_DOWNBACK_ST_REG_ADD             0x00e3
+#define ALS106_DOWNBACK_ED_REG_ADD             0x00e4
+#define ALS106_UPMINDIS_REG_ADD                0x00e5
+#define ALS106_DOWNMINDIS_REG_ADD              0x00e6
+#define ALS106_UPLONG_REG_ADD                  0x00e7
+#define ALS106_DOWNDLONG_REG_ADD               0x00e8
+#define ALS106_DISCENTER_ED_REG_ADD            0x00e9
+#define ALS106_DUANDIANJULI_REG_ADD            0x00ea
+#define ALS106_POKOUMOD_REG_ADD                0x00eb
+#define ALS106_POKOUUPDIF_REG_ADD              0x00ec
+#define ALS106_POKOUUPDIFMIN_REG_ADD           0x00ed
+#define ALS106_POKOUUPBACK_ST_REG_ADD          0x00ee
+#define ALS106_POKOUUPBACK_ED_REG_ADD          0x00ef
+#define ALS106_POKOUDOWNDIF_REG_ADD            0x00f0
+#define ALS106_POKOUDOWNDIFMIN_REG_ADD         0x00f1
+#define ALS106_POKOUDOWNBACK_ST_REG_ADD        0x00f2
+#define ALS106_POKOUDOWNBACK_ED_REG_ADD        0x00f3
+#define ALS106_POKOUUPLONG_REG_ADD             0x00f4
+#define ALS106_POKOUDOWNLONG_REG_ADD           0x00f5
+#define ALS106_B_POKOUYAOBIAN_REG_ADD          0x00f6
+#define ALS106_POKOUYAOBIANHSIZE_REG_ADD       0x00f7
+#define ALS106_POKOUDUANXIANERZHI_REG_ADD      0x00f8
+#define ALS106_POKOUSEARCHDECTANCEMAX_REG_ADD  0x00f9
+#define ALS106_POKOUSEARCHDECTANCEMIN_REG_ADD  0x00fa
 
 #define ALS106_REG_TOTALNUM                    0x002b
 
 #define ALS106_INIT_REG_ADD                    0x00ff
+
+#define ALS108_EXPOSURE_TIME_REG_ADD           0x0120
+#define ALS108_CENTER_X_REG_ADD                0x0121
+#define ALS108_CENTER_Y_REG_ADD                0x0122
+#define ALS108_SEARCT_W_REG_ADD                0x0123
+#define ALS108_SEARCT_H_REG_ADD                0x0124
+#define ALS108_STC_ALPHA_REG_ADD               0x0125
+#define ALS108_STC_BETA_REG_ADD                0x0126
+#define ALS108_STC_RHO_REG_ADD                 0x0127
+#define ALS108_STC_SIGMA_REG_ADD               0x0128
+
+#define ALS108_REG_TOTALNUM                    0x0009
+
+#define ALS108_INIT_REG_ADD                    0x012f
+
 
 
 #define ALS_SHOW_STEP_REG_ADD                  0x018f

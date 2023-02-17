@@ -595,7 +595,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>9</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -5107,6 +5107,315 @@
        <x>70</x>
        <y>20</y>
        <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_9">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tab_10">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+    <widget class="QPushButton" name="readTab10Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>190</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>读取任务号108参数</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab10label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>曝光:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg108_threshold">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tab10label_3">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>70</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存任务号:(200-1000)</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="initTab10Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>10</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>重置任务号108参数</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="othersaveTab10Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>130</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>另存自定义任务号</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="writeTab10Btn">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>250</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>写入任务号108参数</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tab10tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>391</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>取值范围</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <item row="0" column="0">
+      <property name="text">
+       <string>特征点X位置</string>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string>[0,1023]</string>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>特征点Y位置</string>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string>[0,1535]</string>
+      </property>
+     </item>
+     <item row="1" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>宽度搜索区域</string>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string>[30,500]</string>
+      </property>
+     </item>
+     <item row="2" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>高度搜索区域</string>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string>[30,500]</string>
+      </property>
+     </item>
+     <item row="3" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string>尺度因子</string>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string>[0,1000]</string>
+      </property>
+     </item>
+     <item row="4" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string>形状因子</string>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string>[0,1000]</string>
+      </property>
+     </item>
+     <item row="5" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="6" column="0">
+      <property name="text">
+       <string>学习率</string>
+      </property>
+     </item>
+     <item row="6" column="1">
+      <property name="text">
+       <string>[0,1000]</string>
+      </property>
+     </item>
+     <item row="6" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="7" column="0">
+      <property name="text">
+       <string>高斯权重</string>
+      </property>
+     </item>
+     <item row="7" column="1">
+      <property name="text">
+       <string>[0,1000]</string>
+      </property>
+     </item>
+     <item row="7" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="tab10label_1">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(20-65535)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="alg108_othersave">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>90</y>
+       <width>151</width>
        <height>31</height>
       </rect>
      </property>
