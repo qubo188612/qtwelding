@@ -477,6 +477,39 @@ void showtasknumdlg::image_draw(int task_num)
         cv::putText(image,"3",p2,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
     }
     break;
+    case 107:
+    {
+
+    }
+    break;
+    case 108:
+    {
+        L_line line1,line2;
+        line1.st.y=nnHeight/16.0;
+        line1.ed.y=nnHeight/2.0;
+        line1.st.x=nnWidth/16.0;
+        line1.ed.x=nnWidth/16.0*11;
+        cv::line(image,line1.st,line1.ed,cv::Scalar(255,0,0),9);
+        line2.st.y=nnHeight/16.0*15;
+        line2.ed.y=nnHeight/2.0;
+        line2.st.x=nnWidth/16.0;
+        line2.ed.x=nnWidth/16.0*11;
+        cv::line(image,line2.st,line2.ed,cv::Scalar(255,0,0),9);
+        cv::Point focal;
+        GetLinefocal(line1,line2,&focal);
+        cv::circle(image,focal,20,cv::Scalar(0,0,255),3);
+        cv::Point2f p;
+        p.x=focal.x-25;
+        p.y=focal.y+75;
+        cv::putText(image,"1",p,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
+        cv::Rect box;
+        box.x=focal.x-150;
+        box.y=focal.y-150;
+        box.width=301;
+        box.height=301;
+        cv::rectangle(image,box,cv::Scalar(0,255,0),3);
+    }
+    break;
     default:
     break;
     }

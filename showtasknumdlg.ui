@@ -260,7 +260,7 @@
    </item>
    <item row="9" column="2">
     <property name="text">
-     <string>未定义</string>
+     <string>特征定位</string>
     </property>
    </item>
    <item row="10" column="0">
