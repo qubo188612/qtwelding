@@ -27,6 +27,16 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#define TABWIDGET_TASK100       1
+#define TABWIDGET_TASK101       2
+#define TABWIDGET_TASK102       3
+#define TABWIDGET_TASK103       4
+#define TABWIDGET_TASK104       5
+#define TABWIDGET_TASK105       6
+#define TABWIDGET_TASK106       7
+#define TABWIDGET_TASK107       8
+#define TABWIDGET_TASK108       9
+
 namespace Ui {
 class qtmysunnyDlg;
 }
@@ -71,6 +81,23 @@ public:
 
     int ctx_result_dosomeing;
 
+    int32_t tabWidget_task; //当前选择的tab任务
+    int32_t zoom_left;
+    int32_t zoom_right;
+    int32_t zoom_top;
+    int32_t zoom_deep;
+    int32_t zoom_center_x;
+    int32_t zoom_center_y;
+    uint16_t u16_zoom_left;
+    uint16_t u16_zoom_right;
+    uint16_t u16_zoom_top;
+    uint16_t u16_zoom_deep;
+    uint16_t u16_zoom_center_x;
+    uint16_t u16_zoom_center_y;
+    void drow_image(int32_t oldheight,int32_t oldwidth,QImage *img);
+    int32_t drowstep;
+    int32_t drowstep_temp=0;
+
 //  void showEvent(QShowEvent *e);//重写函数避免界面不刷新
 
     void init_dlg_show();
@@ -96,7 +123,7 @@ private slots:
     void init_show_pos_failed();
     void init_show_cvimage_inlab(cv::Mat);
     void init_set_task();
-    void on_tabWidget_tabBarClicked(int index);
+    void on_tabWidget_currentChanged(int index);
 };
 
 class getposThread : public QThread

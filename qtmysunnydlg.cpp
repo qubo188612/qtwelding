@@ -34,6 +34,11 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     ui->alg101_threshold->setValidator(aIntValidator);
     ui->alg102_threshold->setValidator(aIntValidator);
     ui->alg103_threshold->setValidator(aIntValidator);
+    ui->alg104_threshold->setValidator(aIntValidator);
+    ui->alg105_threshold->setValidator(aIntValidator);
+    ui->alg106_threshold->setValidator(aIntValidator);
+
+    ui->alg108_threshold->setValidator(aIntValidator);
 
     ui->label_3->hide();
     ui->label_4->hide();
@@ -41,6 +46,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     ui->comboBox->hide();
     ui->robotport->hide();
     ui->robotsetBtn->hide();
+
+    tabWidget_task=0;
+    zoom_left=0;
+    zoom_right=0;
+    zoom_top=0;
+    zoom_deep=0;
+    drowstep=0;
+    drowstep_temp=0;
 
     ui->tabWidget->setTabText(0,QString::fromLocal8Bit("任务0-99"));
     ui->tabWidget->setTabText(1,QString::fromLocal8Bit("任务100"));
@@ -1674,6 +1687,44 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         }
      });
 
+    connect(ui->tab7ZoomBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_param_state==true)
+        {
+            if(drowstep==2)
+            {
+                uint16_t tab_reg[ALS105_REG_TOTALNUM];
+                drowstep=0;
+                drowstep_temp=0;
+                tab_reg[0]=u16_zoom_left;
+                tab_reg[1]=u16_zoom_right;
+                tab_reg[2]=u16_zoom_top;
+                tab_reg[3]=u16_zoom_deep;
+
+                int rc=modbus_write_registers(m_mcs->resultdata.ctx_param,ALS105_CUTLEFT_REG_ADD,4,tab_reg);
+                if(rc!=4)
+                {
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                }
+                else
+                {
+                    ui->tab7tableWidget->item(ALS105_CUTLEFT_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_left));
+                    ui->tab7tableWidget->item(ALS105_CUTRIGHT_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_right));
+                    ui->tab7tableWidget->item(ALS105_CUTTOP_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_top));
+                    ui->tab7tableWidget->item(ALS105_CUTDEEP_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_deep));
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                }
+
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+        }
+    });
+
     connect(ui->writeTab8Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
        {
@@ -1856,6 +1907,45 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
         }
      });
+
+    connect(ui->tab8ZoomBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_param_state==true)
+        {
+            if(drowstep==2)
+            {
+                uint16_t tab_reg[ALS106_REG_TOTALNUM];
+                drowstep=0;
+                drowstep_temp=0;
+                tab_reg[0]=u16_zoom_left;
+                tab_reg[1]=u16_zoom_right;
+                tab_reg[2]=u16_zoom_top;
+                tab_reg[3]=u16_zoom_deep;
+
+                int rc=modbus_write_registers(m_mcs->resultdata.ctx_param,ALS106_CUTLEFT_REG_ADD,4,tab_reg);
+                if(rc!=4)
+                {
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                }
+                else
+                {
+                    ui->tab8tableWidget->item(ALS106_CUTLEFT_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_left));
+                    ui->tab8tableWidget->item(ALS106_CUTRIGHT_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_right));
+                    ui->tab8tableWidget->item(ALS106_CUTTOP_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_top));
+                    ui->tab8tableWidget->item(ALS106_CUTDEEP_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_deep));
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                }
+
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+        }
+    });
+
 
     connect(ui->writeTab10Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
@@ -2040,6 +2130,38 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         }
      });
 
+    connect(ui->tab10ZoomBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_param_state==true)
+        {
+            if(drowstep==2)
+            {
+                uint16_t tab_reg[ALS108_REG_TOTALNUM];
+                drowstep=0;
+                drowstep_temp=0;
+                tab_reg[0]=u16_zoom_center_x;
+                tab_reg[1]=u16_zoom_center_y;
+
+                int rc=modbus_write_registers(m_mcs->resultdata.ctx_param,ALS108_CENTER_X_REG_ADD,2,tab_reg);
+                if(rc!=2)
+                {
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                }
+                else
+                {
+                    ui->tab10tableWidget->item(ALS108_CENTER_X_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_center_x));
+                    ui->tab10tableWidget->item(ALS108_CENTER_Y_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_center_y));
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                }
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+        }
+    });
 
     connect(ui->tasknumshowBtn,&QPushButton::clicked,[=](){
         showtasknum->setWindowTitle(QString::fromLocal8Bit("任务号图示"));
@@ -2528,6 +2650,9 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
     }
     else
     {
+        drowstep=0;
+        drowstep_temp=0;
+
         thread1->Stop();
         thread1->quit();
         thread1->wait();
@@ -2701,6 +2826,241 @@ void qtmysunnyDlg::init_show_pos_failed()
     b_init_show_pos_failed_finish=true;
 }
 
+void qtmysunnyDlg::drow_image(int32_t oldheight,int32_t oldwidth,QImage *img)
+{
+    static int32_t i32_zoom_left,i32_zoom_right,i32_zoom_top,i32_zoom_deep,i32_zoom_center_x,i32_zoom_center_y;
+    int32_t nHeight=img->height();
+    int32_t nWidth=img->width();
+    if(drowstep==0)
+    {
+        switch(tabWidget_task)
+        {
+            case TABWIDGET_TASK105:
+            {
+                uint16_t tab_reg[ALS105_REG_TOTALNUM];
+                tab_reg[0]=ui->alg105_threshold->text().toInt();
+                for(int i=1;i<ALS105_REG_TOTALNUM;i++)
+                {
+                    tab_reg[i]=(uint16_t)(ui->tab7tableWidget->item(i-1,2)->text().toInt());
+                }
+                if(tab_reg[ALS105_B_CUT_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD]==1)
+                {
+                    zoom_left=tab_reg[ALS105_CUTLEFT_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                    zoom_right=tab_reg[ALS105_CUTRIGHT_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                    zoom_top=tab_reg[ALS105_CUTTOP_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                    zoom_deep=tab_reg[ALS105_CUTDEEP_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                    QPainter painter(img);
+                    QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                    pen.setColor(QColor(255,0,0,255));
+                    painter.setPen(pen);
+                    painter.drawRect(zoom_left, zoom_top, zoom_right-zoom_left+1, zoom_deep-zoom_top+1);
+                }
+            }
+            break;
+            case TABWIDGET_TASK106:
+            {
+                uint16_t tab_reg[ALS106_REG_TOTALNUM];
+                tab_reg[0]=ui->alg106_threshold->text().toInt();
+                for(int i=1;i<ALS106_REG_TOTALNUM;i++)
+                {
+                    tab_reg[i]=(uint16_t)(ui->tab8tableWidget->item(i-1,2)->text().toInt());
+                }
+                if(tab_reg[ALS106_B_CUT_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD]==1)
+                {
+                    zoom_left=tab_reg[ALS106_CUTLEFT_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                    zoom_right=tab_reg[ALS106_CUTRIGHT_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                    zoom_top=tab_reg[ALS106_CUTTOP_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                    zoom_deep=tab_reg[ALS106_CUTDEEP_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                    QPainter painter(img);
+                    QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                    pen.setColor(QColor(255,0,0,255));
+                    painter.setPen(pen);
+                    painter.drawRect(zoom_left, zoom_top, zoom_right-zoom_left+1, zoom_deep-zoom_top+1);
+                }
+            }
+            break;
+            case TABWIDGET_TASK108:
+            {
+                uint16_t tab_reg[ALS108_REG_TOTALNUM];
+                tab_reg[0]=ui->alg108_threshold->text().toInt();
+                for(int i=1;i<ALS108_REG_TOTALNUM;i++)
+                {
+                    tab_reg[i]=(uint16_t)(ui->tab10tableWidget->item(i-1,2)->text().toInt());
+                }
+                zoom_center_x=tab_reg[ALS108_CENTER_X_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                zoom_center_y=tab_reg[ALS108_CENTER_Y_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                zoom_left=zoom_center_x-tab_reg[ALS108_SEARCT_W_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                zoom_right=zoom_center_x+tab_reg[ALS108_SEARCT_W_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                zoom_top=zoom_center_y-tab_reg[ALS108_SEARCT_H_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                zoom_deep=zoom_center_y+tab_reg[ALS108_SEARCT_H_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                QPainter painter(img);
+                QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                pen.setColor(QColor(255,0,0,255));
+                painter.setPen(pen);
+                painter.drawRect(zoom_left, zoom_top, zoom_right-zoom_left+1, zoom_deep-zoom_top+1);
+                pen.setColor(QColor(0,255,0,255));
+                painter.setPen(pen);
+                painter.drawEllipse(zoom_center_x-16*nWidth/oldwidth,zoom_center_y-16*nHeight/oldheight,32*nWidth/oldwidth,32*nHeight/oldheight);
+            }
+            break;
+            default:
+            break;
+        }
+    }
+    //鼠标按下
+    if(ui->widget->b_mouse_push==true)
+    {
+        drowstep=1;
+        if(drowstep_temp==0)
+        {
+            drowstep_temp=1;
+            switch(tabWidget_task)
+            {
+                case TABWIDGET_TASK105:
+                case TABWIDGET_TASK106:
+                {
+                    i32_zoom_left=ui->widget->mousePos.rx();
+                    i32_zoom_right=ui->widget->mousePos.rx();
+                    i32_zoom_top=ui->widget->mousePos.ry();
+                    i32_zoom_deep=ui->widget->mousePos.ry();
+                }
+                break;
+                case TABWIDGET_TASK108:
+                {
+                    i32_zoom_center_x=ui->widget->mousePos.rx();
+                    i32_zoom_center_y=ui->widget->mousePos.ry();
+                }
+                break;
+            }
+        }
+        else if(drowstep_temp==1)
+        {
+            switch(tabWidget_task)
+            {
+                case TABWIDGET_TASK105:
+                case TABWIDGET_TASK106:
+                {
+                    i32_zoom_right=ui->widget->mousePos.rx();
+                    i32_zoom_deep=ui->widget->mousePos.ry();
+                }
+                break;
+                case TABWIDGET_TASK108:
+                {
+                    i32_zoom_center_x=ui->widget->mousePos.rx();
+                    i32_zoom_center_y=ui->widget->mousePos.ry();
+                }
+                break;
+            }
+        }
+        switch(tabWidget_task)
+        {
+            case TABWIDGET_TASK105:
+            case TABWIDGET_TASK106:
+            {
+                QPainter painter(img);
+                QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                pen.setColor(QColor(255,0,0,255));
+                painter.setPen(pen);
+                painter.drawRect(i32_zoom_left, i32_zoom_top, i32_zoom_right-i32_zoom_left+1, i32_zoom_deep-i32_zoom_top+1);
+            }
+            break;
+            case TABWIDGET_TASK108:
+            {
+                uint16_t tab_reg[ALS108_REG_TOTALNUM];
+                tab_reg[0]=ui->alg108_threshold->text().toInt();
+                for(int i=1;i<ALS108_REG_TOTALNUM;i++)
+                {
+                    tab_reg[i]=(uint16_t)(ui->tab10tableWidget->item(i-1,2)->text().toInt());
+                }
+                i32_zoom_left=i32_zoom_center_x-tab_reg[ALS108_SEARCT_W_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                i32_zoom_right=i32_zoom_center_x+tab_reg[ALS108_SEARCT_W_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                i32_zoom_top=i32_zoom_center_y-tab_reg[ALS108_SEARCT_H_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                i32_zoom_deep=i32_zoom_center_y+tab_reg[ALS108_SEARCT_H_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                QPainter painter(img);
+                QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                pen.setColor(QColor(255,0,0,255));
+                painter.setPen(pen);
+                painter.drawRect(i32_zoom_left, i32_zoom_top, i32_zoom_right-i32_zoom_left+1, i32_zoom_deep-i32_zoom_top+1);
+                pen.setColor(QColor(0,255,0,255));
+                painter.setPen(pen);
+                painter.drawEllipse(i32_zoom_center_x-16*nWidth/oldwidth,i32_zoom_center_y-16*nHeight/oldheight,32*nWidth/oldwidth,32*nHeight/oldheight);
+            }
+            break;
+        }
+    }
+    else
+    {
+        drowstep_temp=0;
+        if(drowstep==1)
+        {
+            drowstep=2;
+            switch(tabWidget_task)
+            {
+                case TABWIDGET_TASK105:
+                case TABWIDGET_TASK106:
+                {
+                    zoom_left=MIN(i32_zoom_left,i32_zoom_right);
+                    zoom_right=MAX(i32_zoom_left,i32_zoom_right);
+                    zoom_top=MIN(i32_zoom_top,i32_zoom_deep);
+                    zoom_deep=MAX(i32_zoom_top,i32_zoom_deep);
+                    u16_zoom_left=(uint16_t)(zoom_left*oldwidth/nWidth);
+                    u16_zoom_right=(uint16_t)(zoom_right*oldwidth/nWidth);
+                    u16_zoom_top=(uint16_t)(zoom_top*oldheight/nHeight);
+                    u16_zoom_deep=(uint16_t)(zoom_deep*oldheight/nHeight);
+                }
+                break;
+                case TABWIDGET_TASK108:
+                {
+                    zoom_center_x=i32_zoom_center_x;
+                    zoom_center_y=i32_zoom_center_y;
+                    u16_zoom_center_x=(uint16_t)(zoom_center_x*oldwidth/nWidth);
+                    u16_zoom_center_y=(uint16_t)(zoom_center_y*oldheight/nHeight);
+                }
+                break;
+            }
+        }
+        if(drowstep==2)
+        {
+            switch(tabWidget_task)
+            {
+                case TABWIDGET_TASK105:
+                case TABWIDGET_TASK106:
+                {
+                    QPainter painter(img);
+                    QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                    pen.setColor(QColor(255,0,0,255));
+                    painter.setPen(pen);
+                    painter.drawRect(zoom_left, zoom_top, zoom_right-zoom_left+1, zoom_deep-zoom_top+1);
+                }
+                break;
+                case TABWIDGET_TASK108:
+                {
+                    uint16_t tab_reg[ALS108_REG_TOTALNUM];
+                    tab_reg[0]=ui->alg108_threshold->text().toInt();
+                    for(int i=1;i<ALS108_REG_TOTALNUM;i++)
+                    {
+                        tab_reg[i]=(uint16_t)(ui->tab10tableWidget->item(i-1,2)->text().toInt());
+                    }
+                    zoom_left=zoom_center_x-tab_reg[ALS108_SEARCT_W_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                    zoom_right=zoom_center_x+tab_reg[ALS108_SEARCT_W_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nWidth/oldwidth;
+                    zoom_top=zoom_center_y-tab_reg[ALS108_SEARCT_H_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                    zoom_deep=zoom_center_y+tab_reg[ALS108_SEARCT_H_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD]*nHeight/oldheight;
+                    QPainter painter(img);
+                    QPen pen; //画笔。绘制图形边线，由颜色、宽度、线风格等参数组成
+                    pen.setColor(QColor(255,0,0,255));
+                    painter.setPen(pen);
+                    painter.drawRect(zoom_left, zoom_top, zoom_right-zoom_left+1, zoom_deep-zoom_top+1);
+                    pen.setColor(QColor(0,255,0,255));
+                    painter.setPen(pen);
+                    painter.drawEllipse(zoom_center_x-16*nWidth/oldwidth,zoom_center_y-16*nHeight/oldheight,32*nWidth/oldwidth,32*nHeight/oldheight);
+                }
+                break;
+            }
+        }
+    }
+}
+
+
 void qtmysunnyDlg::init_show_cvimage_inlab(cv::Mat cv_image)
 {
     if(!cv_image.empty())
@@ -2725,6 +3085,7 @@ void qtmysunnyDlg::init_show_cvimage_inlab(cv::Mat cv_image)
                                           cvimg.rows,
                                           cvimg.cols * cvimg.channels(), format);
         img = img.scaled(ui->widget->width(),ui->widget->height(),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        drow_image(CAMBUILD_IMAGE_HEIGHT,CAMBUILD_IMAGE_WIDTH,&img);
         ui->widget->setImage(img);
     }
     b_init_show_cvimage_inlab_finish=true;
@@ -2765,8 +3126,11 @@ void qtmysunnyDlg::init_set_task()
     b_init_set_task=true;
 }
 
-void qtmysunnyDlg::on_tabWidget_tabBarClicked(int index)
+void qtmysunnyDlg::on_tabWidget_currentChanged(int index)
 {
+    drowstep=0;
+    drowstep_temp=0;
+    tabWidget_task=index;
     showupdata_tabWidget(index);
 }
 
@@ -2776,7 +3140,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
     {
         switch(index)
         {
-            case 1:
+            case TABWIDGET_TASK100:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS100_REG_TOTALNUM];
@@ -2811,7 +3175,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                         ui->record->append(QString::fromLocal8Bit("读取任务号100参数成功"));
                 }
             }
-            case 2:
+            case TABWIDGET_TASK101:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS101_REG_TOTALNUM];
@@ -2846,7 +3210,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                         ui->record->append(QString::fromLocal8Bit("读取任务号101参数成功"));
                 }
             }
-            case 3:
+            case TABWIDGET_TASK102:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS102_REG_TOTALNUM];
@@ -2882,7 +3246,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 }
             }
             break;
-            case 4:
+            case TABWIDGET_TASK103:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS103_REG_TOTALNUM];
@@ -2918,7 +3282,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 }
             }
             break;
-            case 5:
+            case TABWIDGET_TASK104:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS104_REG_TOTALNUM];
@@ -2954,7 +3318,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 }
             }
             break;
-            case 6:
+            case TABWIDGET_TASK105:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS105_REG_TOTALNUM];
@@ -2990,7 +3354,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 }
             }
             break;
-            case 7:
+            case TABWIDGET_TASK106:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS106_REG_TOTALNUM];
@@ -3026,7 +3390,11 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 }
             }
             break;
-            case 9:
+            case TABWIDGET_TASK107:
+            {
+            }
+            break;
+            case TABWIDGET_TASK108:
             {
                 int real_readnum=0;
                 u_int16_t rcvdata[ALS108_REG_TOTALNUM];
@@ -3060,7 +3428,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     if(ui->checkBox->isChecked()==false)
                         ui->record->append(QString::fromLocal8Bit("读取任务号108参数成功"));
                 }
-        }
+            }
             break;
             default:
             break;
@@ -3160,5 +3528,8 @@ void getposThread::Stop()
     }
   }
 }
+
+
+
 
 

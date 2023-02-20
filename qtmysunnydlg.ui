@@ -4127,6 +4127,19 @@
       <string>另存任务号:(200-1000)</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="tab7ZoomBtn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>130</y>
+       <width>71</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>更新区域</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_8">
     <attribute name="title">
@@ -5111,6 +5124,19 @@
       </rect>
      </property>
     </widget>
+    <widget class="QPushButton" name="tab8ZoomBtn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>130</y>
+       <width>71</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>更新区域</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_9">
     <attribute name="title">
@@ -5418,6 +5444,19 @@
        <width>151</width>
        <height>31</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab10ZoomBtn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>130</y>
+       <width>71</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>更新区域</string>
      </property>
     </widget>
    </widget>
