@@ -595,7 +595,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -863,6 +863,11 @@
      <row>
       <property name="text">
        <string>22</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>23</string>
       </property>
      </row>
      <column>
@@ -1210,6 +1215,21 @@
        <string/>
       </property>
      </item>
+     <item row="22" column="0">
+      <property name="text">
+       <string>优先采用点</string>
+      </property>
+     </item>
+     <item row="22" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="22" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="tab2label_3">
      <property name="geometry">
@@ -1447,6 +1467,11 @@
      <row>
       <property name="text">
        <string>22</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>23</string>
       </property>
      </row>
      <column>
@@ -1794,6 +1819,21 @@
        <string/>
       </property>
      </item>
+     <item row="22" column="0">
+      <property name="text">
+       <string>优先采用点</string>
+      </property>
+     </item>
+     <item row="22" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="22" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QPushButton" name="othersaveTab3Btn">
      <property name="geometry">
@@ -2111,6 +2151,11 @@
      <row>
       <property name="text">
        <string>38</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>39</string>
       </property>
      </row>
      <column>
@@ -2694,6 +2739,21 @@
       </property>
      </item>
      <item row="37" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="38" column="0">
+      <property name="text">
+       <string>优先采用点</string>
+      </property>
+     </item>
+     <item row="38" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="38" column="2">
       <property name="text">
        <string/>
       </property>
@@ -3689,6 +3749,11 @@
        <string>24</string>
       </property>
      </row>
+     <row>
+      <property name="text">
+       <string>25</string>
+      </property>
+     </row>
      <column>
       <property name="text">
        <string>名称</string>
@@ -4064,6 +4129,21 @@
        <string/>
       </property>
      </item>
+     <item row="24" column="0">
+      <property name="text">
+       <string>优先采用点</string>
+      </property>
+     </item>
+     <item row="24" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="24" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="tab7label_1">
      <property name="geometry">
@@ -4365,6 +4445,11 @@
      <row>
       <property name="text">
        <string>43</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>44</string>
       </property>
      </row>
      <column>
@@ -5008,6 +5093,21 @@
       </property>
      </item>
      <item row="41" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="42" column="0">
+      <property name="text">
+       <string>优先采用点</string>
+      </property>
+     </item>
+     <item row="42" column="1">
+      <property name="text">
+       <string>[0,20]</string>
+      </property>
+     </item>
+     <item row="42" column="2">
       <property name="text">
        <string/>
       </property>
