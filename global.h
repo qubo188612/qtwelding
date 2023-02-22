@@ -30,9 +30,6 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DEBUG_MYINTERFACES          //显示算法结果或者算法原图开关
 #define DEBUS_SSH                   //ssh升级方式开关
 
-#define CAMIMAGE_HEIGHT             960
-#define CAMIMAGE_WIDTH              1280
-
 #define CAMBUILD_IMAGE_WIDTH  1024
 #define CAMBUILD_IMAGE_HEIGHT 1536
 
@@ -391,6 +388,34 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS106_REG_TOTALNUM                    0x002c
 
 #define ALS106_INIT_REG_ADD                    0x00ff
+
+#define ALS107_EXPOSURE_TIME_REG_ADD           0x0100
+#define ALS107_PINGJUN_REG_ADD                 0x0101
+#define ALS107_B_YANMOFUZHU_REG_ADD            0x0102
+#define ALS107_B_GUDINGQUYU_REG_ADD            0x0103
+#define ALS107_WIDTHLIANTONGDIS_REG_ADD        0x0104
+#define ALS107_HIGHLIANTONGDIS_REG_ADD         0x0105
+#define ALS107_GUJIAERZHI_REG_ADD              0x0106
+#define ALS107_JIGUANGHIGHT_REG_ADD            0x0107
+#define ALS107_JIGUANGLONG_REG_ADD             0x0108
+#define ALS107_JIGUANGKUANDU_REG_ADD           0x0109
+#define ALS107_UPDIF_REG_ADD                   0x010a
+#define ALS107_UPDIFMIN_REG_ADD                0x010b
+#define ALS107_UPLONG_REG_ADD                  0x010c
+#define ALS107_DOWNDIF_REG_ADD                 0x010d
+#define ALS107_DOWNDIFMIN_REG_ADD              0x010e
+#define ALS107_DOWNDLONG_REG_ADD               0x010f
+#define ALS107_ST_DOWN_REG_ADD                 0x0110
+#define ALS107_ED_DOWN_REG_ADD                 0x0111
+#define ALS107_ST_UP_REG_ADD                   0x0112
+#define ALS107_ED_UP_REG_ADD                   0x0113
+#define ALS107_DIS_CENTER_ST_REG_ADD           0x0114
+#define ALS107_DIS_CENTER_ST2_REG_ADD          0x0115
+#define ALS107_DIS_CENTER_ED2_REG_ADD          0x0116
+
+#define ALS107_REG_TOTALNUM                    0x0017
+
+#define ALS107_INIT_REG_ADD                    0x011f
 
 #define ALS108_EXPOSURE_TIME_REG_ADD           0x0120
 #define ALS108_CENTER_X_REG_ADD                0x0121

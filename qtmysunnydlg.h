@@ -94,6 +94,8 @@ public:
     uint16_t u16_zoom_deep;
     uint16_t u16_zoom_center_x;
     uint16_t u16_zoom_center_y;
+    int32_t drow_height;
+    int32_t drow_width;
     void drow_image(int32_t oldheight,int32_t oldwidth,QImage *img);
     int32_t drowstep;
     int32_t drowstep_temp=0;

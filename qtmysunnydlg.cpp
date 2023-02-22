@@ -47,6 +47,8 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     ui->robotport->hide();
     ui->robotsetBtn->hide();
 
+    drow_height=CAMBUILD_IMAGE_HEIGHT;
+    drow_width=CAMBUILD_IMAGE_WIDTH;
     tabWidget_task=0;
     zoom_left=0;
     zoom_right=0;
@@ -66,8 +68,6 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     ui->tabWidget->setTabText(8,QString::fromLocal8Bit("任务107"));
     ui->tabWidget->setTabText(9,QString::fromLocal8Bit("任务108"));
 
-    ui->tabWidget->setCurrentIndex(0);
-
     ui->IPadd->setText(m_mcs->cam->sop_cam[0].ipaddress);
 
     ui->record->document()->setMaximumBlockCount(500);   //调试窗最大设置行数
@@ -79,7 +79,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     ui->tab6tableWidget->setColumnWidth(0, 170);    //设置第一列宽度
     ui->tab7tableWidget->setColumnWidth(0, 170);    //设置第一列宽度
     ui->tab8tableWidget->setColumnWidth(0, 170);    //设置第一列宽度
-
+    ui->tab9tableWidget->setColumnWidth(0, 170);    //设置第一列宽度
     ui->tab10tableWidget->setColumnWidth(0, 170);    //设置第一列宽度
 
     for(int i = 0; i < ui->tab2tableWidget->rowCount(); i++)//设置第一二列不可编辑
@@ -173,7 +173,19 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             item1->setFlags(item1->flags() & (~Qt::ItemIsEditable));
         }
     }
-
+    for(int i = 0; i < ui->tab9tableWidget->rowCount(); i++)//设置第一二列不可编辑
+    {
+        QTableWidgetItem *item0 = ui->tab9tableWidget->item(i, 0);
+        QTableWidgetItem *item1 = ui->tab9tableWidget->item(i, 1);
+        if(item0)
+        {
+            item0->setFlags(item0->flags() & (~Qt::ItemIsEditable));
+        }
+        if(item1)
+        {
+            item1->setFlags(item1->flags() & (~Qt::ItemIsEditable));
+        }
+    }
     for(int i = 0; i < ui->tab10tableWidget->rowCount(); i++)//设置第一二列不可编辑
     {
         QTableWidgetItem *item0 = ui->tab10tableWidget->item(i, 0);
@@ -201,6 +213,8 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     connect(thread1, SIGNAL(Send_show_pos_failed()), this, SLOT(init_show_pos_failed()));
     connect(thread1, SIGNAL(Send_show_cvimage_inlab(cv::Mat)), this, SLOT(init_show_cvimage_inlab(cv::Mat)));
     connect(thread1, SIGNAL(Send_set_task()), this, SLOT(init_set_task()));
+
+    ui->tabWidget->setCurrentIndex(0);
 
     m_mcs->resultdata.client=new QTcpSocket(this);
 
@@ -373,6 +387,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
              tab_reg[2]=fps;
              tab_reg[3]=view_width;
              tab_reg[4]=view_height;
+
              int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_CAMWIDTH_REG_ADD,5,tab_reg);
              if(rc!=5)
              {
@@ -1946,6 +1961,188 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         }
     });
 
+    connect(ui->writeTab9Btn,&QPushButton::clicked,[=](){
+       if(m_mcs->resultdata.link_param_state==true)
+       {
+           int alg107_threshold=ui->alg107_threshold->text().toInt();
+           if(alg107_threshold<20||alg107_threshold>65535)
+           {
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+           }
+           else
+           {
+               uint16_t tab_reg[ALS107_REG_TOTALNUM];
+               tab_reg[0]=alg107_threshold;
+               for(int i=1;i<ALS107_REG_TOTALNUM;i++)
+               {
+                   tab_reg[i]=(uint16_t)(ui->tab9tableWidget->item(i-1,2)->text().toInt());
+               }
+               int rc=modbus_write_registers(m_mcs->resultdata.ctx_param,ALS107_EXPOSURE_TIME_REG_ADD,ALS107_REG_TOTALNUM,tab_reg);
+               if(rc!=ALS107_REG_TOTALNUM)
+               {
+                   if(ui->checkBox->isChecked()==false)
+                       ui->record->append(QString::fromLocal8Bit("设置任务号107参数失败"));
+               }
+               else
+               {
+                   m_mcs->resultdata.alg107_threshold=alg107_threshold;
+                   if(ui->checkBox->isChecked()==false)
+                       ui->record->append(QString::fromLocal8Bit("设置任务号107参数成功"));
+               }
+           }
+       }
+       else
+       {
+           if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号107参数"));
+       }
+    });
+
+    connect(ui->initTab9Btn,&QPushButton::clicked,[=](){
+       if(m_mcs->resultdata.link_param_state==true)
+       {
+           uint16_t tab_reg[1];
+           tab_reg[0]=1;
+           int rc=modbus_write_registers(m_mcs->resultdata.ctx_param,ALS107_INIT_REG_ADD,1,tab_reg);
+           if(rc!=1)
+           {
+               if(ui->checkBox->isChecked()==false)
+                   ui->record->append(QString::fromLocal8Bit("重置任务号107参数失败"));
+           }
+           else
+           {
+               if(ui->checkBox->isChecked()==false)
+                   ui->record->append(QString::fromLocal8Bit("重置任务号107参数成功"));
+                #if _MSC_VER
+                    Sleep(1000);
+                #else
+                    sleep(1);
+                #endif
+               int real_readnum=0;
+               u_int16_t rcvdata[ALS107_REG_TOTALNUM];
+               real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_param,ALS107_EXPOSURE_TIME_REG_ADD,ALS107_REG_TOTALNUM,rcvdata);
+               if(real_readnum<0)
+               {
+                   if(ui->checkBox->isChecked()==false)
+                       ui->record->append(QString::fromLocal8Bit("重新读取任务号107参数失败"));
+               }
+               else
+               {
+                   if(rcvdata[0]>65535)
+                   {
+                       m_mcs->resultdata.alg107_threshold=65535;
+                   }
+                   else if(rcvdata[0]<20)
+                   {
+                       m_mcs->resultdata.alg107_threshold=20;
+                   }
+                   else
+                   {
+                       m_mcs->resultdata.alg107_threshold=rcvdata[0];
+                   }
+                   ui->alg107_threshold->setText(QString::number(m_mcs->resultdata.alg107_threshold));
+
+                   for(int i=1;i<ALS107_REG_TOTALNUM;i++)
+                   {
+                       ui->tab9tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
+                   }
+
+                   if(ui->checkBox->isChecked()==false)
+                       ui->record->append(QString::fromLocal8Bit("重新读取任务号107参数成功"));
+               }
+           }
+       }
+       else
+       {
+           if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号107参数"));
+       }
+    });
+
+    connect(ui->readTab9Btn,&QPushButton::clicked,[=](){
+       if(m_mcs->resultdata.link_param_state==true)
+       {
+           int real_readnum=0;
+           u_int16_t rcvdata[ALS107_REG_TOTALNUM];
+           real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_param,ALS107_EXPOSURE_TIME_REG_ADD,ALS107_REG_TOTALNUM,rcvdata);
+           if(real_readnum<0)
+           {
+               if(ui->checkBox->isChecked()==false)
+                   ui->record->append(QString::fromLocal8Bit("读取任务号107参数失败"));
+           }
+           else
+           {
+               if(rcvdata[0]>65535)
+               {
+                   m_mcs->resultdata.alg107_threshold=65535;
+               }
+               else if(rcvdata[0]<20)
+               {
+                   m_mcs->resultdata.alg107_threshold=20;
+               }
+               else
+               {
+                   m_mcs->resultdata.alg107_threshold=rcvdata[0];
+               }
+               ui->alg107_threshold->setText(QString::number(m_mcs->resultdata.alg107_threshold));
+
+               for(int i=1;i<ALS107_REG_TOTALNUM;i++)
+               {
+                   ui->tab9tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
+               }
+
+               if(ui->checkBox->isChecked()==false)
+                   ui->record->append(QString::fromLocal8Bit("读取任务号107参数成功"));
+           }
+       }
+       else
+       {
+           if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号107参数"));
+       }
+    });
+
+    connect(ui->othersaveTab9Btn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_ftp_state==true)
+        {
+            bool ok;
+            int taskname=ui->alg107_othersave->text().toInt(&ok);
+            if(ok==true)
+            {
+                if((taskname>=200&&taskname<=1000)||(taskname>0&&taskname<100))
+                {
+                    QJsonObject json;
+                    QJsonObject sing;
+                    sing.insert("taskname",taskname);
+                    sing.insert("alsnum",107);
+                    json.insert("touch",sing);
+                    QString msg=JsonToQstring(json);
+                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    if(ui->checkBox->isChecked()==false)
+                    {
+                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:107");
+                        ui->record->append(msg);
+                    }
+                }
+                else
+                {
+                    if(ui->checkBox->isChecked()==false)
+                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                }
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+            }
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+        }
+     });
 
     connect(ui->writeTab10Btn,&QPushButton::clicked,[=](){
        if(m_mcs->resultdata.link_param_state==true)
@@ -2575,20 +2772,24 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         }
         else
         {
-            u_int16_t widht=m_mcs->resultdata.red_robotset[0];
+            u_int16_t width=m_mcs->resultdata.red_robotset[0];
             u_int16_t height=m_mcs->resultdata.red_robotset[1];
             u_int16_t fps=m_mcs->resultdata.red_robotset[2];
             u_int16_t view_widht=m_mcs->resultdata.red_robotset[3];
             u_int16_t view_height=m_mcs->resultdata.red_robotset[4];
-            ui->cam_width->setText(QString::number(widht));
+            ui->cam_width->setText(QString::number(width));
             ui->cam_height->setText(QString::number(height));
             ui->cam_fps->setText(QString::number(fps));
             ui->cam_view_width->setText(QString::number(view_widht));
             ui->cam_view_height->setText(QString::number(view_height));
+
+            drow_height=height;
+            drow_width=width;
+
             if(ui->checkBox->isChecked()==false)
             {
                 ui->record->append(QString::fromLocal8Bit("获取当前相机设置:"));
-                QString msg=QString::number(widht)+"x"+QString::number(height)+" fps:"+QString::number(fps);
+                QString msg=QString::number(width)+"x"+QString::number(height)+" fps:"+QString::number(fps);
                 ui->record->append(msg);
             }
         }
@@ -3085,7 +3286,7 @@ void qtmysunnyDlg::init_show_cvimage_inlab(cv::Mat cv_image)
                                           cvimg.rows,
                                           cvimg.cols * cvimg.channels(), format);
         img = img.scaled(ui->widget->width(),ui->widget->height(),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        drow_image(CAMBUILD_IMAGE_HEIGHT,CAMBUILD_IMAGE_WIDTH,&img);
+        drow_image(drow_height,drow_width,&img);
         ui->widget->setImage(img);
     }
     b_init_show_cvimage_inlab_finish=true;
@@ -3392,6 +3593,38 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
             break;
             case TABWIDGET_TASK107:
             {
+                int real_readnum=0;
+                u_int16_t rcvdata[ALS107_REG_TOTALNUM];
+                real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_param,ALS107_EXPOSURE_TIME_REG_ADD,ALS107_REG_TOTALNUM,rcvdata);
+                if(real_readnum<0)
+                {
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("读取任务号107参数失败"));
+                }
+                else
+                {
+                    if(rcvdata[0]>65535)
+                    {
+                        m_mcs->resultdata.alg107_threshold=65535;
+                    }
+                    else if(rcvdata[0]<20)
+                    {
+                        m_mcs->resultdata.alg107_threshold=20;
+                    }
+                    else
+                    {
+                        m_mcs->resultdata.alg107_threshold=rcvdata[0];
+                    }
+                    ui->alg107_threshold->setText(QString::number(m_mcs->resultdata.alg107_threshold));
+
+                    for(int i=1;i<ALS107_REG_TOTALNUM;i++)
+                    {
+                        ui->tab9tableWidget->item(i-1,2)->setText(QString::number((int16_t)rcvdata[i]));
+                    }
+
+                    if(ui->checkBox->isChecked()==false)
+                        ui->record->append(QString::fromLocal8Bit("读取任务号107参数成功"));
+                }
             }
             break;
             case TABWIDGET_TASK108:

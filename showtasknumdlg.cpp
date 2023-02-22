@@ -479,7 +479,21 @@ void showtasknumdlg::image_draw(int task_num)
     break;
     case 107:
     {
-
+        L_line line1,line2;
+        line1.st.y=nnHeight/16.0*15;
+        line1.ed.y=nnHeight/2.0;
+        line1.st.x=nnWidth/2.0;
+        line1.ed.x=nnWidth/2.0;
+        cv::line(image,line1.st,line1.ed,cv::Scalar(255,0,0),9);
+        cv::ellipse(image,cv::Point(nnWidth/2.0,nnHeight/16.0),cv::Size(nnWidth/6.0,nnHeight/16.0*7.0),0,0,90,cv::Scalar(255,0,0),9);
+        cv::Point focal;
+        focal.x=line1.ed.x;
+        focal.y=line1.ed.y;
+        cv::circle(image,focal,20,cv::Scalar(0,0,255),3);
+        cv::Point2f p;
+        p.x=focal.x-50;
+        p.y=focal.y-25;
+        cv::putText(image,"1",p,cv::FONT_HERSHEY_SCRIPT_SIMPLEX,2,cv::Scalar(0,0,255),3);
     }
     break;
     case 108:
