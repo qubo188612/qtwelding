@@ -333,9 +333,13 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS105_DUANDIANJULI_REG_ADD            0x00c7
 #define ALS105_B_DIBUFAXIANGLIANG_REG_ADD      0x00c8
 #define ALS105_ANSWERPOINT_REG_ADD             0x00c9
+#define ALS105_B_USEDOWNLIANTONG_REG_ADD       0x00ca
+#define ALS105_B_KALMANFILTER_REG_ADD          0x00cb
+#define ALS105_KALMANQF_REG_ADD                0x00cc
+#define ALS105_KALMANRF_REG_ADD                0x00cd
 
 
-#define ALS105_REG_TOTALNUM                    0x001a
+#define ALS105_REG_TOTALNUM                    0x001e
 
 #define ALS105_INIT_REG_ADD                    0x00cf
 
