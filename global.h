@@ -180,9 +180,12 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS100_DIS_CENTER_ST_REG_ADD           0x0015
 #define ALS100_DIS_CENTER_ED_REG_ADD           0x0016
 #define ALS100_ANSWERPOINT_REG_ADD             0x0017
+#define ALS100_B_KALMANFILTER_REG_ADD          0x0018
+#define ALS100_KALMANQF_REG_ADD                0x0019
+#define ALS100_KALMANRF_REG_ADD                0x001a
 
 
-#define ALS100_REG_TOTALNUM                    0x0018
+#define ALS100_REG_TOTALNUM                    0x001b
 
 #define ALS100_INIT_REG_ADD                    0x001f
 
@@ -212,9 +215,12 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS101_DIS_CENTER_ST_REG_ADD           0x0035
 #define ALS101_DIS_CENTER_ED_REG_ADD           0x0036
 #define ALS101_ANSWERPOINT_REG_ADD             0x0037
+#define ALS101_B_KALMANFILTER_REG_ADD          0x0038
+#define ALS101_KALMANQF_REG_ADD                0x0039
+#define ALS101_KALMANRF_REG_ADD                0x003a
 
 
-#define ALS101_REG_TOTALNUM                    0x0018
+#define ALS101_REG_TOTALNUM                    0x001b
 
 #define ALS101_INIT_REG_ADD                    0x003f
 
@@ -259,9 +265,12 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS102_CEBANKONGDONGDIS_REG_ADD        0x0065
 #define ALS102_QIATOUQUWEI_REG_ADD             0x0066
 #define ALS102_ANSWERPOINT_REG_ADD             0x0067
+#define ALS102_B_KALMANFILTER_REG_ADD          0x0068
+#define ALS102_KALMANQF_REG_ADD                0x0069
+#define ALS102_KALMANRF_REG_ADD                0x006a
 
 
-#define ALS102_REG_TOTALNUM                    0x0028
+#define ALS102_REG_TOTALNUM                    0x002b
 
 #define ALS102_INIT_REG_ADD                    0x006f
 
@@ -300,9 +309,12 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS104_DOWNDLONG_REG_ADD               0x008f
 #define ALS104_DIS_CENTER_ST_REG_ADD           0x0090
 #define ALS104_DIS_CENTER_ED_REG_ADD           0x0091
+#define ALS104_B_KALMANFILTER_REG_ADD          0x0092
+#define ALS104_KALMANQF_REG_ADD                0x0093
+#define ALS104_KALMANRF_REG_ADD                0x0094
 
 
-#define ALS104_REG_TOTALNUM                    0x0012
+#define ALS104_REG_TOTALNUM                    0x0015
 
 #define ALS104_INIT_REG_ADD                    0x009f
 
@@ -388,8 +400,11 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS106_POKOUSEARCHDECTANCEMAX_REG_ADD  0x00f9
 #define ALS106_POKOUSEARCHDECTANCEMIN_REG_ADD  0x00fa
 #define ALS106_ANSWERPOINT_REG_ADD             0x00fb
+#define ALS106_B_KALMANFILTER_REG_ADD          0x00fc
+#define ALS106_KALMANQF_REG_ADD                0x00fd
+#define ALS106_KALMANRF_REG_ADD                0x00fe
 
-#define ALS106_REG_TOTALNUM                    0x002c
+#define ALS106_REG_TOTALNUM                    0x002f
 
 #define ALS106_INIT_REG_ADD                    0x00ff
 
@@ -416,8 +431,12 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS107_DIS_CENTER_ST_REG_ADD           0x0114
 #define ALS107_DIS_CENTER_ST2_REG_ADD          0x0115
 #define ALS107_DIS_CENTER_ED2_REG_ADD          0x0116
+#define ALS107_B_KALMANFILTER_REG_ADD          0x0117
+#define ALS107_KALMANQF_REG_ADD                0x0118
+#define ALS107_KALMANRF_REG_ADD                0x0119
 
-#define ALS107_REG_TOTALNUM                    0x0017
+
+#define ALS107_REG_TOTALNUM                    0x001a
 
 #define ALS107_INIT_REG_ADD                    0x011f
 

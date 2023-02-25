@@ -595,7 +595,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>8</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -868,6 +868,21 @@
      <row>
       <property name="text">
        <string>23</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>24</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>25</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>26</string>
       </property>
      </row>
      <column>
@@ -1230,6 +1245,51 @@
        <string/>
       </property>
      </item>
+     <item row="23" column="0">
+      <property name="text">
+       <string>结果滤波</string>
+      </property>
+     </item>
+     <item row="23" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="23" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="24" column="0">
+      <property name="text">
+       <string>系统噪声</string>
+      </property>
+     </item>
+     <item row="24" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="24" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="25" column="0">
+      <property name="text">
+       <string>测量噪声</string>
+      </property>
+     </item>
+     <item row="25" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="25" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="tab2label_3">
      <property name="geometry">
@@ -1472,6 +1532,21 @@
      <row>
       <property name="text">
        <string>23</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>24</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>25</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>26</string>
       </property>
      </row>
      <column>
@@ -1834,6 +1909,51 @@
        <string/>
       </property>
      </item>
+     <item row="23" column="0">
+      <property name="text">
+       <string>结果滤波</string>
+      </property>
+     </item>
+     <item row="23" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="23" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="24" column="0">
+      <property name="text">
+       <string>系统噪声</string>
+      </property>
+     </item>
+     <item row="24" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="24" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="25" column="0">
+      <property name="text">
+       <string>测量噪声</string>
+      </property>
+     </item>
+     <item row="25" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="25" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QPushButton" name="othersaveTab3Btn">
      <property name="geometry">
@@ -2156,6 +2276,21 @@
      <row>
       <property name="text">
        <string>39</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>40</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>41</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>42</string>
       </property>
      </row>
      <column>
@@ -2758,6 +2893,51 @@
        <string/>
       </property>
      </item>
+     <item row="39" column="0">
+      <property name="text">
+       <string>结果滤波</string>
+      </property>
+     </item>
+     <item row="39" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="39" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="40" column="0">
+      <property name="text">
+       <string>系统噪声</string>
+      </property>
+     </item>
+     <item row="40" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="40" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="41" column="0">
+      <property name="text">
+       <string>测量噪声</string>
+      </property>
+     </item>
+     <item row="41" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="41" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QLineEdit" name="alg102_othersave">
      <property name="geometry">
@@ -3292,6 +3472,21 @@
        <string>17</string>
       </property>
      </row>
+     <row>
+      <property name="text">
+       <string>18</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>19</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>20</string>
+      </property>
+     </row>
      <column>
       <property name="text">
        <string>名称</string>
@@ -3558,6 +3753,51 @@
       </property>
      </item>
      <item row="16" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="17" column="0">
+      <property name="text">
+       <string>结果滤波</string>
+      </property>
+     </item>
+     <item row="17" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="17" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="18" column="0">
+      <property name="text">
+       <string>系统噪声</string>
+      </property>
+     </item>
+     <item row="18" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="18" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="19" column="0">
+      <property name="text">
+       <string>测量噪声</string>
+      </property>
+     </item>
+     <item row="19" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="19" column="2">
       <property name="text">
        <string/>
       </property>
@@ -4532,6 +4772,21 @@
        <string>44</string>
       </property>
      </row>
+     <row>
+      <property name="text">
+       <string>45</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>46</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>47</string>
+      </property>
+     </row>
      <column>
       <property name="text">
        <string>名称</string>
@@ -5192,6 +5447,51 @@
        <string/>
       </property>
      </item>
+     <item row="43" column="0">
+      <property name="text">
+       <string>结果滤波</string>
+      </property>
+     </item>
+     <item row="43" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="43" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="44" column="0">
+      <property name="text">
+       <string>系统噪声</string>
+      </property>
+     </item>
+     <item row="44" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="44" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="45" column="0">
+      <property name="text">
+       <string>测量噪声</string>
+      </property>
+     </item>
+     <item row="45" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="45" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
     </widget>
     <widget class="QPushButton" name="initTab8Btn">
      <property name="geometry">
@@ -5507,6 +5807,21 @@
      <row>
       <property name="text">
        <string>22</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>23</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>24</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>25</string>
       </property>
      </row>
      <column>
@@ -5850,6 +6165,51 @@
       </property>
      </item>
      <item row="21" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="22" column="0">
+      <property name="text">
+       <string>结果滤波</string>
+      </property>
+     </item>
+     <item row="22" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="22" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="23" column="0">
+      <property name="text">
+       <string>系统噪声</string>
+      </property>
+     </item>
+     <item row="23" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="23" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="24" column="0">
+      <property name="text">
+       <string>测量噪声</string>
+      </property>
+     </item>
+     <item row="24" column="1">
+      <property name="text">
+       <string>[0,10000]</string>
+      </property>
+     </item>
+     <item row="24" column="2">
       <property name="text">
        <string/>
       </property>
