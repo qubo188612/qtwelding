@@ -4019,6 +4019,11 @@
        <string>30</string>
       </property>
      </row>
+     <row>
+      <property name="text">
+       <string>31</string>
+      </property>
+     </row>
      <column>
       <property name="text">
        <string>名称</string>
@@ -4471,7 +4476,7 @@
      </item>
      <item row="29" column="0">
       <property name="text">
-       <string>激光两端过滤</string>
+       <string>上激光端点过滤</string>
       </property>
      </item>
      <item row="29" column="1">
@@ -4480,6 +4485,21 @@
       </property>
      </item>
      <item row="29" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="30" column="0">
+      <property name="text">
+       <string>下激光端点过滤</string>
+      </property>
+     </item>
+     <item row="30" column="1">
+      <property name="text">
+       <string>[0,1000]</string>
+      </property>
+     </item>
+     <item row="30" column="2">
       <property name="text">
        <string/>
       </property>

@@ -349,115 +349,113 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS105_B_KALMANFILTER_REG_ADD          0x00cb
 #define ALS105_KALMANQF_REG_ADD                0x00cc
 #define ALS105_KALMANRF_REG_ADD                0x00cd
-#define ALS105_CUTSIDE_REG_ADD                 0x00ce
+#define ALS105_CUTSIDE_UP_REG_ADD              0x00ce
+#define ALS105_CUTSIDE_DOWN_REG_ADD            0x00cf
 
+#define ALS105_REG_TOTALNUM                    0x0020
 
-#define ALS105_REG_TOTALNUM                    0x001f
+#define ALS105_INIT_REG_ADD                    0x00df
 
-#define ALS105_INIT_REG_ADD                    0x00cf
-
-
-#define ALS106_EXPOSURE_TIME_REG_ADD           0x00d0
-#define ALS106_PINGJUN_REG_ADD                 0x00d1
-#define ALS106_B_YANMOFUZHU_REG_ADD            0x00d2
-#define ALS106_B_GUDINGQUYU_REG_ADD            0x00d3
-#define ALS106_WIDTHLIANTONGDIS_REG_ADD        0x00d4
-#define ALS106_HIGHLIANTONGDIS_REG_ADD         0x00d5
-#define ALS106_GUJIAERZHI_REG_ADD              0x00d6
-#define ALS106_JIGUANGHIGHT_REG_ADD            0x00d7
-#define ALS106_JIGUANGLONG_REG_ADD             0x00d8
-#define ALS106_JIGUANGKUANDU_REG_ADD           0x00d9
-#define ALS106_B_CUT_REG_ADD                   0x00da
-#define ALS106_CUTLEFT_REG_ADD                 0x00db
-#define ALS106_CUTRIGHT_REG_ADD                0x00dc
-#define ALS106_CUTTOP_REG_ADD                  0x00dd
-#define ALS106_CUTDEEP_REG_ADD                 0x00de
-#define ALS106_DIFMIN_REG_ADD                  0x00df
-#define ALS106_SIDELONG_REG_ADD                0x00e0
-#define ALS106_UPBACK_ST_REG_ADD               0x00e1
-#define ALS106_UPBACK_ED_REG_ADD               0x00e2
-#define ALS106_DOWNBACK_ST_REG_ADD             0x00e3
-#define ALS106_DOWNBACK_ED_REG_ADD             0x00e4
-#define ALS106_UPMINDIS_REG_ADD                0x00e5
-#define ALS106_DOWNMINDIS_REG_ADD              0x00e6
-#define ALS106_UPLONG_REG_ADD                  0x00e7
-#define ALS106_DOWNDLONG_REG_ADD               0x00e8
-#define ALS106_DISCENTER_ED_REG_ADD            0x00e9
-#define ALS106_DUANDIANJULI_REG_ADD            0x00ea
-#define ALS106_POKOUMOD_REG_ADD                0x00eb
-#define ALS106_POKOUUPDIF_REG_ADD              0x00ec
-#define ALS106_POKOUUPDIFMIN_REG_ADD           0x00ed
-#define ALS106_POKOUUPBACK_ST_REG_ADD          0x00ee
-#define ALS106_POKOUUPBACK_ED_REG_ADD          0x00ef
-#define ALS106_POKOUDOWNDIF_REG_ADD            0x00f0
-#define ALS106_POKOUDOWNDIFMIN_REG_ADD         0x00f1
-#define ALS106_POKOUDOWNBACK_ST_REG_ADD        0x00f2
-#define ALS106_POKOUDOWNBACK_ED_REG_ADD        0x00f3
-#define ALS106_POKOUUPLONG_REG_ADD             0x00f4
-#define ALS106_POKOUDOWNLONG_REG_ADD           0x00f5
-#define ALS106_B_POKOUYAOBIAN_REG_ADD          0x00f6
-#define ALS106_POKOUYAOBIANHSIZE_REG_ADD       0x00f7
-#define ALS106_POKOUDUANXIANERZHI_REG_ADD      0x00f8
-#define ALS106_POKOUSEARCHDECTANCEMAX_REG_ADD  0x00f9
-#define ALS106_POKOUSEARCHDECTANCEMIN_REG_ADD  0x00fa
-#define ALS106_ANSWERPOINT_REG_ADD             0x00fb
-#define ALS106_B_KALMANFILTER_REG_ADD          0x00fc
-#define ALS106_KALMANQF_REG_ADD                0x00fd
-#define ALS106_KALMANRF_REG_ADD                0x00fe
+#define ALS106_EXPOSURE_TIME_REG_ADD           0x00e0
+#define ALS106_PINGJUN_REG_ADD                 0x00e1
+#define ALS106_B_YANMOFUZHU_REG_ADD            0x00e2
+#define ALS106_B_GUDINGQUYU_REG_ADD            0x00e3
+#define ALS106_WIDTHLIANTONGDIS_REG_ADD        0x00e4
+#define ALS106_HIGHLIANTONGDIS_REG_ADD         0x00e5
+#define ALS106_GUJIAERZHI_REG_ADD              0x00e6
+#define ALS106_JIGUANGHIGHT_REG_ADD            0x00e7
+#define ALS106_JIGUANGLONG_REG_ADD             0x00e8
+#define ALS106_JIGUANGKUANDU_REG_ADD           0x00e9
+#define ALS106_B_CUT_REG_ADD                   0x00ea
+#define ALS106_CUTLEFT_REG_ADD                 0x00eb
+#define ALS106_CUTRIGHT_REG_ADD                0x00ec
+#define ALS106_CUTTOP_REG_ADD                  0x00ed
+#define ALS106_CUTDEEP_REG_ADD                 0x00ee
+#define ALS106_DIFMIN_REG_ADD                  0x00ef
+#define ALS106_SIDELONG_REG_ADD                0x00f0
+#define ALS106_UPBACK_ST_REG_ADD               0x00f1
+#define ALS106_UPBACK_ED_REG_ADD               0x00f2
+#define ALS106_DOWNBACK_ST_REG_ADD             0x00f3
+#define ALS106_DOWNBACK_ED_REG_ADD             0x00f4
+#define ALS106_UPMINDIS_REG_ADD                0x00f5
+#define ALS106_DOWNMINDIS_REG_ADD              0x00f6
+#define ALS106_UPLONG_REG_ADD                  0x00f7
+#define ALS106_DOWNDLONG_REG_ADD               0x00f8
+#define ALS106_DISCENTER_ED_REG_ADD            0x00f9
+#define ALS106_DUANDIANJULI_REG_ADD            0x00fa
+#define ALS106_POKOUMOD_REG_ADD                0x00fb
+#define ALS106_POKOUUPDIF_REG_ADD              0x00fc
+#define ALS106_POKOUUPDIFMIN_REG_ADD           0x00fd
+#define ALS106_POKOUUPBACK_ST_REG_ADD          0x00fe
+#define ALS106_POKOUUPBACK_ED_REG_ADD          0x00ff
+#define ALS106_POKOUDOWNDIF_REG_ADD            0x0100
+#define ALS106_POKOUDOWNDIFMIN_REG_ADD         0x0101
+#define ALS106_POKOUDOWNBACK_ST_REG_ADD        0x0102
+#define ALS106_POKOUDOWNBACK_ED_REG_ADD        0x0103
+#define ALS106_POKOUUPLONG_REG_ADD             0x0104
+#define ALS106_POKOUDOWNLONG_REG_ADD           0x0105
+#define ALS106_B_POKOUYAOBIAN_REG_ADD          0x0106
+#define ALS106_POKOUYAOBIANHSIZE_REG_ADD       0x0107
+#define ALS106_POKOUDUANXIANERZHI_REG_ADD      0x0108
+#define ALS106_POKOUSEARCHDECTANCEMAX_REG_ADD  0x0109
+#define ALS106_POKOUSEARCHDECTANCEMIN_REG_ADD  0x010a
+#define ALS106_ANSWERPOINT_REG_ADD             0x010b
+#define ALS106_B_KALMANFILTER_REG_ADD          0x010c
+#define ALS106_KALMANQF_REG_ADD                0x010d
+#define ALS106_KALMANRF_REG_ADD                0x010e
 
 #define ALS106_REG_TOTALNUM                    0x002f
 
-#define ALS106_INIT_REG_ADD                    0x00ff
+#define ALS106_INIT_REG_ADD                    0x010f
 
-#define ALS107_EXPOSURE_TIME_REG_ADD           0x0100
-#define ALS107_PINGJUN_REG_ADD                 0x0101
-#define ALS107_B_YANMOFUZHU_REG_ADD            0x0102
-#define ALS107_B_GUDINGQUYU_REG_ADD            0x0103
-#define ALS107_WIDTHLIANTONGDIS_REG_ADD        0x0104
-#define ALS107_HIGHLIANTONGDIS_REG_ADD         0x0105
-#define ALS107_GUJIAERZHI_REG_ADD              0x0106
-#define ALS107_JIGUANGHIGHT_REG_ADD            0x0107
-#define ALS107_JIGUANGLONG_REG_ADD             0x0108
-#define ALS107_JIGUANGKUANDU_REG_ADD           0x0109
-#define ALS107_UPDIF_REG_ADD                   0x010a
-#define ALS107_UPDIFMIN_REG_ADD                0x010b
-#define ALS107_UPLONG_REG_ADD                  0x010c
-#define ALS107_DOWNDIF_REG_ADD                 0x010d
-#define ALS107_DOWNDIFMIN_REG_ADD              0x010e
-#define ALS107_DOWNDLONG_REG_ADD               0x010f
-#define ALS107_ST_DOWN_REG_ADD                 0x0110
-#define ALS107_ED_DOWN_REG_ADD                 0x0111
-#define ALS107_ST_UP_REG_ADD                   0x0112
-#define ALS107_ED_UP_REG_ADD                   0x0113
-#define ALS107_DIS_CENTER_ST_REG_ADD           0x0114
-#define ALS107_DIS_CENTER_ST2_REG_ADD          0x0115
-#define ALS107_DIS_CENTER_ED2_REG_ADD          0x0116
-#define ALS107_B_KALMANFILTER_REG_ADD          0x0117
-#define ALS107_KALMANQF_REG_ADD                0x0118
-#define ALS107_KALMANRF_REG_ADD                0x0119
-
+#define ALS107_EXPOSURE_TIME_REG_ADD           0x0110
+#define ALS107_PINGJUN_REG_ADD                 0x0111
+#define ALS107_B_YANMOFUZHU_REG_ADD            0x0112
+#define ALS107_B_GUDINGQUYU_REG_ADD            0x0113
+#define ALS107_WIDTHLIANTONGDIS_REG_ADD        0x0114
+#define ALS107_HIGHLIANTONGDIS_REG_ADD         0x0115
+#define ALS107_GUJIAERZHI_REG_ADD              0x0116
+#define ALS107_JIGUANGHIGHT_REG_ADD            0x0117
+#define ALS107_JIGUANGLONG_REG_ADD             0x0118
+#define ALS107_JIGUANGKUANDU_REG_ADD           0x0119
+#define ALS107_UPDIF_REG_ADD                   0x011a
+#define ALS107_UPDIFMIN_REG_ADD                0x011b
+#define ALS107_UPLONG_REG_ADD                  0x011c
+#define ALS107_DOWNDIF_REG_ADD                 0x011d
+#define ALS107_DOWNDIFMIN_REG_ADD              0x011e
+#define ALS107_DOWNDLONG_REG_ADD               0x011f
+#define ALS107_ST_DOWN_REG_ADD                 0x0120
+#define ALS107_ED_DOWN_REG_ADD                 0x0121
+#define ALS107_ST_UP_REG_ADD                   0x0122
+#define ALS107_ED_UP_REG_ADD                   0x0123
+#define ALS107_DIS_CENTER_ST_REG_ADD           0x0124
+#define ALS107_DIS_CENTER_ST2_REG_ADD          0x0125
+#define ALS107_DIS_CENTER_ED2_REG_ADD          0x0126
+#define ALS107_B_KALMANFILTER_REG_ADD          0x0127
+#define ALS107_KALMANQF_REG_ADD                0x0128
+#define ALS107_KALMANRF_REG_ADD                0x0129
 
 #define ALS107_REG_TOTALNUM                    0x001a
 
-#define ALS107_INIT_REG_ADD                    0x011f
+#define ALS107_INIT_REG_ADD                    0x012f
 
-#define ALS108_EXPOSURE_TIME_REG_ADD           0x0120
-#define ALS108_CENTER_X_REG_ADD                0x0121
-#define ALS108_CENTER_Y_REG_ADD                0x0122
-#define ALS108_SEARCT_W_REG_ADD                0x0123
-#define ALS108_SEARCT_H_REG_ADD                0x0124
-#define ALS108_STC_ALPHA_REG_ADD               0x0125
-#define ALS108_STC_BETA_REG_ADD                0x0126
-#define ALS108_STC_RHO_REG_ADD                 0x0127
-#define ALS108_STC_SIGMA_REG_ADD               0x0128
+#define ALS108_EXPOSURE_TIME_REG_ADD           0x0130
+#define ALS108_CENTER_X_REG_ADD                0x0131
+#define ALS108_CENTER_Y_REG_ADD                0x0132
+#define ALS108_SEARCT_W_REG_ADD                0x0133
+#define ALS108_SEARCT_H_REG_ADD                0x0134
+#define ALS108_STC_ALPHA_REG_ADD               0x0135
+#define ALS108_STC_BETA_REG_ADD                0x0136
+#define ALS108_STC_RHO_REG_ADD                 0x0137
+#define ALS108_STC_SIGMA_REG_ADD               0x0138
 
 #define ALS108_REG_TOTALNUM                    0x0009
 
-#define ALS108_INIT_REG_ADD                    0x012f
-
+#define ALS108_INIT_REG_ADD                    0x013f
 
 
 #define ALS_SHOW_STEP_REG_ADD                  0x018f
+
 
 /*****************************/
 //激光头机器人型号和相机尺寸寄存器
