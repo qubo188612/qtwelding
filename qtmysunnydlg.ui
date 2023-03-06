@@ -4029,6 +4029,11 @@
        <string>31</string>
       </property>
      </row>
+     <row>
+      <property name="text">
+       <string>32</string>
+      </property>
+     </row>
      <column>
       <property name="text">
        <string>名称</string>
@@ -4505,6 +4510,21 @@
       </property>
      </item>
      <item row="30" column="2">
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item row="31" column="0">
+      <property name="text">
+       <string>二阶导数</string>
+      </property>
+     </item>
+     <item row="31" column="1">
+      <property name="text">
+       <string>[0,1]</string>
+      </property>
+     </item>
+     <item row="31" column="2">
       <property name="text">
        <string/>
       </property>
