@@ -6,9 +6,11 @@
 
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
-#define USE_MYROBOT_CONTROL       1//使用本地的机器人控制协议
+#define USE_MYROBOT_CONTROL         1//使用本地的机器人控制协议
+//#define USE_MYMOVEC_CONTROL       1//使用本地moveC插值运动(适用于无曲线moveC移动的机器人)
 //#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
+
 
 #if _MSC_VER
 #include "tistdtypes.h"
@@ -22,6 +24,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #include <arpa/inet.h>
 #endif
 
+#define ROBOT_SPEED_DECIMAL_PLACE           3       //机器人速度保留小数后几位
 #define ROBOT_POSE_DECIMAL_PLACE            3       //机器人坐标保留小数后几位
 #define ROBOT_POSTURE_DECIMAL_PLACE         4       //机器人姿态保留小数点后几位
 
@@ -121,6 +124,18 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_MOVE_RY_POS_FL_REG_ADD            0x010f
 #define ROB_MOVE_RZ_POS_FH_REG_ADD            0x0110
 #define ROB_MOVE_RZ_POS_FL_REG_ADD            0x0111
+#define ROB_MOVE_X1_POS_FH_REG_ADD            0x0112        //移动终点1,MOVEC时有效
+#define ROB_MOVE_X1_POS_FL_REG_ADD            0x0113
+#define ROB_MOVE_Y1_POS_FH_REG_ADD            0x0114
+#define ROB_MOVE_Y1_POS_FL_REG_ADD            0x0115
+#define ROB_MOVE_Z1_POS_FH_REG_ADD            0x0116
+#define ROB_MOVE_Z1_POS_FL_REG_ADD            0x0117
+#define ROB_MOVE_RX1_POS_FH_REG_ADD           0x0118
+#define ROB_MOVE_RX1_POS_FL_REG_ADD           0x0119
+#define ROB_MOVE_RY1_POS_FH_REG_ADD           0x011a
+#define ROB_MOVE_RY1_POS_FL_REG_ADD           0x011b
+#define ROB_MOVE_RZ1_POS_FH_REG_ADD           0x011c
+#define ROB_MOVE_RZ1_POS_FL_REG_ADD           0x011d
 
 #define ROB_WELD_CURRENT_FH_REG_ADD           0x0200        //焊接电流
 #define ROB_WELD_CURRENT_FL_REG_ADD           0x0201

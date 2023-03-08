@@ -116,6 +116,7 @@ void setcraft1Dlg::init_dlg_show()
     {
         now_robpos=m_mcs->craft->posturelist.size()-1;
     }
+    ui->record->clear();
     updataRoblistUi();
 }
 

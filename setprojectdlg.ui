@@ -481,9 +481,9 @@
   <widget class="QTextBrowser" name="record">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>910</x>
      <y>570</y>
-     <width>561</width>
+     <width>371</width>
      <height>91</height>
     </rect>
    </property>
@@ -491,7 +491,7 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>910</x>
      <y>550</y>
      <width>81</width>
      <height>17</height>
@@ -1159,6 +1159,32 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_10">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>550</y>
+     <width>181</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>全部指令:</string>
+   </property>
+   <widget class="QPushButton" name="othercmdaddBtn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>插入指令</string>
     </property>
    </widget>
   </widget>

@@ -9,6 +9,15 @@
 #include "my_parameters.h"
 #include "my_cmd.h"
 #include "setmovecdlg.h"
+#include "othercmddlg.h"
+#include "keycamdlg.h"
+#include "keycreatdlg.h"
+#include "keydelaydlg.h"
+#include "keyiodlg.h"
+#include "keymovdlg.h"
+#include "keyscandlg.h"
+#include "keytracedlg.h"
+#include "keywelddlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -28,6 +37,15 @@ public:
     ~setprojectDlg();
 
     setmovecDlg *setmovec;
+    othercmdDlg *othercmd;
+    keycamDlg *keycam;
+    keycreatDlg *keycreat;
+    keydelayDlg *keydelay;
+    keyioDlg *keyio;
+    keymovDlg *keymov;
+    keyscanDlg *keyscan;
+    keytraceDlg *keytrace;
+    keyweldDlg *keyweld;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;
@@ -88,11 +106,15 @@ private slots:
 
     void on_IOinputBtn_clicked();
 
+    void on_othercmdaddBtn_clicked();
+
 private:
     Ui::setprojectDlg *ui;
     int now_cmdline;         //当前指向CMD行数
 
     void updatacmdlistUi();
+
+    QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
 };
 
 class setprojectThread : public QThread

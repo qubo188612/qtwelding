@@ -14,20 +14,32 @@ Camshow::Camshow(SoptopCamera *statci_p): Node("my_eyes")
   _p->_param_homography_matrix_get = std::make_shared<rclcpp::AsyncParametersClient>(this, "line_center_reconstruction_node");
   _p->_pub_config=this->create_publisher<std_msgs::msg::String>("config_tis_node/config", 10);
 
-  if(_p->b_connetc_noimage==false)
+  if(_p->b_connetc_noimage==0)
   {
-#ifdef DEBUG_MYINTERFACES
-  subscription_ = this->create_subscription<tutorial_interfaces::msg::IfAlgorhmitmsg>(
-        "/laser_imagepos_node/result", rclcpp::SensorDataQoS(), std::bind(&Camshow::topic_callback, this, _1));
-#else
-  subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-        "/rotate_image_node/image_rotated", rclcpp::SensorDataQoS(), std::bind(&Camshow::topic_callback, this, _1));
-#endif
+    #ifdef DEBUG_MYINTERFACES
+      subscription_ = this->create_subscription<tutorial_interfaces::msg::IfAlgorhmitmsg>(
+            "/laser_imagepos_node/result", rclcpp::SensorDataQoS(), std::bind(&Camshow::topic_callback, this, _1));
+    #else
+      subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
+            "/rotate_image_node/image_rotated", rclcpp::SensorDataQoS(), std::bind(&Camshow::topic_callback, this, _1));
+    #endif
+  }
+  else if(_p->b_connetc_noimage==1)
+  {
+      subscricloud_ = this->create_subscription<tutorial_interfaces::msg::IfAlgorhmitcloud>(
+            "line_center_reconstruction_node/cloud_task100_199", rclcpp::SensorDataQoS(), std::bind(&Camshow::cloud_callback, this, _1));
   }
   else
   {
-  subscricloud_ = this->create_subscription<tutorial_interfaces::msg::IfAlgorhmitcloud>(
-        "line_center_reconstruction_node/cloud_task100_199", rclcpp::SensorDataQoS(), std::bind(&Camshow::cloud_callback, this, _1));
+    #ifdef DEBUG_MYINTERFACES
+      subscription_ = this->create_subscription<tutorial_interfaces::msg::IfAlgorhmitmsg>(
+            "/laser_imagepos_node/result", rclcpp::SensorDataQoS(), std::bind(&Camshow::topic_callback, this, _1));
+    #else
+      subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
+            "/rotate_image_node/image_rotated", rclcpp::SensorDataQoS(), std::bind(&Camshow::topic_callback, this, _1));
+    #endif
+      subscricloud_ = this->create_subscription<tutorial_interfaces::msg::IfAlgorhmitcloud>(
+            "line_center_reconstruction_node/cloud_task100_199", rclcpp::SensorDataQoS(), std::bind(&Camshow::cloud_callback, this, _1));
   }
 
   _p->_param_camera_get->wait_for_service();
@@ -206,7 +218,7 @@ SoptopCamera::SoptopCamera()
   callback_error=0;
   luzhi=false;
   b_stopthred=true;
-  b_connetc_noimage=false;
+  b_connetc_noimage=0;
 
   ros_line=new tutorial_interfaces::msg::IfAlgorhmitcloud;
 }
@@ -297,11 +309,11 @@ void SoptopCamera::init_para()
     i32_exposure=i32_exposure_use;
 }
 
-void SoptopCamera::InitConnect(PictureBox *lab_show)
+void SoptopCamera::InitConnect(PictureBox *lab_show,u_int8_t b_connetc_noimage_data)
 {
     if(b_connect==false)
     {
-        b_connetc_noimage=false;
+        b_connetc_noimage=b_connetc_noimage_data;
         callbacknumber=0;
         oldcallbacknumber=0;
         timerid1 = startTimer(1000);
@@ -319,7 +331,7 @@ void SoptopCamera::InitConnect()
 {
     if(b_connect==false)
     {
-        b_connetc_noimage=true;
+        b_connetc_noimage=1;
         callbacknumber=0;
         oldcallbacknumber=0;
         timerid1 = startTimer(1000);

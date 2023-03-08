@@ -153,6 +153,33 @@ QString my_cmd::cmd_iowaitin(std::vector<int> io)
     return msg;
 }
 
+int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
+{
+    if(msg.isEmpty())
+    {
+        return_msg=QString::fromLocal8Bit("指令为空");
+        return 1;
+    }
+    int exegesis=msg.indexOf("#");//寻找注释
+    if(exegesis>=0)//代码有注释
+    {
+        msg=msg.left(exegesis);//截取注释左侧代码
+        if(msg.size()==0)
+        {
+            return -1;//是注释行
+        }
+    }
+    QStringList list = msg.split(":");
+    if(list.size()!=2)
+    {
+        return_msg=QString::fromLocal8Bit("指令中只能出现一个':'");
+        return 1;
+    }
+    QString key=list[0]+":";
+    return_key=key;
+    return 0;
+}
+
 int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())

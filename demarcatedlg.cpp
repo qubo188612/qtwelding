@@ -35,7 +35,7 @@ void demarcateDlg::init_dlg_show()
     b_thread1=true;
     thread1->start();
 
-    m_mcs->cam->sop_cam[0].InitConnect(ui->widget);
+    m_mcs->cam->sop_cam[0].InitConnect(ui->widget,2);
 
     if(m_mcs->resultdata.link_param_state==false)
     {
@@ -196,9 +196,9 @@ void demarcateDlg::on_pushButton_8_clicked()    //清空TCP点
 void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
 {
     int num=0;
-    m_mcs->resultdata.pos1.nEn=false;
+    m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
     m_mcs->rob->TCPpos.nEn=false;
-    while (m_mcs->resultdata.pos1.nEn==false||
+    while (m_mcs->cam->sop_cam[0].b_ros_lineEn==false||
            m_mcs->rob->TCPpos.nEn==false)
     {
         if(num>10)
@@ -208,7 +208,7 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
         usleep(ROB_WORK_DELAY_STEP);
         num++;
     }
-    if(m_mcs->resultdata.pos1.nEn==false)
+    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==false)
     {
         ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
     }
@@ -220,7 +220,9 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
     {
         TCP_Leaserpos sing;
         sing.robotpos=m_mcs->rob->TCPpos;
-        sing.leaserpos=m_mcs->resultdata.pos1;
+        sing.leaserpos.Y=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].x;
+        sing.leaserpos.Z=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].y;
+        sing.leaserpos.nEn=true;
         if(now_leaserpos==m_mcs->e2proomdata.demdlg_Leaserpos.size()-1)
         {            
             m_mcs->e2proomdata.demdlg_Leaserpos.push_back(sing);
@@ -258,9 +260,9 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
     if(now_leaserpos>=0&&m_mcs->e2proomdata.demdlg_Leaserpos.size()>now_leaserpos)
     {
         int num=0;
-        m_mcs->resultdata.pos1.nEn=false;
+        m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
         m_mcs->rob->TCPpos.nEn=false;
-        while (m_mcs->resultdata.pos1.nEn==false||
+        while (m_mcs->cam->sop_cam[0].b_ros_lineEn==false||
                m_mcs->rob->TCPpos.nEn==false)
         {
             if(num>10)
@@ -270,7 +272,7 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
             usleep(ROB_WORK_DELAY_STEP);
             num++;
         }
-        if(m_mcs->resultdata.pos1.nEn==false)
+        if(m_mcs->cam->sop_cam[0].b_ros_lineEn==false)
         {
             ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
         }
@@ -282,7 +284,9 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
         {
             TCP_Leaserpos sing;
             sing.robotpos=m_mcs->rob->TCPpos;
-            sing.leaserpos=m_mcs->resultdata.pos1;
+            sing.leaserpos.Y=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].x;
+            sing.leaserpos.Z=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].y;
+            sing.leaserpos.nEn=true;
             m_mcs->e2proomdata.demdlg_Leaserpos[now_leaserpos]=sing;
             ui->record->append(QString::fromLocal8Bit("替换激光头点成功"));
             updataLeaserlistUi();

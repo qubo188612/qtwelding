@@ -60,6 +60,7 @@ void setcraft0Dlg::init_dlg_show()
     }
     ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',ROBOT_POSE_DECIMAL_PLACE));
     ui->lineEdit_pendulum_phaseangle->setText(QString::number(m_mcs->craft->pendulum_phaseangle,'f',3));
+    ui->record->clear();
     UpdataUi();
 }
 

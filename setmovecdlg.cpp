@@ -61,6 +61,7 @@ void setmovecDlg::init_dlg_show()
     ui->lineEdit_edRX->setText(QString::number(pos_ed.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     ui->lineEdit_edRY->setText(QString::number(pos_ed.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     ui->lineEdit_edRZ->setText(QString::number(pos_ed.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    ui->record->clear();
 }
 
 void setmovecDlg::close_dlg_show()

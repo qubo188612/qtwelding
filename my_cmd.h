@@ -69,6 +69,7 @@ public:
     QString cmd_ioout(std::vector<int> io);//输出IO信号
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
 
+    int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
                                                                        //     返回值-1:注释行
                                                                        //     返回值>0:异常

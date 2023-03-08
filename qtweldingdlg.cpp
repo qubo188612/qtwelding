@@ -883,8 +883,8 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
                 QString::number(m_mcs->resultdata.time_stamp.msec);
     ui->leaser_time->setText(msg);
 
-    ui->leaser_camera_fps->setText(QString::number(m_mcs->resultdata.fps,'f',2));
-    ui->leaser_result_fps->setText(QString::number(m_mcs->resultdata.camfps,'f',2));
+    ui->leaser_camera_fps->setText(QString::number(m_mcs->resultdata.camfps,'f',2));
+    ui->leaser_result_fps->setText(QString::number(m_mcs->resultdata.fps,'f',2));
     ui->leaser_tasknum->setText(QString::number(m_mcs->resultdata.task));
 
     b_init_show_ui_list=true;
@@ -1043,10 +1043,8 @@ void qtweldingThread::run()
                         float Z3=(int16_t)_p->leaser_rcv_data2[3]/100.0;
                         _p->m_mcs->resultdata.pos2.Y=Y2;
                         _p->m_mcs->resultdata.pos2.Z=Z2;
-                        _p->m_mcs->resultdata.pos2.nEn=true;
                         _p->m_mcs->resultdata.pos3.Y=Y3;
                         _p->m_mcs->resultdata.pos3.Z=Z3;
-                        _p->m_mcs->resultdata.pos3.nEn=true;
                         if(_p->m_mcs->resultdata.state==0)
                         {
                             _p->m_mcs->resultdata.pos2.nEn=false;
@@ -1070,7 +1068,7 @@ void qtweldingThread::run()
                 _p->b_init_show_ui_list=false;
                 emit Send_show_ui_list();
             }
-            sleep(0);
+            usleep(30000);
         }
         else
         {

@@ -27,6 +27,7 @@ public:
     QString paused_key;     //暂停前的命令执行key
 
     void cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
+    void cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp);//曲线移动命令
     void cmd_delay(int time);//延时命令
     void cmd_cam(int task,int work);//相机启动停止命令
     void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel work);//焊机电流和模式设置以及启停命令

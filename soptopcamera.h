@@ -47,12 +47,12 @@ public:
     int argc;
     char **argv;
 
-    void InitConnect(PictureBox *lab_show); //连接相机显示图像
+    void InitConnect(PictureBox *lab_show,u_int8_t b_connetc_noimage_data=0); //连接相机显示图像
     void InitConnect();//连接相机不显示图像
     void DisConnect();
     volatile bool b_connect;
     volatile bool stop_b_connect;
-    bool b_connetc_noimage;     //是否显示图像的连接
+    u_int8_t b_connetc_noimage;     //是否显示图像的连接
 
     int i32_exposure;
     int i32_exposure_max;

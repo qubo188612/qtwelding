@@ -31,11 +31,20 @@ SOURCES += \
         fitlineside.cpp \
         global.cpp \
         ipaddress.cpp \
+        keycamdlg.cpp \
+        keycreatdlg.cpp \
+        keydelaydlg.cpp \
+        keyiodlg.cpp \
+        keymovdlg.cpp \
+        keyscandlg.cpp \
+        keytracedlg.cpp \
+        keywelddlg.cpp \
         main.cpp \
         my_cmd.cpp \
         my_parameters.cpp \
         newcraftdlg.cpp \
         newprojectdlg.cpp \
+        othercmddlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
         project.cpp \
@@ -70,8 +79,17 @@ FORMS += \
     demarcatedlg.ui \
     editcraftdlg.ui \
     editprojectdlg.ui \
+    keycamdlg.ui \
+    keycreatdlg.ui \
+    keydelaydlg.ui \
+    keyiodlg.ui \
+    keymovdlg.ui \
+    keyscandlg.ui \
+    keytracedlg.ui \
+    keywelddlg.ui \
     newcraftdlg.ui \
     newprojectdlg.ui \
+    othercmddlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
@@ -106,10 +124,19 @@ HEADERS += \
     fitlineside.h \
     global.h \
     ipaddress.h \
+    keycamdlg.h \
+    keycreatdlg.h \
+    keydelaydlg.h \
+    keyiodlg.h \
+    keymovdlg.h \
+    keyscandlg.h \
+    keytracedlg.h \
+    keywelddlg.h \
     my_cmd.h \
     my_parameters.h \
     newcraftdlg.h \
     newprojectdlg.h \
+    othercmddlg.h \
     process.h \
     process1_scanbeforetrace.h \
     project.h \

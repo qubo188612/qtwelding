@@ -2790,8 +2790,8 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             ui->cam_view_width->setText(QString::number(view_widht));
             ui->cam_view_height->setText(QString::number(view_height));
 
-            drow_height=height;
-            drow_width=width;
+            drow_height=width;
+            drow_width=height;
 
             if(ui->checkBox->isChecked()==false)
             {
@@ -3746,7 +3746,7 @@ void getposThread::run()
                     emit Send_show_cvimage_inlab(_p->m_mcs->cam->sop_cam[0].cv_image);
                 }
             }
-            sleep(0);
+            usleep(30000);
         }
         else
         {

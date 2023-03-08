@@ -298,6 +298,7 @@ int toSendbuffer::cmdlist_check()
             int tcp=cmd.cmd_move_tcp;//获取到移动TCP
             float speed=cmd.cmd_move_speed;//获取到速度值
             Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+        #ifdef USE_MYMOVEC_CONTROL
             if(movemod==MOVEC)
             {
                 CWeldTarject tarjectMath;
@@ -314,6 +315,7 @@ int toSendbuffer::cmdlist_check()
                     main_record.unlock();
                 }
             }
+        #endif
         }
     }
     if(0!=cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))//查看是否有重名轨迹
@@ -399,6 +401,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
                     RobPos pos3=cmd.cmd_move_pos3;//获取到移动坐标
+                #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
                     std::vector<RobPos> interpolatPos;
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
@@ -414,6 +417,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         cmd_move(interpolatPos[n],MOVEL,speed,tcp);
                     }
+                #else
+                    cmd_move(pos1,MOVEL,speed,tcp);
+                    cmd_moveC(pos2,pos3,MOVEC,speed,tcp);
+                #endif
                 }
                 break;
             }
@@ -536,6 +543,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     RobPos pos1=cmd.cmd_scan_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_scan_pos2;//获取到移动坐标
                     RobPos pos3=cmd.cmd_scan_pos3;//获取到移动坐标
+                #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
                     std::vector<RobPos> interpolatPos;
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
@@ -551,6 +559,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         cmd_move(interpolatPos[n],MOVEL,speed,tcp);
                     }
+                #else
+                    cmd_move(pos1,MOVEL,speed,tcp);
+                    cmd_moveC(pos2,pos3,MOVEC,speed,tcp);
+                #endif
                 }
                 break;
             }
@@ -1213,6 +1225,49 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
     sendrob.data[14]=*((u_int16_t*)&pos.RY+1);
     sendrob.data[15]=*((u_int16_t*)&pos.RZ);
     sendrob.data[16]=*((u_int16_t*)&pos.RZ+1);
+
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_TCP_NUM_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(29);
+    sendrob.data[0]=tcp;
+    sendrob.data[1]=movemodel;
+    sendrob.data[2]=u16data_elec_work;
+    sendrob.data[3]=*((u_int16_t*)&speed);
+    sendrob.data[4]=*((u_int16_t*)&speed+1);
+    sendrob.data[5]=*((u_int16_t*)&pos1.X);
+    sendrob.data[6]=*((u_int16_t*)&pos1.X+1);
+    sendrob.data[7]=*((u_int16_t*)&pos1.Y);
+    sendrob.data[8]=*((u_int16_t*)&pos1.Y+1);
+    sendrob.data[9]=*((u_int16_t*)&pos1.Z);
+    sendrob.data[10]=*((u_int16_t*)&pos1.Z+1);
+    sendrob.data[11]=*((u_int16_t*)&pos1.RX);
+    sendrob.data[12]=*((u_int16_t*)&pos1.RX+1);
+    sendrob.data[13]=*((u_int16_t*)&pos1.RY);
+    sendrob.data[14]=*((u_int16_t*)&pos1.RY+1);
+    sendrob.data[15]=*((u_int16_t*)&pos1.RZ);
+    sendrob.data[16]=*((u_int16_t*)&pos1.RZ+1);
+    sendrob.data[17]=*((u_int16_t*)&pos2.X);
+    sendrob.data[18]=*((u_int16_t*)&pos2.X+1);
+    sendrob.data[19]=*((u_int16_t*)&pos2.Y);
+    sendrob.data[20]=*((u_int16_t*)&pos2.Y+1);
+    sendrob.data[21]=*((u_int16_t*)&pos2.Z);
+    sendrob.data[22]=*((u_int16_t*)&pos2.Z+1);
+    sendrob.data[23]=*((u_int16_t*)&pos2.RX);
+    sendrob.data[24]=*((u_int16_t*)&pos2.RX+1);
+    sendrob.data[25]=*((u_int16_t*)&pos2.RY);
+    sendrob.data[26]=*((u_int16_t*)&pos2.RY+1);
+    sendrob.data[27]=*((u_int16_t*)&pos2.RZ);
+    sendrob.data[28]=*((u_int16_t*)&pos2.RZ+1);
 
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
