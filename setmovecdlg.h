@@ -20,7 +20,10 @@ public:
     my_parameters *m_mcs;
 
     void init_dlg_show();
+    void init_dlg_show(QString cmdlist);
     void close_dlg_show();
+
+    void set_arrive_param(float speed,int tcp);
 
     RobPos pos_st;      //圆弧移动起点
     RobPos pos_center;  //圆弧移动途径点
@@ -35,11 +38,26 @@ private slots:
 
     void on_pushButton_OK_clicked();
 
+    void on_arriveBtn_st_pressed();
+
+    void on_arriveBtn_st_released();
+
+    void on_arriveBtn_center_pressed();
+
+    void on_arriveBtn_center_released();
+
+    void on_arriveBtn_ed_pressed();
+
+    void on_arriveBtn_ed_released();
+
 private:
     Ui::setmovecDlg *ui;
 
     QDoubleValidator *adoubleValidator_pose;    //机器人坐标小数
     QDoubleValidator *adoubleValidator_posture; //机器人姿态小数
+
+    float arrive_speed;
+    int arrive_tcp;
 };
 
 #endif // SETMOVECDLG_H

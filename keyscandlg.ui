@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>561</width>
-    <height>262</height>
+    <height>390</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
+     <y>138</y>
      <width>181</width>
      <height>231</height>
     </rect>
@@ -150,7 +150,7 @@
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>12</y>
+     <y>140</y>
      <width>67</width>
      <height>17</height>
     </rect>
@@ -163,11 +163,50 @@
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>30</y>
+     <y>158</y>
      <width>331</width>
      <height>211</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>521</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>到点:</string>
+   </property>
+   <widget class="QLabel" name="arrive_pos">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>491</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="arriveBtn">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>50</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>长按到点</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

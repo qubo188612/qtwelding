@@ -937,7 +937,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>IO口输出指令</string>
+     <string>插入IO口输出指令</string>
     </property>
    </widget>
    <widget class="QPushButton" name="IOinputBtn">
@@ -950,7 +950,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>等待IO口输入指令</string>
+     <string>插入等待IO口输入指令</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_23">

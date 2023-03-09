@@ -40,6 +40,20 @@ void keycamDlg::close_dlg_show()
 
 }
 
+void keycamDlg::setbutton(int name)
+{
+    if(name==0)
+    {
+        ui->leaseropenBtn->setText(QString::fromLocal8Bit("插入开激光指令"));
+        ui->leasercloseBtn->setText(QString::fromLocal8Bit("插入关激光指令"));
+    }
+    else
+    {
+        ui->leaseropenBtn->setText(QString::fromLocal8Bit("替换开激光指令"));
+        ui->leasercloseBtn->setText(QString::fromLocal8Bit("替换关激光指令"));
+    }
+}
+
 //插入开激光指令
 void keycamDlg::on_leaseropenBtn_clicked()
 {

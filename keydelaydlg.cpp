@@ -40,6 +40,18 @@ void keydelayDlg::close_dlg_show()
 
 }
 
+void keydelayDlg::setbutton(int name)
+{
+    if(name==0)
+    {
+        ui->delaytimeBtn->setText(QString::fromLocal8Bit("插入延时指令"));
+    }
+    else
+    {
+        ui->delaytimeBtn->setText(QString::fromLocal8Bit("替换延时指令"));
+    }
+}
+
 //插入延时指令
 void keydelayDlg::on_delaytimeBtn_clicked()
 {

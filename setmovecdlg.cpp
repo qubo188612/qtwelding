@@ -64,6 +64,47 @@ void setmovecDlg::init_dlg_show()
     ui->record->clear();
 }
 
+void setmovecDlg::init_dlg_show(QString cmdlist)
+{
+    QString msg,key;
+    my_cmd cmd;
+    int rc=cmd.decodecmd(cmdlist,msg,key);
+    if(rc==0)
+    {
+        if(key==CMD_MOV_KEY)//移动指令
+        {
+            Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+            RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
+            RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
+            RobPos pos3=cmd.cmd_move_pos3;//获取到移动坐标
+            if(movemod==MOVEC)
+            {
+                ui->lineEdit_stX->setText(QString::number(pos1.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_stY->setText(QString::number(pos1.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_stZ->setText(QString::number(pos1.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_stRX->setText(QString::number(pos1.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                ui->lineEdit_stRY->setText(QString::number(pos1.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                ui->lineEdit_stRZ->setText(QString::number(pos1.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+
+                ui->lineEdit_centerX->setText(QString::number(pos2.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_centerY->setText(QString::number(pos2.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_centerZ->setText(QString::number(pos2.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_centerRX->setText(QString::number(pos2.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                ui->lineEdit_centerRY->setText(QString::number(pos2.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                ui->lineEdit_centerRZ->setText(QString::number(pos2.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+
+                ui->lineEdit_edX->setText(QString::number(pos3.X,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_edY->setText(QString::number(pos3.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_edZ->setText(QString::number(pos3.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+                ui->lineEdit_edRX->setText(QString::number(pos3.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                ui->lineEdit_edRY->setText(QString::number(pos3.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                ui->lineEdit_edRZ->setText(QString::number(pos3.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            }
+        }
+    }
+    ui->record->clear();
+}
+
 void setmovecDlg::close_dlg_show()
 {
 
@@ -179,5 +220,299 @@ void setmovecDlg::on_pushButton_OK_clicked()
     pos_ed.RY=ui->lineEdit_edRY->text().toFloat();
     pos_ed.RZ=ui->lineEdit_edRZ->text().toFloat();
     done(1);//返回值1
+}
+
+void setmovecDlg::set_arrive_param(float speed,int tcp)
+{
+    arrive_speed=speed;
+    arrive_tcp=tcp;
+}
+
+//按下长按到点
+void setmovecDlg::on_arriveBtn_st_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    bool rc;
+    float speed=arrive_speed;
+    int tcp=arrive_tcp;
+    Robmovemodel movemod=MOVEJ;//用关节移动方式到位
+    RobPos pos;
+    if(ui->lineEdit_stX->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写起点X数据"));
+        return;
+    }
+    if(ui->lineEdit_stY->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写起点Y数据"));
+        return;
+    }
+    if(ui->lineEdit_stZ->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写起点Z数据"));
+        return;
+    }
+    if(ui->lineEdit_stRX->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写起点RX数据"));
+        return;
+    }
+    if(ui->lineEdit_stRY->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写起点RY数据"));
+        return;
+    }
+    if(ui->lineEdit_stRZ->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写起点RZ数据"));
+        return;
+    }
+    pos.X=ui->lineEdit_stX->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("起点X数据格式出错"));
+        return;
+    }
+    pos.Y=ui->lineEdit_stY->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("起点Y数据格式出错"));
+        return;
+    }
+    pos.Z=ui->lineEdit_stZ->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("起点Z数据格式出错"));
+        return;
+    }
+    pos.RX=ui->lineEdit_stRX->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("起点RX数据格式出错"));
+        return;
+    }
+    pos.RY=ui->lineEdit_stRY->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("起点RY数据格式出错"));
+        return;
+    }
+    pos.RZ=ui->lineEdit_stRZ->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("起点RZ数据格式出错"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
+    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+}
+
+//松开长按到点
+void setmovecDlg::on_arriveBtn_st_released()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    ui->record->append(QString::fromLocal8Bit("停止到位"));
+}
+
+//按下长按到点
+void setmovecDlg::on_arriveBtn_center_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    bool rc;
+    float speed=arrive_speed;
+    int tcp=arrive_tcp;
+    Robmovemodel movemod=MOVEJ;//用关节移动方式到位
+    RobPos pos;
+    if(ui->lineEdit_centerX->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写途径点X数据"));
+        return;
+    }
+    if(ui->lineEdit_centerY->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写途径点Y数据"));
+        return;
+    }
+    if(ui->lineEdit_centerZ->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写途径点Z数据"));
+        return;
+    }
+    if(ui->lineEdit_centerRX->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写途径点RX数据"));
+        return;
+    }
+    if(ui->lineEdit_centerRY->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写途径点RY数据"));
+        return;
+    }
+    if(ui->lineEdit_centerRZ->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写途径点RZ数据"));
+        return;
+    }
+    pos.X=ui->lineEdit_centerX->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("途径点X数据格式出错"));
+        return;
+    }
+    pos.Y=ui->lineEdit_centerY->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("途径点Y数据格式出错"));
+        return;
+    }
+    pos.Z=ui->lineEdit_centerZ->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("途径点Z数据格式出错"));
+        return;
+    }
+    pos.RX=ui->lineEdit_centerRX->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("途径点RX数据格式出错"));
+        return;
+    }
+    pos.RY=ui->lineEdit_centerRY->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("途径点RY数据格式出错"));
+        return;
+    }
+    pos.RZ=ui->lineEdit_centerRZ->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("途径点RZ数据格式出错"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
+    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+}
+
+//松开长按到点
+void setmovecDlg::on_arriveBtn_center_released()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    ui->record->append(QString::fromLocal8Bit("停止到位"));
+}
+
+//按下长按到点
+void setmovecDlg::on_arriveBtn_ed_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    bool rc;
+    float speed=arrive_speed;
+    int tcp=arrive_tcp;
+    Robmovemodel movemod=MOVEJ;//用关节移动方式到位
+    RobPos pos;
+    if(ui->lineEdit_edX->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写终点X数据"));
+        return;
+    }
+    if(ui->lineEdit_edY->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写终点Y数据"));
+        return;
+    }
+    if(ui->lineEdit_edZ->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写终点Z数据"));
+        return;
+    }
+    if(ui->lineEdit_edRX->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写终点RX数据"));
+        return;
+    }
+    if(ui->lineEdit_edRY->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写终点RY数据"));
+        return;
+    }
+    if(ui->lineEdit_edRZ->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写终点RZ数据"));
+        return;
+    }
+    pos.X=ui->lineEdit_edX->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("终点X数据格式出错"));
+        return;
+    }
+    pos.Y=ui->lineEdit_edY->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("终点Y数据格式出错"));
+        return;
+    }
+    pos.Z=ui->lineEdit_edZ->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("终点Z数据格式出错"));
+        return;
+    }
+    pos.RX=ui->lineEdit_edRX->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("终点RX数据格式出错"));
+        return;
+    }
+    pos.RY=ui->lineEdit_edRY->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("终点RY数据格式出错"));
+        return;
+    }
+    pos.RZ=ui->lineEdit_edRZ->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("终点RZ数据格式出错"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
+    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+}
+
+//松开长按到点
+void setmovecDlg::on_arriveBtn_ed_released()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 

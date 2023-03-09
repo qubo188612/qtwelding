@@ -28,6 +28,9 @@ keymovDlg::~keymovDlg()
 
 void keymovDlg::init_dlg_show()
 {
+    ui->arrive_pos->clear();
+    ui->groupBox_2->setDisabled(true);
+    cmd_list_in.clear();
     ui->record->clear();
 }
 
@@ -35,6 +38,7 @@ void keymovDlg::init_dlg_show(QString cmdlist)
 {
     QString msg,key;
     my_cmd cmd;
+    cmd_list_in=cmdlist;
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
@@ -43,12 +47,32 @@ void keymovDlg::init_dlg_show(QString cmdlist)
             int tcp=cmd.cmd_move_tcp;//获取到移动TCP
             float speed=cmd.cmd_move_speed;//获取到速度值
             Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+            if(movemod==MOVEJ||movemod==MOVEL)
+            {
+                RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+                QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")";
+                ui->arrive_pos->setText(msg);
+                ui->groupBox_2->setDisabled(false);
+            }
+            else if(movemod==MOVEC)
+            {
+                ui->arrive_pos->clear();
+                ui->groupBox_2->setDisabled(true);
+            }
             if(tcp>=0&&tcp<ROBOTTCPNUM)
             {
                 ui->movetcpcombo->setCurrentIndex(tcp);
             }
             ui->movespeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
-            ui->movemodecombo->setCurrentIndex(movemod);
+            if(movemod>=0&&movemod<ui->movemodecombo->count())
+            {
+                ui->movemodecombo->setCurrentIndex(movemod);
+            }
         }
     }
     ui->record->clear();
@@ -57,6 +81,18 @@ void keymovDlg::init_dlg_show(QString cmdlist)
 void keymovDlg::close_dlg_show()
 {
 
+}
+
+void keymovDlg::setbutton(int name)
+{
+    if(name==0)
+    {
+        ui->moveaddBtn->setText(QString::fromLocal8Bit("插入移动指令"));
+    }
+    else
+    {
+        ui->moveaddBtn->setText(QString::fromLocal8Bit("替换移动指令"));
+    }
 }
 
 //插入移动指令
@@ -132,8 +168,9 @@ void keymovDlg::on_moveaddBtn_clicked()
             break;
             case MOVEC:
             {
-                setmovec->init_dlg_show();
+                setmovec->init_dlg_show(cmd_list_in);
                 setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧移动设置"));
+                setmovec->set_arrive_param(speed,tcp);
                 int rc=setmovec->exec();
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
@@ -156,5 +193,59 @@ void keymovDlg::on_moveaddBtn_clicked()
     {
         ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
     }
+}
+
+
+//到点按下
+void keymovDlg::on_arriveBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    bool rc;
+    float speed=ui->movespeed->text().toFloat(&rc);
+    my_cmd cmd;
+    QString msg;
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    QString key;
+    rc=cmd.decodecmd(cmd_list_in,msg,key);
+    Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+    if(movemod==MOVEJ||movemod==MOVEL)
+    {
+        int tcp=ui->movetcpcombo->currentIndex();
+        RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+        movemod=MOVEJ;//用关节移动方式到位
+        m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("只有MOVEJ和MOVEL的点可以到位运动"));
+        return;
+    }
+    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+}
+
+//到点抬起
+void keymovDlg::on_arriveBtn_released()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        return;
+    }
+    m_mcs->tosendbuffer->cmd_lock(0);
+    ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 

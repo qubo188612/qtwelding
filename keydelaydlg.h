@@ -24,6 +24,8 @@ public:
     void init_dlg_show(QString cmdlist);
     void close_dlg_show();
 
+    void setbutton(int name=0);
+
 private slots:
     void on_delaytimeBtn_clicked();
 
