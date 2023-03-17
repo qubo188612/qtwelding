@@ -63,6 +63,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     newcraft=new newcraftDlg(m_mcs);
     setcraft0=new setcraft0Dlg(m_mcs);
     setcraft1=new setcraft1Dlg(m_mcs);
+    setcraft2=new setcraft2Dlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -187,6 +188,7 @@ qtweldingDlg::~qtweldingDlg()
     delete newcraft;
     delete setcraft0;
     delete setcraft1;
+    delete setcraft2;
     delete ui;
 }
 
@@ -419,6 +421,14 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                         setcraft1->close_dlg_show();
                     }
                     break;
+                    case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
+                    {
+                        setcraft2->init_dlg_show();
+                        setcraft2->setWindowTitle(msg);
+                        setcraft2->exec();
+                        setcraft2->close_dlg_show();
+                    }
+                    break;
                 }
             }
             else
@@ -463,6 +473,14 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                             setcraft1->setWindowTitle(msg);
                             setcraft1->exec();
                             setcraft1->close_dlg_show();
+                        }
+                        break;
+                        case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
+                        {
+                            setcraft2->init_dlg_show();
+                            setcraft2->setWindowTitle(msg);
+                            setcraft2->exec();
+                            setcraft2->close_dlg_show();
                         }
                         break;
                     }

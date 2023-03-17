@@ -55,6 +55,7 @@ SOURCES += \
         robotsetdlg.cpp \
         setcraft0dlg.cpp \
         setcraft1dlg.cpp \
+        setcraft2dlg.cpp \
         setmovecdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
@@ -95,6 +96,7 @@ FORMS += \
     robotsetdlg.ui \
     setcraft0dlg.ui \
     setcraft1dlg.ui \
+    setcraft2dlg.ui \
     setmovecdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
@@ -147,6 +149,7 @@ HEADERS += \
     robotsetdlg.h \
     setcraft0dlg.h \
     setcraft1dlg.h \
+    setcraft2dlg.h \
     setmovecdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \

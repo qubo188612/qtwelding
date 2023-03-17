@@ -26,6 +26,7 @@ public:
     QString name4;
 
     void init_dlg_show();
+    void init_dlg_show(QString cmdlist);
     void close_dlg_show();
 
 private slots:

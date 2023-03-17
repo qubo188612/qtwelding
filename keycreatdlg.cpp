@@ -111,7 +111,14 @@ void keycreatDlg::on_traceeditBtn_clicked()
         {
             case TRACE_EDIT_MODE_ONE_TO_ONE://单扫对单轨道模式
             {
-                traceedit0->init_dlg_show();
+                if(b_inster==false)
+                {
+                    traceedit0->init_dlg_show();
+                }
+                else
+                {
+                    traceedit0->init_dlg_show(cmd_list_in);
+                }
                 traceedit0->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
                 int rc=traceedit0->exec();
                 traceedit0->close_dlg_show();
@@ -130,7 +137,14 @@ void keycreatDlg::on_traceeditBtn_clicked()
             break;
             case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
             {
-                traceedit1->init_dlg_show();
+                if(b_inster==false)
+                {
+                    traceedit1->init_dlg_show();
+                }
+                else
+                {
+                    traceedit1->init_dlg_show(cmd_list_in);
+                }
                 traceedit1->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三直线交点模式)"));
                 int rc=traceedit1->exec();
                 traceedit1->close_dlg_show();
@@ -151,7 +165,14 @@ void keycreatDlg::on_traceeditBtn_clicked()
             break;
             case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
             {
-                traceedit2->init_dlg_show();
+                if(b_inster==false)
+                {
+                    traceedit2->init_dlg_show();
+                }
+                else
+                {
+                    traceedit2->init_dlg_show(cmd_list_in);
+                }
                 traceedit2->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(两端点三直线交点模式)"));
                 int rc=traceedit2->exec();
                 traceedit2->close_dlg_show();

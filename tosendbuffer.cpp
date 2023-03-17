@@ -120,9 +120,6 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                     if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
                                     {
                                         b_find=true;
-                                        Weld_trace_result trace;
-                                        trace.name=name;
-                                        m_mcs->project->project_weld_trace.push_back(trace);
                                         break;
                                     }
                                 }
@@ -140,6 +137,12 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
                                 break;
+                            }
+                            else
+                            {
+                                Weld_trace_result trace;
+                                trace.name=name;
+                                m_mcs->project->project_weld_trace.push_back(trace);
                             }
                         }
                         break;
@@ -167,9 +170,6 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                     if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
                                     {
                                         b_find=true;
-                                        Weld_trace_result trace;
-                                        trace.name=name;
-                                        m_mcs->project->project_weld_trace.push_back(trace);
                                         break;
                                     }
                                 }
@@ -187,6 +187,12 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
                                 break;
+                            }
+                            else
+                            {
+                                Weld_trace_result trace;
+                                trace.name=name;
+                                m_mcs->project->project_weld_trace.push_back(trace);
                             }
                         }
                         break;
@@ -214,9 +220,6 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                     if(scannames[m]==m_mcs->project->project_scan_trace[t].name)
                                     {
                                         b_find=true;
-                                        Weld_trace_result trace;
-                                        trace.name=name;
-                                        m_mcs->project->project_weld_trace.push_back(trace);
                                         break;
                                     }
                                 }
@@ -234,6 +237,12 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
                                 break;
+                            }
+                            else
+                            {
+                                Weld_trace_result trace;
+                                trace.name=name;
+                                m_mcs->project->project_weld_trace.push_back(trace);
                             }
                         }
                         break;
@@ -1105,6 +1114,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             return 1;
                         }
                     }
+                }
+                break;
+                case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
+                {
+
                 }
                 break;
             }

@@ -43,6 +43,95 @@ void traceedit2Dlg::init_dlg_show()
     }
 }
 
+void traceedit2Dlg::init_dlg_show(QString cmdlist)
+{
+    QString msg,key;
+    my_cmd cmd;
+    int rc;
+    ui->comboBox_0->clear();
+    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+    {
+        ui->comboBox_0->addItem(m_mcs->project->project_scan_trace[n].name);
+    }
+    ui->comboBox_1->clear();
+    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+    {
+        ui->comboBox_1->addItem(m_mcs->project->project_scan_trace[n].name);
+    }
+    ui->comboBox_2->clear();
+    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+    {
+        ui->comboBox_2->addItem(m_mcs->project->project_scan_trace[n].name);
+    }
+    ui->comboBox_3->clear();
+    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+    {
+        ui->comboBox_3->addItem(m_mcs->project->project_scan_trace[n].name);
+    }
+    ui->comboBox_4->clear();
+    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+    {
+        ui->comboBox_4->addItem(m_mcs->project->project_scan_trace[n].name);
+    }
+    rc=cmd.decodecmd(cmdlist,msg,key);
+    if(rc==0)
+    {
+        if(key==CMD_CREAT_KEY)//生成轨迹命令
+        {
+            std::vector<QString> scanname=cmd.cmd_creat_scanname;//获取到生成轨迹所需要的轨迹名字
+            Trace_edit_mode mode=cmd.cmd_creat_mode;//获取到的轨迹生成模式
+            switch(mode)
+            {
+                case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
+                {
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[0]==ui->comboBox_0->itemText(n))
+                        {
+                            ui->comboBox_0->setCurrentIndex(n);
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[1]==ui->comboBox_1->itemText(n))
+                        {
+                            ui->comboBox_1->setCurrentIndex(n);
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[2]==ui->comboBox_2->itemText(n))
+                        {
+                            ui->comboBox_2->setCurrentIndex(n);
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[3]==ui->comboBox_3->itemText(n))
+                        {
+                            ui->comboBox_3->setCurrentIndex(n);
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+                    {
+                        if(scanname[4]==ui->comboBox_4->itemText(n))
+                        {
+                            ui->comboBox_4->setCurrentIndex(n);
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
+
+
 void traceedit2Dlg::close_dlg_show()
 {
 

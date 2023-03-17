@@ -6,6 +6,23 @@ QMutex mutexweldsend_buf_group;
 QMutex mutexmovepoint_buffer_group;
 extern QMutex main_record;
 
+MovRobPos::MovRobPos()
+{
+    X=0;
+    Y=0;
+    Z=0;
+    RX=0;
+    RY=0;
+    RZ=0;
+    X1=0;
+    Y1=0;
+    Z1=0;
+    RX1=0;
+    RY1=0;
+    RZ1=0;
+    nEn=0;
+}
+
 Robotcontrol *Robotcontrol::Get(my_parameters *mcs)
 {
     static Robotcontrol fun;
@@ -357,7 +374,9 @@ void Robotcontrol::RobotCLOSE_ELE()
     }
 }
 
-void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float f_movRX, float f_movRY,float f_movRZ,Robmovemodel_ID movemod,uint16_t tcp,float f_speed)
+void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float f_movRX, float f_movRY,float f_movRZ,
+                                    float f_movX1,float f_movY1,float f_movZ1,float f_movRX1, float f_movRY1,float f_movRZ1,
+                                    Robmovemodel_ID movemod,uint16_t tcp,float f_speed)
 {
     switch(_p->rob_mod)
     {
@@ -381,6 +400,22 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
             moveinfo.robpos.RX=f_movRX;
             moveinfo.robpos.RY=f_movRY;
             moveinfo.robpos.RZ=f_movRZ;
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                break;
+                case MOVEC:
+                {
+                    moveinfo.robpos.X1=f_movX1;
+                    moveinfo.robpos.Y1=f_movY1;
+                    moveinfo.robpos.Z1=f_movZ1;
+                    moveinfo.robpos.RX1=f_movRX1;
+                    moveinfo.robpos.RY1=f_movRY1;
+                    moveinfo.robpos.RZ1=f_movRZ1;
+                }
+                break;
+            }
             moveinfo.f_speed=f_speed;
             moveinfo.movemod=movemod;
             moveinfo.tcp=tcp;
@@ -422,6 +457,29 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     mutexsend_buf_group.unlock();
                 }
                 break;
+                case MOVEC:
+                {
+                    mutexsend_buf_group.lock();
+                    QString msg="Arc("+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movX1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movY1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movZ1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRX1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
+                                        QString::number(tcp)+",SpeedL="+
+                                        QString::number((int)f_speed)+")";
+                    std::string str=msg.toStdString();
+                //  std::string str="Arc(1.3,23,45,6,7,8,1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2)";
+                    _p->send_buf_group.push_back(str);
+                    mutexsend_buf_group.unlock();
+                }
+                break;
             }
         }
         break;
@@ -435,6 +493,22 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
             moveinfo.robpos.RX=f_movRX;
             moveinfo.robpos.RY=f_movRY;
             moveinfo.robpos.RZ=f_movRZ;
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                break;
+                case MOVEC:
+                {
+                    moveinfo.robpos.X1=f_movX1;
+                    moveinfo.robpos.Y1=f_movY1;
+                    moveinfo.robpos.Z1=f_movZ1;
+                    moveinfo.robpos.RX1=f_movRX1;
+                    moveinfo.robpos.RY1=f_movRY1;
+                    moveinfo.robpos.RZ1=f_movRZ1;
+                }
+                break;
+            }
             moveinfo.f_speed=f_speed;
             moveinfo.movemod=movemod;
             moveinfo.tcp=tcp;
@@ -473,6 +547,27 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     mutexsend_buf_group.unlock();
                 }
                 break;
+                case MOVEC:
+                {
+                    mutexsend_buf_group.lock();
+                    QString msg="movec(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
+                                        QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
+                                        QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
+                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],p["+
+                                        QString::number(f_movX1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
+                                        QString::number(f_movY1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
+                                        QString::number(f_movZ1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
+                                        QString::number(f_movRX1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(f_speed/1000.0)+")\r\n";
+                    std::string str=msg.toStdString();
+                    _p->send_buf_group.push_back(str);
+                    mutexsend_buf_group.unlock();
+                }
+                break;
             }
         }
         break;
@@ -486,6 +581,22 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
             moveinfo.robpos.RX=f_movRX;
             moveinfo.robpos.RY=f_movRY;
             moveinfo.robpos.RZ=f_movRZ;
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                break;
+                case MOVEC:
+                {
+                    moveinfo.robpos.X1=f_movX1;
+                    moveinfo.robpos.Y1=f_movY1;
+                    moveinfo.robpos.Z1=f_movZ1;
+                    moveinfo.robpos.RX1=f_movRX1;
+                    moveinfo.robpos.RY1=f_movRY1;
+                    moveinfo.robpos.RZ1=f_movRZ1;
+                }
+                break;
+            }
             moveinfo.f_speed=f_speed;
             moveinfo.movemod=movemod;
             moveinfo.tcp=tcp;
@@ -494,6 +605,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
             switch(movemod)
             {
                 case MOVEL:
+                case MOVEJ:
                 {
                     mutexsend_buf_group.lock();
                     QDomDocument doc;
@@ -537,6 +649,83 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     obj.appendChild(objmin);
                     objmin=doc.createElement("RZ");
                     s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    root_elem.appendChild(obj);
+                    QString msg=doc.toString();
+                    std::string str=msg.toStdString();
+                    _p->send_buf_group.push_back(str);
+                    mutexsend_buf_group.unlock();
+                }
+                break;
+                case MOVEC:
+                {
+                    mutexsend_buf_group.lock();
+                    QDomDocument doc;
+                    QDomText s_data;
+                    QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                    doc.appendChild(root_elem);
+                    QDomElement obj;
+                    obj=doc.createElement("TCP");
+                    s_data=doc.createTextNode(QString::number(tcp));
+                    obj.appendChild(s_data);
+                    root_elem.appendChild(obj);
+                    obj=doc.createElement("MOVEMOD");
+                    s_data=doc.createTextNode(QString::number(movemod));
+                    obj.appendChild(s_data);
+                    root_elem.appendChild(obj);
+                    obj=doc.createElement("MOVESPEED");
+                    s_data=doc.createTextNode(QString::number(f_speed,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    obj.appendChild(s_data);
+                    root_elem.appendChild(obj);
+                    obj=doc.createElement("MOVEPOS");
+                    QDomElement objmin;
+                    objmin=doc.createElement("X");
+                    s_data=doc.createTextNode(QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("Y");
+                    s_data=doc.createTextNode(QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("Z");
+                    s_data=doc.createTextNode(QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RX");
+                    s_data=doc.createTextNode(QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RY");
+                    s_data=doc.createTextNode(QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RZ");
+                    s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("X1");
+                    s_data=doc.createTextNode(QString::number(f_movX1,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("Y1");
+                    s_data=doc.createTextNode(QString::number(f_movY1,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("Z1");
+                    s_data=doc.createTextNode(QString::number(f_movZ1,'f',ROBOT_POSE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RX1");
+                    s_data=doc.createTextNode(QString::number(f_movRX1,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RY1");
+                    s_data=doc.createTextNode(QString::number(f_movRY1,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("RZ1");
+                    s_data=doc.createTextNode(QString::number(f_movRZ1,'f',ROBOT_POSTURE_DECIMAL_PLACE));
                     objmin.appendChild(s_data);
                     obj.appendChild(objmin);
                     root_elem.appendChild(obj);
@@ -816,8 +1005,14 @@ void RobotcontrolThread1::run() //接到上位机命令
                                 float f_movRX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RX_POS_FH_REG_ADD];
                                 float f_movRY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY_POS_FH_REG_ADD];
                                 float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
+                                float f_movX1=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_X1_POS_FH_REG_ADD];
+                                float f_movY1=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Y1_POS_FH_REG_ADD];
+                                float f_movZ1=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Z1_POS_FH_REG_ADD];
+                                float f_movRX1=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RX1_POS_FH_REG_ADD];
+                                float f_movRY1=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY1_POS_FH_REG_ADD];
+                                float f_movRZ1=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ1_POS_FH_REG_ADD];
 
-                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);   
+                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,f_movX1,f_movY1,f_movZ1,f_movRX1,f_movRY1,f_movRZ1,movemod,tcp,f_speed);
                             }
                             if(_p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD]!=65535)//机器人IO输出变化
                             {
@@ -1080,8 +1275,16 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 float f_movRX=_p->pause_movepoint_buffer[n].robpos.RX;
                                                 float f_movRY=_p->pause_movepoint_buffer[n].robpos.RY;
                                                 float f_movRZ=_p->pause_movepoint_buffer[n].robpos.RZ;
+                                                float f_movX1=_p->pause_movepoint_buffer[n].robpos.X1;
+                                                float f_movY1=_p->pause_movepoint_buffer[n].robpos.Y1;
+                                                float f_movZ1=_p->pause_movepoint_buffer[n].robpos.Z1;
+                                                float f_movRX1=_p->pause_movepoint_buffer[n].robpos.RX1;
+                                                float f_movRY1=_p->pause_movepoint_buffer[n].robpos.RY1;
+                                                float f_movRZ1=_p->pause_movepoint_buffer[n].robpos.RZ1;
 
-                                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,movemod,tcp,f_speed);
+                                                RobotMove(f_movX,f_movY,f_movZ,f_movRX,f_movRY,f_movRZ,
+                                                          f_movX1,f_movY1,f_movZ1,f_movRX1,f_movRY1,f_movRZ1,
+                                                          movemod,tcp,f_speed);
                                             }
                                             /********************************/
                                         }

@@ -24,11 +24,30 @@ class RobottotalcontrolrcvThread;
 class WeldsendThread;
 class WeldsendrcvThread;
 
+class MovRobPos
+{
+public:
+    MovRobPos();
+    float X;
+    float Y;
+    float Z;
+    float RX;
+    float RY;
+    float RZ;
+    float X1;
+    float Y1;
+    float Z1;
+    float RX1;
+    float RY1;
+    float RZ1;
+    bool nEn;
+};
+
 //移动点信息
 class Pause_PointInfo
 {
 public:
-    RobPos robpos;
+    MovRobPos robpos;
     uint16_t tcp;
     Robmovemodel_ID movemod;
     float f_speed;
@@ -134,7 +153,9 @@ class RobotcontrolThread1 : public QThread      //查看上位机控制信息线
 public:
     RobotcontrolThread1(Robotcontrol *statci_p);
 
-    void RobotMove(float f_movX,float f_movY,float f_movZ,float f_movRX, float f_movRY,float f_movRZ,Robmovemodel_ID movemod,uint16_t tcp,float f_speed);
+    void RobotMove(float f_movX,float f_movY,float f_movZ,float f_movRX, float f_movRY,float f_movRZ,
+                   float f_movX1,float f_movY1,float f_movZ1,float f_movRX1, float f_movRY1,float f_movRZ1,
+                   Robmovemodel_ID movemod,uint16_t tcp,float f_speed);
 protected:
     void run();
 private:

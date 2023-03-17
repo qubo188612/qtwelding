@@ -74,7 +74,10 @@ QString Craft::craft_Id_toQString(Craft_ID craft_id)
             msg=QString::fromLocal8Bit("固定焊接姿态");
         break;
         case CRAFT_ID_STARTENDCHANGE_POSTURE:
-            msg=QString::fromLocal8Bit("起终点变姿态");
+            msg=QString::fromLocal8Bit("单一方向起终点变姿态");
+        break;
+        case CRAFT_ID_LASERNORMAL_POSTURE:
+            msg=QString::fromLocal8Bit("激光器测量法线姿态");
         break;
     }
     return msg;
@@ -150,9 +153,14 @@ QVariantHash Craft::encoed_json()
             p_id="CRAFT_ID_FIXED_POSTURE";            
         }
         break;
-        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //单一方向起终点变姿态
         {
             p_id="CRAFT_ID_STARTENDCHANGE_POSTURE";
+        }
+        break;
+        case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
+        {
+            p_id="CRAFT_ID_LASERNORMAL_POSTURE";
         }
         break;
     } 
@@ -189,7 +197,9 @@ QVariantHash Craft::encoed_json()
     {
         case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
         break;
-        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+        case CRAFT_ID_STARTENDCHANGE_POSTURE:   //单一方向起终点变姿态
+        break;
+        case CRAFT_ID_LASERNORMAL_POSTURE:     //激光器测量法线姿态
         break;
     }
     /****************************/
@@ -221,6 +231,10 @@ int Craft::decoed_json(QByteArray allData)
         else if(msg=="CRAFT_ID_STARTENDCHANGE_POSTURE")
         {
             craft_id=CRAFT_ID_STARTENDCHANGE_POSTURE;
+        }
+        else if(msg=="CRAFT_ID_LASERNORMAL_POSTURE")
+        {
+            craft_id=CRAFT_ID_LASERNORMAL_POSTURE;
         }
         else
         {
@@ -304,6 +318,10 @@ int Craft::decoed_json(QByteArray allData)
             {
                 return 1;
             }
+        }
+        break;
+        case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
+        {
         }
         break;
     }

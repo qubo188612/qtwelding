@@ -13,11 +13,12 @@
 
 #define STARTENDCHANGE_POSTURE_ALLOWERROR       100     //变姿态工艺与实际轨迹长度允许的误差(mm)
 
-#define CRAFT_ID_TOTAL_NUM       2      //工艺类型总数
+#define CRAFT_ID_TOTAL_NUM       3      //工艺类型总数
 typedef enum CRAFT_ID
 {
     CRAFT_ID_FIXED_POSTURE=0,               //固定焊接姿态
-    CRAFT_ID_STARTENDCHANGE_POSTURE=1,      //起终点变姿态
+    CRAFT_ID_STARTENDCHANGE_POSTURE=1,      //单一方向起终点变姿态
+    CRAFT_ID_LASERNORMAL_POSTURE=2,         //激光器测量法线姿态
 }Craft_ID;
 
 #define PENDULUM_ID_TOTAL_NUM     1     //摆焊接模式总数

@@ -351,6 +351,8 @@ void setcraft1Dlg::on_pushButtonOK_clicked()//确定并保存
         ui->record->append(msg);
         return;
     }
+    m_mcs->craft->pendulum_phaseangle=ui->lineEdit_pendulum_phaseangle->text().toFloat();
+    m_mcs->craft->pendulum_swing=ui->lineEdit_pendulum_swing->text().toFloat();
     m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
     done(1);
 }
@@ -442,6 +444,32 @@ void setcraft1Dlg::on_robposlist_itemClicked(QListWidgetItem *item)
         ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[now_robpos].Variable.X,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_Y->setText(QString::number(m_mcs->craft->posturelist[now_robpos].Variable.Y,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_Z->setText(QString::number(m_mcs->craft->posturelist[now_robpos].Variable.Z,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+    }
+}
+
+
+void setcraft1Dlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)
+{
+    m_mcs->craft->pendulum_mode=(Pendulum_mode)index;
+    UpdataUi();
+}
+
+void setcraft1Dlg::UpdataUi()
+{
+    switch(m_mcs->craft->pendulum_mode)
+    {
+        case PENDULUM_ID_FLAT:
+        {
+            ui->lineEdit_pendulum_phaseangle->setDisabled(false);
+            ui->lineEdit_pendulum_swing->setDisabled(false);
+        }
+        break;
+        default:
+        {
+            ui->lineEdit_pendulum_phaseangle->setDisabled(true);
+            ui->lineEdit_pendulum_swing->setDisabled(true);
+        }
+        break;
     }
 }
 
