@@ -84,7 +84,7 @@ public:
     unsigned short leaser_rcv_data2[4];
     unsigned short leaser_rcv_data3[1];
 
-    unsigned short robotpos_rcv_data[19+ROBOTINPUTNUM];
+    unsigned short robotpos_rcv_data[19+ROBOTINPUTNUM+ROBOTTCPPOSOUTNUM*2];
 
 
 private slots:

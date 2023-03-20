@@ -56,6 +56,7 @@ public:
     modbus_t *ctx_robotset;
     modbus_t *ctx_param;
     modbus_t *ctx_result;
+    modbus_t *ctx_resultwrite;
     QTcpSocket *client;
 
 #ifdef DEBUS_SSH

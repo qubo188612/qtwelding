@@ -46,6 +46,8 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROBOTOUTPUTNUM              8   //机器人IO输出口总数
 #define ROBOTINPUTNUM               8   //机器人IO输入口总数
 
+#define ROBOTTCPPOSOUTNUM           3   //机器人外部轴总数
+
 /*************************/
 
 #define ROWS_PROPORTION              1.0
@@ -527,6 +529,18 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS_OPEN_REG_ADD                        0x0101  //跟踪开关
 #define ALS_TASKNUM_REG_ADD                     0x0102  //任务号
 
+#define ALS_REALTIME_POSX_REG_ADD               0x0111  //写入实时坐标，机器人X，(0x111-0x112)单位微米
+#define ALS_REALTIME_POSY_REG_ADD               0x0113  //写入实时坐标，机器人Y，(0x113-0x114)单位微米
+#define ALS_REALTIME_POSZ_REG_ADD               0x0115  //写入实时坐标，机器人Z，(0x115-0x116)单位微米
+#define ALS_REALTIME_POSRX_REG_ADD              0x0117  //写入实时坐标，机器人RX，(0x117-0x118)单位0.0001deg
+#define ALS_REALTIME_POSRY_REG_ADD              0x0119  //写入实时坐标，机器人RY，(0x119-0x11a)单位0.0001deg
+#define ALS_REALTIME_POSRZ_REG_ADD              0x011b  //写入实时坐标，机器人RY，(0x11b-0x11c)单位0.0001deg
+#define ALS_REALTIME_POSOUT1_REG_ADD            0x011d  //写入实时坐标，机器人外部轴1，(0x11d-0x11e)
+#define ALS_REALTIME_POSOUT2_REG_ADD            0x011f  //写入实时坐标，机器人外部轴2，(0x11f-0x120)
+#define ALS_REALTIME_POSOUT3_REG_ADD            0x0121  //写入实时坐标，机器人外部轴3，(0x121-0x122)
+#define ALS_REALTIME_TOOL_REG_ADD               0x0123  //写入实时坐标，机器人工具号
+#define ALS_REALTIME_TCP_REG_ADD                0x0124  //写入实时坐标，机器人坐标系号
+#define ALS_REALTIME_USERTCP_REG_ADD            0x0125  //写入实时坐标，机器人用户坐标系号
 
 /*****************************/
 //64位浮点排序类

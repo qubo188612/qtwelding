@@ -80,9 +80,11 @@ public:
 
     RobPos TCPpos;      //机器人当前TCP坐标
 
+    std::vector<int32_t> robTCPposout;   //机器人外部轴
+
     systime robtime;    //机器人时间
 
-    std::vector<int> robioinput;    //机器人输入口IO
+    std::vector<int> robioinput;    //机器人输入口IO  
 
     ROBOT_MODEL robot_model;    //机器人型号
     QString robot_model_toQString(ROBOT_MODEL robot_model);  //机器人型号字符串输出

@@ -551,12 +551,14 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
     else
     {
         sent_info_leaser sentdata;
+        send_group_leaser.lock();
         sentdata.ctx=m_mcs->resultdata.ctx_result;
-        sentdata.addr=0x101;
+        sentdata.addr=ALS_OPEN_REG_ADD;
         sentdata.data={0xff};
         m_mcs->resultdata.b_send_group_leaser=false;
         m_mcs->resultdata.send_group_leaser.push_back(sentdata);
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
+        send_group_leaser.unlock();
 
         m_mcs->cam->sop_cam[0].DisConnect();
 
@@ -575,10 +577,12 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
             ui->record->append(QString::fromLocal8Bit("激光头连接失败"));
         }
 
+        send_group_leaser.lock();
         sentdata.data={0x00};
         m_mcs->resultdata.b_send_group_leaser=false;
         m_mcs->resultdata.send_group_leaser.push_back(sentdata);
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
+        send_group_leaser.unlock();
     }
 }
 
@@ -1025,7 +1029,7 @@ void qtweldingThread::run()
                     }
                     send_group_leaser.unlock();
                 }
-                else if(_p->m_mcs->resultdata.ctx_result_dosomeing==DO_NOTHING)
+                if(_p->m_mcs->resultdata.ctx_result_dosomeing==DO_NOTHING)
                 {
                     if(0<=modbus_read_registers(_p->m_mcs->resultdata.ctx_result,ALS_STATE_REG_ADD,15,_p->leaser_rcv_data))
                     {
@@ -1086,7 +1090,7 @@ void qtweldingThread::run()
                 _p->b_init_show_ui_list=false;
                 emit Send_show_ui_list();
             }
-            usleep(30000);
+            sleep(0);
         }
         else
         {
@@ -1155,10 +1159,10 @@ void qtgetrobThread::run()
                     }
                     send_group_robot.unlock();
                 }
-                else if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
+                if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
-                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,19+ROBOTINPUTNUM,_p->robotpos_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,19+ROBOTINPUTNUM+ROBOTTCPPOSOUTNUM*2,_p->robotpos_rcv_data))
                     {
                         _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
                         _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);
@@ -1176,6 +1180,59 @@ void qtgetrobThread::run()
                         for(int n=0;n<ROBOTINPUTNUM;n++)
                         {
                             _p->m_mcs->rob->robioinput[n]=(int16_t)_p->robotpos_rcv_data[19+n];
+                        }
+                        for(int n=0;n<ROBOTTCPPOSOUTNUM;n++)
+                        {
+                            _p->m_mcs->rob->robTCPposout[n]=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+n*2]);
+                        }
+                        //往激光器写入机器人实时坐标信息
+                        if(_p->m_mcs->resultdata.link_result_state==true)
+                        {
+                            sent_info_leaser sentdata;
+                            send_group_leaser.lock();
+                            int32_t num=0;
+                            int32_t *i32_data;
+                            uint16_t u16_data[2];
+                            sentdata.ctx=_p->m_mcs->resultdata.ctx_result;
+                            sentdata.addr=ALS_REALTIME_POSX_REG_ADD;
+                            sentdata.data.reserve(0x15);
+                            i32_data=(int32_t*)u16_data;
+                            *i32_data=_p->m_mcs->rob->TCPpos.X*1000;
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->TCPpos.Y*1000;
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->TCPpos.Z*1000;
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->TCPpos.RX*10000;
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->TCPpos.RY*10000;
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            *i32_data=_p->m_mcs->rob->robTCPposout[2];
+                            sentdata.data.push_back(u16_data[0]);
+                            sentdata.data.push_back(u16_data[1]);
+                            //工具号、坐标系、用户坐标系全用0
+                            sentdata.data.push_back(0);
+                            sentdata.data.push_back(0);
+                            sentdata.data.push_back(0);
+
+                            _p->m_mcs->resultdata.b_send_group_leaser=false;
+                            _p->m_mcs->resultdata.send_group_leaser.push_back(sentdata);
+                            _p->m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
+                            send_group_leaser.unlock();
                         }
                     }
                 }

@@ -28,6 +28,7 @@ RobotData::RobotData()
     b_send_group_robot=false;
     ctx_robot_dosomeing=DO_NOTHING;
     robioinput.resize(ROBOTINPUTNUM);
+    robTCPposout.resize(ROBOTTCPPOSOUTNUM);
 
 //  send_group_robot.reserve(6000000);
 
