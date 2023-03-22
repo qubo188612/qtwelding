@@ -220,6 +220,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     showtasknum=new showtasknumdlg;
     taskclear=new taskcleardlg(m_mcs);
+    pshow=new pshowdlg(m_mcs);
 #ifdef DEBUS_SSH
     sshpassword=new sshpasswordDlg(m_mcs);
 #else
@@ -298,6 +299,21 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再查看任务号列表"));
         }
      });
+
+    connect(ui->pshowBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_result_state==true)
+        {
+            pshow->init_dlg_show();
+            pshow->setWindowTitle(QString::fromLocal8Bit("查看P变量图示"));
+            pshow->exec();
+            pshow->close_dlg_show();
+        }
+        else
+        {
+            if(ui->checkBox->isChecked()==false)
+                 ui->record->append(QString::fromLocal8Bit("请连接相机后再查看P变量图示"));
+        }
+    });
 
     //FTP端接收数据
     connect(m_mcs->resultdata.client,&QTcpSocket::readyRead,[=](){
@@ -2526,6 +2542,7 @@ qtmysunnyDlg::~qtmysunnyDlg()
     delete thread1;
     delete showtasknum;
     delete taskclear;
+    delete pshow;
 #ifdef DEBUS_SSH
     delete sshpassword;
 #endif
@@ -2699,6 +2716,13 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
                     case 8:
                     {
                         ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:华成工控-创想"));
+                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(msg);
+                    }
+                    break;
+                    case 9:
+                    {
+                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:新时达机器人"));
                         QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
@@ -3735,6 +3759,49 @@ void getposThread::run()
                             emit Send_show_pos_list();
                         }
                     }
+                }
+                //往激光器写入机器人实时坐标信息
+                if(_p->m_mcs->rob->b_link_ctx_posget==true)
+                {
+                    sent_info_leaser sentdata;
+                    int32_t *i32_data;
+                    uint16_t u16_data[2];
+                    sentdata.ctx=_p->m_mcs->resultdata.ctx_result;
+                    sentdata.addr=ALS_REALTIME_POSX_REG_ADD;
+                    sentdata.data.reserve(0x15);
+                    i32_data=(int32_t*)u16_data;
+                    *i32_data=_p->m_mcs->rob->TCPpos.X*1000;
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->TCPpos.Y*1000;
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->TCPpos.Z*1000;
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->TCPpos.RX*10000;
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->TCPpos.RY*10000;
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    *i32_data=_p->m_mcs->rob->robTCPposout[2];
+                    sentdata.data.push_back(u16_data[0]);
+                    sentdata.data.push_back(u16_data[1]);
+                    //工具号、坐标系、用户坐标系全用0
+                    sentdata.data.push_back(0);
+                    sentdata.data.push_back(0);
+                    sentdata.data.push_back(0);
+                    modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
                 }
             }
             if(_p->m_mcs->cam->sop_cam[0].b_updataimage_finish==true)

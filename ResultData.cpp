@@ -4,7 +4,6 @@
 ResultData::ResultData()
 {
     link_result_state=false;
-    link_resultwrite_state=false;
     link_param_state=false;
     link_robotset_state=false;
     link_ftp_state=false;

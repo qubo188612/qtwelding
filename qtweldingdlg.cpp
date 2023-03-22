@@ -731,7 +731,6 @@ void qtweldingDlg::ConnectCamer()
         m_mcs->cam->sop_cam[0].InitConnect();
     //  RunAlgCamer();
     }
-
 }
 
 void qtweldingDlg::DisconnectCamer()
@@ -1083,6 +1082,62 @@ void qtweldingThread::run()
                         int tasknum=(int16_t)_p->leaser_rcv_data3[0];
                         _p->m_mcs->resultdata.task=tasknum;
                     }
+                    //往激光器写入机器人实时坐标信息
+                    if(_p->m_mcs->rob->b_link_ctx_posget==true)
+                    {
+                        sent_info_leaser sentdata;
+                        int32_t *i32_data;
+                        uint16_t u16_data[2];
+                        sentdata.ctx=_p->m_mcs->resultdata.ctx_result;
+                        sentdata.addr=ALS_REALTIME_POSX_REG_ADD;
+                        sentdata.data.reserve(0x15);
+                        i32_data=(int32_t*)u16_data;
+                        *i32_data=_p->m_mcs->rob->TCPpos.X*1000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.Y*1000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.Z*1000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.RX*10000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.RY*10000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->robTCPposout[2];
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        //工具号、坐标系、用户坐标系全用0
+                        sentdata.data.push_back(0);
+                        sentdata.data.push_back(0);
+                        sentdata.data.push_back(0);
+                        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+                        if(rc!=sentdata.data.size())
+                        {
+                            _p->m_mcs->resultdata.b_send_group_leaser=false;
+                            if(_p->b_init_sent_leaser==true)
+                            {
+                                _p->b_init_sent_leaser=false;
+                                emit Send_sent_leaser();
+                            }
+                        }
+                        else
+                        {
+                            _p->m_mcs->resultdata.b_send_group_leaser=true;
+                        }
+                    }
                 }
             }
             if(_p->b_init_show_ui_list==true)
@@ -1184,55 +1239,6 @@ void qtgetrobThread::run()
                         for(int n=0;n<ROBOTTCPPOSOUTNUM;n++)
                         {
                             _p->m_mcs->rob->robTCPposout[n]=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+n*2]);
-                        }
-                        //往激光器写入机器人实时坐标信息
-                        if(_p->m_mcs->resultdata.link_result_state==true)
-                        {
-                            sent_info_leaser sentdata;
-                            send_group_leaser.lock();
-                            int32_t num=0;
-                            int32_t *i32_data;
-                            uint16_t u16_data[2];
-                            sentdata.ctx=_p->m_mcs->resultdata.ctx_result;
-                            sentdata.addr=ALS_REALTIME_POSX_REG_ADD;
-                            sentdata.data.reserve(0x15);
-                            i32_data=(int32_t*)u16_data;
-                            *i32_data=_p->m_mcs->rob->TCPpos.X*1000;
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->TCPpos.Y*1000;
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->TCPpos.Z*1000;
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->TCPpos.RX*10000;
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->TCPpos.RY*10000;
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->robTCPposout[0];
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->robTCPposout[0];
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            *i32_data=_p->m_mcs->rob->robTCPposout[2];
-                            sentdata.data.push_back(u16_data[0]);
-                            sentdata.data.push_back(u16_data[1]);
-                            //工具号、坐标系、用户坐标系全用0
-                            sentdata.data.push_back(0);
-                            sentdata.data.push_back(0);
-                            sentdata.data.push_back(0);
-
-                            _p->m_mcs->resultdata.b_send_group_leaser=false;
-                            _p->m_mcs->resultdata.send_group_leaser.push_back(sentdata);
-                            _p->m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
-                            send_group_leaser.unlock();
                         }
                     }
                 }

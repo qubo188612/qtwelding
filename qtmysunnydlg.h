@@ -5,6 +5,7 @@
 #include <QDialog>
 #include "showtasknumdlg.h"
 #include "taskcleardlg.h"
+#include "pshowdlg.h"
 #ifdef DEBUS_SSH
 #include "sshpassworddlg.h"
 #endif
@@ -110,6 +111,7 @@ private:
 
     showtasknumdlg *showtasknum;
     taskcleardlg *taskclear;
+    pshowdlg *pshow;
 #ifdef DEBUS_SSH
     sshpasswordDlg *sshpassword;
 #endif

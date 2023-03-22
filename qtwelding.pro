@@ -48,6 +48,7 @@ SOURCES += \
         process.cpp \
         process1_scanbeforetrace.cpp \
         project.cpp \
+        pshowdlg.cpp \
         qtmysunnydlg.cpp \
         qtweldingdlg.cpp \
         robotcontrol.cpp \
@@ -91,6 +92,7 @@ FORMS += \
     newcraftdlg.ui \
     newprojectdlg.ui \
     othercmddlg.ui \
+    pshowdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
@@ -142,6 +144,7 @@ HEADERS += \
     process.h \
     process1_scanbeforetrace.h \
     project.h \
+    pshowdlg.h \
     qtmysunnydlg.h \
     qtweldingdlg.h \
     robotcontrol.h \

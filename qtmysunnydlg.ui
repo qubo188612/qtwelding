@@ -175,6 +175,11 @@
      <string>华成工控-创想</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>新时达机器人</string>
+    </property>
+   </item>
   </widget>
   <widget class="QCheckBox" name="checkBox">
    <property name="geometry">
@@ -7093,6 +7098,19 @@
    </property>
    <property name="text">
     <string>Z反向</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pshowBtn">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>160</y>
+     <width>101</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>P变量图示</string>
    </property>
   </widget>
  </widget>
