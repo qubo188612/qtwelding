@@ -288,7 +288,7 @@
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>510</x>
+     <x>570</x>
      <y>10</y>
      <width>51</width>
      <height>17</height>
@@ -301,9 +301,9 @@
   <widget class="QLineEdit" name="tasknum">
    <property name="geometry">
     <rect>
-     <x>570</x>
+     <x>630</x>
      <y>10</y>
-     <width>113</width>
+     <width>51</width>
      <height>25</height>
     </rect>
    </property>
@@ -311,9 +311,9 @@
   <widget class="QPushButton" name="tasknumsetBtn">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>570</x>
      <y>40</y>
-     <width>151</width>
+     <width>111</width>
      <height>51</height>
     </rect>
    </property>
@@ -324,9 +324,9 @@
   <widget class="QPushButton" name="tasknumshowBtn">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>570</x>
      <y>100</y>
-     <width>151</width>
+     <width>111</width>
      <height>51</height>
     </rect>
    </property>
@@ -539,9 +539,9 @@
   <widget class="QLineEdit" name="cam_width">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>300</x>
      <y>10</y>
-     <width>91</width>
+     <width>51</width>
      <height>25</height>
     </rect>
    </property>
@@ -549,7 +549,7 @@
   <widget class="QLabel" name="label_28">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>240</x>
      <y>10</y>
      <width>51</width>
      <height>17</height>
@@ -562,7 +562,7 @@
   <widget class="QLabel" name="label_29">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>240</x>
      <y>40</y>
      <width>51</width>
      <height>17</height>
@@ -575,9 +575,9 @@
   <widget class="QLineEdit" name="cam_height">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>300</x>
      <y>40</y>
-     <width>91</width>
+     <width>51</width>
      <height>25</height>
     </rect>
    </property>
@@ -585,7 +585,7 @@
   <widget class="QPushButton" name="setcamsizeBtn">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>240</x>
      <y>160</y>
      <width>151</width>
      <height>51</height>
@@ -6653,7 +6653,7 @@
   <widget class="QLabel" name="label_30">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>350</x>
      <y>10</y>
      <width>81</width>
      <height>17</height>
@@ -6666,7 +6666,7 @@
   <widget class="QLabel" name="label_31">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>350</x>
      <y>40</y>
      <width>81</width>
      <height>17</height>
@@ -6757,9 +6757,9 @@
   <widget class="QLineEdit" name="cam_fps">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>300</x>
      <y>70</y>
-     <width>91</width>
+     <width>51</width>
      <height>25</height>
     </rect>
    </property>
@@ -6767,7 +6767,7 @@
   <widget class="QLabel" name="label_39">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>240</x>
      <y>70</y>
      <width>51</width>
      <height>17</height>
@@ -6780,7 +6780,7 @@
   <widget class="QLabel" name="label_40">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>350</x>
      <y>70</y>
      <width>81</width>
      <height>17</height>
@@ -6832,10 +6832,10 @@
   <widget class="QLabel" name="label_43">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>150</x>
      <y>130</y>
      <width>91</width>
-     <height>20</height>
+     <height>17</height>
     </rect>
    </property>
    <property name="text">
@@ -6845,7 +6845,7 @@
   <widget class="QLabel" name="label_47">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>350</x>
      <y>130</y>
      <width>81</width>
      <height>17</height>
@@ -6858,7 +6858,7 @@
   <widget class="QLabel" name="label_44">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>240</x>
      <y>130</y>
      <width>51</width>
      <height>17</height>
@@ -6871,9 +6871,9 @@
   <widget class="QLineEdit" name="cam_view_width">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>300</x>
      <y>100</y>
-     <width>91</width>
+     <width>51</width>
      <height>25</height>
     </rect>
    </property>
@@ -6881,9 +6881,9 @@
   <widget class="QLineEdit" name="cam_view_height">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>300</x>
      <y>130</y>
-     <width>91</width>
+     <width>51</width>
      <height>25</height>
     </rect>
    </property>
@@ -6891,7 +6891,7 @@
   <widget class="QLabel" name="label_46">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>240</x>
      <y>100</y>
      <width>51</width>
      <height>17</height>
@@ -6904,7 +6904,7 @@
   <widget class="QLabel" name="label_45">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>350</x>
      <y>100</y>
      <width>81</width>
      <height>17</height>
@@ -7051,9 +7051,9 @@
   <widget class="QPushButton" name="taskclearBtn">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>570</x>
      <y>160</y>
-     <width>151</width>
+     <width>111</width>
      <height>51</height>
     </rect>
    </property>
@@ -7103,14 +7103,111 @@
   <widget class="QPushButton" name="pshowBtn">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>160</y>
-     <width>101</width>
+     <x>430</x>
+     <y>100</y>
+     <width>131</width>
      <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string>P变量图示</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="psetBtn">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>160</y>
+     <width>131</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导入P变量设置</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>40</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>姿态:</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_pEn">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>10</y>
+     <width>131</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>P变量功能开关</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>40</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>内旋RX-RY-RZ</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>外旋RZ-RY-RX</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋RX-&quot;RY&quot;-RZ</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBox_3">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>70</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>眼在手上</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>眼在手外</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>70</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>标定:</string>
    </property>
   </widget>
  </widget>

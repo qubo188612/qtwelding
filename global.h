@@ -479,18 +479,21 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 //激光头机器人型号和相机尺寸寄存器
 #define PORT_ALSROBOTCAM_SET               1501  //端口号1501: 激光头机器人型号和相机尺寸端口号
 
-#define ALSROBOTCAM_ROBOTMOD_REG_ADD            0x0000  //机器人型号
-#define ALSROBOTCAM_ROBOTPORT_REG_ADD           0x0001  //机器人端口号
-#define ALSROBOTCAM_COMPENSATION_X              0x0002  //标定补偿X
-#define ALSROBOTCAM_COMPENSATION_Y              0x0003  //标定补偿Y
-#define ALSROBOTCAM_COMPENSATION_Z              0x0004  //标定补偿Z
-#define ALSROBOTCAM_CAMWIDTH_REG_ADD            0x0005  //相机算法宽度
-#define ALSROBOTCAM_CAMHEIGHT_REG_ADD           0x0006  //相机算法高度
-#define ALSROBOTCAM_CAMFPS_REG_ADD              0x0007  //相机帧率
-#define ALSROBOTCAM_VIEW_CAM_WIDTH_REG_ADD      0x0008  //相机视野宽度
-#define ALSROBOTCAM_VIEW_CAM_HEIGHT_REG_ADD     0x0009  //相机视野高度
-#define ALSROBOTCAM_REVERSE_Y_REG_ADD           0x000a  //相机Y数据反向
-#define ALSROBOTCAM_REVERSE_Z_REG_ADD           0x000b  //相机Z数据反向
+#define ALSROBOTCAM_ROBOTMOD_REG_ADD                        0x0000  //机器人型号
+#define ALSROBOTCAM_ROBOTPORT_REG_ADD                       0x0001  //机器人端口号
+#define ALSROBOTCAM_COMPENSATION_X                          0x0002  //标定补偿X
+#define ALSROBOTCAM_COMPENSATION_Y                          0x0003  //标定补偿Y
+#define ALSROBOTCAM_COMPENSATION_Z                          0x0004  //标定补偿Z
+#define ALSROBOTCAM_CAMWIDTH_REG_ADD                        0x0005  //相机算法宽度
+#define ALSROBOTCAM_CAMHEIGHT_REG_ADD                       0x0006  //相机算法高度
+#define ALSROBOTCAM_CAMFPS_REG_ADD                          0x0007  //相机帧率
+#define ALSROBOTCAM_VIEW_CAM_WIDTH_REG_ADD                  0x0008  //相机视野宽度
+#define ALSROBOTCAM_VIEW_CAM_HEIGHT_REG_ADD                 0x0009  //相机视野高度
+#define ALSROBOTCAM_REVERSE_Y_REG_ADD                       0x000a  //相机Y数据反向
+#define ALSROBOTCAM_REVERSE_Z_REG_ADD                       0x000b  //相机Z数据反向
+#define ALSROBOTCAM_P_DATA_EN_REG_ADD                       0x000c  //P寄存器功能开关
+#define ALSROBOTCAM_P_DATA_CAL_POSTURE_REG_ADD              0x000d  //P变量姿态内外旋
+#define ALSROBOTCAM_P_DATA_EYE_HAND_CALIBRATIONMODE_REG_ADD 0x000e  //P寄存器激光器安装方式
 
 /*****************************/
 //激光头计算结果寄存器

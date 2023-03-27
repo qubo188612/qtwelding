@@ -299,7 +299,38 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再查看任务号列表"));
         }
      });
-
+    connect(ui->psetBtn,&QPushButton::clicked,[=](){
+        if(m_mcs->resultdata.link_robotset_state==true)
+        {
+            uint16_t tab_reg[3];
+            if(ui->checkBox_pEn->isChecked()==false)
+            {
+                tab_reg[0]=0;
+            }
+            else
+            {
+                tab_reg[0]=1;
+            }
+            tab_reg[1]=ui->comboBox_2->currentIndex();
+            tab_reg[2]=ui->comboBox_3->currentIndex();
+            int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_P_DATA_EN_REG_ADD,3,tab_reg);
+            if(rc!=3)
+            {
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("更新P变量设置失败"));
+            }
+            else
+            {
+                if(ui->checkBox->isChecked()==false)
+                    ui->record->append(QString::fromLocal8Bit("更新P变量设置成功,请重启激光头"));
+            }
+        }
+        else
+        {
+           if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置P变量参数"));
+        }
+    });
     connect(ui->pshowBtn,&QPushButton::clicked,[=](){
         if(m_mcs->resultdata.link_result_state==true)
         {
@@ -2821,6 +2852,41 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             {
                 ui->record->append(QString::fromLocal8Bit("获取当前相机设置:"));
                 QString msg=QString::number(width)+"x"+QString::number(height)+" fps:"+QString::number(fps);
+                ui->record->append(msg);
+            }
+        }
+
+        real_readnum=modbus_read_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_P_DATA_EN_REG_ADD,3,m_mcs->resultdata.red_robotset);
+        if(real_readnum<0)
+        {
+            if(ui->checkBox->isChecked()==false)
+                ui->record->append(QString::fromLocal8Bit("获取当前相机P变量信息失败"));
+        }
+        else
+        {
+            bool pEn=m_mcs->resultdata.red_robotset[0];
+            u_int16_t CAL_POSTURE=m_mcs->resultdata.red_robotset[1];
+            u_int16_t Eye_Hand_calibrationmode=m_mcs->resultdata.red_robotset[2];
+            ui->checkBox_pEn->setChecked(pEn);
+            ui->comboBox_2->setCurrentIndex(CAL_POSTURE);
+            ui->comboBox_3->setCurrentIndex(Eye_Hand_calibrationmode);
+            if(ui->checkBox->isChecked()==false)
+            {
+                QString msg;
+                ui->record->append(QString::fromLocal8Bit("获取当前P变量设置:"));
+                if(pEn==0)
+                {
+                    msg="P变量功能:关";
+                    ui->record->append(msg);
+                }
+                else
+                {
+                    msg="P变量功能:开";
+                    ui->record->append(msg);
+                }
+                msg="P变量姿态:"+ui->comboBox_2->currentText();
+                ui->record->append(msg);
+                msg="P变量标定:"+ui->comboBox_3->currentText();
                 ui->record->append(msg);
             }
         }
