@@ -415,6 +415,145 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     taskclear->delete_task_num();
                     taskclear->get_task_list();
                 }
+                else if(keyString=="cat")
+                {
+                    QJsonObject qtask=it.value().toObject();
+                    QJsonObject::Iterator oit;
+                    for(oit=qtask.begin();oit!=qtask.end();oit++)//遍历Key
+                    {
+                        QString qkey=oit.key();
+                        if(qkey=="homography_matrix")
+                        {
+                            m_mcs->resultdata.homography_matrix.resize(9);
+                            QJsonArray versionArray=oit.value().toArray();
+                            for(int i=0;i<versionArray.size();i++)
+                            {
+                                m_mcs->resultdata.homography_matrix[i]=versionArray[i].toDouble();
+                            }
+                            if(ui->checkBox->isChecked()==false)
+                            {
+                                QString msg=QString::fromLocal8Bit("homography_matrix:[");
+                                for(int i=0;i<m_mcs->resultdata.homography_matrix.size();i++)
+                                {
+                                    msg=msg+QString::number(m_mcs->resultdata.homography_matrix[i],'f',3);
+                                    if(i<m_mcs->resultdata.homography_matrix.size()-1)
+                                    {
+                                        msg=msg+",";
+                                    }
+                                    else
+                                    {
+                                        msg=msg+"]";
+                                    }
+                                }
+                                ui->record->append(msg);
+                            }
+                        }
+                        else if(qkey=="pData_demdlg_R")
+                        {
+                            m_mcs->resultdata.pData_demdlg_R.resize(9);
+                            QJsonArray versionArray=oit.value().toArray();
+                            for(int i=0;i<versionArray.size();i++)
+                            {
+                                m_mcs->resultdata.pData_demdlg_R[i]=versionArray[i].toDouble();
+                            }
+                            if(ui->checkBox->isChecked()==false)
+                            {
+                                QString msg=QString::fromLocal8Bit("pData_demdlg_R:[");
+                                for(int i=0;i<m_mcs->resultdata.pData_demdlg_R.size();i++)
+                                {
+                                    msg=msg+QString::number(m_mcs->resultdata.pData_demdlg_R[i],'f',3);
+                                    if(i<m_mcs->resultdata.pData_demdlg_R.size()-1)
+                                    {
+                                        msg=msg+",";
+                                    }
+                                    else
+                                    {
+                                        msg=msg+"]";
+                                    }
+                                }
+                                ui->record->append(msg);
+                            }
+                        }
+                        else if(qkey=="pData_demdlg_T")
+                        {
+                            m_mcs->resultdata.pData_demdlg_T.resize(3);
+                            QJsonArray versionArray=oit.value().toArray();
+                            for(int i=0;i<versionArray.size();i++)
+                            {
+                                m_mcs->resultdata.pData_demdlg_T[i]=versionArray[i].toDouble();
+                            }
+                            if(ui->checkBox->isChecked()==false)
+                            {
+                                QString msg=QString::fromLocal8Bit("pData_demdlg_T:[");
+                                for(int i=0;i<m_mcs->resultdata.pData_demdlg_T.size();i++)
+                                {
+                                    msg=msg+QString::number(m_mcs->resultdata.pData_demdlg_T[i],'f',3);
+                                    if(i<m_mcs->resultdata.pData_demdlg_T.size()-1)
+                                    {
+                                        msg=msg+",";
+                                    }
+                                    else
+                                    {
+                                        msg=msg+"]";
+                                    }
+                                }
+                                ui->record->append(msg);
+                            }
+                        }
+                        else if(qkey=="pData_matrix_camera2plane")
+                        {
+                            m_mcs->resultdata.pData_matrix_camera2plane.resize(9);
+                            QJsonArray versionArray=oit.value().toArray();
+                            for(int i=0;i<versionArray.size();i++)
+                            {
+                                m_mcs->resultdata.pData_matrix_camera2plane[i]=versionArray[i].toDouble();
+                            }
+                            if(ui->checkBox->isChecked()==false)
+                            {
+                                QString msg=QString::fromLocal8Bit("pData_matrix_camera2plane:[");
+                                for(int i=0;i<m_mcs->resultdata.pData_matrix_camera2plane.size();i++)
+                                {
+                                    msg=msg+QString::number(m_mcs->resultdata.pData_matrix_camera2plane[i],'f',3);
+                                    if(i<m_mcs->resultdata.pData_matrix_camera2plane.size()-1)
+                                    {
+                                        msg=msg+",";
+                                    }
+                                    else
+                                    {
+                                        msg=msg+"]";
+                                    }
+                                }
+                                ui->record->append(msg);
+                            }
+                        }
+                        else if(qkey=="pData_matrix_plane2robot")
+                        {
+                            m_mcs->resultdata.pData_matrix_plane2robot.resize(9);
+                            QJsonArray versionArray=oit.value().toArray();
+                            for(int i=0;i<versionArray.size();i++)
+                            {
+                                m_mcs->resultdata.pData_matrix_plane2robot[i]=versionArray[i].toDouble();
+                            }
+                            if(ui->checkBox->isChecked()==false)
+                            {
+                                QString msg=QString::fromLocal8Bit("pData_matrix_plane2robot:[");
+                                for(int i=0;i<m_mcs->resultdata.pData_matrix_plane2robot.size();i++)
+                                {
+                                    msg=msg+QString::number(m_mcs->resultdata.pData_matrix_plane2robot[i],'f',3);
+                                    if(i<m_mcs->resultdata.pData_matrix_plane2robot.size()-1)
+                                    {
+                                        msg=msg+",";
+                                    }
+                                    else
+                                    {
+                                        msg=msg+"]";
+                                    }
+                                }
+                                ui->record->append(msg);
+                            }
+                        }
+                    }
+                }
             }
         }
     });
@@ -2669,6 +2808,18 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
                     ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
                 return;
             }
+            /******************/
+            QJsonObject json;
+            QJsonArray jarry;
+            jarry.append("homography_matrix");
+            jarry.append("pData_demdlg_R");
+            jarry.append("pData_demdlg_T");
+            jarry.append("pData_matrix_camera2plane");
+            jarry.append("pData_matrix_plane2robot");
+            json.insert("cat",jarry);
+            QString msg=JsonToQstring(json);
+            m_mcs->resultdata.client->write(msg.toUtf8());
+            /*******************/
             m_mcs->resultdata.link_ftp_state=true;
             if(ui->checkBox->isChecked()==false)
                 ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));

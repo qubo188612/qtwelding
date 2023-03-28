@@ -46,6 +46,11 @@ public:
     uint16_t state;     //有效位
     uint16_t task;      //任务号
 
+    std::vector<double> homography_matrix;//激光器中的相机内参
+    std::vector<double> pData_demdlg_R;//激光器中的眼在手外标定矩阵R
+    std::vector<double> pData_demdlg_T;//激光器中的眼在手外标定矩阵T
+    std::vector<double> pData_matrix_camera2plane;//激光器中的眼在手上标定矩阵
+    std::vector<double> pData_matrix_plane2robot;//激光器中的眼在手上标定矩阵
 
     uint8_t link_result_state;
     uint8_t link_param_state;
