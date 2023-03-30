@@ -12,7 +12,6 @@ Camshow::Camshow(SoptopCamera *statci_p): Node("my_eyes")
   _p->_param_gpio = std::make_shared<rclcpp::AsyncParametersClient>(this, "gpio_raspberry_node");
   _p->_param_homography_matrix =  std::make_shared<rclcpp::AsyncParametersClient>(this, "line_center_reconstruction_node");
   _p->_param_homography_matrix_get = std::make_shared<rclcpp::AsyncParametersClient>(this, "line_center_reconstruction_node");
-  _p->_pub_config=this->create_publisher<std_msgs::msg::String>("config_tis_node/config", 10);
 
   if(_p->b_connetc_noimage==0)
   {
@@ -62,7 +61,6 @@ Camshow::~Camshow()
     _p->_param_gpio.reset();
     _p->_param_homography_matrix.reset();
     _p->_param_homography_matrix_get.reset();
-    _p->_pub_config.reset();
 }
 
 #ifdef DEBUG_MYINTERFACES
@@ -168,15 +166,6 @@ void SoptopCamera::ros_set_exposure(int exposure)
 void SoptopCamera::ros_set_homography_matrix(Params ros_Params)
 {
     _param_homography_matrix->set_parameters({rclcpp::Parameter("homography_matrix", ros_Params.homography_matrix)});
-}
-
-void SoptopCamera::ros_config_set(std::string msg)
-{
-    std_msgs::msg::String::UniquePtr config_msg(new std_msgs::msg::String());
-
-    config_msg->data=msg;
-
-    _pub_config->publish(std::move(config_msg));
 }
 
 void Camshow::callbackGlobalParam(std::shared_future<std::vector<rclcpp::Parameter>> future)

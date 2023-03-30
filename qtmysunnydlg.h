@@ -9,10 +9,7 @@
 #ifdef DEBUS_SSH
 #include "sshpassworddlg.h"
 #endif
-#if _MSC_VER||WINDOWS_TCP
-#else
 #include "cambuilddlg.h"
-#endif
 #include <my_parameters.h>
 #if _MSC_VER
 #include <QDir>
@@ -115,10 +112,7 @@ private:
 #ifdef DEBUS_SSH
     sshpasswordDlg *sshpassword;
 #endif
-#if _MSC_VER||WINDOWS_TCP
-#else
     cambuilddlg *cambuild;
-#endif
 
     QIntValidator *aIntValidator;   //限制输入整数
 

@@ -1,6 +1,4 @@
 #include "cambuilddlg.h"
-#if _MSC_VER||WINDOWS_TCP
-#else
 #include "ui_cambuilddlg.h"
 
 template<typename _Tp>
@@ -79,18 +77,7 @@ cambuilddlg::cambuilddlg(my_parameters *mcs,QWidget *parent) :
     });
 
     connect(ui->confimbuildBtn,&QPushButton::clicked,[=](){
-        m_mcs->cam->sop_cam->ros_set_homography_matrix(m_mcs->cam->sop_cam[0].ros_Params);
-        QString msg="line_center_reconstruction_node:\n  homography_matrix: ["+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[0])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[1])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[2])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[3])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[4])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[5])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[6])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[7])+","+
-                QString::number(m_mcs->cam->sop_cam[0].ros_Params.homography_matrix[8])+"]\n";
-        m_mcs->cam->sop_cam->ros_config_set(msg.toStdString());
+        m_mcs->cam->sop_cam[0].ros_set_homography_matrix(m_mcs->cam->sop_cam[0].ros_Params);
         ui->record->append(QString::fromLocal8Bit("标定矩阵导入成功"));
     });
 }
@@ -502,4 +489,3 @@ void cambuildThread::Stop()
     }
   }
 }
-#endif

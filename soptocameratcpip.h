@@ -13,6 +13,10 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #endif
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #define RECVBUFFER_MAX      CAMBUILD_IMAGE_HEIGHT*CAMBUILD_IMAGE_WIDTH*3
 
@@ -46,10 +50,18 @@ public:
     bool b_rcv_thread;
     bool b_stop_rcv_thread;
 
+    XTcp m_ftp;
+
     uchar *rcv_buf;
+
+    QString JsonToQstring(QJsonObject jsonObject);
+
+    QJsonObject QstringToJson(QString jsonString);
 
     bool luzhi;
     cv::VideoWriter writer;
+
+    void ros_set_homography_matrix(Params ros_Params);
 
 protected:
 

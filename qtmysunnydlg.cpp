@@ -226,10 +226,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 #else
     ui->stepupBtn->hide();
 #endif
-#if _MSC_VER||WINDOWS_TCP
-#else
     cambuild=new cambuilddlg(m_mcs);
-#endif
     connect(ui->connectcameraBtn,&QPushButton::clicked,[=](){
        if(m_mcs->cam->sop_cam[0].b_connect==false)
        {
@@ -430,6 +427,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                             {
                                 m_mcs->resultdata.homography_matrix[i]=versionArray[i].toDouble();
                             }
+                        #if _MSC_VER||WINDOWS_TCP
+                            m_mcs->cam->sop_cam[0].ros_Params.homography_matrix=m_mcs->resultdata.homography_matrix;
+                        #endif
                             if(ui->checkBox->isChecked()==false)
                             {
                                 QString msg=QString::fromLocal8Bit("homography_matrix:[");
@@ -2550,12 +2550,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         showtasknum->setWindowTitle(QString::fromLocal8Bit("任务号图示"));
         showtasknum->exec();
     });
-#if _MSC_VER||WINDOWS_TCP
-    connect(ui->cambuildBtn,&QPushButton::clicked,[=](){
-        if(ui->checkBox->isChecked()==false)
-            ui->record->append(QString::fromLocal8Bit("Windows系统不支持该功能"));
-    });
-#else
+
     connect(ui->cambuildBtn,&QPushButton::clicked,[=](){
         if(m_mcs->resultdata.link_param_state==true)
         {
@@ -2588,8 +2583,6 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  ui->record->append(QString::fromLocal8Bit("请连接相机后再进行激光头标定"));
         }
     });
-#endif
-
 
     connect(ui->savebmpstepBtn,&QPushButton::clicked,[=](){
         if(m_mcs->cam->sop_cam[0].b_connect==true)
@@ -2717,10 +2710,7 @@ qtmysunnyDlg::~qtmysunnyDlg()
     delete sshpassword;
 #endif
     delete m_mcs->resultdata.client;
-#if _MSC_VER||WINDOWS_TCP
-#else
     delete cambuild;
-#endif
 
     delete aIntValidator;
     delete ui;

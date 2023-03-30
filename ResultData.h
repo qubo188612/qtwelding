@@ -13,6 +13,27 @@
 #define MODBUS_RESULT_MAXNUM            400
 #define MODBUS_PARAM_MAXNUM             400
 
+class rob_pinfo
+{
+public:
+  float x;
+  float y;
+  float z;
+  float rx;
+  float ry;
+  float rz;
+  int32_t out1;
+  int32_t out2;
+  int32_t out3;
+  uint16_t tool;
+  uint16_t tcp;
+  uint16_t usertcp;
+
+  float uy;
+  float vz;
+  rob_pinfo();
+};
+
 class taskinfo
 {
 public:

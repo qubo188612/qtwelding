@@ -1,5 +1,22 @@
 #include "ResultData.h"
 
+rob_pinfo::rob_pinfo()
+{
+  x=0;
+  y=0;
+  z=0;
+  rx=0;
+  ry=0;
+  rz=0;
+  out1=0;
+  out2=0;
+  out3=0;
+  tool=0;
+  tcp=0;
+  usertcp=0;
+  uy=0;
+  vz=0;
+}
 
 ResultData::ResultData()
 {

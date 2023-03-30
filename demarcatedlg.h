@@ -60,6 +60,14 @@ private slots:
 private:
     Ui::demarcateDlg *ui;
 
+    QTcpSocket *client;
+    uint8_t link_ftp_state;
+    void pulldemdl();//上传到激光器标定矩阵
+
+    QString JsonToQstring(QJsonObject jsonObject);
+
+    QJsonObject QstringToJson(QString jsonString);
+
     int now_robpos;         //当前指向TCP修改位置
     int now_leaserpos;      //当前指向激光头修改位置
     void updataRoblistUi();

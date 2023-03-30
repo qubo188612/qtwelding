@@ -2,8 +2,6 @@
 #define CAMBUILDDLG_H
 
 #include "global.h"
-#if _MSC_VER||WINDOWS_TCP
-#else
 #include <QDialog>
 #include <QDoubleValidator>
 #include <my_parameters.h>
@@ -74,7 +72,5 @@ signals:
     // 自定义信号
     void Send_show_cambuild_inlab(cv::Mat);
 };
-
-#endif
 
 #endif // CAMBUILDDLG_H

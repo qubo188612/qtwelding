@@ -16,6 +16,37 @@ pshowdlg::~pshowdlg()
 
 void pshowdlg::init_dlg_show()
 {
+    ui->a00_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[0],'f',3));
+    ui->a01_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[1],'f',3));
+    ui->a02_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[2],'f',3));
+    ui->a10_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[3],'f',3));
+    ui->a11_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[4],'f',3));
+    ui->a12_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[5],'f',3));
+    ui->a20_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[6],'f',3));
+    ui->a21_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[7],'f',3));
+    ui->a22_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_R[8],'f',3));
+    ui->t0_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_T[0],'f',3));
+    ui->t1_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_T[1],'f',3));
+    ui->t2_label->setText(QString::number(m_mcs->resultdata.pData_demdlg_T[2],'f',3));
+    ui->c00_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[0],'f',3));
+    ui->c01_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[1],'f',3));
+    ui->c02_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[2],'f',3));
+    ui->c10_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[3],'f',3));
+    ui->c11_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[4],'f',3));
+    ui->c12_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[5],'f',3));
+    ui->c20_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[6],'f',3));
+    ui->c21_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[7],'f',3));
+    ui->c22_label->setText(QString::number(m_mcs->resultdata.pData_matrix_camera2plane[8],'f',3));
+    ui->p00_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[0],'f',3));
+    ui->p01_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[1],'f',3));
+    ui->p02_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[2],'f',3));
+    ui->p10_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[3],'f',3));
+    ui->p11_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[4],'f',3));
+    ui->p12_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[5],'f',3));
+    ui->p20_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[6],'f',3));
+    ui->p21_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[7],'f',3));
+    ui->p22_label->setText(QString::number(m_mcs->resultdata.pData_matrix_plane2robot[8],'f',3));
+
     link_pshow_state=false;
     b_init_show_pshow_text_finish=true;
 
@@ -36,70 +67,75 @@ void pshowdlg::init_dlg_show()
 
 void pshowdlg::close_dlg_show()
 {
+    thread1->Stop();
+    thread1->quit();
+    thread1->wait();
+
+    delete thread1;
+
     if(link_pshow_state==true)
     {
         modbus_close(ctx_pshow);
     }
     link_pshow_state=false;
     modbus_free(ctx_pshow);
+}
 
-    thread1->Stop();
-    thread1->quit();
-    thread1->wait();
-
-    delete thread1;
+void pshowdlg::getrobinfo()
+{
+    u_int16_t u16_data[2];
+    int32_t *i32_data=(int32_t*)u16_data;
+    u16_data[0]=pos_data[0];
+    u16_data[1]=pos_data[1];
+    robposinfo.x=*i32_data/1000.0;
+    u16_data[0]=pos_data[2];
+    u16_data[1]=pos_data[3];
+    robposinfo.y=*i32_data/1000.0;
+    u16_data[0]=pos_data[4];
+    u16_data[1]=pos_data[5];
+    robposinfo.z=*i32_data/1000.0;
+    u16_data[0]=pos_data[6];
+    u16_data[1]=pos_data[7];
+    robposinfo.rx=*i32_data/10000.0;
+    u16_data[0]=pos_data[8];
+    u16_data[1]=pos_data[9];
+    robposinfo.ry=*i32_data/10000.0;
+    u16_data[0]=pos_data[10];
+    u16_data[1]=pos_data[11];
+    robposinfo.rz=*i32_data/10000.0;
+    u16_data[0]=pos_data[12];
+    u16_data[1]=pos_data[13];
+    robposinfo.out1=*i32_data;
+    u16_data[0]=pos_data[14];
+    u16_data[1]=pos_data[15];
+    robposinfo.out2=*i32_data;
+    u16_data[0]=pos_data[16];
+    u16_data[1]=pos_data[17];
+    robposinfo.out3=*i32_data;
+    robposinfo.tool=pos_data[18];
+    robposinfo.tcp=pos_data[19];
+    robposinfo.usertcp=pos_data[20];
+    b_robposfinduv=result_data[0];
+    robposinfo.uy=((int16_t)result_data[1])/100.0;
+    robposinfo.vz=((int16_t)result_data[2])/100.0;
 }
 
 void pshowdlg::init_show_pshow_text()
 {
-    u_int16_t u16_data[2];
-    int32_t *i32_data=(int32_t*)u16_data;
-    float X,Y,Z,RX,RY,RZ;
-    int32_t out1,out2,out3;
-    u_int16_t tool,tcp,usertcp;
-    u16_data[0]=pos_data[0];
-    u16_data[1]=pos_data[1];
-    X=*i32_data/1000.0;
-    u16_data[0]=pos_data[2];
-    u16_data[1]=pos_data[3];
-    Y=*i32_data/1000.0;
-    u16_data[0]=pos_data[4];
-    u16_data[1]=pos_data[5];
-    Z=*i32_data/1000.0;
-    u16_data[0]=pos_data[6];
-    u16_data[1]=pos_data[7];
-    RX=*i32_data/10000.0;
-    u16_data[0]=pos_data[8];
-    u16_data[1]=pos_data[9];
-    RY=*i32_data/10000.0;
-    u16_data[0]=pos_data[10];
-    u16_data[1]=pos_data[11];
-    RZ=*i32_data/10000.0;
-    u16_data[0]=pos_data[12];
-    u16_data[1]=pos_data[13];
-    out1=*i32_data;
-    u16_data[0]=pos_data[14];
-    u16_data[1]=pos_data[15];
-    out2=*i32_data;
-    u16_data[0]=pos_data[16];
-    u16_data[1]=pos_data[17];
-    out3=*i32_data;
-    tool=pos_data[18];
-    tcp=pos_data[19];
-    usertcp=pos_data[20];
-
-    ui->realposX->setText(QString::number(X,'f',3));
-    ui->realposY->setText(QString::number(Y,'f',3));
-    ui->realposZ->setText(QString::number(Z,'f',3));
-    ui->realposRX->setText(QString::number(RX,'f',4));
-    ui->realposRY->setText(QString::number(RY,'f',4));
-    ui->realposRZ->setText(QString::number(RZ,'f',4));
-    ui->realout1->setText(QString::number(out1));
-    ui->realout2->setText(QString::number(out2));
-    ui->realout3->setText(QString::number(out3));
-    ui->realtool->setText(QString::number(tool));
-    ui->realtcp->setText(QString::number(tcp));
-    ui->realusertcp->setText(QString::number(usertcp));
+    ui->realposX->setText(QString::number(robposinfo.x,'f',3));
+    ui->realposY->setText(QString::number(robposinfo.y,'f',3));
+    ui->realposZ->setText(QString::number(robposinfo.z,'f',3));
+    ui->realposRX->setText(QString::number(robposinfo.rx,'f',4));
+    ui->realposRY->setText(QString::number(robposinfo.ry,'f',4));
+    ui->realposRZ->setText(QString::number(robposinfo.rz,'f',4));
+    ui->realout1->setText(QString::number(robposinfo.out1));
+    ui->realout2->setText(QString::number(robposinfo.out2));
+    ui->realout3->setText(QString::number(robposinfo.out3));
+    ui->realtool->setText(QString::number(robposinfo.tool));
+    ui->realtcp->setText(QString::number(robposinfo.tcp));
+    ui->realusertcp->setText(QString::number(robposinfo.usertcp));
+    ui->realuy->setText(QString::number(robposinfo.uy));
+    ui->realvz->setText(QString::number(robposinfo.vz));
     b_init_show_pshow_text_finish=true;
 }
 
@@ -117,14 +153,15 @@ void pshowdlgThread::run()
             if(_p->link_pshow_state==true)
             {
                 int real_readnum_1=modbus_read_registers(_p->ctx_pshow,ALS_REALTIME_POSX_REG_ADD,0x15,_p->pos_data);
-                if(real_readnum_1==0x15)
+                int real_readnum_2=modbus_read_registers(_p->ctx_pshow,ALS_STATE_REG_ADD,0x3,_p->result_data);
+                if(real_readnum_1==0x15&&real_readnum_2==0x03)
                 {
-                    if(_p->b_init_show_pshow_text_finish==true)
-                    {
-                        _p->b_init_show_pshow_text_finish=false;
-
-                        emit Send_show_pshow_text();
-                    }
+                    _p->getrobinfo();
+                }
+                if(_p->b_init_show_pshow_text_finish==true)
+                {
+                    _p->b_init_show_pshow_text_finish=false;
+                    emit Send_show_pshow_text();
                 }
             }
             sleep(0);

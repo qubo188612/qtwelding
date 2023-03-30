@@ -1,6 +1,12 @@
 #include "demarcatedlg.h"
 #include "ui_demarcatedlg.h"
 
+template<typename _Tp>
+std::vector<_Tp> convertMat2Vector(cv::Mat &mat)
+{
+    return (std::vector<_Tp>)(mat.reshape(1, 1));//通道数不变，按行转为一行
+}
+
 demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::demarcateDlg)
@@ -9,6 +15,9 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
 
     m_mcs=mcs;  
 
+
+    client=new QTcpSocket(this);
+    link_ftp_state=false;
 
     switch(m_mcs->e2proomdata.demdlg_radio_mod)
     {
@@ -24,6 +33,7 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
 
 demarcateDlg::~demarcateDlg()
 {
+    delete client;
     delete ui;
 }
 
@@ -49,6 +59,20 @@ void demarcateDlg::init_dlg_show()
             return;
         }
         m_mcs->resultdata.link_param_state=true;
+        ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+    }
+
+    if(link_ftp_state==false)
+    {
+        QString server_ip=m_mcs->ip->camer_ip->ip;
+        QString server_port1=QString::number(PORT_ALSTCP_FTP);
+        client->connectToHost(server_ip.toUtf8(), server_port1.toInt());
+        if(!client->waitForConnected(1000))
+        {
+            ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+            return;
+        }
+        link_ftp_state=true;
         ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
     }
 
@@ -81,6 +105,13 @@ void demarcateDlg::close_dlg_show()
         modbus_free(m_mcs->resultdata.ctx_param);
         m_mcs->resultdata.link_param_state=false;
         QString msg=QString::number(PORT_ALS_PARAMETER);
+        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+    }
+    if(link_ftp_state==true)
+    {
+        client->disconnectFromHost();
+        link_ftp_state=false;
+        QString msg=QString::number(PORT_ALSTCP_FTP);
         ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
     }
 
@@ -335,6 +366,7 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                 {
                     updataDemarcateResult();
                     updataUi();
+                    pulldemdl();
                     ui->record->append(QString::fromLocal8Bit("标定完成"));
                 }
                 else
@@ -378,6 +410,7 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                 ui->err->setText(QString::number(err,'f',2));
                 updataDemarcateResult();
                 updataUi();
+                pulldemdl();
                 ui->record->append(QString::fromLocal8Bit("标定完成"));
             }
         }
@@ -385,6 +418,71 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
     }
 
 }
+
+void demarcateDlg::pulldemdl()
+{
+    switch(m_mcs->e2proomdata.demdlg_radio_mod)
+    {
+        case HAND_IN_EYE://眼在手上
+        {
+            QJsonObject jsent;
+            QJsonObject json;
+            QJsonArray jarry3,jarry4;
+            m_mcs->resultdata.pData_matrix_camera2plane=convertMat2Vector<double>(m_mcs->e2proomdata.matrix_camera2plane);
+            m_mcs->resultdata.pData_matrix_plane2robot=convertMat2Vector<double>(m_mcs->e2proomdata.matrix_plane2robot);
+            for(int i=0;i<m_mcs->resultdata.pData_matrix_camera2plane.size();i++)
+            {
+                jarry3.append(m_mcs->resultdata.pData_matrix_camera2plane[i]);
+            }
+            json["pData_matrix_camera2plane"]=jarry3;
+            for(int i=0;i<m_mcs->resultdata.pData_matrix_plane2robot.size();i++)
+            {
+                jarry4.append(m_mcs->resultdata.pData_matrix_plane2robot[i]);
+            }
+            json["pData_matrix_camera2plane"]=jarry4;
+            jsent["echo"]=json;
+            QString msg=JsonToQstring(jsent);
+            client->write(msg.toUtf8());
+        }
+        break;
+        case HAND_OUT_EYE://眼在手外
+        {
+            QJsonObject jsent;
+            QJsonObject json;
+            QJsonArray jarry1,jarry2;
+            m_mcs->resultdata.pData_demdlg_R.resize(9);
+            int n=0;
+            for(int j=0;j<3;j++)
+            {
+              for(int i=0;i<3;i++)
+              {
+                  m_mcs->resultdata.pData_demdlg_R[n++]=m_mcs->e2proomdata.demdlg_R(j,i);
+              }
+            }
+            m_mcs->resultdata.pData_demdlg_T.resize(3);
+            n=0;
+            for(int i=0;i<3;i++)
+            {
+                m_mcs->resultdata.pData_demdlg_T[n++]=m_mcs->e2proomdata.demdlg_T(i);
+            }
+            for(int i=0;i<m_mcs->resultdata.pData_demdlg_R.size();i++)
+            {
+                jarry1.append(m_mcs->resultdata.pData_demdlg_R[i]);
+            }
+            json["pData_demdlg_R"]=jarry1;
+            for(int i=0;i<m_mcs->resultdata.pData_demdlg_T.size();i++)
+            {
+                jarry2.append(m_mcs->resultdata.pData_demdlg_T[i]);
+            }
+            json["pData_demdlg_T"]=jarry2;
+            jsent["echo"]=json;
+            QString msg=JsonToQstring(jsent);
+            client->write(msg.toUtf8());
+        }
+        break;
+    }
+}
+
 
 void demarcateDlg::updataRoblistUi()
 {
@@ -563,6 +661,22 @@ void demarcateDlg::init_show_demarcate_inlab(cv::Mat cvimg)
     b_init_show_demarcate_inlab_finish=true;
     m_mcs->cam->sop_cam[0].b_int_show_image_inlab=false;
     m_mcs->cam->sop_cam[0].b_updataimage_finish=false;
+}
+
+QJsonObject demarcateDlg::QstringToJson(QString jsonString)
+{
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonString.toLocal8Bit().data());
+    if(jsonDocument.isNull())
+    {
+        qDebug()<< "String NULL"<< jsonString.toLocal8Bit().data();
+    }
+    QJsonObject jsonObject = jsonDocument.object();
+    return jsonObject;
+}
+
+QString demarcateDlg::JsonToQstring(QJsonObject jsonObject)
+{
+    return QString(QJsonDocument(jsonObject).toJson());
 }
 
 

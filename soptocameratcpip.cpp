@@ -85,6 +85,38 @@ double Soptocameratcpip::Getfps()
     return 50.0;
 }
 
+void Soptocameratcpip::ros_set_homography_matrix(Params ros_Params)
+{
+    QJsonObject json;
+    QJsonObject js;
+    QJsonArray jarry;
+    for(int i=0;i<ros_Params.homography_matrix.size();i++)
+    {
+        jarry.append(ros_Params.homography_matrix[i]);
+    }
+    json["homography_matrix"]=jarry;
+    js["echo"]=json;
+    QString msg=JsonToQstring(js);
+    m_ftp.Send(msg.toUtf8(),msg.size());
+}
+
+QJsonObject Soptocameratcpip::QstringToJson(QString jsonString)
+{
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonString.toLocal8Bit().data());
+    if(jsonDocument.isNull())
+    {
+        qDebug()<< "String NULL"<< jsonString.toLocal8Bit().data();
+    }
+    QJsonObject jsonObject = jsonDocument.object();
+    return jsonObject;
+}
+
+QString Soptocameratcpip::JsonToQstring(QJsonObject jsonObject)
+{
+    return QString(QJsonDocument(jsonObject).toJson());
+}
+
+
 tcprcvThread::tcprcvThread(Soptocameratcpip *statci_p)
 {
     _p=statci_p;
