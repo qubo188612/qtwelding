@@ -439,7 +439,7 @@ void demarcateDlg::pulldemdl()
             {
                 jarry4.append(m_mcs->resultdata.pData_matrix_plane2robot[i]);
             }
-            json["pData_matrix_camera2plane"]=jarry4;
+            json["pData_matrix_plane2robot"]=jarry4;
             jsent["echo"]=json;
             QString msg=JsonToQstring(jsent);
             client->write(msg.toUtf8());

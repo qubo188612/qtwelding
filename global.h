@@ -8,7 +8,7 @@
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #define USE_MYROBOT_CONTROL         1//使用本地的机器人控制协议
 //#define USE_MYMOVEC_CONTROL       1//使用本地moveC插值运动(适用于无曲线moveC移动的机器人)
-//#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
+#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 
 
@@ -98,6 +98,13 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_IO_INPUT6_REG_ADD                 0x0018        //机器人IO输入口6
 #define ROB_IO_INPUT7_REG_ADD                 0x0019        //机器人IO输入口7
 #define ROB_IO_INPUT8_REG_ADD                 0x001a        //机器人IO输入口8
+#define ROB_OUT1_POS_FH_REG_ADD               0x001b        //机器人外部轴1
+#define ROB_OUT1_POS_FL_REG_ADD               0x001c        //机器人外部轴1
+#define ROB_OUT2_POS_FH_REG_ADD               0x001d        //机器人外部轴2
+#define ROB_OUT2_POS_FL_REG_ADD               0x001e        //机器人外部轴2
+#define ROB_OUT3_POS_FH_REG_ADD               0x001f        //机器人外部轴3
+#define ROB_OUT3_POS_FL_REG_ADD               0x0020        //机器人外部轴3
+#define ROB_OUTNUM_REG_ADD                    0x0021        //机器人外部轴数量
 
 #define ROB_IO_OUTPUT1_REG_ADD                0x0050        //机器人IO输出口1
 #define ROB_IO_OUTPUT2_REG_ADD                0x0051        //机器人IO输出口2
@@ -138,10 +145,29 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_MOVE_RY1_POS_FL_REG_ADD           0x011b
 #define ROB_MOVE_RZ1_POS_FH_REG_ADD           0x011c
 #define ROB_MOVE_RZ1_POS_FL_REG_ADD           0x011d
+#define ROB_MOVE_OUT_1_POS_FH_REG_ADD         0x011e        //机器人外部轴1
+#define ROB_MOVE_OUT_1_POS_FL_REG_ADD         0x011f        //机器人外部轴1
+#define ROB_MOVE_OUT_2_POS_FH_REG_ADD         0x0120        //机器人外部轴2
+#define ROB_MOVE_OUT_2_POS_FL_REG_ADD         0x0121        //机器人外部轴2
+#define ROB_MOVE_OUT_3_POS_FH_REG_ADD         0x0122        //机器人外部轴3
+#define ROB_MOVE_OUT_3_POS_FL_REG_ADD         0x0123        //机器人外部轴3
+#define ROB_MOVE_OUT1_1_POS_FH_REG_ADD        0x0124        //机器人外部轴1-1   //移动终点1,MOVEC时有效
+#define ROB_MOVE_OUT1_1_POS_FL_REG_ADD        0x0125        //机器人外部轴1-1
+#define ROB_MOVE_OUT1_2_POS_FH_REG_ADD        0x0126        //机器人外部轴1-2
+#define ROB_MOVE_OUT1_2_POS_FL_REG_ADD        0x0127        //机器人外部轴1-2
+#define ROB_MOVE_OUT1_3_POS_FH_REG_ADD        0x0128        //机器人外部轴1-3
+#define ROB_MOVE_OUT1_3_POS_FL_REG_ADD        0x0129        //机器人外部轴1-3
 
 #define ROB_WELD_CURRENT_FH_REG_ADD           0x0200        //焊接电流
 #define ROB_WELD_CURRENT_FL_REG_ADD           0x0201
 #define ROB_WELD_CURRENTMOD_REG_ADD           0x0202        //交变电流
+#define ROB_WELD_VOLTAGE_FH_REG_ADD           0x0203        //焊接电压
+#define ROB_WELD_VOLTAGE_FL_REG_ADD           0x0204
+#define ROB_WELD_SWINGWIDTH_FH_REG_ADD        0x0205        //摆焊摆幅
+#define ROB_WELD_SWINGWIDTH_FL_REG_ADD        0x0206
+#define ROB_WELD_SWINGFREQUENCY_FH_REG_ADD    0x0207        //摆焊频率
+#define ROB_WELD_SWINGFREQUENCY_FL_REG_ADD    0x0208
+#define ROB_WELD_SWINGMOD_REG_ADD             0x0209        //摆焊模式
 
 #define ROB_WELD_MODEL_REG_ADD                0x0250        //焊机型号
 #define ROB_WELD_IPADDR_1_REG_ADD             0x0251        //焊机远程IP
@@ -596,6 +622,11 @@ public:
     float RX;
     float RY;
     float RZ;
+
+    int out_1;       //外部轴1
+    int out_2;       //外部轴2
+    int out_3;       //外部轴3
+
     bool nEn;
 };
 

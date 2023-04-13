@@ -8,6 +8,9 @@ RobPos::RobPos()
     RX=0;
     RY=0;
     RZ=0;
+    out_1=0;
+    out_2=0;
+    out_3=0;
     nEn=0;
 }
 

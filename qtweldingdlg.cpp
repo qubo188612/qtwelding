@@ -835,6 +835,13 @@ void qtweldingDlg::ConnectRobot()
         {
             ui->record->append(QString::fromLocal8Bit("机器人远程IP地址格式错误"));
         }
+        //写入外部轴数量
+        u16_data[0]=m_mcs->rob->out_num;
+        rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_OUTNUM_REG_ADD,1,u16_data);
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人外部轴设置失败"));
+        }
         u16_data[0]=0;
         rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_STOP_REG_ADD,1,u16_data);
         if(rc!=1)
@@ -1110,13 +1117,13 @@ void qtweldingThread::run()
                         *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
                         sentdata.data.push_back(u16_data[0]);
                         sentdata.data.push_back(u16_data[1]);
-                        *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                        *i32_data=_p->m_mcs->rob->TCPpos.out_1;
                         sentdata.data.push_back(u16_data[0]);
                         sentdata.data.push_back(u16_data[1]);
-                        *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                        *i32_data=_p->m_mcs->rob->TCPpos.out_2;
                         sentdata.data.push_back(u16_data[0]);
                         sentdata.data.push_back(u16_data[1]);
-                        *i32_data=_p->m_mcs->rob->robTCPposout[2];
+                        *i32_data=_p->m_mcs->rob->TCPpos.out_3;
                         sentdata.data.push_back(u16_data[0]);
                         sentdata.data.push_back(u16_data[1]);
                         //工具号、坐标系、用户坐标系全用0
@@ -1236,10 +1243,9 @@ void qtgetrobThread::run()
                         {
                             _p->m_mcs->rob->robioinput[n]=(int16_t)_p->robotpos_rcv_data[19+n];
                         }
-                        for(int n=0;n<ROBOTTCPPOSOUTNUM;n++)
-                        {
-                            _p->m_mcs->rob->robTCPposout[n]=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+n*2]);
-                        }
+                        _p->m_mcs->rob->TCPpos.out_1=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM]);
+                        _p->m_mcs->rob->TCPpos.out_2=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+2]);
+                        _p->m_mcs->rob->TCPpos.out_3=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+4]);
                     }
                 }
             }

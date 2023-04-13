@@ -3995,13 +3995,13 @@ void getposThread::run()
                     *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
                     sentdata.data.push_back(u16_data[0]);
                     sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                    *i32_data=_p->m_mcs->rob->TCPpos.out_1;
                     sentdata.data.push_back(u16_data[0]);
                     sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->robTCPposout[0];
+                    *i32_data=_p->m_mcs->rob->TCPpos.out_2;
                     sentdata.data.push_back(u16_data[0]);
                     sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->robTCPposout[2];
+                    *i32_data=_p->m_mcs->rob->TCPpos.out_3;
                     sentdata.data.push_back(u16_data[0]);
                     sentdata.data.push_back(u16_data[1]);
                     //工具号、坐标系、用户坐标系全用0

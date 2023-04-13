@@ -19,6 +19,7 @@ robotsetDlg::robotsetDlg(my_parameters *mcs,QWidget *parent) :
         ui->robot_model->addItem(msg);
     }
     ui->robot_model->setCurrentIndex(m_mcs->rob->robot_model);
+    ui->robot_outnum->setCurrentIndex(m_mcs->rob->out_num);
     ui->robot_ip->setText(m_mcs->ip->robot_ip[0].robot_ip.ip);
     ui->robot_port->setText(QString::number(m_mcs->ip->robot_ip[0].robot_ip.port));
     ui->robot_remoteip->setText(m_mcs->ip->robot_ip[0].remote_ip.ip);
@@ -38,6 +39,7 @@ void robotsetDlg::init_dlg_show()
         ui->robot_remoteip->setEnabled(false);
         ui->label_6->setEnabled(false);
         ui->robot_posure_model->setEnabled(false);
+        ui->robot_outnum->setEnabled(false);
     }
     else
     {
@@ -45,6 +47,7 @@ void robotsetDlg::init_dlg_show()
         ui->robot_remoteip->setEnabled(true);
         ui->label_6->setEnabled(true);
         ui->robot_posure_model->setEnabled(true);
+        ui->robot_outnum->setEnabled(true);
     }
 }
 
@@ -61,6 +64,7 @@ void robotsetDlg::on_robot_model_currentIndexChanged(int index)
         ui->robot_remoteip->setEnabled(false);
         ui->label_6->setEnabled(false);
         ui->robot_posure_model->setEnabled(false);
+        ui->robot_outnum->setEnabled(false);
     }
     else
     {
@@ -68,12 +72,14 @@ void robotsetDlg::on_robot_model_currentIndexChanged(int index)
         ui->robot_remoteip->setEnabled(true);
         ui->label_6->setEnabled(true);
         ui->robot_posure_model->setEnabled(true);
+        ui->robot_outnum->setEnabled(true);
     }
 }
 
 
 void robotsetDlg::on_pushButton_clicked()
 {
+    m_mcs->rob->out_num=ui->robot_outnum->currentIndex();
     m_mcs->rob->robot_model=(ROBOT_MODEL)ui->robot_model->currentIndex();
     m_mcs->rob->cal_posture_model=(CAL_POSTURE)ui->robot_posure_model->currentIndex();
     m_mcs->rob->SaveRob(ROBOTDATA_PATH_MOTO);

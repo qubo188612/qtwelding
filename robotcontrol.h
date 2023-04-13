@@ -34,12 +34,20 @@ public:
     float RX;
     float RY;
     float RZ;
+    int out_1;  //外部轴1
+    int out_2;  //外部轴2
+    int out_3;  //外部轴3
+
     float X1;
     float Y1;
     float Z1;
     float RX1;
     float RY1;
     float RZ1;
+    int out1_1;
+    int out1_2;
+    int out1_3;
+
     bool nEn;
 };
 
@@ -116,6 +124,9 @@ public:
     void RobotOPEN_ELE(); //机器人上电
     void RobotCLOSE_ELE(); //机器人断电
 
+    volatile bool b_startweld_init;   //刚起弧初始化变量标记
+    volatile bool b_welding;        //焊接中
+
 /******************************************/
 //以下焊机接口
     WELD_MODEL weld_mod;     //焊机型号
@@ -155,6 +166,7 @@ public:
 
     void RobotMove(float f_movX,float f_movY,float f_movZ,float f_movRX, float f_movRY,float f_movRZ,
                    float f_movX1,float f_movY1,float f_movZ1,float f_movRX1, float f_movRY1,float f_movRZ1,
+                   int i_out1,int i_out2,int i_out3,int i_out1_1,int i_out1_2,int i_out1_3,
                    Robmovemodel_ID movemod,uint16_t tcp,float f_speed);
 protected:
     void run();

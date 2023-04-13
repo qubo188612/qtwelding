@@ -26,7 +26,7 @@ typedef enum WELD_MODEL_ID            //焊机型号
     WELD_MODEL_ROBOT_LINK=1,                //机器人直连
 }WELD_MODEL;
 /**************************************/
-#define ROBOT_MODEL_NUM     5  //机器人型号支持的总数
+#define ROBOT_MODEL_NUM     7  //机器人型号支持的总数
 typedef enum ROBOT_MODEL_ID            //机器人型号
 {
     ROBOT_MODEL_NULL=0,                //无机器人
@@ -34,6 +34,8 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
     ROBOT_MODEL_DOBOT=2,               //越彊机器人
     ROBOT_MODEL_UR=3,                  //优傲机器人
     ROBOT_MODEL_KUKA=4,                //库卡机器人
+    ROBOT_MODEL_KAWASAKI=5,            //川崎机器人
+    ROBOT_MODEL_YASKAWA=6,             //安川机器人
 }ROBOT_MODEL;
 
 #define ROBOT_DOBOT_TOTALCONTROL_RORT             29999    //越彊机器人总控值令数据信息发送端口
@@ -54,6 +56,11 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
 #define ROBOT_KUKA_INFO_SENDRECVBUFFER_MAX        1440     //库卡机器人运动值令发送数据回复信息最大个数
 #define ROBOT_KUKA_INFO_PORT                      30003    //库卡机器人信息端口
 #define ROBOT_KUKA_INFO_RECVBUFFER_MAX            1440     //库卡机器人数据信息最大个数
+
+#define ROBOT_KAWASAKI_SEND_PORT                  23       //川崎机器人运动值令数据信息发送端口
+#define ROBOT_KAWASAKI_INFO_SENDRECVBUFFER_MAX    1440     //川崎机器人运动值令发送数据回复信息最大个数
+#define ROBOT_KAWASAKI_INFO_PORT                  23       //川崎机器人信息端口
+#define ROBOT_KAWASAKI_INFO_RECVBUFFER_MAX        1440     //川崎机器人数据信息最大个数
 
 /***************************************/
 
@@ -80,8 +87,6 @@ public:
 
     RobPos TCPpos;      //机器人当前TCP坐标
 
-    std::vector<int32_t> robTCPposout;   //机器人外部轴
-
     systime robtime;    //机器人时间
 
     std::vector<int> robioinput;    //机器人输入口IO  
@@ -93,6 +98,8 @@ public:
     QString robot_state_toQString(ROBOT_STATE robot_state);  //机器人状态字符串输出
 
     CAL_POSTURE cal_posture_model;  //机器人姿态标准
+
+    int out_num;//机器人外部轴数量
 
     float robot_speed;         //机器人当前移动速度
 

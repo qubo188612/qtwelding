@@ -28,7 +28,6 @@ RobotData::RobotData()
     b_send_group_robot=false;
     ctx_robot_dosomeing=DO_NOTHING;
     robioinput.resize(ROBOTINPUTNUM);
-    robTCPposout.resize(ROBOTTCPPOSOUTNUM);
 
 //  send_group_robot.reserve(6000000);
 
@@ -37,6 +36,7 @@ RobotData::RobotData()
         robot_model=ROBOT_MODEL_NULL;
         cal_posture_model=CAL_ROBOT_YASKAWA;
         weld_model=WELD_MODEL_NULL;
+        out_num=0;
     }
 }
 
@@ -64,6 +64,12 @@ QString RobotData::robot_model_toQString(ROBOT_MODEL robot_model)
         break;
     case ROBOT_MODEL_KUKA:
         msg=QString::fromLocal8Bit("库卡");
+        break;
+    case ROBOT_MODEL_KAWASAKI:
+        msg=QString::fromLocal8Bit("川崎");
+        break;
+    case ROBOT_MODEL_YASKAWA:
+        msg=QString::fromLocal8Bit("安川");
         break;
     }
     return msg;
@@ -228,6 +234,7 @@ QVariantHash RobotData::encoed_json()
     data.insert("robot_model", robot_model);
     data.insert("cal_posture_model",cal_posture_model);
     data.insert("weld_model", weld_model);
+    data.insert("out_num",out_num);
 
     return data;
 }
@@ -259,6 +266,10 @@ int RobotData::decoed_json(QByteArray allData)
         else if(keyString=="weld_model")//机器人型号
         {
             weld_model=(WELD_MODEL)it.value().toInt();
+        }
+        else if(keyString=="out_num")//外部轴个数
+        {
+            out_num=it.value().toInt();
         }
     }
 
