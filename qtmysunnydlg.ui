@@ -180,6 +180,11 @@
      <string>新时达机器人</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>智昌-川崎机器人AS</string>
+    </property>
+   </item>
   </widget>
   <widget class="QCheckBox" name="checkBox">
    <property name="geometry">
@@ -7208,6 +7213,16 @@
    </property>
    <property name="text">
     <string>标定:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="robot_ip">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>130</y>
+     <width>121</width>
+     <height>25</height>
+    </rect>
    </property>
   </widget>
  </widget>

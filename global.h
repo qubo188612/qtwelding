@@ -520,6 +520,10 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALSROBOTCAM_P_DATA_EN_REG_ADD                       0x000c  //P寄存器功能开关
 #define ALSROBOTCAM_P_DATA_CAL_POSTURE_REG_ADD              0x000d  //P变量姿态内外旋
 #define ALSROBOTCAM_P_DATA_EYE_HAND_CALIBRATIONMODE_REG_ADD 0x000e  //P寄存器激光器安装方式
+#define ALSROBOTCAM_ROBOTIPADDRESS_1_REG_ADD                0x000f  //机器人IP1,机器人为服务器时使用
+#define ALSROBOTCAM_ROBOTIPADDRESS_2_REG_ADD                0x0010  //机器人IP2,机器人为服务器时使用
+#define ALSROBOTCAM_ROBOTIPADDRESS_3_REG_ADD                0x0011  //机器人IP3,机器人为服务器时使用
+#define ALSROBOTCAM_ROBOTIPADDRESS_4_REG_ADD                0x0012  //机器人IP4,机器人为服务器时使用
 
 /*****************************/
 //激光头计算结果寄存器

@@ -52,6 +52,9 @@ public:
     my_parameters *m_mcs;
 
     void UpdataUi();
+    void UpdataRobot(u_int16_t robotmod);
+
+    bool ipAddrIsOK(const QString & ip,std::vector<u_int8_t> &address);
 
     void img_windowshow(bool b_show,PictureBox *lab_show);
 
@@ -97,6 +100,8 @@ public:
     void drow_image(int32_t oldheight,int32_t oldwidth,QImage *img);
     int32_t drowstep;
     int32_t drowstep_temp=0;
+
+    bool b_robot_serves;//机器人是否服务端
 
 //  void showEvent(QShowEvent *e);//重写函数避免界面不刷新
 
