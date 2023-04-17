@@ -1219,9 +1219,10 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
 {
     send_group_robot.lock();
     sent_info_robot sendrob;
+
     sendrob.addr=ROB_TCP_NUM_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
-    sendrob.data.resize(17);
+    sendrob.data.resize(41);
     sendrob.data[0]=tcp;
     sendrob.data[1]=movemodel;
     sendrob.data[2]=u16data_elec_work;
@@ -1240,7 +1241,34 @@ void toSendbuffer::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tc
     sendrob.data[15]=*((u_int16_t*)&pos.RZ);
     sendrob.data[16]=*((u_int16_t*)&pos.RZ+1);
 
-    m_mcs->rob->b_send_group_robot=false;
+    sendrob.data[17]=0;
+    sendrob.data[18]=0;
+    sendrob.data[19]=0;
+    sendrob.data[20]=0;
+    sendrob.data[21]=0;
+    sendrob.data[22]=0;
+    sendrob.data[23]=0;
+    sendrob.data[24]=0;
+    sendrob.data[25]=0;
+    sendrob.data[26]=0;
+    sendrob.data[27]=0;
+    sendrob.data[28]=0;
+
+    sendrob.data[29]=*((u_int16_t*)&pos.out_1);
+    sendrob.data[30]=*((u_int16_t*)&pos.out_1+1);
+    sendrob.data[31]=*((u_int16_t*)&pos.out_2);
+    sendrob.data[32]=*((u_int16_t*)&pos.out_2+1);
+    sendrob.data[33]=*((u_int16_t*)&pos.out_3);
+    sendrob.data[34]=*((u_int16_t*)&pos.out_3+1);
+
+    sendrob.data[35]=0;
+    sendrob.data[36]=0;
+    sendrob.data[37]=0;
+    sendrob.data[38]=0;
+    sendrob.data[39]=0;
+    sendrob.data[40]=0;
+
+    m_mcs->rob->b_send_group_robot=false; 
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
     send_group_robot.unlock();
@@ -1252,7 +1280,7 @@ void toSendbuffer::cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,floa
     sent_info_robot sendrob;
     sendrob.addr=ROB_TCP_NUM_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
-    sendrob.data.resize(29);
+    sendrob.data.resize(41);
     sendrob.data[0]=tcp;
     sendrob.data[1]=movemodel;
     sendrob.data[2]=u16data_elec_work;
@@ -1282,6 +1310,20 @@ void toSendbuffer::cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,floa
     sendrob.data[26]=*((u_int16_t*)&pos2.RY+1);
     sendrob.data[27]=*((u_int16_t*)&pos2.RZ);
     sendrob.data[28]=*((u_int16_t*)&pos2.RZ+1);
+
+    sendrob.data[29]=*((u_int16_t*)&pos1.out_1);
+    sendrob.data[30]=*((u_int16_t*)&pos1.out_1+1);
+    sendrob.data[31]=*((u_int16_t*)&pos1.out_2);
+    sendrob.data[32]=*((u_int16_t*)&pos1.out_2+1);
+    sendrob.data[33]=*((u_int16_t*)&pos1.out_3);
+    sendrob.data[34]=*((u_int16_t*)&pos1.out_3+1);
+
+    sendrob.data[35]=*((u_int16_t*)&pos2.out_1);
+    sendrob.data[36]=*((u_int16_t*)&pos2.out_1+1);
+    sendrob.data[37]=*((u_int16_t*)&pos2.out_2);
+    sendrob.data[38]=*((u_int16_t*)&pos2.out_2+1);
+    sendrob.data[39]=*((u_int16_t*)&pos2.out_3);
+    sendrob.data[40]=*((u_int16_t*)&pos2.out_3+1);
 
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);

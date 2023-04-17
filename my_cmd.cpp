@@ -1028,7 +1028,11 @@ QString my_cmd::rc_move(RobPos pos,Robmovemodel movemodel)
                  QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                  QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                 QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"]";
+                 QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos.out_1)+","+
+                 QString::number(pos.out_2)+","+
+                 QString::number(pos.out_3)+
+              "]";
     return msg;
 }
 
@@ -1050,18 +1054,30 @@ QString my_cmd::rc_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemo
                  QString::number(pos1.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                  QString::number(pos1.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                  QString::number(pos1.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos1.out_1)+","+
+                 QString::number(pos1.out_2)+","+
+                 QString::number(pos1.out_3)+","+
+
                  QString::number(pos2.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos2.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos2.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos2.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                  QString::number(pos2.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                  QString::number(pos2.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos2.out_1)+","+
+                 QString::number(pos2.out_2)+","+
+                 QString::number(pos2.out_3)+","+
+
                  QString::number(pos3.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos3.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos3.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                  QString::number(pos3.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                  QString::number(pos3.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                 QString::number(pos3.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"]";
+                 QString::number(pos3.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                 QString::number(pos3.out_1)+","+
+                 QString::number(pos3.out_2)+","+
+                 QString::number(pos3.out_3)+
+            "]";
     return msg;
 }
 
@@ -1232,9 +1248,9 @@ int my_cmd::de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,Ro
         return 1;
     }
     QStringList posgroup = paramdata.split(",");
-    if(posgroup.size()!=6)
+    if(posgroup.size()!=9)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据有且只有6个");
+        return_msg=parakey+QString::fromLocal8Bit("项参数数据有且只有9个");
         return 1;
     }
     bool ok;
@@ -1274,6 +1290,24 @@ int my_cmd::de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,Ro
         return_msg=parakey+QString::fromLocal8Bit("项的RZ项参数数据格式错误");
         return 1;
     }
+    pos.out_1=posgroup[6].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return 1;
+    }
+    pos.out_2=posgroup[7].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return 1;
+    }
+    pos.out_3=posgroup[8].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return 1;
+    }
     return 0;
 }
 
@@ -1286,7 +1320,7 @@ int my_cmd::de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,R
         return 1;
     }
     QStringList posgroup = paramdata.split(",");
-    if(posgroup.size()!=18)
+    if(posgroup.size()!=27)
     {
         return_msg=parakey+QString::fromLocal8Bit("项参数数据有且只有18个");
         return 1;
@@ -1328,76 +1362,132 @@ int my_cmd::de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,R
         return_msg=parakey+QString::fromLocal8Bit("项的RZ1项参数数据格式错误");
         return 1;
     }
-    pos2.X=posgroup[6].toFloat(&ok);
+    pos1.out_1=posgroup[6].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return 1;
+    }
+    pos1.out_2=posgroup[7].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return 1;
+    }
+    pos1.out_3=posgroup[8].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return 1;
+    }
+
+    pos2.X=posgroup[9].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的X2项参数数据格式错误");
         return 1;
     }
-    pos2.Y=posgroup[7].toFloat(&ok);
+    pos2.Y=posgroup[10].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的Y2项参数数据格式错误");
         return 1;
     }
-    pos2.Z=posgroup[8].toFloat(&ok);
+    pos2.Z=posgroup[11].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的Z2项参数数据格式错误");
         return 1;
     }
-    pos2.RX=posgroup[9].toFloat(&ok);
+    pos2.RX=posgroup[12].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RX2项参数数据格式错误");
         return 1;
     }
-    pos2.RY=posgroup[10].toFloat(&ok);
+    pos2.RY=posgroup[13].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RY2项参数数据格式错误");
         return 1;
     }
-    pos2.RZ=posgroup[11].toFloat(&ok);
+    pos2.RZ=posgroup[14].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RZ2项参数数据格式错误");
         return 1;
     }
-    pos3.X=posgroup[12].toFloat(&ok);
+    pos2.out_1=posgroup[15].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return 1;
+    }
+    pos2.out_2=posgroup[16].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return 1;
+    }
+    pos2.out_3=posgroup[17].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return 1;
+    }
+
+    pos3.X=posgroup[18].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的X3项参数数据格式错误");
         return 1;
     }
-    pos3.Y=posgroup[13].toFloat(&ok);
+    pos3.Y=posgroup[19].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的Y3项参数数据格式错误");
         return 1;
     }
-    pos3.Z=posgroup[14].toFloat(&ok);
+    pos3.Z=posgroup[20].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的Z3项参数数据格式错误");
         return 1;
     }
-    pos3.RX=posgroup[15].toFloat(&ok);
+    pos3.RX=posgroup[21].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RX3项参数数据格式错误");
         return 1;
     }
-    pos3.RY=posgroup[16].toFloat(&ok);
+    pos3.RY=posgroup[22].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RY3项参数数据格式错误");
         return 1;
     }
-    pos3.RZ=posgroup[17].toFloat(&ok);
+    pos3.RZ=posgroup[23].toFloat(&ok);
     if(ok==false)
     {
         return_msg=parakey+QString::fromLocal8Bit("项的RZ3项参数数据格式错误");
+        return 1;
+    }
+    pos3.out_1=posgroup[24].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return 1;
+    }
+    pos3.out_2=posgroup[25].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return 1;
+    }
+    pos3.out_3=posgroup[26].toInt(&ok);
+    if(ok==false)
+    {
+        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
         return 1;
     }
     return 0;
