@@ -25,6 +25,8 @@ IPaddress::IPaddress()
     robot_ip[0].robot_ip.port=1496;
     robot_ip[0].remote_ip.ip="192.168.1.3";
     robot_ip[0].weld_ip.ip="192.168.1.4";
+    robot_ip[0].plc_ip.ip="192.168.1.5";
+    robot_ip[0].plc_ip.port=23;
 
     LoadIP(IPADDRESS_PATH_MOTO);
 
@@ -92,6 +94,8 @@ QVariantHash IPaddress::encoed_json()
     subData1.insert("robot_port", robot_ip[0].robot_ip.port);
     subData1.insert("robot_remote_ip", robot_ip[0].remote_ip.ip);
     subData1.insert("robot_weld_ip", robot_ip[0].weld_ip.ip);
+    subData1.insert("robot_plc_ip",robot_ip[0].plc_ip.ip);
+    subData1.insert("robot_plc_port",robot_ip[0].plc_ip.port);
     data.insert("robot", subData1);
 
     return data;
@@ -135,6 +139,14 @@ int IPaddress::decoed_json(QByteArray allData)
                 else if(keyString=="robot_weld_ip")
                 {
                     robot_ip[0].weld_ip.ip=it_obj.value().toString();
+                }
+                else if(keyString=="robot_plc_ip")//PLCip
+                {
+                    robot_ip[0].plc_ip.ip=it_obj.value().toString();
+                }
+                else if(keyString=="robot_plc_ip_port")//PLC端口
+                {
+                    robot_ip[0].plc_ip.port=it_obj.value().toInt();
                 }
             }
         }

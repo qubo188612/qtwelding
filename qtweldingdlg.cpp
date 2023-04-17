@@ -56,6 +56,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     demarcate=new demarcateDlg(m_mcs);
     robotset=new robotsetDlg(m_mcs);
     weldset=new weldsetDlg(m_mcs);
+    plcset=new plcsetDlg(m_mcs);
     editproject=new editprojectDlg(m_mcs);
     newproject=new newprojectDlg(m_mcs);
     setproject=new setprojectDlg(m_mcs);
@@ -117,7 +118,6 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 #endif
     /*************************************************/
 
-
     thread1 = new qtweldingThread(this);
     connect(thread1, SIGNAL(Send_show_ui_list()), this, SLOT(init_show_ui_list()));
     connect(thread1, SIGNAL(Send_sent_leaser()), this, SLOT(init_sent_leaser()));
@@ -131,6 +131,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     ConnectCamer();//连接相机
     ConnectRobot();//连接机器人
+    ConnectPLC();//连接PLC
 
     b_thread1=true;
     thread1->start();
@@ -173,6 +174,7 @@ qtweldingDlg::~qtweldingDlg()
 
     DisconnectCamer();
     DisconnectRobot();
+    DisconnectPLC();
 
     delete thread1;
     delete thread2;
@@ -181,6 +183,7 @@ qtweldingDlg::~qtweldingDlg()
     delete demarcate;
     delete robotset;
     delete weldset;
+    delete plcset;
     delete editproject;
     delete newproject;
     delete setproject;
@@ -538,6 +541,16 @@ void qtweldingDlg::on_setweldBtn_clicked()//焊机设置
     thread2->start();
 }
 
+void qtweldingDlg::on_setplcBtn_clicked()//PLC设置
+{
+    DisconnectPLC();
+    plcset->init_dlg_show();
+    plcset->setWindowTitle(QString::fromLocal8Bit("PLC设置"));
+    plcset->exec();
+    plcset->close_dlg_show();
+    ConnectPLC();
+}
+
 void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
 {
     if(m_mcs->resultdata.link_result_state==false)
@@ -746,6 +759,46 @@ void qtweldingDlg::DisconnectCamer()
         m_mcs->resultdata.link_result_state=false;
         QString msg=QString::number(PORT_ALS_RESULT);
         ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+    }
+}
+
+void qtweldingDlg::ConnectPLC()
+{
+    switch(m_mcs->rob->plc_model)
+    {
+        case PLC_MODEL_NULL:
+        {
+        }
+        break;
+        case PLC_MODEL_MODBUSTCP:
+        {
+            if(0==m_mcs->rob->ConnectPLC(m_mcs->ip->robot_ip[0].plc_ip.ip,m_mcs->ip->robot_ip[0].plc_ip.port))
+            {
+                ui->record->append(QString::fromLocal8Bit("与PLC连接成功"));
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("与PLC连接失败"));
+            }
+        }
+        break;
+    }
+}
+
+void qtweldingDlg::DisconnectPLC()
+{
+    switch(m_mcs->rob->plc_model)
+    {
+        case PLC_MODEL_NULL:
+        {
+        }
+        break;
+        case PLC_MODEL_MODBUSTCP:
+        {
+            m_mcs->rob->DisconnectPLC();
+            ui->record->append(QString::fromLocal8Bit("与PLC断开连接"));
+        }
+        break;
     }
 }
 
@@ -1324,5 +1377,7 @@ void qtrecordThread::Stop()
     }
   }
 }
+
+
 
 

@@ -23,6 +23,8 @@ RobotData::RobotData()
 
     b_connect=false;
     b_link_ctx_posget=false;
+    b_connect_plc=false;
+    b_link_ctx_plc=false;
     robot_speed=0;
     robot_state=ROBOT_STATE_UNLINK;
     b_send_group_robot=false;
@@ -36,6 +38,7 @@ RobotData::RobotData()
         robot_model=ROBOT_MODEL_NULL;
         cal_posture_model=CAL_ROBOT_YASKAWA;
         weld_model=WELD_MODEL_NULL;
+        plc_model=PLC_MODEL_NULL;
         out_num=0;
     }
 }
@@ -106,6 +109,21 @@ QString RobotData::weld_model_toQString(WELD_MODEL weld_model)
         break;
     case WELD_MODEL_ROBOT_LINK:
         msg=QString::fromLocal8Bit("机器人直连");
+        break;
+    }
+    return msg;
+}
+
+QString RobotData::plc_model_toQString(PLC_MODEL plc_model)
+{
+    QString msg;
+    switch(plc_model)
+    {
+    case PLC_MODEL_NULL:
+        msg=QString::fromLocal8Bit("无");
+        break;
+    case PLC_MODEL_MODBUSTCP:
+        msg=QString::fromLocal8Bit("MODBUS-TCP");
         break;
     }
     return msg;
@@ -182,6 +200,36 @@ void RobotData::DisconnectRobot()
     }
 }
 
+int RobotData::ConnectPLC(QString ip,int port)
+{
+    if(b_link_ctx_plc==false)
+    {
+        ctx_plc = modbus_new_tcp(ip.toUtf8(), port);
+        if (modbus_connect(ctx_plc) == -1)
+        {
+            modbus_free(ctx_plc);
+            return 1;
+        }
+        b_link_ctx_plc=true;
+    }
+    b_connect_plc=true;
+    return 0;
+}
+
+void RobotData::DisconnectPLC()
+{
+    if(b_connect_plc==true)
+    {
+         if(b_link_ctx_plc==true)
+         {
+            modbus_close(ctx_plc);
+            modbus_free(ctx_plc);
+            b_link_ctx_plc=false;
+         }
+         b_connect_plc=false;
+    }
+}
+
 int RobotData::SaveRob(char* filename)
 {
     QVariantHash data=encoed_json();
@@ -235,6 +283,7 @@ QVariantHash RobotData::encoed_json()
     data.insert("cal_posture_model",cal_posture_model);
     data.insert("weld_model", weld_model);
     data.insert("out_num",out_num);
+    data.insert("plc_model",plc_model);
 
     return data;
 }
@@ -270,6 +319,10 @@ int RobotData::decoed_json(QByteArray allData)
         else if(keyString=="out_num")//外部轴个数
         {
             out_num=it.value().toInt();
+        }
+        else if(keyString=="plc_model")//PLC型号
+        {
+            plc_model=(PLC_MODEL)it.value().toInt();
         }
     }
 

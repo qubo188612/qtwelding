@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "my_parameters.h"
+#include "robotdata.h"
 
 namespace Ui {
 class weldsetDlg;

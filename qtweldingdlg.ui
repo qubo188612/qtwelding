@@ -1719,6 +1719,30 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="setplcBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>PLC设置</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

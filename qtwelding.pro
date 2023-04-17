@@ -45,6 +45,7 @@ SOURCES += \
         newcraftdlg.cpp \
         newprojectdlg.cpp \
         othercmddlg.cpp \
+        plcsetdlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
         project.cpp \
@@ -92,6 +93,7 @@ FORMS += \
     newcraftdlg.ui \
     newprojectdlg.ui \
     othercmddlg.ui \
+    plcsetdlg.ui \
     pshowdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
@@ -141,6 +143,7 @@ HEADERS += \
     newcraftdlg.h \
     newprojectdlg.h \
     othercmddlg.h \
+    plcsetdlg.h \
     process.h \
     process1_scanbeforetrace.h \
     project.h \

@@ -38,6 +38,13 @@ typedef enum ROBOT_MODEL_ID            //机器人型号
     ROBOT_MODEL_YASKAWA=6,             //安川机器人
 }ROBOT_MODEL;
 
+#define PLC_MODEL_NUM     2  //PLC型号（协议）型号支持的总数
+typedef enum PLC_MODEL_ID            //PLC型号（协议）
+{
+    PLC_MODEL_NULL=0,              //无PLC
+    PLC_MODEL_MODBUSTCP=1,         //Modbustcp协议
+}PLC_MODEL;
+
 #define ROBOT_DOBOT_TOTALCONTROL_RORT             29999    //越彊机器人总控值令数据信息发送端口
 #define ROBOT_DOBOT_INFO_TOTALCONTROLCVBUFFER_MAX 1440     //越彊机器人运动值令发送数据回复信息最大个数
 #define ROBOT_DOBOT_SEND_PORT                     30003    //越彊机器人运动值令数据信息发送端口
@@ -125,6 +132,13 @@ public:
     Weldworkmodel weld_state;   //焊接状态
     QString weldwork_model_toQString(Weldworkmodel weld_model);//焊接状态字符串输出
 
+    PLC_MODEL plc_model;    //PLC型号(协议)
+    QString plc_model_toQString(PLC_MODEL plc_model);   //PLC型号字符串输出
+    modbus_t *ctx_plc;      //PLCmodbus链接
+    bool b_link_ctx_plc;    //PLCmodbus链接状态
+    int ConnectPLC(QString ip,int port);         //连接PLC
+    void DisconnectPLC();
+    bool b_connect_plc;     //是否连接PLC
 
     int SaveRob(char* filename);    //保存项目
 

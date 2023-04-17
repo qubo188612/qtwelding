@@ -19,6 +19,7 @@
 #include "demarcatedlg.h"
 #include "robotsetdlg.h"
 #include "weldsetdlg.h"
+#include "plcsetdlg.h"
 #include "editprojectdlg.h"
 #include "newprojectdlg.h"
 #include "setprojectdlg.h"
@@ -70,6 +71,7 @@ public:
     demarcateDlg *demarcate;
     robotsetDlg *robotset;
     weldsetDlg *weldset;
+    plcsetDlg *plcset;
     editprojectDlg *editproject;
     newprojectDlg *newproject;
     setprojectDlg *setproject;
@@ -138,6 +140,8 @@ private slots:
 
     void on_weld_eled_editingFinished();
 
+    void on_setplcBtn_clicked();
+
 private:
     Ui::qtweldingDlg *ui;
 
@@ -146,6 +150,9 @@ private:
 
     void ConnectRobot();        //连接机器人
     void DisconnectRobot();     //断开机器人
+
+    void ConnectPLC();          //连接PLC
+    void DisconnectPLC();       //断开PLC
 
     bool b_RunAlgCamer;
     void RunAlgCamer();        //运行算法
