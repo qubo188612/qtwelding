@@ -536,6 +536,44 @@ Eigen::Matrix3d Calibration::Kuka_Euler2RotMatrixXYZ(std::array<double,3> pst)
 
 }
 
+Eigen::Matrix3d Calibration::Kawasaki_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d Z1,X,Z2,rot;
+    Z1(0,0)=cos(rx*CAL_RADIAN);
+    Z1(0,1)=-sin(rx*CAL_RADIAN);
+    Z1(0,2)=0;
+    Z1(1,0)=sin(rx*CAL_RADIAN);
+    Z1(1,1)=cos(rx*CAL_RADIAN);
+    Z1(1,2)=0;
+    Z1(2,0)=0;
+    Z1(2,1)=0;
+    Z1(2,2)=1;
+
+    X(0,0)=1;
+    X(0,1)=0;
+    X(0,2)=0;
+    X(1,0)=0;
+    X(1,1)=cos(ry*CAL_RADIAN);
+    X(1,2)=-sin(ry*CAL_RADIAN);
+    X(2,0)=0;
+    X(2,1)=sin(ry*CAL_RADIAN);
+    X(2,2)=cos(ry*CAL_RADIAN);
+
+    Z2(0,0)=cos(rz*CAL_RADIAN);
+    Z2(0,1)=-sin(rz*CAL_RADIAN);
+    Z2(0,2)=0;
+    Z2(1,0)=sin(rz*CAL_RADIAN);
+    Z2(1,1)=cos(rz*CAL_RADIAN);
+    Z2(1,2)=0;
+    Z2(2,0)=0;
+    Z2(2,1)=0;
+    Z2(2,2)=1;
+
+    rot=Z1*X*Z2;
+    return rot;
+}
+
 
 Eigen::Matrix3d Calibration::Panasonic_Euler2RotMatrixXYZ(std::array<double,3> pst)
 {
@@ -556,6 +594,9 @@ Eigen::Matrix3d Calibration::Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<dou
         break;
     case CAL_ROBOT_PANASONIC:
         posture_matrix = Panasonic_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_KAWASAKI:
+        posture_matrix = Kawasaki_Euler2RotMatrixXYZ(pst);
         break;
     }
     return posture_matrix;
@@ -637,6 +678,36 @@ std::array<double, 3> Calibration::Panasonic_RotMatrixXYZ2Euler(Eigen::Matrix3d 
     return temp;
 }
 
+std::array<double, 3> Calibration::Kawasaki_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r13,r22,r23,r31,r32,r33;
+    r13 = rot_matrix(0,2);
+    r23 = rot_matrix(1,2);
+    r22 = rot_matrix(1,0);
+    r23 = rot_matrix(1,1);
+    r31 = rot_matrix(2,0);
+    r32 = rot_matrix(2,1);
+    r33 = rot_matrix(2,2);
+    double o = atan2(r13,-r23);
+    double a;
+    double t = atan2(r31,r32);
+    if(sin(o)!=0)
+    {
+        a=atan2(r13,sin(o)*r33);
+    }
+    else
+    {
+        a=atan2(r22,r23);
+    }
+
+    std::array<double,3> temp;
+    temp[0]= o;
+    temp[1]= a;
+    temp[2]= t;
+    //return array<double, 3>{rz, ry, rx};
+    return temp;
+}
+
 std::array<double, 3> Calibration::RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::Matrix3d rot_matrix)
 {
     std::array<double, 3> temp;
@@ -650,6 +721,9 @@ std::array<double, 3> Calibration::RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::M
         break;
     case CAL_ROBOT_PANASONIC:
         temp = Panasonic_RotMatrixXYZ2Euler(rot_matrix);
+        break; 
+    case CAL_ROBOT_KAWASAKI:
+        temp = Kawasaki_RotMatrixXYZ2Euler(rot_matrix);
         break;
     }
     return temp;

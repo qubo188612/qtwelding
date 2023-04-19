@@ -40,13 +40,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     ui->alg108_threshold->setValidator(aIntValidator);
 
-    ui->label_3->hide();
-    ui->label_4->hide();
-    ui->label_43->hide();
-    ui->comboBox->hide();
-    ui->robotport->hide();
+//  ui->label_3->hide();
+//  ui->label_4->hide();
+//  ui->label_43->hide();
+//  ui->comboBox->hide();
+//  ui->robotport->hide();
     ui->robot_ip->hide();
-    ui->robotsetBtn->hide();
+//  ui->robotsetBtn->hide();
 
     drow_height=CAMBUILD_IMAGE_HEIGHT;
     drow_width=CAMBUILD_IMAGE_WIDTH;
@@ -983,7 +983,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",100);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:100");
@@ -1166,7 +1168,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",101);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:101");
@@ -1349,7 +1353,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",102);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:102");
@@ -1532,7 +1538,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",103);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:103");
@@ -1715,7 +1723,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",104);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:104");
@@ -1898,7 +1908,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",105);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:105");
@@ -2119,7 +2131,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",106);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:106");
@@ -2340,7 +2354,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",107);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:107");
@@ -2523,7 +2539,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     sing.insert("alsnum",108);
                     json.insert("touch",sing);
                     QString msg=JsonToQstring(json);
-                    m_mcs->resultdata.client->write(msg.toUtf8());
+                    QByteArray arry=msg.toUtf8();
+                    arry.push_back('\0');
+                    m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
                         QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:108");
@@ -2844,7 +2862,9 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             jarry.append("pData_matrix_plane2robot");
             json.insert("cat",jarry);
             QString msg=JsonToQstring(json);
-            m_mcs->resultdata.client->write(msg.toUtf8());
+            QByteArray arry=msg.toUtf8();
+            arry.push_back('\0');
+            m_mcs->resultdata.client->write(arry);
             /*******************/
             m_mcs->resultdata.link_ftp_state=true;
             if(ui->checkBox->isChecked()==false)

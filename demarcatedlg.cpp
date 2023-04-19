@@ -442,7 +442,9 @@ void demarcateDlg::pulldemdl()
             json["pData_matrix_plane2robot"]=jarry4;
             jsent["echo"]=json;
             QString msg=JsonToQstring(jsent);
-            client->write(msg.toUtf8());
+            QByteArray arry=msg.toUtf8();
+            arry.push_back('\0');
+            client->write(arry);
         }
         break;
         case HAND_OUT_EYE://眼在手外
@@ -477,7 +479,9 @@ void demarcateDlg::pulldemdl()
             json["pData_demdlg_T"]=jarry2;
             jsent["echo"]=json;
             QString msg=JsonToQstring(jsent);
-            client->write(msg.toUtf8());
+            QByteArray arry=msg.toUtf8();
+            arry.push_back('\0');
+            client->write(arry);
         }
         break;
     }

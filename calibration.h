@@ -11,9 +11,10 @@
 
 typedef enum CAL_POSTURE_MODEL_ID          //机器人姿态角含义模式
 {
-    CAL_ROBOT_YASKAWA=0,        //安川、ABB姿态标准 内旋 RX-RY-RZ
+    CAL_ROBOT_YASKAWA=0,        //安川、ABB、川崎、UR、越彊姿态标准 内旋 RX-RY-RZ
     CAL_ROBOT_KUKA=1,           //库卡姿态标准 外旋 RZ-RY-RX
     CAL_ROBOT_PANASONIC=2,      //松下姿态标准 内旋 RX-"RY"-RZ
+    CAL_ROBOT_KAWASAKI=3,       //川崎 RZ-RX-RZ
 }CAL_POSTURE;
 
 class Calibration
@@ -70,10 +71,12 @@ protected:
    static Eigen::Matrix3d Yaskawa_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Kuka_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Panasonic_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d Kawasaki_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<double,3> pst);
    static std::array<double, 3> Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Kuka_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Panasonic_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> Kawasaki_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::Matrix3d rot_matrix);
    static bool computeMatrix(CAL_POSTURE robot,RobPos robpos,std::vector<TCP_Leaserpos> data_group,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot);
    static cv::Point3f ComputePosition(CAL_POSTURE robot,TCP_Leaserpos Pic,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot);
