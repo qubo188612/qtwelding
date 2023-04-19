@@ -180,7 +180,12 @@
    </item>
    <item>
     <property name="text">
-     <string>RZ-RX-RZ(如:川崎)</string>
+     <string>RZ-RX-RZ</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>RZ-RY-RZ(如:川崎)</string>
     </property>
    </item>
   </widget>
