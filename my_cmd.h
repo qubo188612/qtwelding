@@ -28,25 +28,29 @@
 #define CMD_TRACE_KEY                   "TRACE:"        //跟踪命令集合KEY
 #define CMD_CREAT_KEY                   "CREAT:"        //生成轨迹命令KEY
 #define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
+#define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
 
 
 //参数项
-#define CMD_MOVL                            "MOVL"      //直线移动
-#define CMD_MOVJ                            "MOVJ"      //关节移动
-#define CMD_MOVC                            "MOVC"      //圆形移动
-#define CMD_TCP                             "TCP"       //TCP
-#define CMD_SPEED                           "SPEED"     //速度
-#define CMD_TIME                            "TIME"      //时间         单位ms
-#define CMD_TASK                            "TASK"      //任务号
-#define CMD_WORK                            "WORK"      //是否启动      0:停止 1:启动
-#define CMD_ELED                            "ELED"      //电流         单位A
-#define CMD_ELEM                            "ELEM"      //交变电        0:直流 1:交流
-#define CMD_NAME                            "NAME"      //命名
-#define CMD_SCAN                            "SCAN"      //扫描轨迹参数
-#define CMD_MODE                            "MODE"      //模式参数
-#define CMD_CRAFT                           "CRAFT"     //工艺文件路径
-#define CMD_OUT                             "OUT"       //IO输出
-#define CMD_WAITIN                          "WAITIN"    //IO输入
+#define CMD_MOVL                            "MOVL"                //直线移动
+#define CMD_MOVJ                            "MOVJ"                //关节移动
+#define CMD_MOVC                            "MOVC"                //圆形移动
+#define CMD_TCP                             "TCP"                 //TCP
+#define CMD_SPEED                           "SPEED"               //速度
+#define CMD_TIME                            "TIME"                //时间         单位ms
+#define CMD_TASK                            "TASK"                //任务号
+#define CMD_WORK                            "WORK"                //是否启动      0:停止 1:启动
+#define CMD_ELED                            "ELED"                //电流         单位A
+#define CMD_ELEM                            "ELEM"                //交变电        0:直流 1:交流
+#define CMD_NAME                            "NAME"                //命名
+#define CMD_SCAN                            "SCAN"                //扫描轨迹参数
+#define CMD_MODE                            "MODE"                //模式参数
+#define CMD_CRAFT                           "CRAFT"               //工艺文件路径
+#define CMD_OUT                             "OUTIO"               //IO输出
+#define CMD_WAITIN                          "WAITINIO"            //等待IO输入
+#define CMD_WRITEPLC                        "WRITEPLC"            //写PLC寄存器
+#define CMD_WAITPLC                         "WAITPLC"             //等待PLC寄存器输入
+#define CMD_DATA16                          "DATA16"              //16位整形数字
 
 
 /************************/
@@ -68,6 +72,8 @@ public:
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
     QString cmd_ioout(std::vector<int> io);//输出IO信号
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
+    QString cmd_plcwait(int register_add,int16_t register_data);
+    QString cmd_plcwrite(int register_add,int16_t register_data);
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -113,6 +119,10 @@ public:
     std::vector<int> cmd_io_input;//获取到的IO输入口信息
     IOmodel cmd_io_workmod;//IO工作状态
 
+    int cmd_plc_register_add;   //获取到的PLC寄存器信息
+    int cmd_plc_register_data;  //获取到的PLC寄存器内容
+    Plcmodel cmd_plc_mod;       //PLC读写模式
+
 
 protected:
     QString rc_tcp(int tcp);
@@ -130,7 +140,9 @@ protected:
     QString rc_craft(QString craftfilepath);
     QString rc_ioout(std::vector<int> io);
     QString rc_iowaitin(std::vector<int> io);
-
+    QString rc_plcwait(int register_add);
+    QString rc_plcwrite(int register_add);
+    QString rc_16data(int16_t i16_data);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

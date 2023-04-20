@@ -7186,6 +7186,11 @@
      <string>Z-X-Z</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Z-Y-Z</string>
+    </property>
+   </item>
   </widget>
   <widget class="QComboBox" name="comboBox_3">
    <property name="geometry">

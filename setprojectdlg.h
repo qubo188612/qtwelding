@@ -14,6 +14,7 @@
 #include "keycreatdlg.h"
 #include "keydelaydlg.h"
 #include "keyiodlg.h"
+#include "keyplcdlg.h"
 #include "keymovdlg.h"
 #include "keyscandlg.h"
 #include "keytracedlg.h"
@@ -42,6 +43,7 @@ public:
     keycreatDlg *keycreat;
     keydelayDlg *keydelay;
     keyioDlg *keyio;
+    keyplcDlg *keyplc;
     keymovDlg *keymov;
     keyscanDlg *keyscan;
     keytraceDlg *keytrace;

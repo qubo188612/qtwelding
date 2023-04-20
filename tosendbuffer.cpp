@@ -523,6 +523,76 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 break;
             }
         }
+        else if(key==CMD_PLC_KEY)//PLC指令
+        {
+            if(m_mcs->rob->b_link_ctx_plc==false)
+            {
+                main_record.lock();
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 没有与PLC建立通信");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            switch(cmd.cmd_plc_mod)
+            {
+                case PLC_WRITE://输出plc
+                {
+                    int add=cmd.cmd_plc_register_add;
+                    uint16_t data=(uint16_t)cmd.cmd_plc_register_data;
+                    if(1!=modbus_write_registers(m_mcs->rob->ctx_plc,add,1,&data))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 与PLC通信出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                }
+                break;
+                case PLC_WAIT://等待PLC输入
+                {
+                    int add=cmd.cmd_plc_register_add;
+                    int data=cmd.cmd_plc_register_data;
+                    bool b_plc=false;
+                    uint16_t plc_rcv_data;
+                    while(b_plc==false)
+                    {
+                        b_plc=true;
+                        if(1==modbus_read_registers(m_mcs->rob->ctx_plc,add,1,&plc_rcv_data))
+                        {
+                            if(plc_rcv_data==data)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 与PLC通信出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                        if(b_cmdlist_build==false)     //停止
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("手动停止进程");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            paused_key=key;
+                            cmd_lock(1);
+                            line=n;
+                            return 1;
+                        }
+                        sleep(0);
+                    }
+                }
+                break;
+            }
+        }
         else if(key==CMD_SCAN_KEY)//采集指令
         {    
             float speed=cmd.cmd_scan_speed;//获取到的扫描速度

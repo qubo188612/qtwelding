@@ -4,6 +4,7 @@
 
 QMutex send_group_leaser;
 QMutex send_group_robot;
+QMutex send_group_plc;
 QMutex main_record;
 
 qtweldingDlg::qtweldingDlg(QWidget *parent) :
@@ -48,6 +49,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     b_init_sent_leaser=true;
     b_init_show_robpos_list=true;
     b_init_set_robtask=true;
+//  b_init_set_plctask=true;
     b_init_show_record_list=true;
 
     b_RunAlgCamer=false;
@@ -129,6 +131,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     thread3 = new qtrecordThread(this);
     connect(thread3, SIGNAL(Send_show_record_list(QString)), this, SLOT(init_show_record_list(QString)));
 
+//  thread4 = new qtplcThread(this);
+//  connect(thread4, SIGNAL(Send_set_plctask()), this, SLOT(init_set_plctask()));
+
     ConnectCamer();//连接相机
     ConnectRobot();//连接机器人
     ConnectPLC();//连接PLC
@@ -141,6 +146,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     b_thread3=true;
     thread3->start();
+
+//  b_thread4=true;
+//  thread4->start();
 
     UpdataUi();
 
@@ -171,7 +179,14 @@ qtweldingDlg::~qtweldingDlg()
         thread3->quit();
         thread3->wait();
     }
-
+    /*
+    if(b_thread4==true)
+    {
+        thread4->Stop();
+        thread4->quit();
+        thread4->wait();
+    }
+    */
     DisconnectCamer();
     DisconnectRobot();
     DisconnectPLC();
@@ -179,6 +194,7 @@ qtweldingDlg::~qtweldingDlg()
     delete thread1;
     delete thread2;
     delete thread3;
+//  delete thread4;
     delete qtmysunny;
     delete demarcate;
     delete robotset;
@@ -1034,7 +1050,16 @@ void qtweldingDlg::init_set_robtask()
     }
     b_init_set_robtask=true;
 }
-
+/*
+void qtweldingDlg::init_set_plctask()
+{
+    if(m_mcs->rob->b_send_group_plc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("PLC通信异常"));
+    }
+    b_init_set_plctask=true;
+}
+*/
 void qtweldingDlg::init_show_record_list(QString msg)
 {
     ui->record->append(msg);
@@ -1378,6 +1403,85 @@ void qtrecordThread::Stop()
   }
 }
 
+/*
+qtplcThread::qtplcThread(qtweldingDlg *statci_p)
+{
+    _p=statci_p;
+}
 
+void qtplcThread::run()
+{
+    while (1)
+    {
+        if(_p->b_thread4==true)
+        {
+            if(_p->m_mcs->rob->b_connect_plc==true)
+            {
+                if(_p->m_mcs->rob->ctx_plc_dosomeing==DO_WRITE_TASK)
+                {
+                    send_group_plc.lock();
+                    if(_p->m_mcs->rob->send_group_plc.size()!=0)
+                    {
+                        sent_info_robot sentdata=_p->m_mcs->rob->send_group_plc[0];
+                        std::vector<sent_info_robot>::iterator it = _p->m_mcs->rob->send_group_plc.begin();
+                        _p->m_mcs->rob->send_group_plc.erase(it);
+                        int rc=modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+                        if(rc!=sentdata.data.size())
+                        {
+                            _p->m_mcs->rob->b_send_group_plc=false;
+                            if(_p->b_init_set_plctask==true)
+                            {
+                                _p->b_init_set_plctask=false;
+                                emit Send_set_plctask();
+                            }
+                        }
+                        else
+                        {
+                            _p->m_mcs->rob->b_send_group_plc=true;
+                        }
+                        if(_p->m_mcs->rob->send_group_plc.size()==0)
+                        {
+                            _p->m_mcs->rob->ctx_plc_dosomeing=DO_NOTHING;
+                        }
+                    }
+                    else
+                    {
+                        _p->m_mcs->rob->ctx_plc_dosomeing=DO_NOTHING;
+                    }
+                    send_group_plc.unlock();
+                }
+                if(_p->m_mcs->rob->ctx_plc_dosomeing==DO_NOTHING)
+                {
+                //访问机器人坐标通信
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_plc,PLC_ST_REG_ADD,PLC_RED_NUM,_p->plc_rcv_data))
+                    {
+
+                    }
+                }
+            }
+            sleep(0);
+        }
+        else
+        {
+            _p->b_stop_thread4=true;
+            break;
+        }
+    }
+}
+
+void qtplcThread::Stop()
+{
+  if(_p->b_thread4==true)
+  {
+    _p->b_stop_thread4=false;
+    _p->b_thread4=false;
+    while (_p->b_stop_thread4==false)
+    {
+      sleep(0);
+    }
+  }
+}
+
+*/
 
 

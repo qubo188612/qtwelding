@@ -546,6 +546,19 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS_TIME_MINUTES_REG_ADD                0x000e  //当前时间分
 #define ALS_TIME_SECONDS_REG_ADD                0x000f  //当前时间秒
 #define ALS_TIME_MILLISECONDS_REG_ADD           0x0010  //当前时间毫秒
+#define ALS_STATE2_REG_ADD                      0x0011  //传感器状态,0表示正在处理,1表示成功,-1表示失败
+#define ALS_P_REALTIME_POSX_REG_ADD             0x0012  //P变量实时检测结果X，(0x012-0x013)单位微米
+#define ALS_P_REALTIME_POSY_REG_ADD             0x0014  //P变量实时检测结果Y，(0x014-0x015)单位微米
+#define ALS_P_REALTIME_POSZ_REG_ADD             0x0016  //P变量实时检测结果Z，(0x016-0x017)单位微米
+#define ALS_P_REALTIME_POSRX_REG_ADD            0x0018  //P变量实时检测结果RX，(0x018-0x019)单位0.0001deg
+#define ALS_P_REALTIME_POSRY_REG_ADD            0x001a  //P变量实时检测结果RY，(0x01a-0x01b)单位0.0001deg
+#define ALS_P_REALTIME_POSRZ_REG_ADD            0x001c  //P变量实时检测结果RZ，(0x01c-0x01d)单位0.0001deg
+#define ALS_P_REALTIME_POSOUT1_REG_ADD          0x001e  //P变量实时检测结果，机器人外部轴1，(0x01e-0x01f)
+#define ALS_P_REALTIME_POSOUT2_REG_ADD          0x0020  //P变量实时检测结果，机器人外部轴2，(0x020-0x021)
+#define ALS_P_REALTIME_POSOUT3_REG_ADD          0x0022  //P变量实时检测结果，机器人外部轴3，(0x022-0x023)
+#define ALS_P_REALTIME_TOOL_REG_ADD             0x0024  //P变量实时检测结果，机器人工具号
+#define ALS_P_REALTIME_TCP_REG_ADD              0x0025  //P变量实时检测结果，机器人坐标系号
+#define ALS_P_REALTIME_USERTCP_REG_ADD          0x0026  //P变量实时检测结果，机器人用户坐标系号
 
 #define ALS_Y_POINT2_REG_ADD                    0x0050  //Y坐标POINT2
 #define ALS_Z_POINT2_REG_ADD                    0x0051  //Z坐标POINT2
@@ -576,6 +589,14 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS_REALTIME_USERTCP_REG_ADD            0x0125  //写入实时坐标，机器人用户坐标系号
 
 /*****************************/
+//PLC寄存器
+/*
+#define PLC_ST_REG_ADD                         0x0000   //PLC起始寄存器
+#define PLC_RED_NUM                            0x0010   //PLC读取数量
+*/
+/****************************/
+
+
 //64位浮点排序类
 class d_Mysort
 {
@@ -702,6 +723,12 @@ typedef enum IOmodel_ID     //机器人IO口收发方式
     OUT=0,        //输出
     WAITIN=1,     //等待输入
 }IOmodel;
+
+typedef enum Plcmodel_ID     //PLC读写方式
+{
+    PLC_WRITE=0,        //写PLC
+    PLC_WAIT=1,         //等待输入
+}Plcmodel;
 
 typedef enum Weldworkmodel_ID       //焊机工作状态
 {

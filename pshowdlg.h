@@ -33,6 +33,7 @@ public:
     bool link_pshow_state;
 
     unsigned short pos_data[0x15];
+    unsigned short p_pos_data[0x15];
     unsigned short result_data[0x03];
     void getrobinfo();//更新机器人坐标
 
@@ -40,6 +41,7 @@ private:
     Ui::pshowdlg *ui;
 
     rob_pinfo robposinfo;//机器人当前坐标信息
+    rob_pinfo p_robposinfo;
     bool b_robposfinduv;//机器人uv坐标是否有效
 
 private slots:

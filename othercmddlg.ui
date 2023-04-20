@@ -91,6 +91,11 @@
      <string>WELD: 起弧指令</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>PLC:PLC控制指令</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>

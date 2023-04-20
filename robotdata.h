@@ -139,6 +139,11 @@ public:
     int ConnectPLC(QString ip,int port);         //连接PLC
     void DisconnectPLC();
     bool b_connect_plc;     //是否连接PLC
+    /*
+    int ctx_plc_dosomeing;    //plc端口忙
+    std::vector<sent_info_robot> send_group_plc;    //发送PLC数据队列
+    volatile bool b_send_group_plc;       //发送plc数据是否异常
+    */
 
     int SaveRob(char* filename);    //保存项目
 

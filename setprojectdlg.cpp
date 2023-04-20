@@ -29,6 +29,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keycreat=new keycreatDlg(mcs);
     keydelay=new keydelayDlg(mcs);
     keyio=new keyioDlg(mcs);
+    keyplc=new keyplcDlg(mcs);
     keymov=new keymovDlg(mcs);
     keyscan=new keyscanDlg(mcs);
     keytrace=new keytraceDlg(mcs);
@@ -48,6 +49,7 @@ setprojectDlg::~setprojectDlg()
     delete keycreat;
     delete keydelay;
     delete keyio;
+    delete keyplc;
     delete keymov;
     delete keyscan;
     delete keytrace;
@@ -800,6 +802,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keymov->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
@@ -819,6 +822,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keydelay->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
@@ -838,6 +842,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keycam->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
@@ -857,6 +862,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keyweld->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
@@ -994,6 +1000,27 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keyio->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_PLC_KEY)
+            {
+                keyplc->init_dlg_show(cmdlist);
+                keyplc->setWindowTitle(othercmd->cmdname);
+                keyplc->setbutton(1);
+                int rc=keyplc->exec();
+                keyplc->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keyplc->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
@@ -1595,6 +1622,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             else
             {
                 ui->record->append(QString::fromLocal8Bit("取消IO口指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_PLC_KEY)
+        {
+            keyplc->init_dlg_show();
+            keyplc->setWindowTitle(othercmd->cmdname);
+            keyplc->setbutton(0);
+            int rc=keyplc->exec();
+            keyplc->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keyplc->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入PLC指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消PLC指令设置"));
                 return;
             }
         }

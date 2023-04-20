@@ -28,7 +28,9 @@ RobotData::RobotData()
     robot_speed=0;
     robot_state=ROBOT_STATE_UNLINK;
     b_send_group_robot=false;
+//  b_send_group_plc=false;
     ctx_robot_dosomeing=DO_NOTHING;
+//  ctx_plc_dosomeing=DO_NOTHING;
     robioinput.resize(ROBOTINPUTNUM);
 
 //  send_group_robot.reserve(6000000);

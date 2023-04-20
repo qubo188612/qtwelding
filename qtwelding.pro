@@ -36,6 +36,7 @@ SOURCES += \
         keydelaydlg.cpp \
         keyiodlg.cpp \
         keymovdlg.cpp \
+        keyplcdlg.cpp \
         keyscandlg.cpp \
         keytracedlg.cpp \
         keywelddlg.cpp \
@@ -87,6 +88,7 @@ FORMS += \
     keydelaydlg.ui \
     keyiodlg.ui \
     keymovdlg.ui \
+    keyplcdlg.ui \
     keyscandlg.ui \
     keytracedlg.ui \
     keywelddlg.ui \
@@ -135,6 +137,7 @@ HEADERS += \
     keydelaydlg.h \
     keyiodlg.h \
     keymovdlg.h \
+    keyplcdlg.h \
     keyscandlg.h \
     keytracedlg.h \
     keywelddlg.h \
