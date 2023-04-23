@@ -395,8 +395,9 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS105_CUTSIDE_UP_REG_ADD              0x00ce
 #define ALS105_CUTSIDE_DOWN_REG_ADD            0x00cf
 #define ALS105_B_ERJIEDAO_REG_ADD              0x00d0
+#define ALS105_B_QUXIAN_REG_ADD                0x00d1
 
-#define ALS105_REG_TOTALNUM                    0x0021
+#define ALS105_REG_TOTALNUM                    0x0022
 
 #define ALS105_INIT_REG_ADD                    0x00df
 
