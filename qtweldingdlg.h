@@ -2,6 +2,7 @@
 #define QTWELDINGDLG_H
 
 #include <QDialog>
+#include <QDoubleValidator>
 #include <QFileDialog>
 #include <QTextCodec>
 #include <QMutex>

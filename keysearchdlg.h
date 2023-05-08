@@ -2,6 +2,7 @@
 #define KEYSEARCHDLG_H
 
 #include <QDialog>
+#include <QDoubleValidator>
 #include "my_parameters.h"
 #include "setmovecdlg.h"
 #include "my_cmd.h"

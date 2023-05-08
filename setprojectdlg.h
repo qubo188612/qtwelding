@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include <QDoubleValidator>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QTextCodec>
