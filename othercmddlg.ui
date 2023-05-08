@@ -78,7 +78,17 @@
    </item>
    <item>
     <property name="text">
+     <string>PLC: PLC控制指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>SCAN: 采集激光数据指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SEARCH: 寻位指令</string>
     </property>
    </item>
    <item>
@@ -89,16 +99,6 @@
    <item>
     <property name="text">
      <string>WELD: 起弧指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>PLC: PLC控制指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SEARCH: 寻位指令</string>
     </property>
    </item>
   </widget>
