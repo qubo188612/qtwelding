@@ -1,11 +1,12 @@
-#include "keyscandlg.h"
-#include "ui_keyscandlg.h"
+#include "keysearchdlg.h"
+#include "ui_keysearchdlg.h"
 
-keyscanDlg::keyscanDlg(my_parameters *mcs,QWidget *parent) :
+keysearchDlg::keysearchDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::keyscanDlg)
+    ui(new Ui::keysearchDlg)
 {
     ui->setupUi(this);
+
     m_mcs=mcs;
 
     setmovec=new setmovecDlg(m_mcs);
@@ -13,20 +14,20 @@ keyscanDlg::keyscanDlg(my_parameters *mcs,QWidget *parent) :
     for(int n=0;n<ROBOTTCPNUM;n++)
     {
         QString msg="TCP: "+QString::number(n);
-        ui->scantcpcombo->addItem(msg);
+        ui->searchtcpcombo->addItem(msg);
     }
 
     adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
-    ui->scanspeed->setValidator(adoubleValidator_speed);
+    ui->searchspeed->setValidator(adoubleValidator_speed);
 }
 
-keyscanDlg::~keyscanDlg()
+keysearchDlg::~keysearchDlg()
 {
     delete setmovec;
     delete ui;
 }
 
-void keyscanDlg::init_dlg_show()
+void keysearchDlg::init_dlg_show()
 {
     ui->arrive_pos->clear();
     ui->groupBox_2->setDisabled(true);
@@ -34,7 +35,7 @@ void keyscanDlg::init_dlg_show()
     ui->record->clear();
 }
 
-void keyscanDlg::init_dlg_show(QString cmdlist)
+void keysearchDlg::init_dlg_show(QString cmdlist)
 {
     QString msg,key;
     my_cmd cmd;
@@ -42,15 +43,15 @@ void keyscanDlg::init_dlg_show(QString cmdlist)
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
-        if(key==CMD_SCAN_KEY)//采集指令
+        if(key==CMD_SEARCH_KEY)//寻位指令
         {
-            float speed=cmd.cmd_scan_speed;//获取到的扫描速度
-            int tcp=cmd.cmd_scan_tcp;//获取到扫描TCP
-            Robmovemodel movemod=cmd.cmd_scan_movemod;//获取到的扫描模式
-            QString name=cmd.cmd_scan_name;//获取到的扫描名字
+            float speed=cmd.cmd_search_speed;//获取到的寻位速度
+            int tcp=cmd.cmd_search_tcp;//获取到寻位TCP
+            Robmovemodel movemod=cmd.cmd_search_movemod;//获取到的寻位模式
+            QString name=cmd.cmd_search_name;//获取到的寻位名字
             if(movemod==MOVEJ||movemod==MOVEL)
             {
-                RobPos pos=cmd.cmd_scan_pos;//获取到移动坐标
+                RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
                 QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
@@ -67,42 +68,42 @@ void keyscanDlg::init_dlg_show(QString cmdlist)
             }
             if(tcp>=0&&tcp<ROBOTTCPNUM)
             {
-                ui->scantcpcombo->setCurrentIndex(tcp);
+                ui->searchtcpcombo->setCurrentIndex(tcp);
             }
-            ui->scanspeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
-            if(movemod>=0&&movemod<=ui->scanmovemodecombo->count())
+            ui->searchspeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+            if(movemod>=0&&movemod<=ui->searchmovemodecombo->count())
             {
-                ui->scanmovemodecombo->setCurrentIndex(movemod);
+                ui->searchmovemodecombo->setCurrentIndex(movemod);
             }
-            ui->scanname->setText(name);
+            ui->searchname->setText(name);
         }
     }
     ui->record->clear();
 }
 
-void keyscanDlg::close_dlg_show()
+void keysearchDlg::close_dlg_show()
 {
 
 }
 
-void keyscanDlg::setbutton(int name)
+void keysearchDlg::setbutton(int name)
 {
     if(name==0)
     {
         b_inster=false;
-        ui->scanaddBtn->setText(QString::fromLocal8Bit("插入采集数据指令"));
+        ui->searchaddBtn->setText(QString::fromLocal8Bit("插入寻位指令"));
     }
     else
     {
         b_inster=true;
-        ui->scanaddBtn->setText(QString::fromLocal8Bit("替换采集数据指令"));
+        ui->searchaddBtn->setText(QString::fromLocal8Bit("替换寻位指令"));
     }
 }
 
-//采集数据指令
-void keyscanDlg::on_scanaddBtn_clicked()
+//寻位指令
+void keysearchDlg::on_searchaddBtn_clicked()
 {
-    int tcp=ui->scantcpcombo->currentIndex();
+    int tcp=ui->searchtcpcombo->currentIndex();
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
         sent_info_robot sendrob;
@@ -147,24 +148,24 @@ void keyscanDlg::on_scanaddBtn_clicked()
             return;
         }
         bool rc;
-        float speed=ui->scanspeed->text().toFloat(&rc);
+        float speed=ui->searchspeed->text().toFloat(&rc);
         RobPos robpos=m_mcs->rob->TCPpos;
-        Robmovemodel movemodel=(Robmovemodel)ui->scanmovemodecombo->currentIndex();
+        Robmovemodel movemodel=(Robmovemodel)ui->searchmovemodecombo->currentIndex();
         my_cmd cmd;
-        QString name=ui->scanname->text();
-        if(ui->scanspeed->text().isEmpty())
+        QString name=ui->searchname->text();
+        if(ui->searchspeed->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
+            ui->record->append(QString::fromLocal8Bit("请填写寻位速度"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("采集速度格式出错"));
+            ui->record->append(QString::fromLocal8Bit("寻位速度格式出错"));
             return;
         }
-        if(ui->scanname->text().isEmpty())
+        if(ui->searchname->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写轨迹名称"));
+            ui->record->append(QString::fromLocal8Bit("请填写寻位点名称"));
             return;
         }
         QString msg;
@@ -174,23 +175,23 @@ void keyscanDlg::on_scanaddBtn_clicked()
             case MOVEL:
             case MOVEJ:
             {
-                msg=cmd.cmd_scan(robpos,movemodel,speed,tcp,name);
+                msg=cmd.cmd_search(robpos,movemodel,speed,tcp,name);
             }
             break;
             case MOVEC:
             {
                 setmovec->init_dlg_show();
-                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧采集设置"));
+                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧寻位设置"));
                 setmovec->set_arrive_param(speed,tcp);
                 int rc=setmovec->exec();
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    msg=cmd.cmd_scanC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,name);
+                    msg=cmd.cmd_searchC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,name);
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消圆弧采集设置"));
+                    ui->record->append(QString::fromLocal8Bit("取消圆弧寻位设置"));
                     return;
                 }
             }
@@ -200,16 +201,16 @@ void keyscanDlg::on_scanaddBtn_clicked()
         {
             std::vector<QString> err_msg;
             m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg);
-            for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
             {
-                if(name==m_mcs->project->project_scan_trace[n].name)
+                if(name==m_mcs->project->projecr_robpos_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                    ui->record->append(QString::fromLocal8Bit("寻位点与已有的点重名"));
                     return;
                 }
             }
         }
-        ui->record->append(QString::fromLocal8Bit("插入采集数据指令成功"));
+        ui->record->append(QString::fromLocal8Bit("插入寻位指令成功"));
         cmd_msg=msg;
         done(1);
     }
@@ -220,7 +221,7 @@ void keyscanDlg::on_scanaddBtn_clicked()
 }
 
 //长按到点按下
-void keyscanDlg::on_arriveBtn_pressed()
+void keysearchDlg::on_arriveBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
@@ -229,26 +230,26 @@ void keyscanDlg::on_arriveBtn_pressed()
     }
     m_mcs->tosendbuffer->cmd_lock(0);
     bool rc;
-    float speed=ui->scanspeed->text().toFloat(&rc);
+    float speed=ui->searchspeed->text().toFloat(&rc);
     my_cmd cmd;
     QString msg;
-    if(ui->scanspeed->text().isEmpty())
+    if(ui->searchspeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
+        ui->record->append(QString::fromLocal8Bit("请填写寻位速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采集速度格式出错"));
+        ui->record->append(QString::fromLocal8Bit("寻位速度格式出错"));
         return;
     }
     QString key;
     rc=cmd.decodecmd(cmd_list_in,msg,key);
-    Robmovemodel movemod=cmd.cmd_scan_movemod;//获取到的移动模式
+    Robmovemodel movemod=cmd.cmd_search_movemod;//获取到的寻位模式
     if(movemod==MOVEJ||movemod==MOVEL)
     {
-        int tcp=ui->scantcpcombo->currentIndex();
-        RobPos pos=cmd.cmd_scan_pos;//获取到移动坐标
+        int tcp=ui->searchtcpcombo->currentIndex();
+        RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
         movemod=MOVEJ;//用关节移动方式到位
         m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     }
@@ -261,7 +262,7 @@ void keyscanDlg::on_arriveBtn_pressed()
 }
 
 //长按到点松开
-void keyscanDlg::on_arriveBtn_released()
+void keysearchDlg::on_arriveBtn_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {

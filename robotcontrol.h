@@ -151,6 +151,10 @@ public:
     int pause_movepointN;                    //当前暂停的位置下标
     void clear_movepoint_buffer();          //清空这个时间段内接收到的全部移动点
 /*******************************************/
+
+
+
+    std::array<double, 3> Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);   //四元素转换为内旋 RX-RY-RZ
 protected:
 
     Robotcontrol();

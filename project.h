@@ -47,6 +47,8 @@ public:
 
     int LoadProjectPath(char* filename);    //读取最后一次项目路径，以便下次打开
 
+    std::vector<Point_robpos_result> projecr_robpos_trace;  //点轨迹
+
     std::vector<Scan_trace_result> project_scan_trace;  //扫描轨迹
 
     std::vector<Weld_trace_result> project_weld_trace;  //跟踪轨迹

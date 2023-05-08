@@ -45,29 +45,34 @@ typedef enum PLC_MODEL_ID            //PLC型号（协议）
     PLC_MODEL_MODBUSTCP=1,         //Modbustcp协议
 }PLC_MODEL;
 
-#define ROBOT_DOBOT_TOTALCONTROL_RORT             29999    //越彊机器人总控值令数据信息发送端口
-#define ROBOT_DOBOT_INFO_TOTALCONTROLCVBUFFER_MAX 1440     //越彊机器人运动值令发送数据回复信息最大个数
-#define ROBOT_DOBOT_SEND_PORT                     30003    //越彊机器人运动值令数据信息发送端口
-#define ROBOT_DOBOT_INFO_SENDRECVBUFFER_MAX       1440     //越彊机器人运动值令发送数据回复信息最大个数
+#define ROBOT_DOBOT_TOTALCONTROL_RORT             29999    //越彊机器人总控指令数据信息发送端口
+#define ROBOT_DOBOT_INFO_TOTALCONTROLCVBUFFER_MAX 1440     //越彊机器人运动指令发送数据回复信息最大个数
+#define ROBOT_DOBOT_SEND_PORT                     30003    //越彊机器人运动指令数据信息发送端口
+#define ROBOT_DOBOT_INFO_SENDRECVBUFFER_MAX       1440     //越彊机器人运动指令发送数据回复信息最大个数
 #define ROBOT_DOBOT_INFO_PORT                     30004    //越彊机器人数据信息获取端口
 #define ROBOT_DOBOT_INFO_RECVBUFFER_MAX           1440     //越彊机器人数据信息最大个数
 
-#define ROBOT_UR_TOTALCONTROL_RORT                29999    //优傲机器人总控值令数据信息发送端口
-#define ROBOT_UR_INFO_TOTALCONTROLCVBUFFER_MAX    1108     //优傲机器人运动值令发送数据回复信息最大个数
-#define ROBOT_UR_SEND_PORT                        30001    //优傲机器人运动值令数据信息发送端口
-#define ROBOT_UR_INFO_SENDRECVBUFFER_MAX          1108     //优傲机器人运动值令发送数据回复信息最大个数
+#define ROBOT_UR_TOTALCONTROL_RORT                29999    //优傲机器人总控指令数据信息发送端口
+#define ROBOT_UR_INFO_TOTALCONTROLCVBUFFER_MAX    1108     //优傲机器人运动指令发送数据回复信息最大个数
+#define ROBOT_UR_SEND_PORT                        30001    //优傲机器人运动指令数据信息发送端口
+#define ROBOT_UR_INFO_SENDRECVBUFFER_MAX          1108     //优傲机器人运动指令发送数据回复信息最大个数
 #define ROBOT_UR_INFO_PORT                        30003    //优傲机器人数据信息获取端口
 #define ROBOT_UR_INFO_RECVBUFFER_MAX              1108     //优傲机器人数据信息最大个数
 
-#define ROBOT_KUKA_SEND_PORT                      30001    //库卡机器人运动值令数据信息发送端口
-#define ROBOT_KUKA_INFO_SENDRECVBUFFER_MAX        1440     //库卡机器人运动值令发送数据回复信息最大个数
+#define ROBOT_KUKA_SEND_PORT                      30001    //库卡机器人运动指令数据信息发送端口
+#define ROBOT_KUKA_INFO_SENDRECVBUFFER_MAX        1440     //库卡机器人运动指令发送数据回复信息最大个数
 #define ROBOT_KUKA_INFO_PORT                      30003    //库卡机器人信息端口
 #define ROBOT_KUKA_INFO_RECVBUFFER_MAX            1440     //库卡机器人数据信息最大个数
 
-#define ROBOT_KAWASAKI_SEND_PORT                  23       //川崎机器人运动值令数据信息发送端口
-#define ROBOT_KAWASAKI_INFO_SENDRECVBUFFER_MAX    1440     //川崎机器人运动值令发送数据回复信息最大个数
+#define ROBOT_KAWASAKI_SEND_PORT                  23       //川崎机器人运动指令数据信息发送端口
+#define ROBOT_KAWASAKI_INFO_SENDRECVBUFFER_MAX    1440     //川崎机器人运动指令发送数据回复信息最大个数
 #define ROBOT_KAWASAKI_INFO_PORT                  23       //川崎机器人信息端口
 #define ROBOT_KAWASAKI_INFO_RECVBUFFER_MAX        1440     //川崎机器人数据信息最大个数
+
+#define ROBOT_EMERGEN_SEND_PORT                   30004    //智昌机器人运动指令端口数据信息发送端口
+#define ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX     1440     //智昌机器人运动指令发送数据回复信息最大个数
+#define ROBOT_EMERGEN_INFO_PORT                   30004    //智昌机器人信息端口
+#define ROBOT_EMERGEN_INFO_RECVBUFFER_MAX         1440     //智昌机器人数据信息端口
 
 /***************************************/
 

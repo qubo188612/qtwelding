@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1294</width>
+    <width>1404</width>
     <height>790</height>
    </rect>
   </property>
@@ -14,6 +14,1045 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" rowspan="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="importprojectBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>工程导入</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="runprojectBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>运行工程</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="runpausedBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>暂停工程</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="editprojectBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>工程编辑</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="editweldprocessBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>焊接工艺编辑</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="setlaserheadBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>激光头设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="setrobotBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>机器人设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="setweldBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>焊机设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="demarcateBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>标定设置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="setplcBtn">
+       <property name="minimumSize">
+        <size>
+         <width>171</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>191</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>PLC设置</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="SaveDatacheckBox">
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>保存轨道数据</string>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>91</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>91</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>调试窗口:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" rowspan="2">
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="minimumSize">
+        <size>
+         <width>531</width>
+         <height>331</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1062</width>
+         <height>602</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="title">
+        <string>焊机信息:</string>
+       </property>
+       <widget class="QLabel" name="label_27">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>150</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊接电流:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_current">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>150</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_28">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>200</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊接工艺:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_process">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>200</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_29">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>300</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊机状态:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_state">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>300</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_31">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>250</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>交变电流:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_alternating">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>250</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_33">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊机型号:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_model">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>50</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_34">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>100</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>焊机IP:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="weld_ip_port">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>100</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_windBtn">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>130</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>送丝</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_rewindBtn">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>270</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>退丝</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_gassBtn">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>200</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>送气</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="weld_fireBtn">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>200</y>
+          <width>71</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>点焊</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="weld_eled">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>50</y>
+          <width>151</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>161</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_35">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>50</y>
+          <width>81</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>点焊电流:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_36">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>90</y>
+          <width>81</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>点焊工艺:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="weld_elem">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>90</y>
+          <width>151</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text">
+          <string>直流</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>交流</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QTextBrowser" name="record">
+       <property name="minimumSize">
+        <size>
+         <width>481</width>
+         <height>271</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>962</width>
+         <height>542</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="posXsubBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>X-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posYsubBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Y-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posZsubBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Z-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posRXsubBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RX-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posRYsubBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RY-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posRZsubBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RZ-</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="3">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QPushButton" name="posXaddBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>X+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posYaddBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Y+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posZaddBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Z+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posRXaddBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RX+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posRYaddBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RY+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="posRZaddBtn">
+       <property name="minimumSize">
+        <size>
+         <width>51</width>
+         <height>51</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>81</width>
+         <height>81</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RZ+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -1008,80 +2047,10 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="1">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QLabel" name="label">
-       <property name="minimumSize">
-        <size>
-         <width>91</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>91</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>调试窗口:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="SaveDatacheckBox">
-       <property name="maximumSize">
-        <size>
-         <width>160</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>保存轨道数据</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1" colspan="2">
-      <widget class="QTextBrowser" name="record">
-       <property name="minimumSize">
-        <size>
-         <width>481</width>
-         <height>271</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>962</width>
-         <height>542</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" rowspan="2">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="minimumSize">
-        <size>
-         <width>531</width>
-         <height>301</height>
-        </size>
-       </property>
+   <item row="1" column="2" colspan="2">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QGroupBox" name="groupBox_5">
        <property name="maximumSize">
         <size>
          <width>1062</width>
@@ -1094,158 +2063,14 @@
         </font>
        </property>
        <property name="title">
-        <string>焊机信息:</string>
+        <string>机器人控制参数:</string>
        </property>
-       <widget class="QLabel" name="label_27">
+       <widget class="QLabel" name="label_37">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>150</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>焊接电流:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_current">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>150</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_28">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>200</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>焊接工艺:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_process">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>200</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_29">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>300</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>焊机状态:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_state">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>300</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_31">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>250</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>交变电流:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="weld_alternating">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>250</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_33">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
+          <x>10</x>
           <y>50</y>
-          <width>81</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
@@ -1255,34 +2080,31 @@
          </font>
         </property>
         <property name="text">
-         <string>焊机型号:</string>
+         <string>速度:</string>
         </property>
        </widget>
-       <widget class="QLabel" name="weld_model">
+       <widget class="QLineEdit" name="movespeed">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>62</x>
           <y>50</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_34">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>100</y>
           <width>101</width>
-          <height>21</height>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_38">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>41</width>
+          <height>17</height>
          </rect>
         </property>
         <property name="font">
@@ -1291,16 +2113,16 @@
          </font>
         </property>
         <property name="text">
-         <string>焊机IP:</string>
+         <string>TCP:</string>
         </property>
        </widget>
-       <widget class="QLabel" name="weld_ip_port">
+       <widget class="QComboBox" name="movetcpcombo">
         <property name="geometry">
          <rect>
-          <x>130</x>
-          <y>100</y>
-          <width>151</width>
-          <height>21</height>
+          <x>62</x>
+          <y>90</y>
+          <width>101</width>
+          <height>25</height>
          </rect>
         </property>
         <property name="font">
@@ -1308,137 +2130,193 @@
           <pointsize>13</pointsize>
          </font>
         </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
        </widget>
-       <widget class="QPushButton" name="weld_windBtn">
+       <widget class="QPushButton" name="posOut1subBtn">
         <property name="geometry">
          <rect>
-          <x>370</x>
+          <x>10</x>
+          <y>150</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>81</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>out1-</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="posOut1addBtn">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>150</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>81</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>out1+</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="posOut2addBtn">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>210</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>81</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>out2+</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="posOut2subBtn">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>210</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>81</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>out2-</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="posOut3addBtn">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>270</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>81</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>out3+</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="posOut3subBtn">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>270</y>
+          <width>81</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>81</width>
+          <height>81</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>out3-</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_39">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
           <y>130</y>
           <width>71</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>71</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>送丝</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="weld_rewindBtn">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>270</y>
-          <width>71</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>71</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>退丝</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="weld_gassBtn">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>200</y>
-          <width>71</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>71</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>送气</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="weld_fireBtn">
-        <property name="geometry">
-         <rect>
-          <x>450</x>
-          <y>200</y>
-          <width>71</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>71</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>点焊</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="weld_eled">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>50</y>
-          <width>151</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>161</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_35">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>50</y>
-          <width>81</width>
           <height>17</height>
          </rect>
         </property>
@@ -1448,299 +2326,9 @@
          </font>
         </property>
         <property name="text">
-         <string>点焊电流:</string>
+         <string>外部轴:</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_36">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>90</y>
-          <width>81</width>
-          <height>17</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>点焊工艺:</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="weld_elem">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>90</y>
-          <width>151</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <item>
-         <property name="text">
-          <string>直流</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>交流</string>
-         </property>
-        </item>
-       </widget>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="0" rowspan="2">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="importprojectBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>工程导入</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="runprojectBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>运行工程</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="runpausedBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>暂停工程</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="editprojectBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>工程编辑</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="editweldprocessBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>焊接工艺编辑</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="setlaserheadBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>激光头设置</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="setrobotBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>机器人设置</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="setweldBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>焊机设置</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="demarcateBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>标定设置</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="setplcBtn">
-       <property name="minimumSize">
-        <size>
-         <width>171</width>
-         <height>51</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>191</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>22</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>PLC设置</string>
-       </property>
       </widget>
      </item>
     </layout>

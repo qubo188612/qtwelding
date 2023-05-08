@@ -690,6 +690,15 @@ public:
     systime robottime;     //机器人当前采集的时间
 };
 
+class Point_robpos_result //机器人点结果
+{
+public:
+    Point_robpos_result();
+    RobPos robotpos;    //点结果坐标
+    QString name;       //点名字
+    bool nEn;           //点是否有效
+};
+
 class Scan_trace_result    //扫描轨迹
 {
 public:

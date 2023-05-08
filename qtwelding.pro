@@ -38,6 +38,7 @@ SOURCES += \
         keymovdlg.cpp \
         keyplcdlg.cpp \
         keyscandlg.cpp \
+        keysearchdlg.cpp \
         keytracedlg.cpp \
         keywelddlg.cpp \
         main.cpp \
@@ -90,6 +91,7 @@ FORMS += \
     keymovdlg.ui \
     keyplcdlg.ui \
     keyscandlg.ui \
+    keysearchdlg.ui \
     keytracedlg.ui \
     keywelddlg.ui \
     newcraftdlg.ui \
@@ -139,6 +141,7 @@ HEADERS += \
     keymovdlg.h \
     keyplcdlg.h \
     keyscandlg.h \
+    keysearchdlg.h \
     keytracedlg.h \
     keywelddlg.h \
     my_cmd.h \

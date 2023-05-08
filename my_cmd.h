@@ -8,17 +8,22 @@
 /************************/
 //项目0:命令集合
 //注释符号，举例 #测试
-//移动指令，举例 MOV: SPEED[25] MOVL[1.3,32.7,45,66,7,89,3] TCP[1]
+//移动指令，举例 MOV: SPEED[25] MOVL[1.3,32.7,45,66,7,89,3,0,0,0] TCP[1]
 //延时指令，举例 DELAY: TIME[1000]
 //激光指令，举例 CAM: TASK[102] WORK[1]
 //激光指令，举例 CAM: WORK[0]
 //焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEM[0]
 //焊机指令，举例 WELD: WORK[0]
-//采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3] SPEED[25] TCP[0] NAME[扫描第一条line]
+//采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[扫描第一条line]
 //跟踪指令，举例 TRACE: NAME[跟踪第一条line] SPEED[25] TCP[0] CRAFT[/home/qubo/caf.json]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
 //IO口输出指令，举例 IO: OUT[1,0,0,1,0,1,0,1]
 //IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1]
+//写PLC指令，举例 PLC: WRITEPLC[20] DATA16[2]
+//等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
+//寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
+
+
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
 #define CMD_DELAY_KEY                   "DELAY:"        //延时命令集合KEY
@@ -29,6 +34,7 @@
 #define CMD_CREAT_KEY                   "CREAT:"        //生成轨迹命令KEY
 #define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
 #define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
+#define CMD_SEARCH_KEY                  "SEARCH:"       //寻位命令集合KEY
 
 
 //参数项
@@ -74,6 +80,8 @@ public:
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
     QString cmd_plcwait(int register_add,int16_t register_data);
     QString cmd_plcwrite(int register_add,int16_t register_data);
+    QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name);//寻位命令
+    QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆寻位命令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -123,6 +131,14 @@ public:
     int cmd_plc_register_data;  //获取到的PLC寄存器内容
     Plcmodel cmd_plc_mod;       //PLC读写模式
 
+    RobPos cmd_search_pos;//获取到寻位终点坐标
+    RobPos cmd_search_pos1;//获取到圆寻位起点坐标
+    RobPos cmd_search_pos2;//获取到圆寻位途径点坐标
+    RobPos cmd_search_pos3;//获取到圆寻位终点坐标
+    float cmd_search_speed;//获取到的寻位速度
+    int cmd_search_tcp;//获取到寻位TCP
+    Robmovemodel cmd_search_movemod;//获取到的寻位模式
+    QString cmd_search_name;//获取到的寻位点名字
 
 protected:
     QString rc_tcp(int tcp);

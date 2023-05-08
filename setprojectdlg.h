@@ -19,6 +19,7 @@
 #include "keyscandlg.h"
 #include "keytracedlg.h"
 #include "keywelddlg.h"
+#include "keysearchdlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -48,6 +49,7 @@ public:
     keyscanDlg *keyscan;
     keytraceDlg *keytrace;
     keyweldDlg *keyweld;
+    keysearchDlg *keysearch;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

@@ -93,7 +93,12 @@
    </item>
    <item>
     <property name="text">
-     <string>PLC:PLC控制指令</string>
+     <string>PLC: PLC控制指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SEARCH: 寻位指令</string>
     </property>
    </item>
   </widget>

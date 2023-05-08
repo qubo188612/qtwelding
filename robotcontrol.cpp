@@ -213,6 +213,25 @@ void Robotcontrol::Close_control_modbus()
     }
 }
 
+std::array<double, 3> Robotcontrol::Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r21,r31,r32,r33;
+    r11 = rot_matrix(0,0);
+    r21 = rot_matrix(1,0);
+    r31 = rot_matrix(2,0);
+    r32 = rot_matrix(2,1);
+    r33 = rot_matrix(2,2);
+    double rx = atan2(r32,r33);
+    double ry = atan2(-r31,sqrt(r11*r11 + r21*r21));
+    double rz = atan2(r21,r11);
+
+    std::array<double,3> temp;
+    temp[0]= rx;
+    temp[1]= ry;
+    temp[2]= rz;
+    return temp;
+}
+
 void Robotcontrol::WeldInit()//焊机初始化(非机器人直连时有效)
 {
     switch(weld_mod)
@@ -355,6 +374,16 @@ void Robotcontrol::RobotOPEN_ELE()
         }
         break;
         case ROBOT_MODEL_KUKA://库卡机器人
+        {
+
+        }
+        break;
+        case ROBOT_MODEL_KAWASAKI://川崎机器人
+        {
+
+        }
+        break;
+        case ROBOT_MODEL_YASKAWA://安川机器人
         {
 
         }
@@ -572,9 +601,9 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     QString msg="movel(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(f_movRX*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
                                         QString::number(f_speed/1000.0)+")\r\n";
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
@@ -587,9 +616,9 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     QString msg="movej(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(f_movRX*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
                                         QString::number(f_speed/1000.0)+")\r\n";
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
@@ -602,15 +631,15 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     QString msg="movec(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],p["+
+                                        QString::number(f_movRX*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],p["+
                                         QString::number(f_movX1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(f_movRX1*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRY1*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(f_movRZ1*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
                                         QString::number(f_speed/1000.0)+")\r\n";
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
@@ -2106,6 +2135,60 @@ void RobotlinkThread::run() //连接机器人命令
                 break;
                 case ROBOT_MODEL_EMERGEN://智昌机器人
                 {
+                    _p->m_client.CreateSocket();
+                    if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_EMERGEN_INFO_PORT))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->m_client.SetBlock(0);
+                    if(0!=_p->m_client.SetRcvBufferlong(ROBOT_EMERGEN_INFO_RECVBUFFER_MAX*2))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->b_client=true;
+
+                    _p->rcv_buf=new uint8_t[ROBOT_EMERGEN_INFO_RECVBUFFER_MAX*2+1];
+                    _p->b_rcv_thread=true;
+                    _p->rcv_thread->start();
+
+                    _p->m_sendent.CreateSocket();
+                    if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_EMERGEN_SEND_PORT))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->m_sendent.SetBlock(0);
+                #ifdef OPEN_SHOW_ROBOTSOCKDATA
+                    _p->sendrcv_buf=new uint8_t[ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX*2+1];
+                    if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX*2))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                #endif
+                    _p->send_buf_group.clear();
+                    _p->b_sendent=true;
+                    _p->b_send_thread=true;
+                    _p->send_Thread->start();
+                #ifdef OPEN_SHOW_ROBOTSOCKDATA
+                    _p->b_sendrcv_thread=true;
+                    _p->sendrcv_Thread->start();
+                #endif
+
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
                 }
@@ -2535,7 +2618,100 @@ void RobotrcvThread::run()//获取机器人数据
                 break;
                 case ROBOT_MODEL_EMERGEN://智昌机器人
                 {
-
+                    int rcvnum=_p->m_client.Recv((char*)_p->rcv_buf,ROBOT_EMERGEN_INFO_RECVBUFFER_MAX*2);
+                    if(rcvnum>0)
+                    {
+                        bool b_succeed=true;
+                        QString rcvmsg=QString::fromLocal8Bit((char*)_p->rcv_buf);
+                        float x,y,z,q1,q2,q3,q4;//四元素
+                        QStringList strList = rcvmsg.split(",");
+                        for(int i=0;i<strList.size();i++)
+                        {
+                            QString p_data=strList[i];
+                            if(p_data.size()>0)
+                            {
+                                QStringList strPo = p_data.split(":");
+                                if(strPo.size()==2)
+                                {
+                                    QString name=strPo[0];
+                                    QString s_data=strPo[1];
+                                    bool temp;
+                                    float f_data=s_data.toFloat(&temp);
+                                    if(temp==false)
+                                    {
+                                        b_succeed=false;
+                                        break;
+                                    }
+                                    if(name=="x")
+                                    {
+                                        x=f_data;
+                                    }
+                                    else if(name=="y")
+                                    {
+                                        y=f_data;
+                                    }
+                                    else if(name=="z")
+                                    {
+                                        z=f_data;
+                                    }
+                                    else if(name=="q1")
+                                    {
+                                        q1=f_data;
+                                    }
+                                    else if(name=="q2")
+                                    {
+                                        q2=f_data;
+                                    }
+                                    else if(name=="q3")
+                                    {
+                                        q3=f_data;
+                                    }
+                                    else if(name=="q4")
+                                    {
+                                        q4=f_data;
+                                    }
+                                    else
+                                    {
+                                        b_succeed=false;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    b_succeed=false;
+                                    break;
+                                }
+                            }
+                        }
+                        if(b_succeed==true)
+                        {
+                            float f_robRX,f_robRY,f_robRZ;
+                            Eigen::Quaterniond tempaddvalue;
+                            Eigen::Matrix3d tempres;
+                            tempaddvalue.w()=q1;
+                            tempaddvalue.x()=q2;
+                            tempaddvalue.y()=q3;
+                            tempaddvalue.z()=q4;
+                            tempres=tempaddvalue;
+                            std::array<double, 3> s=_p->Yaskawa_RotMatrixXYZ2Euler(tempres);
+                            f_robRX=s[0]*CAL_ANGLE;
+                            f_robRY=s[1]*CAL_ANGLE;
+                            f_robRZ=s[2]*CAL_ANGLE;
+                            //四元素转化成正旋
+                            _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&x))[0];
+                            _p->mb_mapping->tab_registers[ROB_X_POS_FL_REG_ADD]=((uint16_t*)(&x))[1];
+                            _p->mb_mapping->tab_registers[ROB_Y_POS_FH_REG_ADD]=((uint16_t*)(&y))[0];
+                            _p->mb_mapping->tab_registers[ROB_Y_POS_FL_REG_ADD]=((uint16_t*)(&y))[1];
+                            _p->mb_mapping->tab_registers[ROB_Z_POS_FH_REG_ADD]=((uint16_t*)(&z))[0];
+                            _p->mb_mapping->tab_registers[ROB_Z_POS_FL_REG_ADD]=((uint16_t*)(&z))[1];
+                            _p->mb_mapping->tab_registers[ROB_RX_POS_FH_REG_ADD]=((uint16_t*)(&f_robRX))[0];
+                            _p->mb_mapping->tab_registers[ROB_RX_POS_FL_REG_ADD]=((uint16_t*)(&f_robRX))[1];
+                            _p->mb_mapping->tab_registers[ROB_RY_POS_FH_REG_ADD]=((uint16_t*)(&f_robRY))[0];
+                            _p->mb_mapping->tab_registers[ROB_RY_POS_FL_REG_ADD]=((uint16_t*)(&f_robRY))[1];
+                            _p->mb_mapping->tab_registers[ROB_RZ_POS_FH_REG_ADD]=((uint16_t*)(&f_robRZ))[0];
+                            _p->mb_mapping->tab_registers[ROB_RZ_POS_FL_REG_ADD]=((uint16_t*)(&f_robRZ))[1];
+                        }
+                    }
                 }
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人
@@ -2595,9 +2771,9 @@ void RobotrcvThread::run()//获取机器人数据
                         float f_robX=(*(double*)&d_robX)*1000;
                         float f_robY=(*(double*)&d_robY)*1000;
                         float f_robZ=(*(double*)&d_robZ)*1000;
-                        float f_robRX=*(double*)&d_robRX;
-                        float f_robRY=*(double*)&d_robRY;
-                        float f_robRZ=*(double*)&d_robRZ;
+                        float f_robRX=*(double*)&d_robRX*CAL_ANGLE; //UR是弧度单位
+                        float f_robRY=*(double*)&d_robRY*CAL_ANGLE;
+                        float f_robRZ=*(double*)&d_robRZ*CAL_ANGLE;
                         float f_speed=*(double*)&d_speed;
 
                         _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&f_robX))[0];
@@ -3043,6 +3219,16 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
                 }
                 break;
                 case ROBOT_MODEL_KUKA://库卡机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_KAWASAKI://川崎机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_YASKAWA://安川机器人
                 {
 
                 }

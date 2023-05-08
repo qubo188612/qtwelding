@@ -259,6 +259,34 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     }
                 }
             }
+            else if(key==CMD_SEARCH_KEY)//寻位指令
+            {
+                QString name=cmd.cmd_search_name;//获取到的寻位点名字
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                {
+                    if(m_mcs->project->projecr_robpos_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位点与已有的点重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    errmsg.push_back(return_msg);
+                    main_record.unlock();
+                }
+                else
+                {
+                    Point_robpos_result point;
+                    point.name=name;
+                    m_mcs->project->projecr_robpos_trace.push_back(point);
+                }
+            }
         }
     }
     return err;
@@ -591,6 +619,118 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                 }
                 break;
+            }
+        }
+        else if(key==CMD_SEARCH_KEY)//寻位指令
+        {
+            bool b_find=false;//成功找到
+            float speed=cmd.cmd_search_speed;//获取到的寻位速度
+            int tcp=cmd.cmd_search_tcp;//获取到寻位TCP
+            Robmovemodel movemod=cmd.cmd_search_movemod;//获取到的寻位模式
+            QString name=cmd.cmd_search_name;//获取到的寻位名字
+            int robpos_trace_num;//要储存的寻位点下标
+            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            {
+                if(name==m_mcs->project->projecr_robpos_trace[n].name)
+                {
+                    robpos_trace_num=n;//找到要储存的寻位点下标
+                    break;
+                }
+            }
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    RobPos pos=cmd.cmd_scan_pos;//获取到寻位终点坐标
+                    cmd_move(pos,movemod,speed,tcp);
+                }
+                break;
+                case MOVEC:
+                {
+                    RobPos pos1=cmd.cmd_scan_pos1;//获取到移动坐标
+                    RobPos pos2=cmd.cmd_scan_pos2;//获取到移动坐标
+                    RobPos pos3=cmd.cmd_scan_pos3;//获取到移动坐标
+                #ifdef USE_MYMOVEC_CONTROL
+                    CWeldTarject tarjectMath;
+                    std::vector<RobPos> interpolatPos;
+                    if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<interpolatPos.size();n++)
+                    {
+                        cmd_move(interpolatPos[n],MOVEL,speed,tcp);
+                    }
+                #else
+                    cmd_move(pos1,MOVEL,speed,tcp);
+                    cmd_moveC(pos2,pos3,MOVEC,speed,tcp);
+                #endif
+                }
+                break;
+            }
+            usleep(ROB_WORK_DELAY);
+            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待寻位到位
+            {
+                if(b_cmdlist_build==false)     //停止
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    paused_key=key;
+                    cmd_lock(1);
+                    line=n;
+                    return 1;
+                }
+                //这里添加扫描数据
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        std::vector<Scan_trace_line> scan_trace(1);
+                        std::vector<Eigen::Vector3d> weld_trace;
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                        scan_trace[0].robottime=m_mcs->rob->robtime;
+                        scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                        if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位计算结果出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=scan_trace[0].robotpos;
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].x();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].y();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].z();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
+                        b_find=true;
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
+                if(b_find==true)//成功找到了点
+                {
+                    break;
+                }
+                //开始采集检测数据
+                usleep(0);
+            }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
+            if(b_find==true)//成功找到了点
+            {
+                cmd_lock(1);    //让机器人先停下当前的寻位运动
+                usleep(100000); //等一段时间
+                cmd_lock(0);    //解锁移动
             }
         }
         else if(key==CMD_SCAN_KEY)//采集指令

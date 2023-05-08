@@ -54,6 +54,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     b_RunAlgCamer=false;
 
+    mainDlg_robmovestate=MAINDLG_STATIC;
+
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
     robotset=new robotsetDlg(m_mcs);
@@ -112,6 +114,17 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     }
     ui->weld_eled->setText(QString::number(m_mcs->e2proomdata.maindlg_Weldeled,'f',3));
     ui->weld_elem->setCurrentIndex(m_mcs->e2proomdata.maindlg_Weldelem);
+
+    for(int n=0;n<ROBOTTCPNUM;n++)
+    {
+        QString msg="TCP: "+QString::number(n);
+        ui->movetcpcombo->addItem(msg);
+    }
+    ui->movetcpcombo->setCurrentIndex(m_mcs->e2proomdata.maindlg_movetcp);
+    adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
+    ui->movespeed->setValidator(adoubleValidator_speed);
+    ui->movespeed->setText(QString::number(m_mcs->e2proomdata.maindlg_movespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+
 
     /************************************************/
 
@@ -227,6 +240,24 @@ void qtweldingDlg::UpdataUi()
         ui->weld_gassBtn->setDisabled(false);
         ui->weld_windBtn->setDisabled(false);
         ui->weld_rewindBtn->setDisabled(false);
+        ui->posXsubBtn->setDisabled(false);
+        ui->posXaddBtn->setDisabled(false);
+        ui->posYsubBtn->setDisabled(false);
+        ui->posYaddBtn->setDisabled(false);
+        ui->posZsubBtn->setDisabled(false);
+        ui->posZaddBtn->setDisabled(false);
+        ui->posRXsubBtn->setDisabled(false);
+        ui->posRXaddBtn->setDisabled(false);
+        ui->posRYsubBtn->setDisabled(false);
+        ui->posRYaddBtn->setDisabled(false);
+        ui->posRZsubBtn->setDisabled(false);
+        ui->posRZaddBtn->setDisabled(false);
+        ui->posOut1subBtn->setDisabled(false);
+        ui->posOut1addBtn->setDisabled(false);
+        ui->posOut2subBtn->setDisabled(false);
+        ui->posOut2addBtn->setDisabled(false);
+        ui->posOut3subBtn->setDisabled(false);
+        ui->posOut3addBtn->setDisabled(false);
     }
     else
     {
@@ -242,6 +273,24 @@ void qtweldingDlg::UpdataUi()
         ui->weld_gassBtn->setDisabled(true);
         ui->weld_windBtn->setDisabled(true);
         ui->weld_rewindBtn->setDisabled(true);
+        ui->posXsubBtn->setDisabled(true);
+        ui->posXaddBtn->setDisabled(true);
+        ui->posYsubBtn->setDisabled(true);
+        ui->posYaddBtn->setDisabled(true);
+        ui->posZsubBtn->setDisabled(true);
+        ui->posZaddBtn->setDisabled(true);
+        ui->posRXsubBtn->setDisabled(true);
+        ui->posRXaddBtn->setDisabled(true);
+        ui->posRYsubBtn->setDisabled(true);
+        ui->posRYaddBtn->setDisabled(true);
+        ui->posRZsubBtn->setDisabled(true);
+        ui->posRZaddBtn->setDisabled(true);
+        ui->posOut1subBtn->setDisabled(true);
+        ui->posOut1addBtn->setDisabled(true);
+        ui->posOut2subBtn->setDisabled(true);
+        ui->posOut2addBtn->setDisabled(true);
+        ui->posOut3subBtn->setDisabled(true);
+        ui->posOut3addBtn->setDisabled(true);
     }
     if(m_mcs->process->b_processpaused==false)
     {
@@ -740,10 +789,655 @@ void qtweldingDlg::on_SaveDatacheckBox_stateChanged(int arg1)//保存数据
     m_mcs->e2proomdata.write_maindlg_para();
 }
 
+//X-按下
+void qtweldingDlg::on_posXsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_XSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人X轴负移动"));
+    return;
+}
+
+//X-抬起
+void qtweldingDlg::on_posXsubBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//X+按下
+void qtweldingDlg::on_posXaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_XADD;
+    ui->record->append(QString::fromLocal8Bit("机器人X轴正移动"));
+}
+
+//X+抬起
+void qtweldingDlg::on_posXaddBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//Y-按下
+void qtweldingDlg::on_posYsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_YSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人Y轴负移动"));
+    return;
+}
+
+//Y-抬起
+void qtweldingDlg::on_posYsubBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//Y+按下
+void qtweldingDlg::on_posYaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_YADD;
+    ui->record->append(QString::fromLocal8Bit("机器人Y轴正移动"));
+    return;
+}
+
+//Y+抬起
+void qtweldingDlg::on_posYaddBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//Z-按下
+void qtweldingDlg::on_posZsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_ZSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人Z轴负移动"));
+    return;
+}
+
+//Z-抬起
+void qtweldingDlg::on_posZsubBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//Z+按下
+void qtweldingDlg::on_posZaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_ZADD;
+    ui->record->append(QString::fromLocal8Bit("机器人Z轴正移动"));
+    return;
+}
+
+//Z+抬起
+void qtweldingDlg::on_posZaddBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//RX-按下
+void qtweldingDlg::on_posRXsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_RXSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人RX轴负移动"));
+    return;
+}
+
+//RX-抬起
+void qtweldingDlg::on_posRXsubBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//RX+按下
+void qtweldingDlg::on_posRXaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_RXADD;
+    ui->record->append(QString::fromLocal8Bit("机器人RX轴正移动"));
+    return;
+}
+
+//RX+抬起
+void qtweldingDlg::on_posRXaddBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//RY-按下
+void qtweldingDlg::on_posRYsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_RYSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人RY轴负移动"));
+    return;
+}
+
+//RY-抬起
+void qtweldingDlg::on_posRYsubBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//RY+按下
+void qtweldingDlg::on_posRYaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_RYADD;
+    ui->record->append(QString::fromLocal8Bit("机器人RY轴正移动"));
+    return;
+}
+
+//RY+抬起
+void qtweldingDlg::on_posRYaddBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//RZ-按下
+void qtweldingDlg::on_posRZsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_RZSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人RZ轴负移动"));
+    return;
+}
+
+//RZ-抬起
+void qtweldingDlg::on_posRZsubBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//RZ+按下
+void qtweldingDlg::on_posRZaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_RZADD;
+    ui->record->append(QString::fromLocal8Bit("机器人RZ轴正移动"));
+    return;
+}
+
+//RZ+抬起
+void qtweldingDlg::on_posRZaddBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//OUT1-按下
+void qtweldingDlg::on_posOut1subBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_OUT1SUB;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT1轴负移动"));
+    return;
+}
+
+//OUT1-抬起
+void qtweldingDlg::on_posOut1subBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//OUT1+按下
+void qtweldingDlg::on_posOut1addBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_OUT1ADD;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT1轴正移动"));
+    return;
+}
+
+//OUT1+抬起
+void qtweldingDlg::on_posOut1addBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//OUT2-按下
+void qtweldingDlg::on_posOut2subBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_OUT2SUB;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT2轴负移动"));
+    return;
+}
+
+//OUT2-抬起
+void qtweldingDlg::on_posOut2subBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//OUT2+按下
+void qtweldingDlg::on_posOut2addBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_OUT2ADD;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT2轴正移动"));
+    return;
+}
+
+//OUT2+抬起
+void qtweldingDlg::on_posOut2addBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//OUT3-按下
+void qtweldingDlg::on_posOut3subBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_OUT3SUB;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT3轴负移动"));
+    return;
+}
+
+//OUT3-抬起
+void qtweldingDlg::on_posOut3subBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//OUT3+按下
+void qtweldingDlg::on_posOut3addBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    mainDlg_robmovestate=MAINDLG_OUT3ADD;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT3轴正移动"));
+    return;
+}
+
+//OUT3+抬起
+void qtweldingDlg::on_posOut3addBtn_released()
+{
+    mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
 
 void qtweldingDlg::ConnectCamer()
 {
-    int real_readnum;
     if(m_mcs->resultdata.link_result_state==false)
     {
         QString server_ip=m_mcs->ip->camer_ip[0].ip;
@@ -1325,7 +2019,338 @@ void qtgetrobThread::run()
                         _p->m_mcs->rob->TCPpos.out_2=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+2]);
                         _p->m_mcs->rob->TCPpos.out_3=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+4]);
                     }
-                }
+
+                    /*****************************/
+                    //主页按钮是否要移动机器人
+                    if(_p->mainDlg_robmovestate!=MAINDLG_STATIC)
+                    {
+                        static RobPos targetpos;//移动前往的目标点
+                        static int tcp;
+                        static float speed;
+                        Robmovemodel movemod=MOVEL;
+                        if(_p->mainDlg_robmovestate==MAINDLG_NOTMOVE)//按钮停止机器人
+                        {
+                            _p->m_mcs->tosendbuffer->cmd_lock(1);//停止运动
+                            #ifdef USE_MYROBOT_CONTROL
+                            _p->m_mcs->robotcontrol->clear_movepoint_buffer();//清空运动后续缓存
+                            #endif
+                            _p->m_mcs->tosendbuffer->cmd_lock(0);//解锁运动
+                            _p->mainDlg_robmovestate=MAINDLG_STATIC;
+                        }
+                        else
+                        {
+                            if(_p->mainDlg_robmovestate==MAINDLG_XSUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.X=targetpos.X-ROBOT_MAINDLG_MOVEPOS_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_XSUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_XADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.X=targetpos.X+ROBOT_MAINDLG_MOVEPOS_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_XADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_YSUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.Y=targetpos.Y-ROBOT_MAINDLG_MOVEPOS_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_YSUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_YADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.Y=targetpos.Y+ROBOT_MAINDLG_MOVEPOS_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_YADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_ZSUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.Z=targetpos.Z-ROBOT_MAINDLG_MOVEPOS_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_ZSUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_ZADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.Z=targetpos.Z+ROBOT_MAINDLG_MOVEPOS_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_ZADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RXSUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.RX=targetpos.RX-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_RXSUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RXADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.RX=targetpos.RX+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_RXADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RYSUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.RY=targetpos.RY-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_RYSUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RYADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.RY=targetpos.RY+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_RYADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RZSUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.RZ=targetpos.RZ-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_RZSUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RZADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.RZ=targetpos.RZ+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_RZADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT1SUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.out_1=targetpos.out_1-ROBOT_MAINDLG_MOVEOUT_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_OUT1SUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT1ADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.out_1=targetpos.out_1+ROBOT_MAINDLG_MOVEOUT_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_OUT1ADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT2SUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.out_2=targetpos.out_2-ROBOT_MAINDLG_MOVEOUT_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_OUT2SUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT2ADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.out_2=targetpos.out_2+ROBOT_MAINDLG_MOVEOUT_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_OUT2ADD_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT3SUB)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.out_3=targetpos.out_3-ROBOT_MAINDLG_MOVEOUT_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_OUT3SUB_ING;
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT3ADD)
+                            {
+                                targetpos=_p->m_mcs->rob->TCPpos;
+                                targetpos.out_3=targetpos.out_3+ROBOT_MAINDLG_MOVEOUT_STEP;
+                                tcp=_p->m_mcs->e2proomdata.maindlg_movetcp;//获取到移动TCP
+                                speed=_p->m_mcs->e2proomdata.maindlg_movespeed;//获取到速度值
+                                _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                _p->mainDlg_robmovestate=MAINDLG_OUT3ADD_ING;
+                            }
+
+                            //判段是否已经靠近移动目标，是的话就更新移动目标
+                            if(_p->mainDlg_robmovestate==MAINDLG_XSUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.X-targetpos.X<ROBOT_MAINDLG_MOVEPOS_STEPMIN)
+                                {
+                                    targetpos.X=targetpos.X-ROBOT_MAINDLG_MOVEPOS_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_XADD_ING)
+                            {
+                                if(targetpos.X-_p->m_mcs->rob->TCPpos.X<ROBOT_MAINDLG_MOVEPOS_STEPMIN)
+                                {
+                                    targetpos.X=targetpos.X+ROBOT_MAINDLG_MOVEPOS_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_YSUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.Y-targetpos.Y<ROBOT_MAINDLG_MOVEPOS_STEPMIN)
+                                {
+                                    targetpos.Y=targetpos.Y-ROBOT_MAINDLG_MOVEPOS_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_YADD_ING)
+                            {
+                                if(targetpos.Y-_p->m_mcs->rob->TCPpos.Y<ROBOT_MAINDLG_MOVEPOS_STEPMIN)
+                                {
+                                    targetpos.Y=targetpos.Y+ROBOT_MAINDLG_MOVEPOS_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_ZSUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.Z-targetpos.Z<ROBOT_MAINDLG_MOVEPOS_STEPMIN)
+                                {
+                                    targetpos.Z=targetpos.Z-ROBOT_MAINDLG_MOVEPOS_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_ZADD_ING)
+                            {
+                                if(targetpos.Z-_p->m_mcs->rob->TCPpos.Z<ROBOT_MAINDLG_MOVEPOS_STEPMIN)
+                                {
+                                    targetpos.Z=targetpos.Z+ROBOT_MAINDLG_MOVEPOS_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RXSUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.RX-targetpos.RX<ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN)
+                                {
+                                    targetpos.RX=targetpos.RX-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RXADD_ING)
+                            {
+                                if(targetpos.RX-_p->m_mcs->rob->TCPpos.RX<ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN)
+                                {
+                                    targetpos.RX=targetpos.RX+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RYSUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.RY-targetpos.RY<ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN)
+                                {
+                                    targetpos.RY=targetpos.RY-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RYADD_ING)
+                            {
+                                if(targetpos.RY-_p->m_mcs->rob->TCPpos.RY<ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN)
+                                {
+                                    targetpos.RY=targetpos.RY+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RZSUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.RZ-targetpos.RZ<ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN)
+                                {
+                                    targetpos.RZ=targetpos.RZ-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_RZADD_ING)
+                            {
+                                if(targetpos.RZ-_p->m_mcs->rob->TCPpos.RZ<ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN)
+                                {
+                                    targetpos.RZ=targetpos.RZ+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT1SUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.out_1-targetpos.out_1<ROBOT_MAINDLG_MOVEOUT_STEPMIN)
+                                {
+                                    targetpos.out_1=targetpos.out_1-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT1ADD_ING)
+                            {
+                                if(targetpos.out_1-_p->m_mcs->rob->TCPpos.out_1<ROBOT_MAINDLG_MOVEOUT_STEPMIN)
+                                {
+                                    targetpos.out_1=targetpos.out_1+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT2SUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.out_2-targetpos.out_2<ROBOT_MAINDLG_MOVEOUT_STEPMIN)
+                                {
+                                    targetpos.out_2=targetpos.out_2-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT2ADD_ING)
+                            {
+                                if(targetpos.out_2-_p->m_mcs->rob->TCPpos.out_2<ROBOT_MAINDLG_MOVEOUT_STEPMIN)
+                                {
+                                    targetpos.out_2=targetpos.out_2+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT3SUB_ING)
+                            {
+                                if(_p->m_mcs->rob->TCPpos.out_3-targetpos.out_3<ROBOT_MAINDLG_MOVEOUT_STEPMIN)
+                                {
+                                    targetpos.out_3=targetpos.out_3-ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                            else if(_p->mainDlg_robmovestate==MAINDLG_OUT3ADD_ING)
+                            {
+                                if(targetpos.out_3-_p->m_mcs->rob->TCPpos.out_3<ROBOT_MAINDLG_MOVEOUT_STEPMIN)
+                                {
+                                    targetpos.out_3=targetpos.out_3+ROBOT_MAINDLG_MOVEPOSTURE_STEP;
+                                    _p->m_mcs->tosendbuffer->cmd_move(targetpos,movemod,speed,tcp);//移动
+                                }
+                            }
+                        }
+                    }
+                    /*******************************/
+                } 
             }
             if(_p->b_init_show_robpos_list==true)
             {
