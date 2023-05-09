@@ -20,6 +20,8 @@ my_cmd::my_cmd()
     cmd_search_speed=0;//获取到的寻位速度
     cmd_search_tcp=0;//获取到寻位TCP
     cmd_search_movemod=MOVEL;//获取到的寻位模式
+    cmd_search_side=0;//寻位寻找两侧的范围
+    cmd_search_sidespeed=0;//寻位寻找两侧的空闲移动速度
 }
 
 QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp)
@@ -115,7 +117,7 @@ QString my_cmd::cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movem
     return msg;
 }
 
-QString my_cmd::cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name)
+QString my_cmd::cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name)
 {
     QString msg;
     QString msg1;
@@ -124,11 +126,14 @@ QString my_cmd::cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp
             rc_move(pos,movemodel)+" "+
             rc_speed(speed)+" "+
             rc_tcp(tcp)+" "+
+            rc_side(side)+" "+
+            rc_sidemove(sidemove)+" "+
+            rc_sidespeed(sidespeed)+" "+
             rc_name(name);
     return msg;
 }
 
-QString my_cmd::cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name)
+QString my_cmd::cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name)
 {
     QString msg;
     QString msg1;
@@ -137,6 +142,9 @@ QString my_cmd::cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel mov
             rc_moveC(pos1,pos2,pos3,movemodel)+" "+
             rc_speed(speed)+" "+
             rc_tcp(tcp)+" "+
+            rc_side(side)+" "+
+            rc_sidemove(sidemove)+" "+
+            rc_sidespeed(sidespeed)+" "+
             rc_name(name);
     return msg;
 }
@@ -1122,7 +1130,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_MOVE=false;
         bool b_TCP=false;
         bool b_NAME=false;
-
+        bool b_SIDE=false;
+        bool b_SIDEMOVE=false;
+        bool b_SIDESPEED=false;
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -1212,7 +1222,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_search_tcp<0||cmd_search_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=QString::fromLocal8Bit("TCP的值超出设置范围");
+                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
                             return 1;
                         }
                     }
@@ -1228,6 +1238,64 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     {
                         b_NAME=true;
                         if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_search_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SIDE)
+                {
+                    if(b_SIDE==false)
+                    {
+                        b_SIDE=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_search_side,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_search_side<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的值必须大于等于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SIDEMOVE)
+                {
+                    if(b_SIDEMOVE==false)
+                    {
+                        b_SIDEMOVE=true;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,cmd_search_sidemove,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_search_sidemove.size()!=3)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项只能有3个参数设置");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SIDESPEED)
+                {
+                    if(b_SIDESPEED==false)
+                    {
+                        b_SIDESPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_search_sidespeed,return_msg))
                         {
                             return 1;
                         }
@@ -1487,6 +1555,35 @@ QString my_cmd::rc_16data(int16_t i16_data)
 {
     QString msg;
     msg=QString(CMD_DATA16)+"["+QString::number(i16_data)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_side(int side)
+{
+    QString msg;
+    msg=QString(CMD_SIDE)+"["+QString::number(side)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_sidemove(std::vector<float> sidemove)
+{
+    QString msg,s_data;
+    for(int i=0;i<sidemove.size();i++)
+    {
+        s_data=s_data+QString::number(sidemove[i],'f',ROBOT_POSE_DECIMAL_PLACE);
+        if(i!=sidemove.size()-1)
+        {
+          s_data=s_data+",";
+        }
+    }
+    msg=QString(CMD_SIDEMOVE)+"["+s_data+"]";
+    return msg;
+}
+
+QString my_cmd::rc_sidespeed(float sidespeed)
+{
+    QString msg;
+    msg=QString(CMD_SIDESPEED)+"["+QString::number(sidespeed,'f',3)+"]";
     return msg;
 }
 

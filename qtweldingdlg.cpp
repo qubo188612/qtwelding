@@ -2030,11 +2030,10 @@ void qtgetrobThread::run()
                         Robmovemodel movemod=MOVEL;
                         if(_p->mainDlg_robmovestate==MAINDLG_NOTMOVE)//按钮停止机器人
                         {
-                            _p->m_mcs->tosendbuffer->cmd_lock(1);//停止运动
                             #ifdef USE_MYROBOT_CONTROL
                             _p->m_mcs->robotcontrol->clear_movepoint_buffer();//清空运动后续缓存
                             #endif
-                            _p->m_mcs->tosendbuffer->cmd_lock(0);//解锁运动
+                            _p->m_mcs->tosendbuffer->cmd_lock(0);//停止运动
                             _p->mainDlg_robmovestate=MAINDLG_STATIC;
                         }
                         else

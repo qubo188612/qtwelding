@@ -49,6 +49,9 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
             int tcp=cmd.cmd_search_tcp;//获取到寻位TCP
             Robmovemodel movemod=cmd.cmd_search_movemod;//获取到的寻位模式
             QString name=cmd.cmd_search_name;//获取到的寻位名字
+            std::vector<float> sizemove=cmd.cmd_search_sidemove;
+            float sidespeed=cmd.cmd_search_sidespeed;
+            int side=cmd.cmd_search_side;
             if(movemod==MOVEJ||movemod==MOVEL)
             {
                 RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
@@ -76,6 +79,11 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
                 ui->searchmovemodecombo->setCurrentIndex(movemod);
             }
             ui->searchname->setText(name);
+            ui->searchside->setText(QString::number(side));
+            ui->searchsidespeed->setText(QString::number(sidespeed,'f',3));
+            ui->searchsidemovex->setText(QString::number(sizemove[0],'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->searchsidemovey->setText(QString::number(sizemove[1],'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->searchsidemovez->setText(QString::number(sizemove[2],'f',ROBOT_POSE_DECIMAL_PLACE));
         }
     }
     ui->record->clear();
@@ -148,9 +156,13 @@ void keysearchDlg::on_searchaddBtn_clicked()
             return;
         }
         bool rc;
-        float speed=ui->searchspeed->text().toFloat(&rc);
+        float speed;
         RobPos robpos=m_mcs->rob->TCPpos;
         Robmovemodel movemodel=(Robmovemodel)ui->searchmovemodecombo->currentIndex();
+        std::vector<float> sidemove(3);
+        float sidespeed;
+        int side;
+
         my_cmd cmd;
         QString name=ui->searchname->text();
         if(ui->searchspeed->text().isEmpty())
@@ -158,6 +170,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
             ui->record->append(QString::fromLocal8Bit("请填写寻位速度"));
             return;
         }
+        speed=ui->searchspeed->text().toFloat(&rc);
         if(rc==false)
         {
             ui->record->append(QString::fromLocal8Bit("寻位速度格式出错"));
@@ -168,14 +181,69 @@ void keysearchDlg::on_searchaddBtn_clicked()
             ui->record->append(QString::fromLocal8Bit("请填写寻位点名称"));
             return;
         }
-        QString msg;
+        if(ui->searchsidespeed->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+            return;
+        }
+        sidespeed=ui->searchsidespeed->text().toFloat(&rc);
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+            return;
+        }
+        if(ui->searchside->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写寻位范围"));
+            return;
+        }
+        side=ui->searchside->text().toInt(&rc);
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("寻位范围格式出错"));
+            return;
+        }
+        if(ui->searchsidemovex->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写寻位范围X"));
+            return;
+        }
+        if(ui->searchsidemovey->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写寻位范围Y"));
+            return;
+        }
+        if(ui->searchsidemovez->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写寻位范围Z"));
+            return;
+        }
+        sidemove[0]=ui->searchsidemovex->text().toFloat(&rc);
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("寻位范围x格式出错"));
+            return;
+        }
+        sidemove[1]=ui->searchsidemovey->text().toFloat(&rc);
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("寻位范围Y格式出错"));
+            return;
+        }
+        sidemove[2]=ui->searchsidemovez->text().toFloat(&rc);
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("寻位范围Z格式出错"));
+            return;
+        }
 
+        QString msg;
         switch(movemodel)
         {
             case MOVEL:
             case MOVEJ:
             {
-                msg=cmd.cmd_search(robpos,movemodel,speed,tcp,name);
+                msg=cmd.cmd_search(robpos,movemodel,speed,tcp,side,sidemove,sidespeed,name);
             }
             break;
             case MOVEC:
@@ -187,7 +255,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    msg=cmd.cmd_searchC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,name);
+                    msg=cmd.cmd_searchC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,side,sidemove,sidespeed,name);
                 }
                 else
                 {

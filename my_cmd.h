@@ -21,7 +21,8 @@
 //IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1]
 //写PLC指令，举例 PLC: WRITEPLC[20] DATA16[2]
 //等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
-//寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
+//寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] POINTNAME[寻位的点point1]
+
 
 
 //key项
@@ -57,6 +58,9 @@
 #define CMD_WRITEPLC                        "WRITEPLC"            //写PLC寄存器
 #define CMD_WAITPLC                         "WAITPLC"             //等待PLC寄存器输入
 #define CMD_DATA16                          "DATA16"              //16位整形数字
+#define CMD_SIDE                            "SIDE"                //寻位寻找两侧的范围
+#define CMD_SIDEMOVE                        "SIDEMOVE"            //寻位寻找两侧的单位向量
+#define CMD_SIDESPEED                       "SIDESPEED"           //寻位寻找两侧的空闲移动速度
 
 
 /************************/
@@ -80,8 +84,8 @@ public:
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
     QString cmd_plcwait(int register_add,int16_t register_data);
     QString cmd_plcwrite(int register_add,int16_t register_data);
-    QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name);//寻位命令
-    QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆寻位命令
+    QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name);//寻位命令
+    QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name);//圆寻位命令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -139,6 +143,9 @@ public:
     int cmd_search_tcp;//获取到寻位TCP
     Robmovemodel cmd_search_movemod;//获取到的寻位模式
     QString cmd_search_name;//获取到的寻位点名字
+    int cmd_search_side;//寻位寻找两侧的范围
+    std::vector<float> cmd_search_sidemove;//寻位寻找两侧的单位向量
+    float cmd_search_sidespeed;//寻位寻找两侧的空闲移动速度
 
 protected:
     QString rc_tcp(int tcp);
@@ -159,6 +166,9 @@ protected:
     QString rc_plcwait(int register_add);
     QString rc_plcwrite(int register_add);
     QString rc_16data(int16_t i16_data);
+    QString rc_side(int side);
+    QString rc_sidemove(std::vector<float> sidemove);
+    QString rc_sidespeed(float speed);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
