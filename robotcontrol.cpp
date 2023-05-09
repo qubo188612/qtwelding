@@ -3350,7 +3350,7 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
         }
         else
         {
-            _p->b_stop_sendrcv_thread=true;
+            _p->b_stop_totalcontrol_Thread=true;
             break;
         }
         sleep(0);
@@ -3359,11 +3359,11 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
 
 void RobottotalcontrolrcvThread::Stop()
 {
-  if(_p->b_sendrcv_thread==true)
+  if(_p->b_totalcontrolrcv_Thread==true)
   {
-    _p->b_stop_sendrcv_thread=false;
-    _p->b_sendrcv_thread=false;
-    while (_p->b_stop_sendrcv_thread==false)
+    _p->b_stop_totalcontrol_Thread=false;
+    _p->b_totalcontrolrcv_Thread=false;
+    while (_p->b_stop_totalcontrol_Thread==false)
     {
       sleep(0);
     }

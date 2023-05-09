@@ -1033,7 +1033,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
             }
             else if(key==CMD_SEARCH_KEY)//寻位指令
             {
-                keysearch->init_dlg_show();
+                keysearch->init_dlg_show(cmdlist);
                 keysearch->setWindowTitle(othercmd->cmdname);
                 keysearch->setbutton(1);
                 int rc=keysearch->exec();

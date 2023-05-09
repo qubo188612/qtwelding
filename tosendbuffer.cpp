@@ -34,6 +34,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
     QString return_msg;
     m_mcs->project->project_scan_trace.clear();
     m_mcs->project->project_weld_trace.clear();
+    m_mcs->project->projecr_robpos_trace.clear();
     for(int n=0;n<beforeline;n++)
     {
         QString msg,key;
