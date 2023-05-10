@@ -18,7 +18,7 @@ typedef enum CAL_POSTURE_MODEL_ID          //机器人姿态角含义模式
     CAL_ROBOT_KAWASAKI=4,       //川崎姿态标准 RZ-RY-RZ
 }CAL_POSTURE;
 
-class Calibration
+class Calibration       //机器人手眼标定
 {
 public:
     Calibration();

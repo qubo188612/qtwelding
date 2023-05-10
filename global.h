@@ -3,6 +3,8 @@
 
 #include "tutorial_interfaces/msg/if_algorhmitcloud.hpp"
 #include "QString"
+#include <Eigen/Core>
+#include <Eigen/Dense>
 
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
@@ -697,6 +699,16 @@ public:
     RobPos robotpos;    //点结果坐标
     QString name;       //点名字
     bool nEn;           //点是否有效
+};
+
+class Coord_Matrix4d_result     //零点定位矩阵
+{
+public:
+    Coord_Matrix4d_result();
+    Eigen::Matrix3d R;          //旋转矩阵
+    Eigen::Vector3d T;          //平移矩阵(零点坐标)
+    QString name;               //矩阵名字
+    bool nEn;                   //矩阵是否有效
 };
 
 class Scan_trace_result    //扫描轨迹

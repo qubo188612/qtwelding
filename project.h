@@ -49,6 +49,8 @@ public:
 
     std::vector<Point_robpos_result> projecr_robpos_trace;  //点轨迹
 
+    std::vector<Coord_Matrix4d_result> projecr_coord_matrix4d;  //零点定位矩阵
+
     std::vector<Scan_trace_result> project_scan_trace;  //扫描轨迹
 
     std::vector<Weld_trace_result> project_weld_trace;  //跟踪轨迹

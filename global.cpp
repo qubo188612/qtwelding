@@ -48,3 +48,7 @@ Point_robpos_result::Point_robpos_result()
     nEn=false;
 }
 
+Coord_Matrix4d_result::Coord_Matrix4d_result()
+{
+    nEn=false;
+}

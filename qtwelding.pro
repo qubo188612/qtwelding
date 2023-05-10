@@ -23,6 +23,7 @@ SOURCES += \
         calibration.cpp \
         cam_sen.cpp \
         cambuilddlg.cpp \
+        ccoordchange.cpp \
         craft.cpp \
         cweldtarject.cpp \
         demarcatedlg.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
         global.cpp \
         ipaddress.cpp \
         keycamdlg.cpp \
+        keycoorddlg.cpp \
         keycreatdlg.cpp \
         keydelaydlg.cpp \
         keyiodlg.cpp \
@@ -85,6 +87,7 @@ FORMS += \
     editcraftdlg.ui \
     editprojectdlg.ui \
     keycamdlg.ui \
+    keycoorddlg.ui \
     keycreatdlg.ui \
     keydelaydlg.ui \
     keyiodlg.ui \
@@ -126,6 +129,7 @@ HEADERS += \
     calibration.h \
     cam_sen.h \
     cambuilddlg.h \
+    ccoordchange.h \
     craft.h \
     cweldtarject.h \
     demarcatedlg.h \
@@ -135,6 +139,7 @@ HEADERS += \
     global.h \
     ipaddress.h \
     keycamdlg.h \
+    keycoorddlg.h \
     keycreatdlg.h \
     keydelaydlg.h \
     keyiodlg.h \

@@ -58,6 +58,11 @@
    </item>
    <item>
     <property name="text">
+     <string>COORD: 工件坐标系定位指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>CREAT: 生成跟踪轨迹指令</string>
     </property>
    </item>

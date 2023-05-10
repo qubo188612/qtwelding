@@ -22,6 +22,7 @@
 //写PLC指令，举例 PLC: WRITEPLC[20] DATA16[2]
 //等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
 //寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] POINTNAME[寻位的点point1]
+//工件坐标系定位，举例 COORD: POINTX[寻位的点point1] POINTO[寻位的点point3] NAME[零位矩阵]
 
 
 
@@ -36,6 +37,7 @@
 #define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
 #define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
 #define CMD_SEARCH_KEY                  "SEARCH:"       //寻位命令集合KEY
+#define CMD_COORD_KEY                   "COORD:"        //工件坐标系定位命令集合KEY
 
 
 //参数项
@@ -61,6 +63,8 @@
 #define CMD_SIDE                            "SIDE"                //寻位寻找两侧的范围
 #define CMD_SIDEMOVE                        "SIDEMOVE"            //寻位寻找两侧的单位向量
 #define CMD_SIDESPEED                       "SIDESPEED"           //寻位寻找两侧的空闲移动速度
+#define CMD_POINTX                          "POINTX"              //实际零位矩阵零点的X方向基准点
+#define CMD_POINTO                          "POINTO"              //实际零位矩阵零点基准点
 
 
 /************************/
@@ -86,6 +90,7 @@ public:
     QString cmd_plcwrite(int register_add,int16_t register_data);
     QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name);//寻位命令
     QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name);//圆寻位命令
+    QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -147,6 +152,10 @@ public:
     std::vector<float> cmd_search_sidemove;//寻位寻找两侧的单位向量
     float cmd_search_sidespeed;//寻位寻找两侧的空闲移动速度
 
+    QString cmd_coord_pointx;//实际零位矩阵零点的X方向基准点
+    QString cmd_coord_pointo;//实际零位矩阵零点的基准点
+    QString cmd_coord_name;//实际零位矩阵名字
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -169,6 +178,8 @@ protected:
     QString rc_side(int side);
     QString rc_sidemove(std::vector<float> sidemove);
     QString rc_sidespeed(float speed);
+    QString rc_pointX(QString s_pointX);
+    QString rc_pointO(QString s_pointO);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

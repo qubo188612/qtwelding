@@ -232,6 +232,28 @@ std::array<double, 3> Robotcontrol::Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d r
     return temp;
 }
 
+Eigen::Matrix3d Robotcontrol::Yaskawa_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    double c1 = cos(rx*CAL_RADIAN);
+    double c2 = cos(ry*CAL_RADIAN);
+    double c3 = cos(rz*CAL_RADIAN);
+    double s1 = sin(rx*CAL_RADIAN);
+    double s2 = sin(ry*CAL_RADIAN);
+    double s3 = sin(rz*CAL_RADIAN);
+    Eigen::Matrix3d rot;
+    rot(0,0) = c2*c3;
+    rot(0,1) = s1*s2*c3 - c1*s3;
+    rot(0,2) = c1*s2*c3 + s1*s3;
+    rot(1,0) = c2*s3;
+    rot(1,1) = s1*s2*s3 + c1*c3;
+    rot(1,2) = c1*s2*s3 - s1*c3;
+    rot(2,0) = -s2;
+    rot(2,1) = s1*c2;
+    rot(2,2) = c1*c2;
+    return rot;
+}
+
 void Robotcontrol::WeldInit()//焊机初始化(非机器人直连时有效)
 {
     switch(weld_mod)
@@ -488,34 +510,56 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
             moveinfo.tcp=tcp;
             _p->movepoint_buffer.push_back(moveinfo);
             mutexmovepoint_buffer_group.unlock();
+
+            /************/
             switch(movemod)
             {
                 case MOVEL:
                 {
+                    //转换成四元数
+                    std::array<double,3> pst;
+                    pst[0]=f_movRX;
+                    pst[1]=f_movRY;
+                    pst[2]=f_movRZ;
+                    Eigen::Matrix3d posture=_p->Yaskawa_Euler2RotMatrixXYZ(pst);
+                    Eigen::Quaterniond quater_posture;
+                    quater_posture=posture;
+
                     mutexsend_buf_group.lock();
-                    QString msg="MovL("+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                    QString msg="MoveL,"+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
+                                        QString::number(quater_posture.w(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.x(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+",SpeedL="+
-                                        QString::number((int)f_speed)+")";
+                                        QString::number((int)f_speed);
                     std::string str=msg.toStdString();
-                //  std::string str="MovL(1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2)";
+                //  std::string str="MoveL,1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2";
                     _p->send_buf_group.push_back(str);
                     mutexsend_buf_group.unlock();
                 }
                 break;
                 case MOVEJ:
                 {
+                    //转换成四元数
+                    std::array<double,3> pst;
+                    pst[0]=f_movRX;
+                    pst[1]=f_movRY;
+                    pst[2]=f_movRZ;
+                    Eigen::Matrix3d posture=_p->Yaskawa_Euler2RotMatrixXYZ(pst);
+                    Eigen::Quaterniond quater_posture;
+                    quater_posture=posture;
+
                     mutexsend_buf_group.lock();
                     QString msg="MovJ("+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
+                                        QString::number(quater_posture.w(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.x(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+")";
                     std::string str=msg.toStdString();
                 //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2)";
@@ -525,19 +569,34 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                 break;
                 case MOVEC:
                 {
+                    //转换成四元数
+                    std::array<double,3> pst,pst1;
+                    pst[0]=f_movRX;
+                    pst[1]=f_movRY;
+                    pst[2]=f_movRZ;
+                    pst1[0]=f_movRX1;
+                    pst1[1]=f_movRY1;
+                    pst1[2]=f_movRZ1;
+                    Eigen::Matrix3d posture=_p->Yaskawa_Euler2RotMatrixXYZ(pst);
+                    Eigen::Matrix3d posture1=_p->Yaskawa_Euler2RotMatrixXYZ(pst1);
+                    Eigen::Quaterniond quater_posture,quater_posture1;
+                    quater_posture=posture;
+                    quater_posture1=posture1;
                     mutexsend_buf_group.lock();
                     QString msg="Arc("+QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.w(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.x(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movX1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movY1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                         QString::number(f_movZ1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRX1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
+                                        QString::number(quater_posture1.w(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture1.x(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture1.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(quater_posture1.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+",SpeedL="+
                                         QString::number((int)f_speed)+")";
                     std::string str=msg.toStdString();
