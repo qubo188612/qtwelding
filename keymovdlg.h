@@ -38,6 +38,8 @@ private slots:
 
     void on_arriveBtn_released();
 
+    void on_movechangecheckBox_stateChanged(int arg1);
+
 private:
     Ui::keymovDlg *ui;
 

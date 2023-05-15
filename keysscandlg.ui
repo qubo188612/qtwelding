@@ -1,35 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>keyscanDlg</class>
- <widget class="QDialog" name="keyscanDlg">
+ <class>keysscanDlg</class>
+ <widget class="QDialog" name="keysscanDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>561</width>
-    <height>433</height>
+    <width>620</width>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <widget class="QTextBrowser" name="record">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>30</y>
+     <width>281</width>
+     <height>351</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>10</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>调试窗口:</string>
+   </property>
+  </widget>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>138</y>
-     <width>181</width>
-     <height>281</height>
+     <y>10</y>
+     <width>291</width>
+     <height>371</height>
     </rect>
    </property>
    <property name="title">
     <string>采集激光数据指令:</string>
    </property>
-   <widget class="QPushButton" name="scanaddBtn">
+   <widget class="QPushButton" name="sscanaddBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>300</y>
       <width>161</width>
       <height>61</height>
      </rect>
@@ -38,7 +61,7 @@
      <string>采集数据指令</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_12">
+   <widget class="QLabel" name="label_1">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,7 +74,7 @@
      <string>TCP:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="scantcpcombo">
+   <widget class="QComboBox" name="sscantcpcombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -61,7 +84,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_13">
+   <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -74,7 +97,7 @@
      <string>采集速度:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="scanspeed">
+   <widget class="QLineEdit" name="sscanspeed">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -84,7 +107,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_17">
+   <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -97,7 +120,7 @@
      <string>轨迹名称:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="scanname">
+   <widget class="QLineEdit" name="sscanname">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -107,7 +130,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QComboBox" name="scanmovemodecombo">
+   <widget class="QComboBox" name="sscanmovemodecombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -132,7 +155,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QLabel" name="label_19">
+   <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -145,11 +168,11 @@
      <string>模式:</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="scanchangecheckBox">
+   <widget class="QCheckBox" name="sscanchangecheckBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>240</y>
       <width>131</width>
       <height>23</height>
      </rect>
@@ -158,76 +181,83 @@
      <string>使用变换矩阵:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="scanchangecombo">
+   <widget class="QComboBox" name="sscanchangecombo">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>180</y>
+      <y>270</y>
       <width>161</width>
       <height>25</height>
      </rect>
     </property>
    </widget>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>140</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>调试窗口:</string>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="record">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>158</y>
-     <width>331</width>
-     <height>261</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>521</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>到点:</string>
-   </property>
-   <widget class="QLabel" name="arrive_pos">
+   <widget class="QComboBox" name="pos1comboBox">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>150</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="pos2comboBox">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>180</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_18">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
-      <width>491</width>
+      <y>180</y>
+      <width>101</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>圆弧中间点位:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="arriveBtn">
+   <widget class="QLabel" name="label_19">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>50</y>
-      <width>161</width>
-      <height>61</height>
+      <x>10</x>
+      <y>210</y>
+      <width>101</width>
+      <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>长按到点</string>
+     <string>圆弧终点点位:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>移动点位:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="pos3comboBox">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>210</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
     </property>
    </widget>
   </widget>

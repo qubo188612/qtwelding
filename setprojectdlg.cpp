@@ -36,6 +36,9 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keyweld=new keyweldDlg(mcs);
     keysearch=new keysearchDlg(mcs);
     keycoord=new keycoordDlg(mcs);
+    keygetpos=new keygetposDlg(mcs);
+    keysmov=new keysmovDlg(mcs);
+    keysscan=new keysscanDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -58,6 +61,9 @@ setprojectDlg::~setprojectDlg()
     delete keyweld;
     delete keysearch;
     delete keycoord;
+    delete keygetpos;
+    delete keysmov;
+    delete keysscan;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -647,7 +653,12 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("有同名的扫描轨迹，请先排除"));
+        QString msg=QString::fromLocal8Bit("程序有错误，请先排除:");
+        ui->record->append(msg);
+        for(int i=0;i<err_msg.size();i++)
+        {
+            ui->record->append(err_msg[i]);
+        }
     }
 }
 
@@ -815,6 +826,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_SMOV_KEY)
+            {
+                keysmov->init_dlg_show(cmdlist);
+                keysmov->setWindowTitle(othercmd->cmdname);
+                keysmov->setbutton(1);
+                int rc=keysmov->exec();
+                keysmov->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keysmov->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
             else if(key==CMD_DELAY_KEY)
             {
                 keydelay->init_dlg_show(cmdlist);
@@ -885,6 +926,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 if(rc!=0)//确定
                 {
                     QString msg=keyscan->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_SSCAN_KEY)
+            {
+                keysscan->init_dlg_show(cmdlist);
+                keysscan->setWindowTitle(othercmd->cmdname);
+                keysscan->setbutton(1);
+                int rc=keysscan->exec();
+                keysscan->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keysscan->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
@@ -1073,6 +1144,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 if(rc!=0)//确定
                 {
                     QString msg=keycoord->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_GETPOS_KEY)
+            {
+                keygetpos->init_dlg_show(cmdlist);
+                keygetpos->setWindowTitle(othercmd->cmdname);
+                keygetpos->setbutton(1);
+                int rc=keygetpos->exec();
+                keygetpos->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keygetpos->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
@@ -1492,6 +1593,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 return;
             }
         }
+        else if(key==CMD_SMOV_KEY)
+        {
+            keysmov->init_dlg_show();
+            keysmov->setWindowTitle(othercmd->cmdname);
+            keysmov->setbutton(0);
+            int rc=keysmov->exec();
+            keysmov->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keysmov->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入点位移动指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消点位移动指令设置"));
+                return;
+            }
+        }
         else if(key==CMD_DELAY_KEY)
         {
             keydelay->init_dlg_show();
@@ -1586,6 +1715,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             if(rc!=0)//确定
             {
                 QString msg=keyscan->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入采集激光数据指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消采集激光数据指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_SSCAN_KEY)
+        {
+            keysscan->init_dlg_show();
+            keysscan->setWindowTitle(othercmd->cmdname);
+            keysscan->setbutton(0);
+            int rc=keysscan->exec();
+            keysscan->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keysscan->cmd_msg;
                 if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                 {
                     m_mcs->project->project_cmdlist.push_back(msg);
@@ -1770,6 +1927,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             else
             {
                 ui->record->append(QString::fromLocal8Bit("取消定位指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_GETPOS_KEY)
+        {
+            keygetpos->init_dlg_show();
+            keygetpos->setWindowTitle(othercmd->cmdname);
+            keygetpos->setbutton(0);
+            int rc=keygetpos->exec();
+            keygetpos->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keygetpos->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入获取扫描的焊缝坐标值指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消获取扫描的焊缝坐标值指令设置"));
                 return;
             }
         }

@@ -17,6 +17,9 @@ keysearchDlg::keysearchDlg(my_parameters *mcs,QWidget *parent) :
         ui->searchtcpcombo->addItem(msg);
     }
 
+    ui->searchchangecheckBox->setCheckState(Qt::Unchecked);
+    ui->searchchangecombo->setDisabled(true);
+
     adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->searchspeed->setValidator(adoubleValidator_speed);
 }
@@ -29,6 +32,11 @@ keysearchDlg::~keysearchDlg()
 
 void keysearchDlg::init_dlg_show()
 {
+    ui->searchchangecombo->clear();
+    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    {
+        ui->searchchangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+    }
     ui->arrive_pos->clear();
     ui->groupBox_2->setDisabled(true);
     cmd_list_in.clear();
@@ -52,6 +60,30 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
             std::vector<float> sizemove=cmd.cmd_search_sidemove;
             float sidespeed=cmd.cmd_search_sidespeed;
             int side=cmd.cmd_search_side;
+            QString change=cmd.cmd_move_change;//获取到的变换矩阵
+            int change_trace_num;//找到要变换矩阵下标
+            if(!change.isEmpty())
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        change_trace_num=n;//找到要储存的焊接轨道下标
+                        break;
+                    }
+                }
+                if(change_trace_num>=0&&change_trace_num<ui->searchchangecombo->count())
+                {
+                    ui->searchchangecombo->setCurrentIndex(change_trace_num);
+                }
+                ui->searchchangecheckBox->setCheckState(Qt::Checked);
+                ui->searchchangecombo->setDisabled(true);
+            }
+            else
+            {
+                ui->searchchangecheckBox->setCheckState(Qt::Unchecked);
+                ui->searchchangecombo->setDisabled(false);
+            }
             if(movemod==MOVEJ||movemod==MOVEL)
             {
                 RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
@@ -60,7 +92,10 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
                                 QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                 QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")";
+                                QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                QString::number(pos.out_1)+","+
+                                QString::number(pos.out_2)+","+
+                                QString::number(pos.out_3)+")";
                 ui->arrive_pos->setText(msg);
                 ui->groupBox_2->setDisabled(false);
             }
@@ -162,6 +197,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
         std::vector<float> sidemove(3);
         float sidespeed;
         int side;
+        QString change;
 
         my_cmd cmd;
         QString name=ui->searchname->text();
@@ -236,6 +272,10 @@ void keysearchDlg::on_searchaddBtn_clicked()
             ui->record->append(QString::fromLocal8Bit("寻位范围Z格式出错"));
             return;
         }
+        if(ui->searchchangecheckBox->isChecked()==true)
+        {
+            change=ui->searchchangecombo->currentText();
+        }
 
         QString msg;
         switch(movemodel)
@@ -243,7 +283,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
             case MOVEL:
             case MOVEJ:
             {
-                msg=cmd.cmd_search(robpos,movemodel,speed,tcp,side,sidemove,sidespeed,name);
+                msg=cmd.cmd_search(robpos,movemodel,speed,tcp,side,sidemove,sidespeed,name,change);
             }
             break;
             case MOVEC:
@@ -255,7 +295,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    msg=cmd.cmd_searchC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,side,sidemove,sidespeed,name);
+                    msg=cmd.cmd_searchC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,side,sidemove,sidespeed,name,change);
                 }
                 else
                 {
@@ -339,5 +379,18 @@ void keysearchDlg::on_arriveBtn_released()
     }
     m_mcs->tosendbuffer->cmd_lock(0);
     ui->record->append(QString::fromLocal8Bit("停止到位"));
+}
+
+//是否使用变换矩阵
+void keysearchDlg::on_searchchangecheckBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+    {
+        ui->searchchangecombo->setDisabled(true);
+    }
+    else
+    {
+        ui->searchchangecombo->setDisabled(false);
+    }
 }
 

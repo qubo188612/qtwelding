@@ -16,6 +16,9 @@ keymovDlg::keymovDlg(my_parameters *mcs,QWidget *parent) :
         ui->movetcpcombo->addItem(msg);
     }
 
+    ui->movechangecheckBox->setCheckState(Qt::Unchecked);
+    ui->movechangecombo->setDisabled(true);
+
     adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->movespeed->setValidator(adoubleValidator_speed);
 }
@@ -28,6 +31,11 @@ keymovDlg::~keymovDlg()
 
 void keymovDlg::init_dlg_show()
 {
+    ui->movechangecombo->clear();
+    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    {
+        ui->movechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+    }
     ui->arrive_pos->clear();
     ui->groupBox_2->setDisabled(true);
     cmd_list_in.clear();
@@ -39,6 +47,11 @@ void keymovDlg::init_dlg_show(QString cmdlist)
     QString msg,key;
     my_cmd cmd;
     cmd_list_in=cmdlist;
+    ui->movechangecombo->clear();
+    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    {
+        ui->movechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+    }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
@@ -47,6 +60,30 @@ void keymovDlg::init_dlg_show(QString cmdlist)
             int tcp=cmd.cmd_move_tcp;//获取到移动TCP
             float speed=cmd.cmd_move_speed;//获取到速度值
             Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+            QString change=cmd.cmd_move_change;//获取到的变换矩阵
+            int change_trace_num;//找到要变换矩阵下标
+            if(!change.isEmpty())
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        change_trace_num=n;//找到要储存的焊接轨道下标
+                        break;
+                    }
+                }
+                if(change_trace_num>=0&&change_trace_num<ui->movechangecombo->count())
+                {
+                    ui->movechangecombo->setCurrentIndex(change_trace_num);
+                }
+                ui->movechangecheckBox->setCheckState(Qt::Checked);
+                ui->movechangecombo->setDisabled(true);
+            }
+            else
+            {
+                ui->movechangecheckBox->setCheckState(Qt::Unchecked);
+                ui->movechangecombo->setDisabled(false);
+            }
             if(movemod==MOVEJ||movemod==MOVEL)
             {
                 RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
@@ -55,7 +92,10 @@ void keymovDlg::init_dlg_show(QString cmdlist)
                                 QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                 QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")";
+                                QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                QString::number(pos.out_1)+","+
+                                QString::number(pos.out_2)+","+
+                                QString::number(pos.out_3)+")";
                 ui->arrive_pos->setText(msg);
                 ui->groupBox_2->setDisabled(false);
             }
@@ -145,6 +185,7 @@ void keymovDlg::on_moveaddBtn_clicked()
         Robmovemodel movemodel=(Robmovemodel)ui->movemodecombo->currentIndex();
         bool rc;
         float speed=ui->movespeed->text().toFloat(&rc);
+        QString change;
         RobPos robpos=m_mcs->rob->TCPpos;
         my_cmd cmd;
         QString msg;
@@ -157,13 +198,17 @@ void keymovDlg::on_moveaddBtn_clicked()
         {
             ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
             return;
+        }   
+        if(ui->movechangecheckBox->isChecked()==true)
+        {
+            change=ui->movechangecombo->currentText();
         }
         switch(movemodel)
         {
             case MOVEL:
             case MOVEJ:
             {
-                msg=cmd.cmd_move(robpos,movemodel,speed,tcp);
+                msg=cmd.cmd_move(robpos,movemodel,speed,tcp,change);
             }
             break;
             case MOVEC:
@@ -175,7 +220,7 @@ void keymovDlg::on_moveaddBtn_clicked()
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    msg=cmd.cmd_moveC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp);
+                    msg=cmd.cmd_moveC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,change);
                 }
                 else
                 {
@@ -247,5 +292,18 @@ void keymovDlg::on_arriveBtn_released()
     }
     m_mcs->tosendbuffer->cmd_lock(0);
     ui->record->append(QString::fromLocal8Bit("停止到位"));
+}
+
+//变换矩阵有效
+void keymovDlg::on_movechangecheckBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+    {
+        ui->movechangecombo->setDisabled(true);
+    }
+    else
+    {
+        ui->movechangecombo->setDisabled(false);
+    }
 }
 

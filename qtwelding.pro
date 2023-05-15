@@ -36,11 +36,14 @@ SOURCES += \
         keycoorddlg.cpp \
         keycreatdlg.cpp \
         keydelaydlg.cpp \
+        keygetposdlg.cpp \
         keyiodlg.cpp \
         keymovdlg.cpp \
         keyplcdlg.cpp \
         keyscandlg.cpp \
         keysearchdlg.cpp \
+        keysmovdlg.cpp \
+        keysscandlg.cpp \
         keytracedlg.cpp \
         keywelddlg.cpp \
         main.cpp \
@@ -90,11 +93,14 @@ FORMS += \
     keycoorddlg.ui \
     keycreatdlg.ui \
     keydelaydlg.ui \
+    keygetposdlg.ui \
     keyiodlg.ui \
     keymovdlg.ui \
     keyplcdlg.ui \
     keyscandlg.ui \
     keysearchdlg.ui \
+    keysmovdlg.ui \
+    keysscandlg.ui \
     keytracedlg.ui \
     keywelddlg.ui \
     newcraftdlg.ui \
@@ -142,11 +148,14 @@ HEADERS += \
     keycoorddlg.h \
     keycreatdlg.h \
     keydelaydlg.h \
+    keygetposdlg.h \
     keyiodlg.h \
     keymovdlg.h \
     keyplcdlg.h \
     keyscandlg.h \
     keysearchdlg.h \
+    keysmovdlg.h \
+    keysscandlg.h \
     keytracedlg.h \
     keywelddlg.h \
     my_cmd.h \

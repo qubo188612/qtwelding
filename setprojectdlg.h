@@ -22,6 +22,9 @@
 #include "keywelddlg.h"
 #include "keysearchdlg.h"
 #include "keycoorddlg.h"
+#include "keygetposdlg.h"
+#include "keysmovdlg.h"
+#include "keysscandlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -53,6 +56,9 @@ public:
     keyweldDlg *keyweld;
     keysearchDlg *keysearch;
     keycoordDlg *keycoord;
+    keygetposDlg *keygetpos;
+    keysmovDlg *keysmov;
+    keysscanDlg *keysscan;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

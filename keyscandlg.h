@@ -38,6 +38,8 @@ private slots:
 
     void on_arriveBtn_released();
 
+    void on_scanchangecheckBox_stateChanged(int arg1);
+
 private:
     Ui::keyscanDlg *ui;
 

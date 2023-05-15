@@ -43,10 +43,226 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
         int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
         if(rc<=0)
         {
-            if(key==CMD_SCAN_KEY)//采集指令
+            if(key==CMD_MOV_KEY)//移动指令
+            {
+                QString change=cmd.cmd_move_change;//获取变换矩阵名字
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->projecr_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
+            }
+            else if(key==CMD_SMOV_KEY)//点位移动指令
+            {
+                QString change=cmd.cmd_smove_change;//获取变换矩阵名字
+                Robmovemodel movemod=cmd.cmd_smove_movemod;//获取到的点位移动模式
+                bool b_find=false;
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->projecr_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
+                switch(movemod)
+                {
+                    case MOVEL:
+                    case MOVEJ:
+                    {
+                        QString s_pos=cmd.cmd_smove_pos;//获取到移动坐标
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                        {
+                            if(s_pos==m_mcs->project->projecr_robpos_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到s_pointx这个名字的扫描轨道
+                        {
+                            err=1;
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos+QString::fromLocal8Bit("的坐标点");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            errmsg.push_back(return_msg);
+                            break;
+                        }
+                    }
+                    break;
+                    case MOVEC:
+                    {
+                        QString s_pos1=cmd.cmd_smove_pos1;//获取到移动坐标
+                        QString s_pos2=cmd.cmd_smove_pos2;//获取到移动坐标
+                        QString s_pos3=cmd.cmd_smove_pos3;//获取到移动坐标
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                        {
+                            if(s_pos1==m_mcs->project->projecr_robpos_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到s_pointx这个名字的扫描轨道
+                        {
+                            err=1;
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos1+QString::fromLocal8Bit("的坐标点");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            errmsg.push_back(return_msg);
+                            break;
+                        }
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                        {
+                            if(s_pos2==m_mcs->project->projecr_robpos_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到s_pointx这个名字的扫描轨道
+                        {
+                            err=1;
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos2+QString::fromLocal8Bit("的坐标点");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            errmsg.push_back(return_msg);
+                            break;
+                        }
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                        {
+                            if(s_pos3==m_mcs->project->projecr_robpos_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到s_pointx这个名字的扫描轨道
+                        {
+                            err=1;
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos3+QString::fromLocal8Bit("的坐标点");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            errmsg.push_back(return_msg);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            else if(key==CMD_SCAN_KEY)//采集指令
             {
                 QString name=cmd.cmd_scan_name;//获取到的扫描名字
+                QString change=cmd.cmd_scan_change;//获取变换矩阵名字
                 bool b_find=0;
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->projecr_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
+                for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                {
+                    if(m_mcs->project->project_scan_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    errmsg.push_back(return_msg);
+                    main_record.unlock();
+                }
+                else
+                {
+                    Scan_trace_result trace;
+                    trace.name=name;
+                    m_mcs->project->project_scan_trace.push_back(trace);
+                }
+            }
+            else if(key==CMD_SSCAN_KEY)//点位采集指令
+            {
+                QString name=cmd.cmd_sscan_name;//获取到的点位扫描名字
+                QString change=cmd.cmd_sscan_change;//获取点位变换矩阵名字
+                bool b_find=0;
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->projecr_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
                 for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
                 {
                     if(m_mcs->project->project_scan_trace[t].name==name)
@@ -75,7 +291,29 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
             {
                 QString name=cmd.cmd_creat_name;//获取到的生成的轨迹名字
                 std::vector<QString> scannames=cmd.cmd_creat_scanname;//获取到要扫描的轨道名字
+                QString change=cmd.cmd_scan_change;//获取变换矩阵名字
                 Trace_edit_mode mode=cmd.cmd_creat_mode;//获取到的扫描模式
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->projecr_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
                 bool b_find=0;
                 for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
                 {
@@ -367,6 +605,34 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     m_mcs->project->projecr_coord_matrix4d.push_back(matrix);
                 }
             }
+            else if(key==CMD_GETPOS_KEY)
+            {
+                QString name=cmd.cmd_getpos_name;//获取到的点名字
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                {
+                    if(m_mcs->project->projecr_robpos_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    errmsg.push_back(return_msg);
+                    main_record.unlock();
+                }
+                else
+                {
+                    Point_robpos_result point;
+                    point.name=name;
+                    m_mcs->project->projecr_robpos_trace.push_back(point);
+                }
+            }
         }
     }
     return err;
@@ -504,12 +770,50 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int tcp=cmd.cmd_move_tcp;//获取到移动TCP  
             float speed=cmd.cmd_move_speed;//获取到速度值
             Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
+            QString change=cmd.cmd_move_change;
+            int matrix4d_trace_num;
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        matrix4d_trace_num=n;//找到变换矩阵下标
+                        break;
+                    }
+                }
+                if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+                {
+                    //矩阵无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
+                T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            }
             switch(movemod)
             {
                 case MOVEL:
                 case MOVEJ:
                 {
                     RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos.X;
+                        tempin.y()=pos.Y;
+                        tempin.z()=pos.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos.X=tempout.x();
+                        pos.Y=tempout.y();
+                        pos.Z=tempout.z();
+                    }
                     cmd_move(pos,movemod,speed,tcp);//移动
                 }
                 break;
@@ -518,6 +822,237 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     RobPos pos1=cmd.cmd_move_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_move_pos2;//获取到移动坐标
                     RobPos pos3=cmd.cmd_move_pos3;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos1.X;
+                        tempin.y()=pos1.Y;
+                        tempin.z()=pos1.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos1.X=tempout.x();
+                        pos1.Y=tempout.y();
+                        pos1.Z=tempout.z();
+                        tempin.x()=pos2.X;
+                        tempin.y()=pos2.Y;
+                        tempin.z()=pos2.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos2.X=tempout.x();
+                        pos2.Y=tempout.y();
+                        pos2.Z=tempout.z();
+                        tempin.x()=pos3.X;
+                        tempin.y()=pos3.Y;
+                        tempin.z()=pos3.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos3.X=tempout.x();
+                        pos3.Y=tempout.y();
+                        pos3.Z=tempout.z();
+                    }
+                #ifdef USE_MYMOVEC_CONTROL
+                    CWeldTarject tarjectMath;
+                    std::vector<RobPos> interpolatPos;
+                    if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<interpolatPos.size();n++)
+                    {
+                        cmd_move(interpolatPos[n],MOVEL,speed,tcp);
+                    }
+                #else
+                    cmd_move(pos1,MOVEL,speed,tcp);
+                    cmd_moveC(pos2,pos3,MOVEC,speed,tcp);
+                #endif
+                }
+                break;
+            }
+            usleep(ROB_WORK_DELAY);
+            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+            {
+                if(b_cmdlist_build==false)     //停止
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    paused_key=key;
+                    cmd_lock(1);
+                    line=n;
+                    return 1;
+                }
+                sleep(0);
+            //  usleep(ROB_WORK_DELAY_STEP);
+            }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
+        }
+        else if(key==CMD_SMOV_KEY)//点位移动指令
+        {
+            int tcp=cmd.cmd_smove_tcp;//获取到移动TCP
+            float speed=cmd.cmd_smove_speed;//获取到速度值
+            Robmovemodel movemod=cmd.cmd_smove_movemod;//获取到的移动模式
+            QString change=cmd.cmd_smove_change;//找到变换矩阵名字
+            QString s_pos=cmd.cmd_smove_pos;//找到的点位名字
+            QString s_pos1=cmd.cmd_smove_pos1;//找到的点位名字
+            QString s_pos2=cmd.cmd_smove_pos2;//找到的点位名字
+            QString s_pos3=cmd.cmd_smove_pos3;//找到的点位名字
+            int matrix4d_trace_num;//找到变换矩阵下标
+            int point_trace_num;//找到点位下标
+            int point1_trace_num;//找到点位下标
+            int point2_trace_num;//找到点位下标
+            int point3_trace_num;//找到点位下标
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        matrix4d_trace_num=n;//找到变换矩阵下标
+                        break;
+                    }
+                }
+                if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+                {
+                    //矩阵无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
+                T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            }
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    RobPos pos=m_mcs->project->projecr_robpos_trace[point_trace_num].robotpos;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos.X;
+                        tempin.y()=pos.Y;
+                        tempin.z()=pos.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos.X=tempout.x();
+                        pos.Y=tempout.y();
+                        pos.Z=tempout.z();
+                    }
+                    cmd_move(pos,movemod,speed,tcp);//移动
+                }
+                break;
+                case MOVEC:
+                {
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos1==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point1_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point1_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos1+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos2==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point2_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point2_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos2+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos3==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point3_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point3_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos3+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    RobPos pos1=m_mcs->project->projecr_robpos_trace[point1_trace_num].robotpos;//获取到移动坐标
+                    RobPos pos2=m_mcs->project->projecr_robpos_trace[point2_trace_num].robotpos;//获取到移动坐标
+                    RobPos pos3=m_mcs->project->projecr_robpos_trace[point3_trace_num].robotpos;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos1.X;
+                        tempin.y()=pos1.Y;
+                        tempin.z()=pos1.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos1.X=tempout.x();
+                        pos1.Y=tempout.y();
+                        pos1.Z=tempout.z();
+                        tempin.x()=pos2.X;
+                        tempin.y()=pos2.Y;
+                        tempin.z()=pos2.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos2.X=tempout.x();
+                        pos2.Y=tempout.y();
+                        pos2.Z=tempout.z();
+                        tempin.x()=pos3.X;
+                        tempin.y()=pos3.Y;
+                        tempin.z()=pos3.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos3.X=tempout.x();
+                        pos3.Y=tempout.y();
+                        pos3.Z=tempout.z();
+                    }
                 #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
                     std::vector<RobPos> interpolatPos;
@@ -712,6 +1247,33 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             std::vector<float> sidemove=cmd.cmd_search_sidemove;//获取每次两侧寻位的移动向量
             float sidespeed=cmd.cmd_search_sidespeed;//获取每次两侧寻位的空闲移动速度
             int robpos_trace_num;//要储存的寻位点下标
+            QString change=cmd.cmd_search_change;//变换矩阵
+            int matrix4d_trace_num;//要变换矩阵下标
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        matrix4d_trace_num=n;//找到变换矩阵下标
+                        break;
+                    }
+                }
+                if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+                {
+                    //矩阵无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
+                T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            }
             for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
             {
                 if(name==m_mcs->project->projecr_robpos_trace[n].name)
@@ -723,6 +1285,55 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             //先记录下当前位置
             RobPos oldpos=m_mcs->rob->TCPpos;
             RobPos pos=cmd.cmd_search_pos,pos1=cmd.cmd_search_pos1,pos2=cmd.cmd_search_pos2,pos3=cmd.cmd_search_pos3;
+
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos.X;
+                        tempin.y()=pos.Y;
+                        tempin.z()=pos.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos.X=tempout.x();
+                        pos.Y=tempout.y();
+                        pos.Z=tempout.z();
+                    }
+                }
+                break;
+                case MOVEC:
+                {
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos1.X;
+                        tempin.y()=pos1.Y;
+                        tempin.z()=pos1.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos1.X=tempout.x();
+                        pos1.Y=tempout.y();
+                        pos1.Z=tempout.z();
+                        tempin.x()=pos2.X;
+                        tempin.y()=pos2.Y;
+                        tempin.z()=pos2.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos2.X=tempout.x();
+                        pos2.Y=tempout.y();
+                        pos2.Z=tempout.z();
+                        tempin.x()=pos3.X;
+                        tempin.y()=pos3.Y;
+                        tempin.z()=pos3.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos3.X=tempout.x();
+                        pos3.Y=tempout.y();
+                        pos3.Z=tempout.z();
+                    }
+                }
+                break;
+            }
 
             Eigen::Vector3d st,ed,ed1,ed2,ed3;
 
@@ -1003,6 +1614,70 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             m_mcs->project->projecr_coord_matrix4d[coord_trace_num].T=T;
             m_mcs->project->projecr_coord_matrix4d[coord_trace_num].nEn=true;
         }
+        else if(key==CMD_GETPOS_KEY)//获取扫描的焊缝坐标指令
+        {
+            bool b_find=false;//成功找到
+            QString name=cmd.cmd_getpos_name;//获取到要保存扫描的点名字
+            int time=cmd.cmd_getpos_time;//获取到等待扫描结果的时间
+            int robpos_trace_num;//获取要储存的扫描点下标
+            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            {
+                if(name==m_mcs->project->projecr_robpos_trace[n].name)
+                {
+                    robpos_trace_num=n;//找到要储存的扫描点下标
+                    break;
+                }
+            }
+            //清空检测状态
+            m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+            m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
+            //这里添加扫描数据
+            QElapsedTimer qtime;
+            qtime.start();
+            while(!qtime.hasExpired(time))
+            {
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        std::vector<Scan_trace_line> scan_trace(1);
+                        std::vector<Eigen::Vector3d> weld_trace;
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                        scan_trace[0].robottime=m_mcs->rob->robtime;
+                        scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                        if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                        {
+                            main_record.lock();
+                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描计算结果出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=scan_trace[0].robotpos;
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].x();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].y();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].z();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
+                        b_find=true;
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
+                if(b_find==true)//成功找到了点
+                {
+                    break;
+                }
+            }
+            if(b_find==false)//没有找到点
+            {
+                main_record.lock();
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描点找不到");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+        }
         else if(key==CMD_SCAN_KEY)//采集指令
         {    
             float speed=cmd.cmd_scan_speed;//获取到的扫描速度
@@ -1010,6 +1685,34 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             Robmovemodel movemod=cmd.cmd_scan_movemod;//获取到的扫描模式
             QString name=cmd.cmd_scan_name;//获取到的扫描名字
             int scan_trace_num;//要储存的轨道数据下标
+            QString change=cmd.cmd_scan_change;
+            int matrix4d_trace_num;
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        matrix4d_trace_num=n;//找到变换矩阵下标
+                        break;
+                    }
+                }
+                if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+                {
+                    //矩阵无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
+                T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            }
+
             for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
             {
                 if(name==m_mcs->project->project_scan_trace[n].name)
@@ -1024,6 +1727,17 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 case MOVEJ:
                 {
                     RobPos pos=cmd.cmd_scan_pos;//获取到扫描终点坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos.X;
+                        tempin.y()=pos.Y;
+                        tempin.z()=pos.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos.X=tempout.x();
+                        pos.Y=tempout.y();
+                        pos.Z=tempout.z();
+                    }
                     cmd_move(pos,movemod,speed,tcp);
                 }
                 break;
@@ -1032,6 +1746,273 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     RobPos pos1=cmd.cmd_scan_pos1;//获取到移动坐标
                     RobPos pos2=cmd.cmd_scan_pos2;//获取到移动坐标
                     RobPos pos3=cmd.cmd_scan_pos3;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos1.X;
+                        tempin.y()=pos1.Y;
+                        tempin.z()=pos1.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos1.X=tempout.x();
+                        pos1.Y=tempout.y();
+                        pos1.Z=tempout.z();
+                        tempin.x()=pos2.X;
+                        tempin.y()=pos2.Y;
+                        tempin.z()=pos2.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos2.X=tempout.x();
+                        pos2.Y=tempout.y();
+                        pos2.Z=tempout.z();
+                        tempin.x()=pos3.X;
+                        tempin.y()=pos3.Y;
+                        tempin.z()=pos3.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos3.X=tempout.x();
+                        pos3.Y=tempout.y();
+                        pos3.Z=tempout.z();
+                    }
+                #ifdef USE_MYMOVEC_CONTROL
+                    CWeldTarject tarjectMath;
+                    std::vector<RobPos> interpolatPos;
+                    if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<interpolatPos.size();n++)
+                    {
+                        cmd_move(interpolatPos[n],MOVEL,speed,tcp);
+                    }
+                #else
+                    cmd_move(pos1,MOVEL,speed,tcp);
+                    cmd_moveC(pos2,pos3,MOVEC,speed,tcp);
+                #endif
+                }
+                break;
+            }
+            usleep(ROB_WORK_DELAY);
+            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待扫描到位
+            {
+                if(b_cmdlist_build==false)     //停止
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    paused_key=key;
+                    cmd_lock(1);
+                    line=n;
+                    return 1;
+                }
+                //这里添加扫描数据
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        Scan_trace_line res;
+                        res.robotpos=m_mcs->rob->TCPpos;
+                        res.robottime=m_mcs->rob->robtime;
+                        res.ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                        m_mcs->project->project_scan_trace[scan_trace_num].point.push_back(res);
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
+                //开始采集检测数据
+                usleep(0);
+            }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
+            if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存扫描轨迹
+            {
+                QString dir="./log/";
+                QString key=SAVELOGFILE_SCANNAME_HEAD;
+                QString time;
+                std::string s_time;
+                TimeFunction to;
+                to.get_time_ms(&s_time);
+                time=QString::fromStdString(s_time);
+                dir=dir+time+key+name;
+                savelog_scan(dir,m_mcs->project->project_scan_trace[scan_trace_num].point);
+            }
+        }
+        else if(key==CMD_SSCAN_KEY)//点位采集指令
+        {
+            float speed=cmd.cmd_sscan_speed;//获取到的扫描速度
+            int tcp=cmd.cmd_sscan_tcp;//获取到扫描TCP
+            Robmovemodel movemod=cmd.cmd_sscan_movemod;//获取到的扫描模式
+            QString name=cmd.cmd_sscan_name;//获取到的扫描名字
+            int scan_trace_num;//要储存的轨道数据下标
+            QString change=cmd.cmd_sscan_change;
+            QString s_pos=cmd.cmd_sscan_pos;
+            QString s_pos1=cmd.cmd_sscan_pos1;
+            QString s_pos2=cmd.cmd_sscan_pos2;
+            QString s_pos3=cmd.cmd_sscan_pos3;
+            int matrix4d_trace_num;
+            int point_trace_num;//找到寻位点下标
+            int point1_trace_num;//找到寻位点下标
+            int point2_trace_num;//找到寻位点下标
+            int point3_trace_num;//找到寻位点下标
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        matrix4d_trace_num=n;//找到变换矩阵下标
+                        break;
+                    }
+                }
+                if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+                {
+                    //矩阵无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
+                T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            }
+
+            for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_scan_trace[n].name)
+                {
+                    scan_trace_num=n;//找到要储存的扫描轨迹下标
+                    break;
+                }
+            }
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    RobPos pos=m_mcs->project->projecr_robpos_trace[point_trace_num].robotpos;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos.X;
+                        tempin.y()=pos.Y;
+                        tempin.z()=pos.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos.X=tempout.x();
+                        pos.Y=tempout.y();
+                        pos.Z=tempout.z();
+                    }
+                    cmd_move(pos,movemod,speed,tcp);
+                }
+                break;
+                case MOVEC:
+                {
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos1==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point1_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point1_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos1+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos2==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point2_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point2_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos2+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(s_pos3==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point3_trace_num=n;//找到要储存的寻位点下标
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point3_trace_num].nEn!=true)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos3+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    RobPos pos1=m_mcs->project->projecr_robpos_trace[point1_trace_num].robotpos;//获取到移动坐标
+                    RobPos pos2=m_mcs->project->projecr_robpos_trace[point2_trace_num].robotpos;//获取到移动坐标
+                    RobPos pos3=m_mcs->project->projecr_robpos_trace[point3_trace_num].robotpos;//获取到移动坐标
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos1.X;
+                        tempin.y()=pos1.Y;
+                        tempin.z()=pos1.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos1.X=tempout.x();
+                        pos1.Y=tempout.y();
+                        pos1.Z=tempout.z();
+                        tempin.x()=pos2.X;
+                        tempin.y()=pos2.Y;
+                        tempin.z()=pos2.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos2.X=tempout.x();
+                        pos2.Y=tempout.y();
+                        pos2.Z=tempout.z();
+                        tempin.x()=pos3.X;
+                        tempin.y()=pos3.Y;
+                        tempin.z()=pos3.Z;
+                        tempout=CCoordChange::point2point(tempin,R,T);
+                        pos3.X=tempout.x();
+                        pos3.Y=tempout.y();
+                        pos3.Z=tempout.z();
+                    }
                 #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
                     std::vector<RobPos> interpolatPos;

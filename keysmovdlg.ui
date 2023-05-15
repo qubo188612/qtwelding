@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>keymovDlg</class>
- <widget class="QDialog" name="keymovDlg">
+ <class>keysmovDlg</class>
+ <widget class="QDialog" name="keysmovDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>751</width>
-    <height>331</height>
+    <width>750</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <widget class="QTextBrowser" name="record">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>28</y>
+     <width>331</width>
+     <height>281</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>130</y>
+     <y>8</y>
      <width>371</width>
-     <height>181</height>
+     <height>301</height>
     </rect>
    </property>
    <property name="title">
-    <string>机器人移动指令:</string>
+    <string>机器人点位移动指令:</string>
    </property>
-   <widget class="QPushButton" name="moveaddBtn">
+   <widget class="QPushButton" name="smoveaddBtn">
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>110</y>
+      <y>230</y>
       <width>161</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>移动指令</string>
+     <string>点位移动指令</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -51,7 +61,7 @@
      <string>TCP:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="movetcpcombo">
+   <widget class="QComboBox" name="smovetcpcombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -74,7 +84,7 @@
      <string>移动速度:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="movespeed">
+   <widget class="QLineEdit" name="smovespeed">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -100,7 +110,7 @@
      <string>模式:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="movemodecombo">
+   <widget class="QComboBox" name="smovemodecombo">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -125,21 +135,21 @@
      </property>
     </item>
    </widget>
-   <widget class="QComboBox" name="movechangecombo">
+   <widget class="QComboBox" name="smovechangecombo">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>140</y>
+      <y>260</y>
       <width>141</width>
       <height>25</height>
      </rect>
     </property>
    </widget>
-   <widget class="QCheckBox" name="movechangecheckBox">
+   <widget class="QCheckBox" name="smovechangecheckBox">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>110</y>
+      <y>230</y>
       <width>131</width>
       <height>23</height>
      </rect>
@@ -148,12 +158,81 @@
      <string>使用变换矩阵:</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>110</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>移动点位:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="pos1comboBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>110</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_18">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>150</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>圆弧中间点位:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="pos2comboBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>150</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>190</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>圆弧终点点位:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="pos3comboBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>190</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>400</x>
-     <y>12</y>
+     <y>10</y>
      <width>67</width>
      <height>17</height>
     </rect>
@@ -161,68 +240,6 @@
    <property name="text">
     <string>调试窗口:</string>
    </property>
-  </widget>
-  <widget class="QTextBrowser" name="record">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>30</y>
-     <width>331</width>
-     <height>281</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>150</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>371</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>到点:</string>
-   </property>
-   <widget class="QLabel" name="arrive_pos">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>351</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="arriveBtn">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>50</y>
-      <width>161</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>长按到点</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources/>

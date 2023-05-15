@@ -73,6 +73,11 @@
    </item>
    <item>
     <property name="text">
+     <string>GETPOS: 获取扫描的焊缝坐标值指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>IO: IO口指令</string>
     </property>
    </item>
@@ -94,6 +99,16 @@
    <item>
     <property name="text">
      <string>SEARCH: 寻位指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SMOV: 点位移动指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SSCAN: 点位采集激光数据指令</string>
     </property>
    </item>
    <item>

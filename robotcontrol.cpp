@@ -1944,11 +1944,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_EMERGEN://智昌机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="stop\r\n";
                                                 std::string str=msg.toStdString();
-                                                _p->send_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_DOBOT://越彊机器人
@@ -2036,11 +2036,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_EMERGEN://智昌机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="pause\r\n";
                                                 std::string str=msg.toStdString();
-                                                _p->send_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_DOBOT://越彊机器人
@@ -2103,11 +2103,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_EMERGEN://智昌机器人
                                             {
-                                                mutexsend_buf_group.lock();
+                                                mutextotalcontrol_buf_group.lock();
                                                 QString msg="play\r\n";
                                                 std::string str=msg.toStdString();
-                                                _p->send_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_DOBOT://越彊机器人
@@ -2351,6 +2351,36 @@ void RobotlinkThread::run() //连接机器人命令
                 #ifdef OPEN_SHOW_ROBOTSOCKDATA
                     _p->b_sendrcv_thread=true;
                     _p->sendrcv_Thread->start();
+                #endif
+
+                    _p->m_totalcontrolent.CreateSocket();
+                    if(false==_p->m_totalcontrolent.Connect(rodb_ip.toStdString().c_str(),ROBOT_EMERGEN_TOTALCONTROL_RORT))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("与远端机器人总控端口连接失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                    _p->m_totalcontrolent.SetBlock(0);
+                #ifdef OPEN_SHOW_ROBOTSOCKDATA
+                    _p->totalcontrolrcv_buf=new uint8_t[ROBOT_EMERGEN_INFO_TOTALCONTROLCVBUFFER_MAX*2+1];
+                    if(0!=_p->m_totalcontrolent.SetRcvBufferlong(ROBOT_EMERGEN_INFO_TOTALCONTROLCVBUFFER_MAX*2))
+                    {
+                        main_record.lock();
+                        QString return_msg=QString::fromLocal8Bit("接收远端机器人总控缓存申请失败");
+                        _p->m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        continue;
+                    }
+                #endif
+                    _p->totalcontrol_buf_group.clear();
+                    _p->b_totalcontrolent=true;
+                    _p->b_totalcontrol_Thread=true;
+                    _p->totalcontrol_Thread->start();
+                #ifdef OPEN_SHOW_ROBOTSOCKDATA
+                    _p->b_totalcontrolrcv_Thread=true;
+                    _p->totalcontrolrcv_Thread->start();
                 #endif
 
                     old_rodb_ip=rodb_ip;
@@ -3233,7 +3263,7 @@ void RobotsendrcvThread::run()//获取机器人命令回复数据
                 break;
                 case ROBOT_MODEL_EMERGEN://智昌机器人
                 {
-
+                    rcvnum=_p->m_sendent.Recv((char*)_p->sendrcv_buf,ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX*2);
                 }
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人
@@ -3369,7 +3399,7 @@ void RobottotalcontrolrcvThread::run()//获取机器人总控回复数据
                 break;
                 case ROBOT_MODEL_EMERGEN://智昌机器人
                 {
-
+                    rcvnum=_p->m_totalcontrolent.Recv((char*)_p->totalcontrolrcv_buf,ROBOT_EMERGEN_INFO_TOTALCONTROLCVBUFFER_MAX*2);
                 }
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人

@@ -16,6 +16,7 @@ keycoordDlg::~keycoordDlg()
 
 void keycoordDlg::init_dlg_show()
 {
+    ui->record->clear();
     ui->comboBox_pointo->clear();
     ui->comboBox_pointx->clear();
     for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
@@ -76,6 +77,7 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
             ui->name->setText(name);
         }
     }
+    ui->record->clear();
 }
 
 void keycoordDlg::close_dlg_show()
@@ -109,38 +111,22 @@ void keycoordDlg::on_pushButton_clicked()
     QString msg;
     if(route_pointo<0||route_pointo>ui->comboBox_pointo->count()-1)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个坐标系零点"),
-                                                                      QMessageBox::Yes,
-                                                                      QMessageBox::Yes
-                                                                      );
+        ui->record->append(QString::fromLocal8Bit("请选择一个坐标系零点"));
         return;
     }
     if(route_pointx<0||route_pointx>ui->comboBox_pointx->count()-1)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个坐标系X方向点"),
-                                                                      QMessageBox::Yes,
-                                                                      QMessageBox::Yes
-                                                                      );
+        ui->record->append(QString::fromLocal8Bit("请选择一个坐标系X方向点"));
         return;
     }
     if(name_pointo==name_pointx)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("坐标系零点和坐标系X方向点不能为同一个点"),
-                                                                      QMessageBox::Yes,
-                                                                      QMessageBox::Yes
-                                                                      );
+        ui->record->append(QString::fromLocal8Bit("坐标系零点和坐标系X方向点不能为同一个点"));
         return;
     }
     if(ui->name->text().isEmpty())
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请填写生成的定位矩阵名称"),
-                                                                      QMessageBox::Yes,
-                                                                      QMessageBox::Yes
-                                                                      );
+        ui->record->append(QString::fromLocal8Bit("请填写生成的定位矩阵名称"));
         return;
     }
     if(b_inster==false)//插入
@@ -151,11 +137,7 @@ void keycoordDlg::on_pushButton_clicked()
         {
             if(name==m_mcs->project->projecr_coord_matrix4d[n].name)
             {
-                QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                              QString::fromLocal8Bit("生成的定位矩阵名称与已有的矩阵重名"),
-                                                                              QMessageBox::Yes,
-                                                                              QMessageBox::Yes
-                                                                              );
+                ui->record->append(QString::fromLocal8Bit("生成的定位矩阵名称与已有的矩阵重名"));
                 return;
             }
         }

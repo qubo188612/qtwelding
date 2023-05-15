@@ -198,7 +198,12 @@ void keycreatDlg::on_traceeditBtn_clicked()
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("有同名的扫描轨迹，请先排除"));
+        QString msg=QString::fromLocal8Bit("程序有错误，请先排除:");
+        ui->record->append(msg);
+        for(int i=0;i<err_msg.size();i++)
+        {
+            ui->record->append(err_msg[i]);
+        }
     }
 }
 

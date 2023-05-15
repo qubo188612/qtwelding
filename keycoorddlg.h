@@ -2,7 +2,6 @@
 #define KEYCOORDDLG_H
 
 #include <QDialog>
-#include <QMessageBox>
 #include "my_parameters.h"
 #include "my_cmd.h"
 

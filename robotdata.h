@@ -69,10 +69,13 @@ typedef enum PLC_MODEL_ID            //PLC型号（协议）
 #define ROBOT_KAWASAKI_INFO_PORT                  23       //川崎机器人信息端口
 #define ROBOT_KAWASAKI_INFO_RECVBUFFER_MAX        1440     //川崎机器人数据信息最大个数
 
-#define ROBOT_EMERGEN_SEND_PORT                   30008    //智昌机器人运动指令端口数据信息发送端口
-#define ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX     1440     //智昌机器人运动指令发送数据回复信息最大个数
-#define ROBOT_EMERGEN_INFO_PORT                   30008    //智昌机器人信息端口
-#define ROBOT_EMERGEN_INFO_RECVBUFFER_MAX         1440     //智昌机器人数据信息端口
+#define ROBOT_EMERGEN_TOTALCONTROL_RORT             30007    //智昌机器人总控指令数据信息发送端口
+#define ROBOT_EMERGEN_INFO_TOTALCONTROLCVBUFFER_MAX 1440     //智昌机器人运动指令发送数据回复信息最大个数
+#define ROBOT_EMERGEN_SEND_PORT                     30009    //智昌机器人运动指令端口数据信息发送端口
+#define ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX       1440     //智昌机器人运动指令发送数据回复信息最大个数
+#define ROBOT_EMERGEN_INFO_PORT                     30008    //智昌机器人信息端口
+#define ROBOT_EMERGEN_INFO_RECVBUFFER_MAX           1440     //智昌机器人数据信息端口
+
 
 /***************************************/
 

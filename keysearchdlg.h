@@ -39,6 +39,8 @@ private slots:
 
     void on_arriveBtn_released();
 
+    void on_searchchangecheckBox_stateChanged(int arg1);
+
 private:
     Ui::keysearchDlg *ui;
 

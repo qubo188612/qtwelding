@@ -8,7 +8,7 @@
 /************************/
 //项目0:命令集合
 //注释符号，举例 #测试
-//移动指令，举例 MOV: SPEED[25] MOVL[1.3,32.7,45,66,7,89,3,0,0,0] TCP[1]
+//移动指令，举例 MOV: SPEED[25] MOVL[1.3,32.7,45,66,7,89,3,0,0,0] TCP[1] CHANGE[矩阵1]
 //延时指令，举例 DELAY: TIME[1000]
 //激光指令，举例 CAM: TASK[102] WORK[1]
 //激光指令，举例 CAM: WORK[0]
@@ -23,29 +23,37 @@
 //等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
 //寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] POINTNAME[寻位的点point1]
 //工件坐标系定位，举例 COORD: POINTX[寻位的点point1] POINTO[寻位的点point3] NAME[零位矩阵]
-
+//扫描的焊缝坐标值，举例 GETPOS: TIME[1000] POINTNAME[寻位的点point1]
+//点位移动指令，举例 SMOV: SPEED[25] SMOVL[寻位的点point1] TCP[1] CHANGE[矩阵1]
+//点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
 
 
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
+#define CMD_SMOV_KEY                    "SMOV:"         //点位移动命令集合KEY
 #define CMD_DELAY_KEY                   "DELAY:"        //延时命令集合KEY
 #define CMD_CAM_KEY                     "CAM:"          //激光命令集合KEY
 #define CMD_WELD_KEY                    "WELD:"         //焊机命令集合KEY
 #define CMD_SCAN_KEY                    "SCAN:"         //采集命令集合KEY
+#define CMD_SSCAN_KEY                   "SSCAN:"        //点位采集命令集合KEY
 #define CMD_TRACE_KEY                   "TRACE:"        //跟踪命令集合KEY
 #define CMD_CREAT_KEY                   "CREAT:"        //生成轨迹命令KEY
 #define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
 #define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
 #define CMD_SEARCH_KEY                  "SEARCH:"       //寻位命令集合KEY
 #define CMD_COORD_KEY                   "COORD:"        //工件坐标系定位命令集合KEY
-
+#define CMD_GETPOS_KEY                  "GETPOS:"       //获取扫描的焊缝坐标值命令集合KEY
 
 //参数项
 #define CMD_MOVL                            "MOVL"                //直线移动
 #define CMD_MOVJ                            "MOVJ"                //关节移动
 #define CMD_MOVC                            "MOVC"                //圆形移动
+#define CMD_SMOVL                           "SMOVL"               //直线移动
+#define CMD_SMOVJ                           "SMOVJ"               //关节移动
+#define CMD_SMOVC                           "SMOVC"               //圆形移动
 #define CMD_TCP                             "TCP"                 //TCP
 #define CMD_SPEED                           "SPEED"               //速度
+#define CMD_CHANGE                          "CHANGE"              //坐标系变换
 #define CMD_TIME                            "TIME"                //时间         单位ms
 #define CMD_TASK                            "TASK"                //任务号
 #define CMD_WORK                            "WORK"                //是否启动      0:停止 1:启动
@@ -73,24 +81,29 @@ class my_cmd
 public:
     my_cmd();
 
-    QString cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp);//移动命令
-    QString cmd_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp);//移动圆命令
+    QString cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString change="");//移动命令
+    QString cmd_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString change="");//移动圆命令
+    QString cmd_smove(QString s_pos,Robmovemodel movemodel,float speed,int tcp,QString change="");//点位移动命令
+    QString cmd_smoveC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel,float speed,int tcp,QString change="");//点位移动命令
     QString cmd_delay(int time);//延时命令
     QString cmd_cam(int task,int work);//相机启停命令不
     QString cmd_cam_work(int work);//相机启停命令
     QString cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令不
     QString cmd_elec_work(int work);//焊机启停命令
-    QString cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name);//采集命令
-    QString cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name);//圆采集命令
+    QString cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//采集命令
+    QString cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//圆采集命令
+    QString cmd_sscan(QString s_pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//点位采集命令
+    QString cmd_sscanC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//点位圆采集命令
     QString cmd_trace(float speed,int tcp,QString craftfilepath,QString name);//跟踪命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
     QString cmd_ioout(std::vector<int> io);//输出IO信号
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
     QString cmd_plcwait(int register_add,int16_t register_data);
     QString cmd_plcwrite(int register_add,int16_t register_data);
-    QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name);//寻位命令
-    QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name);//圆寻位命令
+    QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change="");//寻位命令
+    QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change="");//圆寻位命令
     QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
+    QString cmd_getpos(int time,QString name);//获取扫描的焊缝坐标值命令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -103,6 +116,7 @@ public:
     RobPos cmd_move_pos3;//获取到圆移动终点坐标
     float cmd_move_speed;//获取到速度值
     Robmovemodel cmd_move_movemod;//获取到的移动模式
+    QString cmd_move_change;//获取到的变换矩阵名字
 
 
     int cmd_delay_time;//获取到延时时间
@@ -122,6 +136,7 @@ public:
     int cmd_scan_tcp;//获取到扫描TCP
     Robmovemodel cmd_scan_movemod;//获取到的扫描模式
     QString cmd_scan_name;//获取到的扫描轨迹名字
+    QString cmd_scan_change;//获取到的扫描变换矩阵名字
 
     QString cmd_trace_name;//获取到跟踪轨迹名字
     float cmd_trace_speed;//获取到的跟踪速度
@@ -151,16 +166,42 @@ public:
     int cmd_search_side;//寻位寻找两侧的范围
     std::vector<float> cmd_search_sidemove;//寻位寻找两侧的单位向量
     float cmd_search_sidespeed;//寻位寻找两侧的空闲移动速度
+    QString cmd_search_change;//获取到的寻位变换矩阵名字
 
     QString cmd_coord_pointx;//实际零位矩阵零点的X方向基准点
     QString cmd_coord_pointo;//实际零位矩阵零点的基准点
     QString cmd_coord_name;//实际零位矩阵名字
+
+    int cmd_getpos_time=0;//获取坐标时的等待时间
+    QString cmd_getpos_name;//获取坐标的名字
+
+    int cmd_smove_tcp;//获取到点位移动TCP
+    QString cmd_smove_pos;//获取到点位移动终点坐标
+    QString cmd_smove_pos1;//获取到点位圆移动起点坐标
+    QString cmd_smove_pos2;//获取到点位圆移动途径点坐标
+    QString cmd_smove_pos3;//获取到点位圆移动终点坐标
+    float cmd_smove_speed;//获取到点位移动速度值
+    Robmovemodel cmd_smove_movemod;//获取到的点位移动模式
+    QString cmd_smove_change;//获取到的变换矩阵名字
+
+    QString cmd_sscan_pos;//获取到点位扫描终点坐标
+    QString cmd_sscan_pos1;//获取到点位圆扫描起点坐标
+    QString cmd_sscan_pos2;//获取到点位圆扫描途径点坐标
+    QString cmd_sscan_pos3;//获取到点位圆扫描终点坐标
+    float cmd_sscan_speed;//获取到的点位扫描速度
+    int cmd_sscan_tcp;//获取到点位扫描TCP
+    Robmovemodel cmd_sscan_movemod;//获取到的点位扫描模式
+    QString cmd_sscan_name;//获取到的点位扫描轨迹名字
+    QString cmd_sscan_change;//获取到的点位扫描变换矩阵名字
 
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
     QString rc_move(RobPos pos,Robmovemodel movemodel);
     QString rc_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel);
+    QString rc_smove(QString s_pos,Robmovemodel movemodel);
+    QString rc_smoveC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel);
+    QString rc_change(QString name);
     QString rc_time(int time);
     QString rc_task(int task);
     QString rc_work(int work);
