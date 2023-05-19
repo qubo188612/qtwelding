@@ -32,7 +32,6 @@ typedef enum WELD_DIRECTION_ID  //焊缝走向
 {
     WELD_DIRECTION_X=0,     //大致X走向
     WELD_DIRECTION_Y=1,     //大致Y走向
-    WELD_DIRECTION_Z=2,     //大致Z走向
 }Weld_direction;
 
 #define POSTURE_DISTANCE_USE    10  //默认变姿态距离
@@ -46,15 +45,20 @@ public:
 
     QString craft_path;       //最后一次工艺路径
 
+    /**********************/
+    //普遍工艺参数
     Pendulum_mode pendulum_mode;    //固定焊接姿态的摆焊接模式
 
     float pendulum_swing;   //固定焊接姿态的摆焊接幅度
 
     float pendulum_phaseangle;  //固定焊接姿态的摆焊相角
 
+    /**************************/
     //其它工艺参数
     float posture_distance; //变姿态距离
+
     Weld_direction weld_direction;//焊缝大致走向
+    /*************************/
 
     QString craft_Id_toQString(Craft_ID craft_id);
 

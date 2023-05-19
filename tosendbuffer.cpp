@@ -2870,7 +2870,346 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
                 {
                     //整理波纹板平坡和上坡数据
+                    cv::Mat dif=cv::Mat::zeros(1,interpolatweld.size(),CV_32FC1);
+                    float *f_dif=dif.ptr<float>(0);
+                    switch(m_mcs->craft->weld_direction)
+                    {
+                        case WELD_DIRECTION_X:
+                        {
+                            for(int j = 0;j < interpolatweld.size();j ++)
+                            {
+                                f_dif[j]=interpolatweld[j].Y;
+                            }
+                        }
+                        break;
+                        case WELD_DIRECTION_Y:
+                        {
+                            for(int j = 0;j < interpolatweld.size();j ++)
+                            {
+                                f_dif[j]=interpolatweld[j].X;
+                            }
+                        }
+                        break;
+                    }
+                    //卷积窗
+                    if(interpolatweld.size()>40)
+                    {
+                        cv::Mat kern = (cv::Mat_<float>(1,31) << 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1);
+                        cv::Mat dstImage;
+                        filter2D(dif,dstImage,CV_32F,kern);
+                        float *f_res=dstImage.ptr<float>(0);
+                        double d_value=0;
+                        int n_d_value=0;
+                        for(int j = 20;j < interpolatweld.size()-20;j ++)
+                        {
+                            d_value=abs(f_res[j])+d_value;
+                            n_d_value++;
+                        }
+                        d_value=d_value/n_d_value;
 
+                        //切换使用三种姿态
+                        cv::Mat difmask=cv::Mat::zeros(1,interpolatweld.size(),CV_8UC1);
+                        Uint8 *u8_difmask=difmask.ptr<uchar>(0);
+                        for(int j = 20;j < interpolatweld.size()-20;j ++)
+                        {
+                            if(abs(f_res[j])>d_value&&f_res[j]>0)//上坡
+                            {
+                                u8_difmask[j]=255;
+                            }
+                        }
+                        cv::Mat element=getStructuringElement(cv::MORPH_RECT,cv::Size(50,1));
+                        cv::Mat elementdel=getStructuringElement(cv::MORPH_RECT,cv::Size(101,1));
+
+                        cv::Mat difmask2=difmask.clone();
+                        morphologyEx(difmask2, difmask2, cv::MORPH_CLOSE, element);
+                        morphologyEx(difmask2, difmask2, cv::MORPH_OPEN, elementdel);
+                        Uint8 *u8_difmaskUp=difmask2.ptr<uchar>(0);
+
+                        difmask=cv::Mat::zeros(1,interpolatweld.size(),CV_8UC1);
+                        for(int j = 20;j < interpolatweld.size()-20;j ++)
+                        {
+                            if(abs(f_res[j])>d_value&&f_res[j]<0)//下坡
+                            {
+                                u8_difmask[j]=255;
+                            }
+                        }
+
+                        cv::Mat difmask3=difmask.clone();
+                        morphologyEx(difmask3, difmask3, cv::MORPH_CLOSE, element);
+                        morphologyEx(difmask2, difmask2, cv::MORPH_OPEN, elementdel);
+                        Uint8 *u8_difmaskDown=difmask3.ptr<uchar>(0);
+
+                        std::vector<int> s_upst;//平坡与上坡交界
+                        std::vector<int> up_s_st;//上坡与平坡交界
+                        std::vector<int> s_downst;//平坡与下坡交界
+                        std::vector<int> down_s_st;//下坡与平坡交界
+
+                        int n_state=0;//上下坡的状态
+                        int f_state=0;//第一个姿态
+                        int e_state=0;//最后一个姿态
+
+                        for(int j = 20;j < interpolatweld.size()-20;j ++)
+                        {
+                            //if(abs(f_res[j])>d_value&&f_res[j]>0)//上坡
+                            if(u8_difmaskUp[j]!=0)
+                            {
+                            //	tempWeldin.weldTar.push_back(tempWeld.weldTar[j]);
+                                if(n_state!=2)
+                                {
+                                    if(n_state==0)
+                                    {
+                                        f_state=2;
+                                    }
+                                    n_state=2;
+                                    s_upst.push_back(j);
+                                }
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[1].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[1].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[1].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[1].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[1].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[1].posture.RZ;
+                            }
+                            //else if(abs(f_res[j])>d_value&&f_res[j]<0)//下坡
+                            else if(u8_difmaskDown[j]!=0)
+                            {
+                            //	tempWeldin.weldTar.push_back(tempWeld.weldTar[j]);
+                                if(n_state!=3)
+                                {
+                                    if(n_state==0)
+                                    {
+                                        f_state=3;
+                                    }
+                                    n_state=3;
+                                    s_downst.push_back(j);
+                                }
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[2].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[2].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[2].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[2].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[2].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[2].posture.RZ;
+                            }
+                            else
+                            {
+                                if(n_state!=1)
+                                {
+                                    if(n_state==0)
+                                    {
+                                        f_state=1;
+                                    }
+                                    if(n_state==2)
+                                    {
+                                        up_s_st.push_back(j);
+                                    }
+                                    else if(n_state==3)
+                                    {
+                                        down_s_st.push_back(j);
+                                    }
+                                    n_state=1;
+                                }
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[0].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[0].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[0].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[0].posture.RZ;
+                            }
+                        }
+                        e_state=n_state;
+                        for(int j=0;j<20;j++)
+                        {
+                            if(j<interpolatweld.size())
+                            {
+                                switch(f_state)
+                                {
+                                case 1:
+                                    interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[0].Variable.X;
+                                    interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                                    interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                                    interpolatweld[j].RX=m_mcs->craft->posturelist[0].posture.RX;
+                                    interpolatweld[j].RY=m_mcs->craft->posturelist[0].posture.RY;
+                                    interpolatweld[j].RZ=m_mcs->craft->posturelist[0].posture.RZ;
+                                break;
+                                case 2:
+                                    interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[1].Variable.X;
+                                    interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[1].Variable.Y;
+                                    interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[1].Variable.Z;
+                                    interpolatweld[j].RX=m_mcs->craft->posturelist[1].posture.RX;
+                                    interpolatweld[j].RY=m_mcs->craft->posturelist[1].posture.RY;
+                                    interpolatweld[j].RZ=m_mcs->craft->posturelist[1].posture.RZ;
+                                break;
+                                case 3:
+                                    interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[2].Variable.X;
+                                    interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[2].Variable.Y;
+                                    interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[2].Variable.Z;
+                                    interpolatweld[j].RX=m_mcs->craft->posturelist[2].posture.RX;
+                                    interpolatweld[j].RY=m_mcs->craft->posturelist[2].posture.RY;
+                                    interpolatweld[j].RZ=m_mcs->craft->posturelist[2].posture.RZ;
+                                break;
+                                default:
+                                    interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[0].Variable.X;
+                                    interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                                    interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                                    interpolatweld[j].RX=m_mcs->craft->posturelist[0].posture.RX;
+                                    interpolatweld[j].RY=m_mcs->craft->posturelist[0].posture.RY;
+                                    interpolatweld[j].RZ=m_mcs->craft->posturelist[0].posture.RZ;
+                                break;
+                                }
+                            }
+                        }
+                        for(int j=interpolatweld.size()-20;j<interpolatweld.size();j++)
+                        {
+                            switch(e_state)
+                            {
+                            case 1:
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[0].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[0].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[0].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[0].posture.RZ;
+                            break;
+                            case 2:
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[1].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[1].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[1].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[1].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[1].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[1].posture.RZ;
+                            break;
+                            case 3:
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[2].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[2].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[2].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[2].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[2].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[2].posture.RZ;
+                            break;
+                            default:
+                                interpolatweld[j].X=interpolatweld[j].X+m_mcs->craft->posturelist[0].Variable.X;
+                                interpolatweld[j].Y=interpolatweld[j].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                                interpolatweld[j].Z=interpolatweld[j].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                                interpolatweld[j].RX=m_mcs->craft->posturelist[0].posture.RX;
+                                interpolatweld[j].RY=m_mcs->craft->posturelist[0].posture.RY;
+                                interpolatweld[j].RZ=m_mcs->craft->posturelist[0].posture.RZ;
+                            break;
+                            }
+                        }
+
+                        //开始变姿态插值
+                        Eigen::Vector3d PosR_st;
+                        Eigen::Vector3d PosR_ed;
+                        std::vector<Eigen::Vector3d> resaddPos;
+                        int differenceNum=m_mcs->craft->posture_distance*2+1;
+
+                        //平坡到上坡插值
+                        PosR_st[0]=m_mcs->craft->posturelist[0].posture.RX;
+                        PosR_st[1]=m_mcs->craft->posturelist[0].posture.RY;
+                        PosR_st[2]=m_mcs->craft->posturelist[0].posture.RZ;
+                        PosR_ed[0]=m_mcs->craft->posturelist[1].posture.RX;
+                        PosR_ed[1]=m_mcs->craft->posturelist[1].posture.RY;
+                        PosR_ed[2]=m_mcs->craft->posturelist[1].posture.RZ;
+                        resaddPos=Calibration::Attitudedifference(m_mcs->rob->cal_posture_model,PosR_st,PosR_ed,differenceNum);
+                        for(int i=0;i<s_upst.size();i++)
+                        {
+                            int t=0;
+                            int j=s_upst[i];
+                            for(int k=j-m_mcs->craft->posture_distance;k<=j+m_mcs->craft->posture_distance;k++)
+                            {
+                                if(k>=0&&k<interpolatweld.size())
+                                {
+                                    interpolatweld[k].RX=resaddPos[t][0];
+                                    interpolatweld[k].RY=resaddPos[t][1];
+                                    interpolatweld[k].RZ=resaddPos[t][2];
+                                }
+                                t++;
+                            }
+                        }
+                        //上坡到平坡插值
+                        PosR_st[0]=m_mcs->craft->posturelist[1].posture.RX;
+                        PosR_st[1]=m_mcs->craft->posturelist[1].posture.RY;
+                        PosR_st[2]=m_mcs->craft->posturelist[1].posture.RZ;
+                        PosR_ed[0]=m_mcs->craft->posturelist[0].posture.RX;
+                        PosR_ed[1]=m_mcs->craft->posturelist[0].posture.RY;
+                        PosR_ed[2]=m_mcs->craft->posturelist[0].posture.RZ;
+
+                        resaddPos=Calibration::Attitudedifference(m_mcs->rob->cal_posture_model,PosR_st,PosR_ed,differenceNum);
+                        for(int i=0;i<up_s_st.size();i++)
+                        {
+                            int t=0;
+                            int j=up_s_st[i];
+                            for(int k=j-m_mcs->craft->posture_distance;k<=j+m_mcs->craft->posture_distance;k++)
+                            {
+                                if(k>=0&&k<interpolatweld.size())
+                                {
+                                    interpolatweld[k].RX=resaddPos[t][0];
+                                    interpolatweld[k].RY=resaddPos[t][1];
+                                    interpolatweld[k].RZ=resaddPos[t][2];
+                                }
+                                t++;
+                            }
+                        }
+
+                        //平坡到下坡插值
+                        PosR_st[0]=m_mcs->craft->posturelist[0].posture.RX;
+                        PosR_st[1]=m_mcs->craft->posturelist[0].posture.RY;
+                        PosR_st[2]=m_mcs->craft->posturelist[0].posture.RZ;
+                        PosR_ed[0]=m_mcs->craft->posturelist[2].posture.RX;
+                        PosR_ed[1]=m_mcs->craft->posturelist[2].posture.RY;
+                        PosR_ed[2]=m_mcs->craft->posturelist[2].posture.RZ;
+
+                        resaddPos=Calibration::Attitudedifference(m_mcs->rob->cal_posture_model,PosR_st,PosR_ed,differenceNum);
+                        for(int i=0;i<s_downst.size();i++)
+                        {
+                            int t=0;
+                            int j=s_downst[i];
+                            for(int k=j-m_mcs->craft->posture_distance;k<=j+m_mcs->craft->posture_distance;k++)
+                            {
+                                if(k>=0&&k<interpolatweld.size())
+                                {
+                                    interpolatweld[k].RX=resaddPos[t][0];
+                                    interpolatweld[k].RY=resaddPos[t][1];
+                                    interpolatweld[k].RZ=resaddPos[t][2];
+                                }
+                                t++;
+                            }
+                        }
+
+                        //下坡到平坡插值
+                        PosR_st[0]=m_mcs->craft->posturelist[2].posture.RX;
+                        PosR_st[1]=m_mcs->craft->posturelist[2].posture.RY;
+                        PosR_st[2]=m_mcs->craft->posturelist[2].posture.RZ;
+                        PosR_ed[0]=m_mcs->craft->posturelist[0].posture.RX;
+                        PosR_ed[1]=m_mcs->craft->posturelist[0].posture.RY;
+                        PosR_ed[2]=m_mcs->craft->posturelist[0].posture.RZ;
+
+                        resaddPos=Calibration::Attitudedifference(m_mcs->rob->cal_posture_model,PosR_st,PosR_ed,differenceNum);
+                        for(int i=0;i<down_s_st.size();i++)
+                        {
+                            int t=0;
+                            int j=down_s_st[i];
+                            for(int k=j-m_mcs->craft->posture_distance;k<=j+m_mcs->craft->posture_distance;k++)
+                            {
+                                if(k>=0&&k<interpolatweld.size())
+                                {
+                                    interpolatweld[k].RX=resaddPos[t][0];
+                                    interpolatweld[k].RY=resaddPos[t][1];
+                                    interpolatweld[k].RZ=resaddPos[t][2];
+                                }
+                                t++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊缝搜索异常");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
                 }
                 break;
             }

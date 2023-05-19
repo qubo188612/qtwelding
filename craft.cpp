@@ -212,6 +212,7 @@ QVariantHash Craft::encoed_json()
         break;
         case CRAFT_ID_CORRUGATED_POSTURE:   //波纹板变姿态
             data.insert("posture_distance",posture_distance);
+            data.insert("weld_direction",weld_direction);
         break;
     }
     /****************************/
@@ -319,6 +320,10 @@ int Craft::decoed_json(QByteArray allData)
         else if(keyString=="posture_distance")
         {
             posture_distance=it.value().toDouble();
+        }
+        else if(keyString=="weld_direction")
+        {
+            weld_direction=(Weld_direction)it.value().toInt();
         }
     }
     /*********************/

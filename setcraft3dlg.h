@@ -33,6 +33,10 @@ private slots:
 
     void on_comboBox_pendulum_mode_currentIndexChanged(int index);
 
+    void on_radioButton_x_clicked();
+
+    void on_radioButton_y_clicked();
+
 private:
     Ui::setcraft3Dlg *ui;
 

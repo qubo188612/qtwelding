@@ -97,6 +97,15 @@ void setcraft3Dlg::init_dlg_show()
     ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',ROBOT_POSE_DECIMAL_PLACE));
     ui->lineEdit_pendulum_phaseangle->setText(QString::number(m_mcs->craft->pendulum_phaseangle,'f',3));
     ui->lineEdit_posture_distance->setText(QString::number(m_mcs->craft->posture_distance,'f',ROBOT_POSE_DECIMAL_PLACE));
+    switch(m_mcs->craft->weld_direction)
+    {
+        case WELD_DIRECTION_X:
+            ui->radioButton_x->setChecked(1);
+        break;
+        case WELD_DIRECTION_Y:
+            ui->radioButton_y->setChecked(1);
+        break;
+    }
     ui->record->clear();
     UpdataUi();
 }
@@ -213,6 +222,20 @@ void setcraft3Dlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)
     UpdataUi();
 }
 
+//X走向
+void setcraft3Dlg::on_radioButton_x_clicked()
+{
+    m_mcs->craft->weld_direction=WELD_DIRECTION_X;
+    UpdataUi();
+}
+
+//Y走向
+void setcraft3Dlg::on_radioButton_y_clicked()
+{
+    m_mcs->craft->weld_direction=WELD_DIRECTION_Y;
+    UpdataUi();
+}
+
 //确定并保存
 void setcraft3Dlg::on_pushButtonOK_clicked()
 {
@@ -241,7 +264,6 @@ void setcraft3Dlg::on_pushButtonOK_clicked()
     m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
     done(1);
 }
-
 
 
 
