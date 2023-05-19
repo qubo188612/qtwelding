@@ -42,6 +42,7 @@ SOURCES += \
         keyplcdlg.cpp \
         keyscandlg.cpp \
         keysearchdlg.cpp \
+        keysearchenddlg.cpp \
         keysmovdlg.cpp \
         keysscandlg.cpp \
         keytracedlg.cpp \
@@ -65,6 +66,7 @@ SOURCES += \
         setcraft0dlg.cpp \
         setcraft1dlg.cpp \
         setcraft2dlg.cpp \
+        setcraft3dlg.cpp \
         setmovecdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
@@ -99,6 +101,7 @@ FORMS += \
     keyplcdlg.ui \
     keyscandlg.ui \
     keysearchdlg.ui \
+    keysearchenddlg.ui \
     keysmovdlg.ui \
     keysscandlg.ui \
     keytracedlg.ui \
@@ -114,6 +117,7 @@ FORMS += \
     setcraft0dlg.ui \
     setcraft1dlg.ui \
     setcraft2dlg.ui \
+    setcraft3dlg.ui \
     setmovecdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
@@ -154,6 +158,7 @@ HEADERS += \
     keyplcdlg.h \
     keyscandlg.h \
     keysearchdlg.h \
+    keysearchenddlg.h \
     keysmovdlg.h \
     keysscandlg.h \
     keytracedlg.h \
@@ -176,6 +181,7 @@ HEADERS += \
     setcraft0dlg.h \
     setcraft1dlg.h \
     setcraft2dlg.h \
+    setcraft3dlg.h \
     setmovecdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \

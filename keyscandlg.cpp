@@ -26,6 +26,7 @@ keyscanDlg::keyscanDlg(my_parameters *mcs,QWidget *parent) :
 keyscanDlg::~keyscanDlg()
 {
     delete setmovec;
+    delete adoubleValidator_speed;
     delete ui;
 }
 

@@ -39,6 +39,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keygetpos=new keygetposDlg(mcs);
     keysmov=new keysmovDlg(mcs);
     keysscan=new keysscanDlg(mcs);
+    keysearchend=new keysearchendDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -64,9 +65,11 @@ setprojectDlg::~setprojectDlg()
     delete keygetpos;
     delete keysmov;
     delete keysscan;
+    delete keysearchend;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
+    delete adoubleValidator_speed;
     delete ui;
 }
 
@@ -1134,6 +1137,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_SEARCHEND_KEY)//寻位指令
+            {
+                keysearchend->init_dlg_show(cmdlist);
+                keysearchend->setWindowTitle(othercmd->cmdname);
+                keysearchend->setbutton(1);
+                int rc=keysearchend->exec();
+                keysearchend->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keysearchend->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
             else if(key==CMD_COORD_KEY)//定位指令
             {
                 keycoord->init_dlg_show(cmdlist);
@@ -1884,6 +1917,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             if(rc!=0)//确定
             {
                 QString msg=keysearch->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入寻位指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消寻位指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_SEARCHEND_KEY)//终点寻位指令
+        {
+            keysearchend->init_dlg_show();
+            keysearchend->setWindowTitle(othercmd->cmdname);
+            keysearchend->setbutton(0);
+            int rc=keysearchend->exec();
+            keysearchend->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keysearchend->cmd_msg;
                 if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                 {
                     m_mcs->project->project_cmdlist.push_back(msg);

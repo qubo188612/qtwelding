@@ -29,6 +29,7 @@
 #include "setcraft0dlg.h"
 #include "setcraft1dlg.h"
 #include "setcraft2dlg.h"
+#include "setcraft3dlg.h"
 
 
 namespace Ui {
@@ -139,6 +140,7 @@ public:
     setcraft0Dlg *setcraft0;
     setcraft1Dlg *setcraft1;
     setcraft2Dlg *setcraft2;
+    setcraft3Dlg *setcraft3;
 
 
     unsigned short leaser_rcv_data[15];

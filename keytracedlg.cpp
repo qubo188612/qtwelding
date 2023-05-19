@@ -21,6 +21,7 @@ keytraceDlg::keytraceDlg(my_parameters *mcs,QWidget *parent) :
 
 keytraceDlg::~keytraceDlg()
 {
+    delete adoubleValidator_speed;
     delete ui;
 }
 

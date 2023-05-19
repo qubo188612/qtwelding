@@ -30,6 +30,7 @@ keysmovDlg::keysmovDlg(my_parameters *mcs,QWidget *parent) :
 
 keysmovDlg::~keysmovDlg()
 {
+    delete adoubleValidator_speed;
     delete ui;
 }
 

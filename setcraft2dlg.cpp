@@ -23,6 +23,7 @@ setcraft2Dlg::setcraft2Dlg(my_parameters *mcs,QWidget *parent) :
 
 setcraft2Dlg::~setcraft2Dlg()
 {
+    delete adoubleValidator_3;
     delete ui;
 }
 

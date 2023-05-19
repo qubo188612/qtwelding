@@ -25,6 +25,7 @@
 #include "keygetposdlg.h"
 #include "keysmovdlg.h"
 #include "keysscandlg.h"
+#include "keysearchenddlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -59,6 +60,7 @@ public:
     keygetposDlg *keygetpos;
     keysmovDlg *keysmov;
     keysscanDlg *keysscan;
+    keysearchendDlg *keysearchend;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

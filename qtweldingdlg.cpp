@@ -69,6 +69,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     setcraft0=new setcraft0Dlg(m_mcs);
     setcraft1=new setcraft1Dlg(m_mcs);
     setcraft2=new setcraft2Dlg(m_mcs);
+    setcraft3=new setcraft3Dlg(m_mcs);
 
     ui->setupUi(this);
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
@@ -221,6 +222,8 @@ qtweldingDlg::~qtweldingDlg()
     delete setcraft0;
     delete setcraft1;
     delete setcraft2;
+    delete setcraft3;
+    delete adoubleValidator_speed;
     delete ui;
 }
 
@@ -497,6 +500,14 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                         setcraft2->close_dlg_show();
                     }
                     break;
+                    case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                    {
+                        setcraft3->init_dlg_show();
+                        setcraft3->setWindowTitle(msg);
+                        setcraft3->exec();
+                        setcraft3->close_dlg_show();
+                    }
+                    break;
                 }
             }
             else
@@ -549,6 +560,14 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                             setcraft2->setWindowTitle(msg);
                             setcraft2->exec();
                             setcraft2->close_dlg_show();
+                        }
+                        break;
+                        case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                        {
+                            setcraft3->init_dlg_show();
+                            setcraft3->setWindowTitle(msg);
+                            setcraft3->exec();
+                            setcraft3->close_dlg_show();
                         }
                         break;
                     }

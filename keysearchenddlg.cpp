@@ -1,9 +1,9 @@
-#include "keysearchdlg.h"
-#include "ui_keysearchdlg.h"
+#include "keysearchenddlg.h"
+#include "ui_keysearchenddlg.h"
 
-keysearchDlg::keysearchDlg(my_parameters *mcs,QWidget *parent) :
+keysearchendDlg::keysearchendDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::keysearchDlg)
+    ui(new Ui::keysearchendDlg)
 {
     ui->setupUi(this);
 
@@ -14,30 +14,29 @@ keysearchDlg::keysearchDlg(my_parameters *mcs,QWidget *parent) :
     for(int n=0;n<ROBOTTCPNUM;n++)
     {
         QString msg="TCP: "+QString::number(n);
-        ui->searchtcpcombo->addItem(msg);
+        ui->searchendtcpcombo->addItem(msg);
     }
 
-    ui->searchchangecheckBox->setCheckState(Qt::Unchecked);
-    ui->searchchangecombo->setDisabled(true);
+    ui->searchendchangecheckBox->setCheckState(Qt::Unchecked);
+    ui->searchendchangecombo->setDisabled(true);
 
     adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
-    ui->searchspeed->setValidator(adoubleValidator_speed);
-    ui->searchsidespeed->setValidator(adoubleValidator_speed);
+    ui->searchendspeed->setValidator(adoubleValidator_speed);
 }
 
-keysearchDlg::~keysearchDlg()
+keysearchendDlg::~keysearchendDlg()
 {
     delete setmovec;
     delete adoubleValidator_speed;
     delete ui;
 }
 
-void keysearchDlg::init_dlg_show()
+void keysearchendDlg::init_dlg_show()
 {
-    ui->searchchangecombo->clear();
+    ui->searchendchangecombo->clear();
     for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
     {
-        ui->searchchangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+        ui->searchendchangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
     }
     ui->arrive_pos->clear();
     ui->groupBox_2->setDisabled(true);
@@ -45,7 +44,7 @@ void keysearchDlg::init_dlg_show()
     ui->record->clear();
 }
 
-void keysearchDlg::init_dlg_show(QString cmdlist)
+void keysearchendDlg::init_dlg_show(QString cmdlist)
 {
     QString msg,key;
     my_cmd cmd;
@@ -53,16 +52,13 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
-        if(key==CMD_SEARCH_KEY)//寻位指令
+        if(key==CMD_SEARCHEND_KEY)//寻位指令
         {
-            float speed=cmd.cmd_search_speed;//获取到的寻位速度
-            int tcp=cmd.cmd_search_tcp;//获取到寻位TCP
-            Robmovemodel movemod=cmd.cmd_search_movemod;//获取到的寻位模式
-            QString name=cmd.cmd_search_name;//获取到的寻位名字
-            std::vector<float> sizemove=cmd.cmd_search_sidemove;
-            float sidespeed=cmd.cmd_search_sidespeed;
-            int side=cmd.cmd_search_side;
-            QString change=cmd.cmd_search_change;//获取到的变换矩阵
+            float speed=cmd.cmd_searchend_speed;//获取到的寻位速度
+            int tcp=cmd.cmd_searchend_tcp;//获取到寻位TCP
+            Robmovemodel movemod=cmd.cmd_searchend_movemod;//获取到的寻位模式
+            QString name=cmd.cmd_searchend_name;//获取到的寻位名字
+            QString change=cmd.cmd_searchend_change;//获取到的变换矩阵
             int change_trace_num;//找到要变换矩阵下标
             if(!change.isEmpty())
             {
@@ -74,21 +70,21 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
                         break;
                     }
                 }
-                if(change_trace_num>=0&&change_trace_num<ui->searchchangecombo->count())
+                if(change_trace_num>=0&&change_trace_num<ui->searchendchangecombo->count())
                 {
-                    ui->searchchangecombo->setCurrentIndex(change_trace_num);
+                    ui->searchendchangecombo->setCurrentIndex(change_trace_num);
                 }
-                ui->searchchangecheckBox->setCheckState(Qt::Checked);
-                ui->searchchangecombo->setDisabled(true);
+                ui->searchendchangecheckBox->setCheckState(Qt::Checked);
+                ui->searchendchangecombo->setDisabled(true);
             }
             else
             {
-                ui->searchchangecheckBox->setCheckState(Qt::Unchecked);
-                ui->searchchangecombo->setDisabled(false);
+                ui->searchendchangecheckBox->setCheckState(Qt::Unchecked);
+                ui->searchendchangecombo->setDisabled(false);
             }
             if(movemod==MOVEJ||movemod==MOVEL)
             {
-                RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
+                RobPos pos=cmd.cmd_searchend_pos;//获取到移动坐标
                 QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
@@ -108,47 +104,42 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
             }
             if(tcp>=0&&tcp<ROBOTTCPNUM)
             {
-                ui->searchtcpcombo->setCurrentIndex(tcp);
+                ui->searchendtcpcombo->setCurrentIndex(tcp);
             }
-            ui->searchspeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
-            if(movemod>=0&&movemod<=ui->searchmovemodecombo->count())
+            ui->searchendspeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+            if(movemod>=0&&movemod<=ui->searchendmovemodecombo->count())
             {
-                ui->searchmovemodecombo->setCurrentIndex(movemod);
+                ui->searchendmovemodecombo->setCurrentIndex(movemod);
             }
-            ui->searchname->setText(name);
-            ui->searchside->setText(QString::number(side));
-            ui->searchsidespeed->setText(QString::number(sidespeed,'f',3));
-            ui->searchsidemovex->setText(QString::number(sizemove[0],'f',ROBOT_POSE_DECIMAL_PLACE));
-            ui->searchsidemovey->setText(QString::number(sizemove[1],'f',ROBOT_POSE_DECIMAL_PLACE));
-            ui->searchsidemovez->setText(QString::number(sizemove[2],'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->searchendname->setText(name);
         }
     }
     ui->record->clear();
 }
 
-void keysearchDlg::close_dlg_show()
+void keysearchendDlg::close_dlg_show()
 {
 
 }
 
-void keysearchDlg::setbutton(int name)
+void keysearchendDlg::setbutton(int name)
 {
     if(name==0)
     {
         b_inster=false;
-        ui->searchaddBtn->setText(QString::fromLocal8Bit("插入寻位指令"));
+        ui->searchendaddBtn->setText(QString::fromLocal8Bit("插入寻位指令"));
     }
     else
     {
         b_inster=true;
-        ui->searchaddBtn->setText(QString::fromLocal8Bit("替换寻位指令"));
+        ui->searchendaddBtn->setText(QString::fromLocal8Bit("替换寻位指令"));
     }
 }
 
 //寻位指令
-void keysearchDlg::on_searchaddBtn_clicked()
+void keysearchendDlg::on_searchendaddBtn_clicked()
 {
-    int tcp=ui->searchtcpcombo->currentIndex();
+    int tcp=ui->searchendtcpcombo->currentIndex();
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
         sent_info_robot sendrob;
@@ -195,88 +186,33 @@ void keysearchDlg::on_searchaddBtn_clicked()
         bool rc;
         float speed;
         RobPos robpos=m_mcs->rob->TCPpos;
-        Robmovemodel movemodel=(Robmovemodel)ui->searchmovemodecombo->currentIndex();
+        Robmovemodel movemodel=(Robmovemodel)ui->searchendmovemodecombo->currentIndex();
         std::vector<float> sidemove(3);
         float sidespeed;
         int side;
         QString change;
 
         my_cmd cmd;
-        QString name=ui->searchname->text();
-        if(ui->searchspeed->text().isEmpty())
+        QString name=ui->searchendname->text();
+        if(ui->searchendspeed->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写寻位速度"));
             return;
         }
-        speed=ui->searchspeed->text().toFloat(&rc);
+        speed=ui->searchendspeed->text().toFloat(&rc);
         if(rc==false)
         {
             ui->record->append(QString::fromLocal8Bit("寻位速度格式出错"));
             return;
         }
-        if(ui->searchname->text().isEmpty())
+        if(ui->searchendname->text().isEmpty())
         {
             ui->record->append(QString::fromLocal8Bit("请填写寻位点名称"));
             return;
         }
-        if(ui->searchsidespeed->text().isEmpty())
+        if(ui->searchendchangecheckBox->isChecked()==true)
         {
-            ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
-            return;
-        }
-        sidespeed=ui->searchsidespeed->text().toFloat(&rc);
-        if(rc==false)
-        {
-            ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
-            return;
-        }
-        if(ui->searchside->text().isEmpty())
-        {
-            ui->record->append(QString::fromLocal8Bit("请填写寻位范围"));
-            return;
-        }
-        side=ui->searchside->text().toInt(&rc);
-        if(rc==false)
-        {
-            ui->record->append(QString::fromLocal8Bit("寻位范围格式出错"));
-            return;
-        }
-        if(ui->searchsidemovex->text().isEmpty())
-        {
-            ui->record->append(QString::fromLocal8Bit("请填写寻位范围X"));
-            return;
-        }
-        if(ui->searchsidemovey->text().isEmpty())
-        {
-            ui->record->append(QString::fromLocal8Bit("请填写寻位范围Y"));
-            return;
-        }
-        if(ui->searchsidemovez->text().isEmpty())
-        {
-            ui->record->append(QString::fromLocal8Bit("请填写寻位范围Z"));
-            return;
-        }
-        sidemove[0]=ui->searchsidemovex->text().toFloat(&rc);
-        if(rc==false)
-        {
-            ui->record->append(QString::fromLocal8Bit("寻位范围x格式出错"));
-            return;
-        }
-        sidemove[1]=ui->searchsidemovey->text().toFloat(&rc);
-        if(rc==false)
-        {
-            ui->record->append(QString::fromLocal8Bit("寻位范围Y格式出错"));
-            return;
-        }
-        sidemove[2]=ui->searchsidemovez->text().toFloat(&rc);
-        if(rc==false)
-        {
-            ui->record->append(QString::fromLocal8Bit("寻位范围Z格式出错"));
-            return;
-        }
-        if(ui->searchchangecheckBox->isChecked()==true)
-        {
-            change=ui->searchchangecombo->currentText();
+            change=ui->searchendchangecombo->currentText();
         }
 
         QString msg;
@@ -285,7 +221,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
             case MOVEL:
             case MOVEJ:
             {
-                msg=cmd.cmd_search(robpos,movemodel,speed,tcp,side,sidemove,sidespeed,name,change);
+                msg=cmd.cmd_searchend(robpos,movemodel,speed,tcp,name,change);
             }
             break;
             case MOVEC:
@@ -297,7 +233,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    msg=cmd.cmd_searchC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,side,sidemove,sidespeed,name,change);
+                    msg=cmd.cmd_searchendC(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,tcp,name,change);
                 }
                 else
                 {
@@ -331,7 +267,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
 }
 
 //长按到点按下
-void keysearchDlg::on_arriveBtn_pressed()
+void keysearchendDlg::on_arriveBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
@@ -340,10 +276,10 @@ void keysearchDlg::on_arriveBtn_pressed()
     }
     m_mcs->tosendbuffer->cmd_lock(0);
     bool rc;
-    float speed=ui->searchspeed->text().toFloat(&rc);
+    float speed=ui->searchendspeed->text().toFloat(&rc);
     my_cmd cmd;
     QString msg;
-    if(ui->searchspeed->text().isEmpty())
+    if(ui->searchendspeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写寻位速度"));
         return;
@@ -355,11 +291,11 @@ void keysearchDlg::on_arriveBtn_pressed()
     }
     QString key;
     rc=cmd.decodecmd(cmd_list_in,msg,key);
-    Robmovemodel movemod=cmd.cmd_search_movemod;//获取到的寻位模式
+    Robmovemodel movemod=cmd.cmd_searchend_movemod;//获取到的寻位模式
     if(movemod==MOVEJ||movemod==MOVEL)
     {
-        int tcp=ui->searchtcpcombo->currentIndex();
-        RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
+        int tcp=ui->searchendtcpcombo->currentIndex();
+        RobPos pos=cmd.cmd_searchend_pos;//获取到移动坐标
         movemod=MOVEJ;//用关节移动方式到位
         m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     }
@@ -372,7 +308,7 @@ void keysearchDlg::on_arriveBtn_pressed()
 }
 
 //长按到点松开
-void keysearchDlg::on_arriveBtn_released()
+void keysearchendDlg::on_arriveBtn_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
@@ -384,15 +320,18 @@ void keysearchDlg::on_arriveBtn_released()
 }
 
 //是否使用变换矩阵
-void keysearchDlg::on_searchchangecheckBox_stateChanged(int arg1)
+void keysearchendDlg::on_searchendchangecheckBox_stateChanged(int arg1)
 {
     if(arg1==0)
     {
-        ui->searchchangecombo->setDisabled(true);
+        ui->searchendchangecombo->setDisabled(true);
     }
     else
     {
-        ui->searchchangecombo->setDisabled(false);
+        ui->searchendchangecombo->setDisabled(false);
     }
 }
+
+
+
 

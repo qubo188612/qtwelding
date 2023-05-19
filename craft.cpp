@@ -12,6 +12,7 @@ Craft::Craft()
     pendulum_mode=PENDULUM_ID_FLAT;
     pendulum_swing=0;
     pendulum_phaseangle=0;
+    posture_distance=POSTURE_DISTANCE_USE;
 }
 
 Craft::~Craft()
@@ -78,6 +79,9 @@ QString Craft::craft_Id_toQString(Craft_ID craft_id)
         break;
         case CRAFT_ID_LASERNORMAL_POSTURE:
             msg=QString::fromLocal8Bit("激光器测量法线姿态");
+        break;
+        case CRAFT_ID_CORRUGATED_POSTURE:
+            msg=QString::fromLocal8Bit("波纹板变姿态");
         break;
     }
     return msg;
@@ -163,6 +167,11 @@ QVariantHash Craft::encoed_json()
             p_id="CRAFT_ID_LASERNORMAL_POSTURE";
         }
         break;
+        case CRAFT_ID_CORRUGATED_POSTURE://波纹板变姿态
+        {
+            p_id="CRAFT_ID_CORRUGATED_POSTURE";
+        }
+        break;
     } 
     data.insert("craft_id", p_id);
     for(int n=0;n<posturelist.size();n++)
@@ -201,6 +210,9 @@ QVariantHash Craft::encoed_json()
         break;
         case CRAFT_ID_LASERNORMAL_POSTURE:     //激光器测量法线姿态
         break;
+        case CRAFT_ID_CORRUGATED_POSTURE:   //波纹板变姿态
+            data.insert("posture_distance",posture_distance);
+        break;
     }
     /****************************/
     return data;
@@ -235,6 +247,10 @@ int Craft::decoed_json(QByteArray allData)
         else if(msg=="CRAFT_ID_LASERNORMAL_POSTURE")
         {
             craft_id=CRAFT_ID_LASERNORMAL_POSTURE;
+        }
+        else if(msg=="CRAFT_ID_CORRUGATED_POSTURE")
+        {
+            craft_id=CRAFT_ID_CORRUGATED_POSTURE;
         }
         else
         {
@@ -299,6 +315,11 @@ int Craft::decoed_json(QByteArray allData)
         {
             pendulum_phaseangle=it.value().toDouble();
         }
+        //其他参数
+        else if(keyString=="posture_distance")
+        {
+            posture_distance=it.value().toDouble();
+        }
     }
     /*********************/
     //判断数据合理性,补充其他数据
@@ -322,6 +343,14 @@ int Craft::decoed_json(QByteArray allData)
         break;
         case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
         {
+        }
+        break;
+        case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+        {
+            if(posturelist.size()!=3)    //分别是平坡姿态，上坡姿态，下坡姿态
+            {
+                return 1;
+            }
         }
         break;
     }

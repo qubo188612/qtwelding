@@ -98,7 +98,12 @@
    </item>
    <item>
     <property name="text">
-     <string>SEARCH: 寻位指令</string>
+     <string>SEARCH: 起点寻位指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SEARCHEND: 终点寻位指令</string>
     </property>
    </item>
    <item>

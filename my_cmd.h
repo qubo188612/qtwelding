@@ -26,6 +26,7 @@
 //扫描的焊缝坐标值，举例 GETPOS: TIME[1000] POINTNAME[寻位的点point1]
 //点位移动指令，举例 SMOV: SPEED[25] SMOVL[寻位的点point1] TCP[1] CHANGE[矩阵1]
 //点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
+//寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
 
 
 //key项
@@ -41,6 +42,7 @@
 #define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
 #define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
 #define CMD_SEARCH_KEY                  "SEARCH:"       //寻位命令集合KEY
+#define CMD_SEARCHEND_KEY               "SEARCHEND:"    //寻位末尾命令集合KEY
 #define CMD_COORD_KEY                   "COORD:"        //工件坐标系定位命令集合KEY
 #define CMD_GETPOS_KEY                  "GETPOS:"       //获取扫描的焊缝坐标值命令集合KEY
 
@@ -102,6 +104,8 @@ public:
     QString cmd_plcwrite(int register_add,int16_t register_data);
     QString cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change="");//寻位命令
     QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change="");//圆寻位命令
+    QString cmd_searchend(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
+    QString cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
     QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
     QString cmd_getpos(int time,QString name);//获取扫描的焊缝坐标值命令
 
@@ -167,6 +171,16 @@ public:
     std::vector<float> cmd_search_sidemove;//寻位寻找两侧的单位向量
     float cmd_search_sidespeed;//寻位寻找两侧的空闲移动速度
     QString cmd_search_change;//获取到的寻位变换矩阵名字
+
+    RobPos cmd_searchend_pos;//获取到寻位终点坐标
+    RobPos cmd_searchend_pos1;//获取到圆寻位起点坐标
+    RobPos cmd_searchend_pos2;//获取到圆寻位途径点坐标
+    RobPos cmd_searchend_pos3;//获取到圆寻位终点坐标
+    float cmd_searchend_speed;//获取到的寻位速度
+    int cmd_searchend_tcp;//获取到寻位TCP
+    Robmovemodel cmd_searchend_movemod;//获取到的寻位模式
+    QString cmd_searchend_name;//获取到的寻位点名字
+    QString cmd_searchend_change;//获取到的寻位变换矩阵名字
 
     QString cmd_coord_pointx;//实际零位矩阵零点的X方向基准点
     QString cmd_coord_pointo;//实际零位矩阵零点的基准点

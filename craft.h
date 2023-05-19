@@ -13,12 +13,13 @@
 
 #define STARTENDCHANGE_POSTURE_ALLOWERROR       100     //变姿态工艺与实际轨迹长度允许的误差(mm)
 
-#define CRAFT_ID_TOTAL_NUM       3      //工艺类型总数
+#define CRAFT_ID_TOTAL_NUM       4      //工艺类型总数
 typedef enum CRAFT_ID
 {
     CRAFT_ID_FIXED_POSTURE=0,               //固定焊接姿态
     CRAFT_ID_STARTENDCHANGE_POSTURE=1,      //单一方向起终点变姿态
     CRAFT_ID_LASERNORMAL_POSTURE=2,         //激光器测量法线姿态
+    CRAFT_ID_CORRUGATED_POSTURE=3,          //波纹板变姿态
 }Craft_ID;
 
 #define PENDULUM_ID_TOTAL_NUM     1     //摆焊接模式总数
@@ -26,6 +27,15 @@ typedef enum PENDULUM_MODE_ID   //摆焊模式
 {
     PENDULUM_ID_FLAT=0,     //平焊
 }Pendulum_mode;
+
+typedef enum WELD_DIRECTION_ID  //焊缝走向
+{
+    WELD_DIRECTION_X=0,     //大致X走向
+    WELD_DIRECTION_Y=1,     //大致Y走向
+    WELD_DIRECTION_Z=2,     //大致Z走向
+}Weld_direction;
+
+#define POSTURE_DISTANCE_USE    10  //默认变姿态距离
 
 class Craft     //焊接工艺包
 {
@@ -41,6 +51,10 @@ public:
     float pendulum_swing;   //固定焊接姿态的摆焊接幅度
 
     float pendulum_phaseangle;  //固定焊接姿态的摆焊相角
+
+    //其它工艺参数
+    float posture_distance; //变姿态距离
+    Weld_direction weld_direction;//焊缝大致走向
 
     QString craft_Id_toQString(Craft_ID craft_id);
 
