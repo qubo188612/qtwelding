@@ -13,7 +13,7 @@ cambuilddlg::cambuilddlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
 
-    adoubleValidator_2 = new QDoubleValidator(0,0,2,this);//限制3位小数
+    adoubleValidator_2 = new QDoubleValidator(-9999,9999,2,this);//限制3位小数
     ui->x1_Edit->setValidator(adoubleValidator_2);
     ui->y1_Edit->setValidator(adoubleValidator_2);
     ui->x2_Edit->setValidator(adoubleValidator_2);

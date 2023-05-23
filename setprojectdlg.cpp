@@ -16,13 +16,15 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
         ui->movetcpcombo->addItem(msg);
         ui->tracetcpcombo->addItem(msg);
         ui->scantcpcombo->addItem(msg);
+        ui->ctlmovetcpcombo->addItem(msg);
     }
 
-    adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->movespeed->setValidator(adoubleValidator_speed);
     ui->tracespeed->setValidator(adoubleValidator_speed);
     ui->scanspeed->setValidator(adoubleValidator_speed);
 
+    edittext=new edittextDlg();
     setmovec=new setmovecDlg(mcs);
     othercmd=new othercmdDlg(mcs);
     keycam=new keycamDlg(mcs);
@@ -49,6 +51,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
 
 setprojectDlg::~setprojectDlg()
 {
+    delete edittext;
     delete setmovec;
     delete othercmd;
     delete keycam;
@@ -1293,6 +1296,46 @@ void setprojectDlg::on_cmdlist_itemClicked(QListWidgetItem *item)//选择值令
     ui->customcmd->setText(m_mcs->project->project_cmdlist[now_cmdline]);
 }
 
+void setprojectDlg::on_SaveAsBtn_clicked()//另存为
+{
+    QString project_name;
+    edittext->init_dlg_show(QString::fromLocal8Bit("另存为工程名称:"));
+    edittext->setWindowTitle(QString::fromLocal8Bit("工程另存为"));
+    int rc=edittext->exec();
+    edittext->close_dlg_show();
+    if(rc!=0)//确定
+    {
+        project_name=edittext->msg_edit;
+        QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工程路径"), "./DATA/.json", "JSON(*.json)");
+        if(fileName.size()>0)
+        {
+            m_mcs->project->project_name=project_name;
+            QString msg=fileName;
+            if(fileName.size()>=5)
+            {
+                QString tem1=".json";
+                QString tem2=".JSON";
+                QString tem=fileName.mid(fileName.size()-5,5);
+                if(tem!=tem1&&tem!=tem2)//文件名末尾不是".json"或".JSON"
+                {
+                    msg=msg+".json";
+                }
+            }
+            m_mcs->project->project_path=msg;
+            m_mcs->project->SaveProject((char*)msg.toStdString().c_str());
+            ui->record->append(QString::fromLocal8Bit("另存成功，当前新工程路径为:")+msg);
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新选择路径"));
+        }
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("取消另存为操作"));
+    }
+}
+
 void setprojectDlg::on_OKBtn_clicked()//保存指令
 {
     m_mcs->project->SaveProject((char*)m_mcs->project->project_path.toStdString().c_str());
@@ -2027,6 +2070,668 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
     }
 }
 
+//机器人使能
+void setprojectDlg::on_ctlrobotEncheckBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+    {
+        m_mcs->robotcontrol->RobotCLOSE_ELE();
+        ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
+    }
+    else
+    {
+        m_mcs->robotcontrol->RobotOPEN_ELE(false);
+        ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
+    }
+}
+
+//机器人X-按下
+void setprojectDlg::on_ctlposXsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_XSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人X轴负移动"));
+    return;
+}
+
+//机器人X-抬起
+void setprojectDlg::on_ctlposXsubBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人X+按下
+void setprojectDlg::on_ctlposXaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_XADD;
+    ui->record->append(QString::fromLocal8Bit("机器人X轴正移动"));
+}
+
+//机器人X+抬起
+void setprojectDlg::on_ctlposXaddBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人Y-按下
+void setprojectDlg::on_ctlposYsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_YSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人Y轴负移动"));
+    return;
+}
+
+//机器人Y-抬起
+void setprojectDlg::on_ctlposYsubBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人Y+按下
+void setprojectDlg::on_ctlposYaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_YADD;
+    ui->record->append(QString::fromLocal8Bit("机器人Y轴正移动"));
+    return;
+}
+
+//机器人Y+抬起
+void setprojectDlg::on_ctlposYaddBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人Z-按下
+void setprojectDlg::on_ctlposZsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_ZSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人Z轴负移动"));
+    return;
+}
+
+//机器人Z-抬起
+void setprojectDlg::on_ctlposZsubBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人Z+按下
+void setprojectDlg::on_ctlposZaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_ZADD;
+    ui->record->append(QString::fromLocal8Bit("机器人Z轴正移动"));
+    return;
+}
+
+//机器人Z+抬起
+void setprojectDlg::on_ctlposZaddBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人RX-按下
+void setprojectDlg::on_ctlposRXsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_RXSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人RX轴负移动"));
+    return;
+}
+
+//机器人RX-抬起
+void setprojectDlg::on_ctlposRXsubBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人RX+按下
+void setprojectDlg::on_ctlposRXaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_RXADD;
+    ui->record->append(QString::fromLocal8Bit("机器人RX轴正移动"));
+    return;
+}
+
+//机器人RX+抬起
+void setprojectDlg::on_ctlposRXaddBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人RY-按下
+void setprojectDlg::on_ctlposRYsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_RYSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人RY轴负移动"));
+    return;
+}
+
+//机器人RY-抬起
+void setprojectDlg::on_ctlposRYsubBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人RY+按下
+void setprojectDlg::on_ctlposRYaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_RYADD;
+    ui->record->append(QString::fromLocal8Bit("机器人RY轴正移动"));
+    return;
+}
+
+//机器人RY+抬起
+void setprojectDlg::on_ctlposRYaddBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人RZ-按下
+void setprojectDlg::on_ctlposRZsubBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_RZSUB;
+    ui->record->append(QString::fromLocal8Bit("机器人RZ轴负移动"));
+    return;
+}
+
+//机器人RZ-抬起
+void setprojectDlg::on_ctlposRZsubBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人RZ+按下
+void setprojectDlg::on_ctlposRZaddBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_RZADD;
+    ui->record->append(QString::fromLocal8Bit("机器人RZ轴正移动"));
+    return;
+}
+
+//机器人RZ+抬起
+void setprojectDlg::on_ctlposRZaddBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人OUT1-按下
+void setprojectDlg::on_ctlposOut1subBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_OUT1SUB;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT1轴负移动"));
+    return;
+}
+
+//机器人OUT1-抬起
+void setprojectDlg::on_ctlposOut1subBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人OUT1+按下
+void setprojectDlg::on_ctlposOut1addBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_OUT1ADD;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT1轴正移动"));
+    return;
+}
+
+//机器人OUT1+抬起
+void setprojectDlg::on_ctlposOut1addBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人OUT2-按下
+void setprojectDlg::on_ctlposOut2subBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_OUT2SUB;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT2轴负移动"));
+    return;
+}
+
+//机器人OUT2-抬起
+void setprojectDlg::on_ctlposOut2subBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人OUT2+按下
+void setprojectDlg::on_ctlposOut2addBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_OUT2ADD;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT2轴正移动"));
+    return;
+}
+
+//机器人OUT2+抬起
+void setprojectDlg::on_ctlposOut2addBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人OUT3-按下
+void setprojectDlg::on_ctlposOut3subBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_OUT3SUB;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT3轴负移动"));
+    return;
+}
+
+//机器人OUT3-抬起
+void setprojectDlg::on_ctlposOut3subBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
+//机器人OUT3+按下
+void setprojectDlg::on_ctlposOut3addBtn_pressed()
+{
+    if(m_mcs->rob->b_link_ctx_posget==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        return;
+    }
+    int tcp=ui->movetcpcombo->currentIndex();//获取到移动TCP
+    bool rc;
+    float f_speed=ui->movespeed->text().toFloat(&rc);//获取到速度值
+    if(ui->movespeed->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    m_mcs->e2proomdata.maindlg_movespeed=f_speed;
+    m_mcs->e2proomdata.maindlg_movetcp=tcp;
+    m_mcs->e2proomdata.write_maindlg_para();
+    m_mcs->mainDlg_robmovestate=MAINDLG_OUT3ADD;
+    ui->record->append(QString::fromLocal8Bit("机器人OUT3轴正移动"));
+    return;
+}
+
+//机器人OUT3+抬起
+void setprojectDlg::on_ctlposOut3addBtn_released()
+{
+    m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
+    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+}
+
 void setprojectDlg::updatacmdlistUi()
 {
     std::vector<QString> err_msg;
@@ -2126,10 +2831,3 @@ void setprojectThread::Stop()
     }
   }
 }
-
-
-
-
-
-
-

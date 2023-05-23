@@ -46,6 +46,9 @@ void Process1_scanbeforetrace::stop_process()
         thread->quit();
         thread->wait();
     }
+#ifdef USE_MYROBOT_CONTROL
+    m_mcs->robotcontrol->clear_movepoint_buffer();
+#endif
 }
 
 void Process1_scanbeforetrace::paused_process()
@@ -104,7 +107,14 @@ void Process1Thread::run()
         {
             goto OUT_THREAD_ERROR;
         }
-        break; 
+        if(_p->m_mcs->e2proomdata.maindlg_circlerun==0)
+        {
+            break;
+        }
+        else
+        {
+            _p->buildline=0;
+        }
     }    
 OUT_THREAD_ERROR:
     _p->thread->quit();

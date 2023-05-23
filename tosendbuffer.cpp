@@ -2716,7 +2716,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 case PENDULUM_ID_FLAT://平焊
                 {
                     CWeldTarject tarjectMath;
-                    if(!tarjectMath.pos_interpolation(weld,interpolatweld,16,speed))
+                    if(!tarjectMath.pos_interpolation(weld,interpolatweld,48,speed))
                     {
                         main_record.lock();
                         return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹插值出错");
@@ -2936,7 +2936,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
 
                         cv::Mat difmask3=difmask.clone();
                         morphologyEx(difmask3, difmask3, cv::MORPH_CLOSE, element);
-                        morphologyEx(difmask2, difmask2, cv::MORPH_OPEN, elementdel);
+                        morphologyEx(difmask3, difmask3, cv::MORPH_OPEN, elementdel);
                         Uint8 *u8_difmaskDown=difmask3.ptr<uchar>(0);
 
                         std::vector<int> s_upst;//平坡与上坡交界
@@ -3200,6 +3200,30 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                                 t++;
                             }
                         }
+
+                        /*********************************/
+                        //滤波轨道,只保留拐点，为了展会好看
+                        if(interpolatweld.size()>0)
+                        {
+                            std::vector<RobPos> interpolatweld_media;//滤波轨道
+                            interpolatweld_media.push_back(interpolatweld[0]);
+                            static float oldRX=interpolatweld[0].RX,oldRY=interpolatweld[0].RY,oldRZ=interpolatweld[0].RZ;
+                            for(int i=0;i<interpolatweld.size();i++)
+                            {
+                                if(fabs(interpolatweld[i].RX-oldRX)>0.0001||
+                                   fabs(interpolatweld[i].RY-oldRY)>0.0001||
+                                   fabs(interpolatweld[i].RZ-oldRZ)>0.0001)
+                                {
+                                    oldRX=interpolatweld[i].RX;
+                                    oldRY=interpolatweld[i].RY;
+                                    oldRZ=interpolatweld[i].RZ;
+                                    interpolatweld_media.push_back(interpolatweld[i]);
+                                }
+                            }
+                            interpolatweld_media.push_back(interpolatweld[interpolatweld.size()-1]);
+                            interpolatweld=interpolatweld_media;
+                        }
+                        /********************************/
                     }
                     else
                     {
@@ -3213,7 +3237,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 break;
             }
-            m_mcs->project->project_interweld_trace.resize( m_mcs->project->project_weld_trace.size());
+            m_mcs->project->project_interweld_trace.resize(m_mcs->project->project_weld_trace.size());
             m_mcs->project->project_interweld_trace[weld_trace_num].point=interpolatweld;
 
             if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹

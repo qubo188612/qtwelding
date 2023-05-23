@@ -7,7 +7,7 @@ setcraft2Dlg::setcraft2Dlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
 
-    adoubleValidator_3 = new QDoubleValidator(0,0,3,this);//限制3位小数
+    adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
 
     ui->lineEdit_pendulum_swing->setValidator(adoubleValidator_3);
     ui->lineEdit_pendulum_phaseangle->setValidator(adoubleValidator_3);

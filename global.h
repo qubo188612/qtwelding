@@ -10,7 +10,7 @@
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #define USE_MYROBOT_CONTROL         1//使用本地的机器人控制协议
 //#define USE_MYMOVEC_CONTROL       1//使用本地moveC插值运动(适用于无曲线moveC移动的机器人)
-#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
+//#define OPEN_SHOW_ROBOTSOCKDATA   1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 
 
@@ -29,6 +29,14 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROBOT_SPEED_DECIMAL_PLACE           3       //机器人速度保留小数后几位
 #define ROBOT_POSE_DECIMAL_PLACE            3       //机器人坐标保留小数后几位
 #define ROBOT_POSTURE_DECIMAL_PLACE         4       //机器人姿态保留小数点后几位
+
+#define ROBOT_SPEED_DECIMAL_BOTTOM          0         //机器人速度最小值
+#define ROBOT_SPEED_DECIMAL_TOP             9999      //机器人速度最大值
+#define ROBOT_POSE_DECIMAL_BOTTOM          -9999      //机器人坐标最小值
+#define ROBOT_POSE_DECIMAL_TOP              9999      //机器人坐标最大值
+#define ROBOT_POSTURE_DECIMAL_BOTTOM       -999       //机器人姿态最小值
+#define ROBOT_POSTURE_DECIMAL_TOP           999       //机器人姿态最大值
+
 
 #define ROBOT_POSE_MOVEC_STEP               0.2     //机器人圆弧运动采样间隔
 
@@ -60,7 +68,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DO_NOTHING         0
 #define DO_WRITE_TASK      1
 
-#define ROB_WORK_DELAY          100000       //机器人通讯反映时间(微秒)
+#define ROB_WORK_DELAY          1000000       //机器人通讯反映时间(微秒)
 #define ROB_WORK_DELAY_STEP     10000        //机器人每步循环等待时间(微秒)
 
 /*****************************/
@@ -781,6 +789,48 @@ typedef enum EYE_HAND_CALIBRATIONMODE_ID
     HAND_IN_EYE=0,      //眼在手上
     HAND_OUT_EYE=1,     //眼在手外
 }Eye_Hand_calibrationmode;
+
+typedef enum MainDlg_robmovestate_ID        //主页机器人移动状态
+{
+    MAINDLG_STATIC,         //机器人空闲
+    MAINDLG_NOTMOVE,        //机器人不动
+    MAINDLG_XSUB,           //机器人X负移动
+    MAINDLG_XSUB_ING,       //机器人X负移动中
+    MAINDLG_XADD,           //机器人X正移动
+    MAINDLG_XADD_ING,       //机器人X正移动中
+    MAINDLG_YSUB,           //机器人Y负移动
+    MAINDLG_YSUB_ING,       //机器人Y负移动中
+    MAINDLG_YADD,           //机器人Y正移动
+    MAINDLG_YADD_ING,       //机器人Y正移动中
+    MAINDLG_ZSUB,           //机器人Z负移动
+    MAINDLG_ZSUB_ING,       //机器人Z负移动中
+    MAINDLG_ZADD,           //机器人Z正移动
+    MAINDLG_ZADD_ING,       //机器人Z正移动中
+    MAINDLG_RXSUB,          //机器人RX负移动
+    MAINDLG_RXSUB_ING,      //机器人RX负移动中
+    MAINDLG_RXADD,          //机器人RX正移动
+    MAINDLG_RXADD_ING,      //机器人RX正移动中
+    MAINDLG_RYSUB,          //机器人RY负移动
+    MAINDLG_RYSUB_ING,      //机器人RY负移动中
+    MAINDLG_RYADD,          //机器人RY正移动
+    MAINDLG_RYADD_ING,      //机器人RY正移动中
+    MAINDLG_RZSUB,          //机器人RZ负移动
+    MAINDLG_RZSUB_ING,      //机器人RZ负移动中
+    MAINDLG_RZADD,          //机器人RZ正移动
+    MAINDLG_RZADD_ING,      //机器人RZ正移动中
+    MAINDLG_OUT1SUB,        //机器人外部轴1负移动
+    MAINDLG_OUT1SUB_ING,    //机器人外部轴1负移动中
+    MAINDLG_OUT1ADD,        //机器人外部轴1正移动
+    MAINDLG_OUT1ADD_ING,    //机器人外部轴1正移动中
+    MAINDLG_OUT2SUB,        //机器人外部轴2负移动
+    MAINDLG_OUT2SUB_ING,    //机器人外部轴2负移动中
+    MAINDLG_OUT2ADD,        //机器人外部轴2正移动
+    MAINDLG_OUT2ADD_ING,    //机器人外部轴2正移动中
+    MAINDLG_OUT3SUB,        //机器人外部轴3负移动
+    MAINDLG_OUT3SUB_ING,    //机器人外部轴3负移动中
+    MAINDLG_OUT3ADD,        //机器人外部轴3正移动
+    MAINDLG_OUT3ADD_ING,    //机器人外部轴3正移动中
+}MainDlg_robmovestate;
 
 
 #endif // GLOBAL_H

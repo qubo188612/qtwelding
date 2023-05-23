@@ -352,7 +352,7 @@ void Robotcontrol::RobotInit()//机器人初始化
     }
 }
 
-void Robotcontrol::RobotOPEN_ELE()
+void Robotcontrol::RobotOPEN_ELE(bool b_wait)
 {
     mutexmovepoint_buffer_group.lock();
     movepoint_buffer.clear();
@@ -378,7 +378,10 @@ void Robotcontrol::RobotOPEN_ELE()
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
                 mutextotalcontrol_buf_group.unlock();
-                sleep(3);
+                if(b_wait==true)
+                {
+                    sleep(3);
+                }
             }
         }
         break;
@@ -391,7 +394,10 @@ void Robotcontrol::RobotOPEN_ELE()
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
                 mutextotalcontrol_buf_group.unlock();
-                sleep(3);
+                if(b_wait==true)
+                {
+                    sleep(3);
+                }
             }
         }
         break;
@@ -674,7 +680,8 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                         QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
-                                        QString::number(tcp)+")";
+                                        QString::number(tcp)+",SpeedJ="+
+                                        QString::number((int)f_speed)+")";
                     std::string str=msg.toStdString();
                 //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2)";
                     _p->send_buf_group.push_back(str);
@@ -1957,6 +1964,9 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
+                                                msg="EnableRobot()";
+                                                str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);
                                                 mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
@@ -2911,7 +2921,7 @@ void RobotrcvThread::run()//获取机器人数据
                 case ROBOT_MODEL_DOBOT://越彊机器人
                 {
                     int rcvnum=_p->m_client.Recv((char*)_p->rcv_buf,ROBOT_DOBOT_INFO_RECVBUFFER_MAX*2);
-                    if(rcvnum>ROBOT_DOBOT_INFO_RECVBUFFER_MAX)
+                    if(rcvnum==ROBOT_DOBOT_INFO_RECVBUFFER_MAX)
                     {
                         double d_robX=*(double*)(&_p->rcv_buf[624]);
                         double d_robY=*(double*)(&_p->rcv_buf[632]);
@@ -2929,6 +2939,67 @@ void RobotrcvThread::run()//获取机器人数据
                         float f_robRY=d_robRY;
                         float f_robRZ=d_robRZ;
                         float f_speed=d_speed;
+
+                        /*
+                        static int times=0;
+                        if(state==0)
+                        {
+                            if(times<10)
+                            {
+                                times++;
+                                state=1;
+                            }
+                            else
+                            {
+                                state=0;
+                            }
+                        }
+                        else
+                        {
+                            times=0;
+                        }
+                        */
+
+                        if(state==0)
+                        {
+                            mutexmovepoint_buffer_group.lock();
+                            int num=_p->movepoint_buffer.size();
+                            if(num!=0)
+                            {
+                                Pause_PointInfo moveinfo=_p->movepoint_buffer[num-1];
+                                switch(moveinfo.movemod)
+                                {
+                                    case MOVEL:
+                                    case MOVEJ:
+                                    {
+                                        if(fabs(d_robX-moveinfo.robpos.X)>0.1
+                                         ||fabs(d_robY-moveinfo.robpos.Y)>0.1
+                                         ||fabs(d_robZ-moveinfo.robpos.Z)>0.1
+                                         ||fabs(d_robRX-moveinfo.robpos.RX)>0.1
+                                         ||fabs(d_robRY-moveinfo.robpos.RY)>0.1
+                                         ||fabs(d_robRZ-moveinfo.robpos.RZ)>0.1)
+                                        {
+                                            state=1;
+                                        }
+                                    }
+                                    break;
+                                    case MOVEC:
+                                    {
+                                        if(fabs(d_robX-moveinfo.robpos.X1)>0.1
+                                         ||fabs(d_robY-moveinfo.robpos.Y1)>0.1
+                                         ||fabs(d_robZ-moveinfo.robpos.Z1)>0.1
+                                         ||fabs(d_robRX-moveinfo.robpos.RX1)>0.1
+                                         ||fabs(d_robRY-moveinfo.robpos.RY1)>0.1
+                                         ||fabs(d_robRZ-moveinfo.robpos.RZ1)>0.1)
+                                        {
+                                            state=1;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            mutexmovepoint_buffer_group.unlock();
+                        }
 
                         _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&f_robX))[0];
                         _p->mb_mapping->tab_registers[ROB_X_POS_FL_REG_ADD]=((uint16_t*)(&f_robX))[1];

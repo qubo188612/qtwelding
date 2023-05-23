@@ -20,7 +20,7 @@ keysearchendDlg::keysearchendDlg(my_parameters *mcs,QWidget *parent) :
     ui->searchendchangecheckBox->setCheckState(Qt::Unchecked);
     ui->searchendchangecombo->setDisabled(true);
 
-    adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->searchendspeed->setValidator(adoubleValidator_speed);
 }
 
@@ -297,6 +297,7 @@ void keysearchendDlg::on_arriveBtn_pressed()
         int tcp=ui->searchendtcpcombo->currentIndex();
         RobPos pos=cmd.cmd_searchend_pos;//获取到移动坐标
         movemod=MOVEJ;//用关节移动方式到位
+        m_mcs->robotcontrol->RobotOPEN_ELE();
         m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     }
     else
@@ -316,6 +317,7 @@ void keysearchendDlg::on_arriveBtn_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
+    m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 

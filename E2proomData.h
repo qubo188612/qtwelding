@@ -82,7 +82,7 @@
 #define E2POOM_DEMDLG_RADIO_MOD_MAX         1
 #define E2POOM_DEMDLG_RADIO_MOD_USE         0
 
-#define E2POOM_MAINDLG_SAVEBUFF             20
+#define E2POOM_MAINDLG_SAVEBUFF             24
 #define E2POOM_MAINDLG_SYSPATH_MOTO         "./SAVE/E2P_MAINDLG.bsd"
 #define E2POOM_MAINDLG_SAVEDATA_MIN         0
 #define E2POOM_MAINDLG_SAVEDATA_MAX         1
@@ -98,6 +98,9 @@
 #define E2POOM_MAINDLG_MOVETCP_MIN          0
 #define E2POOM_MAINDLG_MOVETCP_USE          0
 #define E2POOM_MAINDLG_MOVETCP_MAX          ROBOTTCPNUM
+#define E2POOM_MAINDLG_CIRCLERUN_MIN        0
+#define E2POOM_MAINDLG_CIRCLERUN_MAX        1
+#define E2POOM_MAINDLG_CIRCLERUN_USE        0
 
 
 class E2proomData
@@ -211,6 +214,7 @@ public:
     Alternatingcurrent_ID maindlg_Weldelem;     //点焊工艺
     float maindlg_movespeed;                    //移动速度
     Int32 maindlg_movetcp;                      //TCP
+    Int32 maindlg_circlerun;                    //循环执行
 
     void read_maindlg_para();
     void write_maindlg_para();
@@ -230,6 +234,9 @@ public:
     Int32 maindlg_movetcp_min;
     Int32 maindlg_movetcp_max;
     Int32 maindlg_movetcp_use;
+    Int32 maindlg_circlerun_min;
+    Int32 maindlg_circlerun_max;
+    Int32 maindlg_circlerun_use;
 
  /***************************/
     void write();

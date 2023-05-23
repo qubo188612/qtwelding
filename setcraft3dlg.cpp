@@ -7,9 +7,10 @@ setcraft3Dlg::setcraft3Dlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
 
-    adoubleValidator_3 = new QDoubleValidator(0,0,3,this);//限制3位小数
-    adoubleValidator_pose = new QDoubleValidator(0,0,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
-    adoubleValidator_posture = new QDoubleValidator(0,0,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数  
+    adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
+    adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
+
     ui->lineEdit_RX->setValidator(adoubleValidator_posture);
     ui->lineEdit_RY->setValidator(adoubleValidator_posture);
     ui->lineEdit_RZ->setValidator(adoubleValidator_posture);

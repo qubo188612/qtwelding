@@ -24,7 +24,7 @@ keysmovDlg::keysmovDlg(my_parameters *mcs,QWidget *parent) :
     ui->pos2comboBox->hide();
     ui->pos3comboBox->hide();
 
-    adoubleValidator_speed = new QDoubleValidator(0,0,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->smovespeed->setValidator(adoubleValidator_speed);
 }
 

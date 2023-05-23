@@ -86,6 +86,9 @@ E2proomData::E2proomData()
     maindlg_movetcp_min=E2POOM_MAINDLG_MOVETCP_MIN;
     maindlg_movetcp_max=E2POOM_MAINDLG_MOVETCP_MAX;
     maindlg_movetcp_use=E2POOM_MAINDLG_MOVETCP_USE;
+    maindlg_circlerun_min=E2POOM_MAINDLG_CIRCLERUN_MIN;
+    maindlg_circlerun_max=E2POOM_MAINDLG_CIRCLERUN_MAX;
+    maindlg_circlerun_use=E2POOM_MAINDLG_CIRCLERUN_USE;
 
     read_para();
 }
@@ -143,6 +146,8 @@ void E2proomData::check_para()
         maindlg_movespeed=maindlg_movespeed_use;
     if(maindlg_movetcp<maindlg_movetcp_min||maindlg_movetcp>maindlg_movetcp_max)
         maindlg_movetcp=maindlg_movetcp_use;
+    if(maindlg_circlerun<maindlg_circlerun_min||maindlg_circlerun>maindlg_circlerun_max)
+        maindlg_circlerun=maindlg_circlerun_use;
 }
 
 void E2proomData::read_para()
@@ -575,6 +580,8 @@ void E2proomData::read_maindlg_para()
       i32_p = (Int32*)f32_p;
       maindlg_movetcp=*i32_p;
       i32_p++;
+      maindlg_circlerun=*i32_p;
+      i32_p++;
     }
     if(buff!=NULL)
     {
@@ -611,6 +618,8 @@ void E2proomData::write_maindlg_para()
     i32_p = (Int32*)f32_p;
     *i32_p=maindlg_movetcp;
     i32_p++;
+    *i32_p=maindlg_circlerun;
+    i32_p++;
 
     fo.WriteFile((char*)E2POOM_MAINDLG_SYSPATH_MOTO,buff,E2POOM_MAINDLG_SAVEBUFF);
 
@@ -628,6 +637,7 @@ void E2proomData::init_maindlg_para()
     maindlg_Weldelem=(Alternatingcurrent_ID)maindlg_Weldelem_use;
     maindlg_movespeed=maindlg_movespeed_use;
     maindlg_movetcp=maindlg_movetcp_use;
+    maindlg_circlerun=maindlg_circlerun_use;
 }
 
 void E2proomData::write()

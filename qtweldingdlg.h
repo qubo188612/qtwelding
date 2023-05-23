@@ -46,52 +46,10 @@ class qtrecordThread;
 
 #define ROBOT_MAINDLG_MOVEPOS_STEP             100  //主页机器人移动目标点距离
 #define ROBOT_MAINDLG_MOVEPOS_STEPMIN          50   //主页机器人当前点距离移动目标点小于该值时更新新目标点
-#define ROBOT_MAINDLG_MOVEPOSTURE_STEP         30   //主页机器人移动目标点姿态距离(度)
-#define ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN      15   //主页机器人当前点距离移动目标点姿态距离小于该值时更新新目标点姿态距离(度)
+#define ROBOT_MAINDLG_MOVEPOSTURE_STEP         5   //主页机器人移动目标点姿态距离(度)
+#define ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN      2.5   //主页机器人当前点距离移动目标点姿态距离小于该值时更新新目标点姿态距离(度)
 #define ROBOT_MAINDLG_MOVEOUT_STEP             1000 //主页机器人移动第三轴目标点距离
 #define ROBOT_MAINDLG_MOVEOUT_STEPMIN          500  //主页机器人第三轴当前点距离移动目标点小于该值时更新新目标点
-
-typedef enum MainDlg_robmovestate_ID        //主页机器人移动状态
-{
-    MAINDLG_STATIC,         //机器人空闲
-    MAINDLG_NOTMOVE,        //机器人不动
-    MAINDLG_XSUB,           //机器人X负移动
-    MAINDLG_XSUB_ING,       //机器人X负移动中
-    MAINDLG_XADD,           //机器人X正移动
-    MAINDLG_XADD_ING,       //机器人X正移动中
-    MAINDLG_YSUB,           //机器人Y负移动
-    MAINDLG_YSUB_ING,       //机器人Y负移动中
-    MAINDLG_YADD,           //机器人Y正移动
-    MAINDLG_YADD_ING,       //机器人Y正移动中
-    MAINDLG_ZSUB,           //机器人Z负移动
-    MAINDLG_ZSUB_ING,       //机器人Z负移动中
-    MAINDLG_ZADD,           //机器人Z正移动
-    MAINDLG_ZADD_ING,       //机器人Z正移动中
-    MAINDLG_RXSUB,          //机器人RX负移动
-    MAINDLG_RXSUB_ING,      //机器人RX负移动中
-    MAINDLG_RXADD,          //机器人RX正移动
-    MAINDLG_RXADD_ING,      //机器人RX正移动中
-    MAINDLG_RYSUB,          //机器人RY负移动
-    MAINDLG_RYSUB_ING,      //机器人RY负移动中
-    MAINDLG_RYADD,          //机器人RY正移动
-    MAINDLG_RYADD_ING,      //机器人RY正移动中
-    MAINDLG_RZSUB,          //机器人RZ负移动
-    MAINDLG_RZSUB_ING,      //机器人RZ负移动中
-    MAINDLG_RZADD,          //机器人RZ正移动
-    MAINDLG_RZADD_ING,      //机器人RZ正移动中
-    MAINDLG_OUT1SUB,        //机器人外部轴1负移动
-    MAINDLG_OUT1SUB_ING,    //机器人外部轴1负移动中
-    MAINDLG_OUT1ADD,        //机器人外部轴1正移动
-    MAINDLG_OUT1ADD_ING,    //机器人外部轴1正移动中
-    MAINDLG_OUT2SUB,        //机器人外部轴2负移动
-    MAINDLG_OUT2SUB_ING,    //机器人外部轴2负移动中
-    MAINDLG_OUT2ADD,        //机器人外部轴2正移动
-    MAINDLG_OUT2ADD_ING,    //机器人外部轴2正移动中
-    MAINDLG_OUT3SUB,        //机器人外部轴3负移动
-    MAINDLG_OUT3SUB_ING,    //机器人外部轴3负移动中
-    MAINDLG_OUT3ADD,        //机器人外部轴3正移动
-    MAINDLG_OUT3ADD_ING,    //机器人外部轴3正移动中
-}MainDlg_robmovestate;
 
 class qtweldingDlg : public QDialog
 {
@@ -102,8 +60,6 @@ public:
     ~qtweldingDlg();
 
     my_parameters *m_mcs;
-
-    MainDlg_robmovestate mainDlg_robmovestate;  //主页机器人移动状态
 
     qtweldingThread *thread1;            //相机线程
     bool b_thread1;
@@ -277,6 +233,10 @@ private slots:
     void on_posOut3addBtn_pressed();
 
     void on_posOut3addBtn_released();
+
+    void on_robotEncheckBox_stateChanged(int arg1);
+
+    void on_CircleRuncheckBox_stateChanged(int arg1);
 
 private:
     Ui::qtweldingDlg *ui;

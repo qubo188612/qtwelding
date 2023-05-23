@@ -11,6 +11,7 @@
 #include "my_cmd.h"
 #include "setmovecdlg.h"
 #include "othercmddlg.h"
+#include "edittextdlg.h"
 #include "keycamdlg.h"
 #include "keycreatdlg.h"
 #include "keydelaydlg.h"
@@ -44,6 +45,7 @@ public:
     explicit setprojectDlg(my_parameters *mcs,QWidget *parent = nullptr);
     ~setprojectDlg();
 
+    edittextDlg *edittext;
     setmovecDlg *setmovec;
     othercmdDlg *othercmd;
     keycamDlg *keycam;
@@ -122,6 +124,82 @@ private slots:
     void on_IOinputBtn_clicked();
 
     void on_othercmdaddBtn_clicked();
+
+    void on_SaveAsBtn_clicked();
+
+    void on_ctlrobotEncheckBox_stateChanged(int arg1);
+
+    void on_ctlposXsubBtn_pressed();
+
+    void on_ctlposXsubBtn_released();
+
+    void on_ctlposXaddBtn_pressed();
+
+    void on_ctlposXaddBtn_released();
+
+    void on_ctlposYsubBtn_pressed();
+
+    void on_ctlposYsubBtn_released();
+
+    void on_ctlposYaddBtn_pressed();
+
+    void on_ctlposYaddBtn_released();
+
+    void on_ctlposZsubBtn_pressed();
+
+    void on_ctlposZsubBtn_released();
+
+    void on_ctlposZaddBtn_pressed();
+
+    void on_ctlposZaddBtn_released();
+
+    void on_ctlposRXsubBtn_pressed();
+
+    void on_ctlposRXsubBtn_released();
+
+    void on_ctlposRXaddBtn_pressed();
+
+    void on_ctlposRXaddBtn_released();
+
+    void on_ctlposRYsubBtn_pressed();
+
+    void on_ctlposRYsubBtn_released();
+
+    void on_ctlposRYaddBtn_pressed();
+
+    void on_ctlposRYaddBtn_released();
+
+    void on_ctlposRZsubBtn_pressed();
+
+    void on_ctlposRZsubBtn_released();
+
+    void on_ctlposRZaddBtn_pressed();
+
+    void on_ctlposRZaddBtn_released();
+
+    void on_ctlposOut1subBtn_pressed();
+
+    void on_ctlposOut1subBtn_released();
+
+    void on_ctlposOut1addBtn_pressed();
+
+    void on_ctlposOut1addBtn_released();
+
+    void on_ctlposOut2subBtn_pressed();
+
+    void on_ctlposOut2subBtn_released();
+
+    void on_ctlposOut2addBtn_pressed();
+
+    void on_ctlposOut2addBtn_released();
+
+    void on_ctlposOut3subBtn_pressed();
+
+    void on_ctlposOut3subBtn_released();
+
+    void on_ctlposOut3addBtn_pressed();
+
+    void on_ctlposOut3addBtn_released();
 
 private:
     Ui::setprojectDlg *ui;

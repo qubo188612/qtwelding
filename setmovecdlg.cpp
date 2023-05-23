@@ -7,8 +7,8 @@ setmovecDlg::setmovecDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
 
-    adoubleValidator_pose = new QDoubleValidator(0,0,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
-    adoubleValidator_posture = new QDoubleValidator(0,0,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
+    adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
 
     ui->lineEdit_stX->setValidator(adoubleValidator_pose);
     ui->lineEdit_stY->setValidator(adoubleValidator_pose);
@@ -308,6 +308,7 @@ void setmovecDlg::on_arriveBtn_st_pressed()
         ui->record->append(QString::fromLocal8Bit("起点RZ数据格式出错"));
         return;
     }
+    m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -321,6 +322,7 @@ void setmovecDlg::on_arriveBtn_st_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
+    m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 
@@ -404,6 +406,7 @@ void setmovecDlg::on_arriveBtn_center_pressed()
         ui->record->append(QString::fromLocal8Bit("途径点RZ数据格式出错"));
         return;
     }
+    m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -417,6 +420,7 @@ void setmovecDlg::on_arriveBtn_center_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
+    m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 
@@ -500,6 +504,7 @@ void setmovecDlg::on_arriveBtn_ed_pressed()
         ui->record->append(QString::fromLocal8Bit("终点RZ数据格式出错"));
         return;
     }
+    m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -513,6 +518,7 @@ void setmovecDlg::on_arriveBtn_ed_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
+    m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 

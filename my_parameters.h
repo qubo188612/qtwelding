@@ -45,6 +45,8 @@ public:
 
     std::vector<QString> main_record;//主页显示列表信息
 
+    MainDlg_robmovestate mainDlg_robmovestate;  //主页机器人移动状态
+
     Synchronous *synchronous;    //手眼转换计算
 
     Robotcontrol *robotcontrol;     //自带机器人协议

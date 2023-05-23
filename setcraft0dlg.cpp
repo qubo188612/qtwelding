@@ -7,9 +7,9 @@ setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
 
-    adoubleValidator_3 = new QDoubleValidator(0,0,3,this);//限制3位小数
-    adoubleValidator_pose = new QDoubleValidator(0,0,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
-    adoubleValidator_posture = new QDoubleValidator(0,0,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
+    adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
+    adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
+    adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
     ui->lineEdit_X->setValidator(adoubleValidator_pose);
     ui->lineEdit_Y->setValidator(adoubleValidator_pose);
     ui->lineEdit_Z->setValidator(adoubleValidator_pose);
@@ -18,7 +18,6 @@ setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
     ui->lineEdit_RZ->setValidator(adoubleValidator_posture);
     ui->lineEdit_pendulum_swing->setValidator(adoubleValidator_3);
     ui->lineEdit_pendulum_phaseangle->setValidator(adoubleValidator_3);
-
 
     m_mcs=mcs;
 

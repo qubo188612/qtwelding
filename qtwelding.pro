@@ -29,6 +29,7 @@ SOURCES += \
         demarcatedlg.cpp \
         editcraftdlg.cpp \
         editprojectdlg.cpp \
+        edittextdlg.cpp \
         fitlineside.cpp \
         global.cpp \
         ipaddress.cpp \
@@ -91,6 +92,7 @@ FORMS += \
     demarcatedlg.ui \
     editcraftdlg.ui \
     editprojectdlg.ui \
+    edittextdlg.ui \
     keycamdlg.ui \
     keycoorddlg.ui \
     keycreatdlg.ui \
@@ -145,6 +147,7 @@ HEADERS += \
     demarcatedlg.h \
     editcraftdlg.h \
     editprojectdlg.h \
+    edittextdlg.h \
     fitlineside.h \
     global.h \
     ipaddress.h \
