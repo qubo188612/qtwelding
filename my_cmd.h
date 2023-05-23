@@ -27,6 +27,7 @@
 //点位移动指令，举例 SMOV: SPEED[25] SMOVL[寻位的点point1] TCP[1] CHANGE[矩阵1]
 //点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
 //寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
+//轨迹点采样指令，举例 SAMPLE: CREAT[跟踪第一条line] SPEED[25] TIME[16] NAME[跟踪第一条line采样结果]
 
 
 //key项
@@ -45,6 +46,7 @@
 #define CMD_SEARCHEND_KEY               "SEARCHEND:"    //寻位末尾命令集合KEY
 #define CMD_COORD_KEY                   "COORD:"        //工件坐标系定位命令集合KEY
 #define CMD_GETPOS_KEY                  "GETPOS:"       //获取扫描的焊缝坐标值命令集合KEY
+#define CMD_SAMPLE_KEY                  "SAMPLE:"       //轨迹点采样命令集合KEY
 
 //参数项
 #define CMD_MOVL                            "MOVL"                //直线移动
@@ -75,6 +77,7 @@
 #define CMD_SIDESPEED                       "SIDESPEED"           //寻位寻找两侧的空闲移动速度
 #define CMD_POINTX                          "POINTX"              //实际零位矩阵零点的X方向基准点
 #define CMD_POINTO                          "POINTO"              //实际零位矩阵零点基准点
+#define CMD_CREAT                           "CREAT"               //跟踪轨迹参数
 
 
 /************************/
@@ -108,6 +111,7 @@ public:
     QString cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
     QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
     QString cmd_getpos(int time,QString name);//获取扫描的焊缝坐标值命令
+    QString cmd_sample(QString name_in,float speed,int time,QString name_out);//采样轨迹点命令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -208,6 +212,12 @@ public:
     QString cmd_sscan_name;//获取到的点位扫描轨迹名字
     QString cmd_sscan_change;//获取到的点位扫描变换矩阵名字
 
+    QString cmd_sample_creatname;//获取到的采样原轨迹名字
+    QString cmd_sample_name;//获取到的采样结果名字
+    float cmd_sample_speed;//获取到的采样点移动速度mm/s
+    int cmd_sample_time;//获取到的采样点之间的时间间隔ms
+
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -235,6 +245,7 @@ protected:
     QString rc_sidespeed(float speed);
     QString rc_pointX(QString s_pointX);
     QString rc_pointO(QString s_pointO);
+    QString rc_creat(QString names);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

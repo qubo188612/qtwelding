@@ -93,6 +93,11 @@
    </item>
    <item>
     <property name="text">
+     <string>SAMPLE: 轨迹点采样指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>SCAN: 采集激光数据指令</string>
     </property>
    </item>

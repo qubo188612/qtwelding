@@ -90,6 +90,13 @@ E2proomData::E2proomData()
     maindlg_circlerun_max=E2POOM_MAINDLG_CIRCLERUN_MAX;
     maindlg_circlerun_use=E2POOM_MAINDLG_CIRCLERUN_USE;
 
+    setprojectdlg_ctlmovespeed_min=E2POOM_SETPROJECTDLG_CTLMOVESPEED_MIN;
+    setprojectdlg_ctlmovespeed_max=E2POOM_SETPROJECTDLG_CTLMOVESPEED_MAX;
+    setprojectdlg_ctlmovespeed_use=E2POOM_SETPROJECTDLG_CTLMOVESPEED_USE;
+    setprojectdlg_ctlmovetcp_min=E2POOM_SETPROJECTDLG_CTLMOVETCP_MIN;
+    setprojectdlg_ctlmovetcp_max=E2POOM_SETPROJECTDLG_CTLMOVETCP_MAX;
+    setprojectdlg_ctlmovetcp_use=E2POOM_SETPROJECTDLG_CTLMOVETCP_USE;
+
     read_para();
 }
 
@@ -148,6 +155,11 @@ void E2proomData::check_para()
         maindlg_movetcp=maindlg_movetcp_use;
     if(maindlg_circlerun<maindlg_circlerun_min||maindlg_circlerun>maindlg_circlerun_max)
         maindlg_circlerun=maindlg_circlerun_use;
+
+    if(setprojectdlg_ctlmovespeed<setprojectdlg_ctlmovespeed_min||setprojectdlg_ctlmovespeed>setprojectdlg_ctlmovespeed_max)
+        setprojectdlg_ctlmovespeed=setprojectdlg_ctlmovespeed_use;
+    if(setprojectdlg_ctlmovetcp<setprojectdlg_ctlmovetcp_min||setprojectdlg_ctlmovetcp>setprojectdlg_ctlmovetcp_max)
+        setprojectdlg_ctlmovetcp=setprojectdlg_ctlmovetcp_use;
 }
 
 void E2proomData::read_para()
@@ -155,6 +167,7 @@ void E2proomData::read_para()
     read_camdlg_para();
     read_demdlg_para();
     read_maindlg_para();
+    read_setprojectdlg_para();
 
     check_para();
 }
@@ -640,11 +653,85 @@ void E2proomData::init_maindlg_para()
     maindlg_circlerun=maindlg_circlerun_use;
 }
 
+void E2proomData::read_setprojectdlg_para()
+{
+    Uint8 *buff=NULL;
+    CFileOut fo;
+
+    buff=new Uint8[E2POOM_SETPROJECTDLG_SAVEBUFF];
+    if(buff==NULL)
+        return;
+    if(0 > fo.ReadFile((char*)E2POOM_SETPROJECTDLG_SYSPATH_MOTO,buff,E2POOM_SETPROJECTDLG_SAVEBUFF))
+    {
+        init_setprojectdlg_para();
+        if(buff!=NULL)
+        {
+          delete []buff;
+          buff=NULL;
+        }
+    }
+    else
+    {
+      Int32 *i32_p;
+      float *f32_p;
+
+      i32_p = (Int32*)buff;
+      f32_p = (float*)i32_p;
+      setprojectdlg_ctlmovespeed=*f32_p;
+      f32_p++;
+      i32_p = (Int32*)f32_p;
+      setprojectdlg_ctlmovetcp=*i32_p;
+      i32_p++;
+    }
+    if(buff!=NULL)
+    {
+      delete []buff;
+      buff=NULL;
+    }
+}
+
+void E2proomData::write_setprojectdlg_para()
+{
+    Uint8 *buff=NULL;
+    CFileOut fo;
+
+    check_para();
+    buff=new Uint8[E2POOM_SETPROJECTDLG_SAVEBUFF];
+    if(buff==NULL)
+      return;
+
+    Int32 *i32_p;
+    float *f32_p;
+
+    i32_p = (Int32*)buff;
+    f32_p = (float*)i32_p;
+    *f32_p=setprojectdlg_ctlmovespeed;
+    f32_p++;
+    i32_p = (Int32*)f32_p;
+    *i32_p=setprojectdlg_ctlmovetcp;
+    i32_p++;
+
+    fo.WriteFile((char*)E2POOM_SETPROJECTDLG_SYSPATH_MOTO,buff,E2POOM_SETPROJECTDLG_SAVEBUFF);
+
+    if(buff!=NULL)
+    {
+      delete []buff;
+      buff=NULL;
+    }
+}
+
+void E2proomData::init_setprojectdlg_para()
+{
+    setprojectdlg_ctlmovespeed=setprojectdlg_ctlmovespeed_use;
+    setprojectdlg_ctlmovetcp=setprojectdlg_ctlmovetcp_use;
+}
+
 void E2proomData::write()
 {
     write_camdlg_para();
     write_demdlg_para();
     write_maindlg_para();
+    write_setprojectdlg_para();
 }
 
 int E2proomData::Loadjsonfile(char* filename,QJsonDocument &jsonDoc)

@@ -661,8 +661,60 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     m_mcs->project->projecr_robpos_trace.push_back(point);
                 }
             }
+            else if(key==CMD_SAMPLE_KEY)
+            {
+                QString creatname=cmd.cmd_sample_creatname;//获取到的要采样的轨迹名字
+                QString name=cmd.cmd_sample_name;//获取到的采样结果名字
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                {
+                    if(m_mcs->project->project_weld_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 采样结果轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                }
+                else
+                {
+                    b_find=0;
+                    for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                    {
+                        if(creatname==m_mcs->project->project_weld_trace[t].name)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==0)//没找到creatname这个名字的轨迹
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatname+QString::fromLocal8Bit("的焊接轨迹");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    else
+                    {
+                        Weld_trace_result trace;
+                        trace.name=name;
+                        m_mcs->project->project_weld_trace.push_back(trace);
+                    }
+                }
+            }
         }
     }
+    m_mcs->project->project_interweld_trace.resize(m_mcs->project->project_weld_trace.size());
     return err;
 }
 
@@ -2684,6 +2736,45 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 savelog_creat(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
             }
         }
+        else if(key==CMD_SAMPLE_KEY)//采样命令
+        {
+            QString creatname=cmd.cmd_sample_creatname;//获取到的要采样的轨迹名称
+            QString name=cmd.cmd_sample_name;//获取到的采样结果点名称
+            float speed=cmd.cmd_sample_speed;//获取到的采样时轨迹的速度
+            int time=cmd.cmd_sample_time;//获取到的采样点之间的时间单位ms
+            int weld_trace_creatnum;//搜索到的要采样的轨迹序号
+            int weld_trace_num;//搜索到的采样结果的轨迹序号
+            std::vector<RobPos> weld,interpolatweld;//轨道
+
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_weld_trace[n].name)
+                {
+                    weld_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(creatname==m_mcs->project->project_weld_trace[n].name)
+                {
+                    weld_trace_creatnum=n;//找到要采样的焊接轨道下标
+                    break;
+                }
+            }
+            weld=m_mcs->project->project_weld_trace[weld_trace_num].point;
+            CWeldTarject tarjectMath;
+            if(!tarjectMath.pos_interpolation(weld,interpolatweld,time,speed))
+            {
+                main_record.lock();
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹采样出错");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            m_mcs->project->project_weld_trace[weld_trace_creatnum].point=interpolatweld;
+        }
         else if(key==CMD_TRACE_KEY)//跟踪命令
         {
             QString name=cmd.cmd_trace_name;//获取到跟踪轨迹序号
@@ -2691,7 +2782,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int tcp=cmd.cmd_trace_tcp;//获取到跟踪TCP
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
             int weld_trace_num;//搜索到的焊接轨道序号
-            std::vector<RobPos> weld,interpolatweld;//轨道
+            std::vector<RobPos> interpolatweld;//轨道
 
             //这里添加移动命令
             for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
@@ -2709,12 +2800,13 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         #endif
             std::string fname = code->fromUnicode(craftfilepath).data();
             m_mcs->craft->LoadCraft((char*)fname.c_str());
-            weld=m_mcs->project->project_weld_trace[weld_trace_num].point;
+            interpolatweld=m_mcs->project->project_weld_trace[weld_trace_num].point;
 
             switch(m_mcs->craft->pendulum_mode)
             {
                 case PENDULUM_ID_FLAT://平焊
                 {
+                /*
                     CWeldTarject tarjectMath;
                     if(!tarjectMath.pos_interpolation(weld,interpolatweld,48,speed))
                     {
@@ -2725,6 +2817,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         line=n;
                         return 1;
                     }
+                */
                 }
                 break;
             }
@@ -2775,7 +2868,6 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         Eigen::Vector3d RealpointED(interpolatweld[interpolatweld.size()-1].X,interpolatweld[interpolatweld.size()-1].Y,interpolatweld[interpolatweld.size()-1].Z);
                         Eigen::Vector3d Realpointvector=RealpointED-RealpointST;//实际焊缝方向
                         double Realdistance=Realpointvector.norm();//实际焊缝长度
-                        Eigen::Vector3d Realpointsingvector=Realpointvector/Realdistance;
 
                         Eigen::Vector3d PointST(tempposturelist[0].posture.X,tempposturelist[0].posture.Y,tempposturelist[0].posture.Z);
                         Eigen::Vector3d PointED(tempposturelist[tempposturelist.size()-1].posture.X,tempposturelist[tempposturelist.size()-1].posture.Y,tempposturelist[tempposturelist.size()-1].posture.Z);
@@ -3237,7 +3329,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 break;
             }
-            m_mcs->project->project_interweld_trace.resize(m_mcs->project->project_weld_trace.size());
+
             m_mcs->project->project_interweld_trace[weld_trace_num].point=interpolatweld;
 
             if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹

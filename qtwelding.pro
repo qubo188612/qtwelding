@@ -41,6 +41,7 @@ SOURCES += \
         keyiodlg.cpp \
         keymovdlg.cpp \
         keyplcdlg.cpp \
+        keysampledlg.cpp \
         keyscandlg.cpp \
         keysearchdlg.cpp \
         keysearchenddlg.cpp \
@@ -101,6 +102,7 @@ FORMS += \
     keyiodlg.ui \
     keymovdlg.ui \
     keyplcdlg.ui \
+    keysampledlg.ui \
     keyscandlg.ui \
     keysearchdlg.ui \
     keysearchenddlg.ui \
@@ -159,6 +161,7 @@ HEADERS += \
     keyiodlg.h \
     keymovdlg.h \
     keyplcdlg.h \
+    keysampledlg.h \
     keyscandlg.h \
     keysearchdlg.h \
     keysearchenddlg.h \
