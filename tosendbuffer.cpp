@@ -2762,7 +2762,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     break;
                 }
             }
-            weld=m_mcs->project->project_weld_trace[weld_trace_num].point;
+            weld=m_mcs->project->project_weld_trace[weld_trace_creatnum].point;
             CWeldTarject tarjectMath;
             if(!tarjectMath.pos_interpolation(weld,interpolatweld,time,speed))
             {
@@ -2773,7 +2773,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 line=n;
                 return 1;
             }
-            m_mcs->project->project_weld_trace[weld_trace_creatnum].point=interpolatweld;
+            m_mcs->project->project_weld_trace[weld_trace_num].point=interpolatweld;
         }
         else if(key==CMD_TRACE_KEY)//跟踪命令
         {
