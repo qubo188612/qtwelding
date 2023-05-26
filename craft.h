@@ -33,6 +33,25 @@ typedef enum PENDULUM_MODE_ID   //摆焊模式
     PENDULUM_ID_CIRCULAR=5, //椭圆摆
 }Pendulum_mode;
 
+//摆焊参数
+class wWAVEParam
+{
+public:
+    double period;                  //周期(s)
+    double leftAmp;                 //左摆副mm
+    double rightAmp;                //右摆副mm
+    double leftAmp_z;               //左摆副上下mm
+    double rightAmp_z;              //右摆副上下mm
+    double leftStopTime;            //左摆停留时间
+    double rightStopTime;           //右摆停留时间
+    double anglex;                  //摆幅与焊缝角度
+    double angley;                  //摆幅与焊缝角度
+    unsigned int startPos;          //起摆位置
+    unsigned int  order;            //先往左摆还是右摆
+    Pendulum_mode pendulum_mode;    //摆焊接模式
+    wWAVEParam();
+};
+
 typedef enum WELD_DIRECTION_ID  //焊缝走向
 {
     WELD_DIRECTION_X=0,     //大致X走向
@@ -52,11 +71,11 @@ public:
 
     /**********************/
     //普遍工艺参数
-    Pendulum_mode pendulum_mode;    //固定焊接姿态的摆焊接模式
+    Pendulum_mode pendulum_mode;    //摆焊接模式
 
-    float pendulum_swing;   //固定焊接姿态的摆焊接幅度
+    float pendulum_swing;   //摆焊接幅度
 
-    float pendulum_phaseangle;  //固定焊接姿态的摆焊相角
+    float pendulum_phaseangle;  //摆焊相角
 
     /**************************/
     //其它工艺参数

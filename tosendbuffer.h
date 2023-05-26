@@ -56,7 +56,7 @@ protected:
 
     int savelog_scan(QString filename,std::vector<Scan_trace_line> trace);    //保存扫描轨迹
     int savelog_creat(QString filename,std::vector<RobPos> trace); //保存跟踪(未添加姿态前)轨迹
-    int savelog_trace(QString filename,std::vector<RobPos> trace); //保存跟踪轨迹
+    int savelog_trace(QString filename,std::vector<Weld_trace_onec> trace); //保存跟踪轨迹
 };
 
 #endif // TOSENDBUFFER_H

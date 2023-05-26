@@ -140,6 +140,11 @@ void keymovDlg::setbutton(int name)
 void keymovDlg::on_moveaddBtn_clicked()
 {
     int tcp=ui->movetcpcombo->currentIndex();
+    if(tcp<0||tcp>ui->movetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
         sent_info_robot sendrob;

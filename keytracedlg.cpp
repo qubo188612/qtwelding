@@ -8,12 +8,6 @@ keytraceDlg::keytraceDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
 
-    for(int n=0;n<ROBOTTCPNUM;n++)
-    {
-        QString msg="TCP: "+QString::number(n);
-        ui->tracetcpcombo->addItem(msg);
-    }
-
     adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->tracespeed->setValidator(adoubleValidator_speed);
 
@@ -51,21 +45,17 @@ void keytraceDlg::init_dlg_show(QString cmdlist)
     {
         if(key==CMD_TRACE_KEY)//移动指令
         {
-            QString name=cmd.cmd_trace_name;//获取到跟踪轨迹序号
+            QString name_in=cmd.cmd_trace_name_in;//获取到跟踪轨迹序号
+            QString name_out=cmd.cmd_trace_name_out;//获取到跟踪轨迹工艺名字
             float speed=cmd.cmd_trace_speed;//获取到的跟踪速度
-            int tcp=cmd.cmd_trace_tcp;//获取到跟踪TCP
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
             ui->tracefilepath->setText(craftfilepath);
             ui->tracespeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
-            if(tcp>=0&&tcp<ROBOTTCPNUM)
-            {
-                ui->tracetcpcombo->setCurrentIndex(tcp);
-            }
             int weld_trace_num;//搜索到的焊接轨道序号
             //这里添加移动命令
             for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
             {
-                if(name==m_mcs->project->project_weld_trace[n].name)
+                if(name_in==m_mcs->project->project_weld_trace[n].name)
                 {
                     weld_trace_num=n;//找到要储存的焊接轨道下标
                     break;
@@ -75,6 +65,7 @@ void keytraceDlg::init_dlg_show(QString cmdlist)
             {
                 ui->tracetrackcombo->setCurrentIndex(weld_trace_num);
             }
+            ui->tracefilename->setText(name_out);
         }
     }
     ui->record->clear();
@@ -122,9 +113,9 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
 {
     bool rc;
     int route=ui->tracetrackcombo->currentIndex();
-    QString name=ui->tracetrackcombo->currentText();
+    QString name_in=ui->tracetrackcombo->currentText();
+    QString name_out=ui->tracefilename->text();
     float speed=ui->tracespeed->text().toFloat(&rc);
-    int tcp=ui->tracetcpcombo->currentIndex();
     if(route<0||route>ui->tracetrackcombo->count()-1)
     {
         ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名字"));
@@ -138,6 +129,11 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("跟踪速度格式出错"));
+        return;
+    }
+    if(name_out.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写生成的跟踪轨迹工艺名字"));
         return;
     }
     my_cmd cmd;
@@ -169,7 +165,7 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
             return;
         }
     }
-    QString msg=cmd.cmd_trace(speed,tcp,filepath,name);
+    QString msg=cmd.cmd_trace(name_in,speed,filepath,name_out);
     ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
     cmd_msg=msg;
     done(1);

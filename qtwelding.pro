@@ -19,7 +19,6 @@ SOURCES += \
         PictureBox.cpp \
         ResultData.cpp \
         TimeFunction.cpp \
-        WeldTarject.cpp \
         XTcp.cpp \
         calibration.cpp \
         cam_sen.cpp \
@@ -39,6 +38,7 @@ SOURCES += \
         keycreatdlg.cpp \
         keydelaydlg.cpp \
         keygetposdlg.cpp \
+        keygowelddlg.cpp \
         keyiodlg.cpp \
         keymovdlg.cpp \
         keyplcdlg.cpp \
@@ -48,7 +48,9 @@ SOURCES += \
         keysearchenddlg.cpp \
         keysmovdlg.cpp \
         keysscandlg.cpp \
+        keytraceadddlg.cpp \
         keytracedlg.cpp \
+        keytracingdlg.cpp \
         keywelddlg.cpp \
         main.cpp \
         my_cmd.cpp \
@@ -100,6 +102,7 @@ FORMS += \
     keycreatdlg.ui \
     keydelaydlg.ui \
     keygetposdlg.ui \
+    keygowelddlg.ui \
     keyiodlg.ui \
     keymovdlg.ui \
     keyplcdlg.ui \
@@ -109,7 +112,9 @@ FORMS += \
     keysearchenddlg.ui \
     keysmovdlg.ui \
     keysscandlg.ui \
+    keytraceadddlg.ui \
     keytracedlg.ui \
+    keytracingdlg.ui \
     keywelddlg.ui \
     newcraftdlg.ui \
     newprojectdlg.ui \
@@ -140,7 +145,6 @@ HEADERS += \
     PictureBox.h \
     ResultData.h \
     TimeFunction.h \
-    WeldTarject.h \
     XTcp.h \
     calibration.h \
     cam_sen.h \
@@ -160,6 +164,7 @@ HEADERS += \
     keycreatdlg.h \
     keydelaydlg.h \
     keygetposdlg.h \
+    keygowelddlg.h \
     keyiodlg.h \
     keymovdlg.h \
     keyplcdlg.h \
@@ -169,7 +174,9 @@ HEADERS += \
     keysearchenddlg.h \
     keysmovdlg.h \
     keysscandlg.h \
+    keytraceadddlg.h \
     keytracedlg.h \
+    keytracingdlg.h \
     keywelddlg.h \
     my_cmd.h \
     my_parameters.h \

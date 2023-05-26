@@ -256,6 +256,11 @@ void keysmovDlg::on_smoveaddBtn_clicked()
     QString s_pos3=ui->pos3comboBox->currentText();
     my_cmd cmd;
     QString msg;
+    if(tcp<0||tcp>ui->smovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->smovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));

@@ -15,7 +15,6 @@ my_cmd::my_cmd()
     cmd_scan_tcp=0;//获取到扫描TCP
     cmd_scan_movemod=MOVEL;//获取到的扫描模式
     cmd_trace_speed=0;//获取到的跟踪速度
-    cmd_trace_tcp=0;//获取到跟踪TCP
     cmd_creat_mode=TRACE_EDIT_MODE_ONE_TO_ONE;//获取到轨迹生成模式
     cmd_search_speed=0;//获取到的寻位速度
     cmd_search_tcp=0;//获取到寻位TCP
@@ -274,16 +273,16 @@ QString my_cmd::cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel 
     return msg;
 }
 
-QString my_cmd::cmd_trace(float speed,int tcp,QString craftfilepath,QString name)
+QString my_cmd::cmd_trace(QString name_in,float speed,QString craftfilepath,QString name_out)
 {
     QString msg;
     QString msg1;
 
     msg=QString(CMD_TRACE_KEY)+" "+
+            rc_creat(name_in)+" "+
             rc_speed(speed)+" "+
-            rc_tcp(tcp)+" "+
             rc_craft(craftfilepath)+" "+
-            rc_name(name);
+            rc_name(name_out);
     return msg;
 }
 
@@ -360,6 +359,34 @@ QString my_cmd::cmd_sample(QString name_in,float speed,int time,QString name_out
         rc_speed(speed)+" "+
         rc_time(time)+" "+
         rc_name(name_out);
+    return msg;
+}
+
+QString my_cmd::cmd_traceadd(QString name1,QString name2,QString name_out)
+{
+    QString msg;
+    msg=QString(CMD_TRACEADD_KEY)+" "+
+        rc_trace(name1,name2)+" "+
+        rc_name(name_out);
+    return msg;
+}
+
+QString my_cmd::cmd_tracing(QString name,int tcp)
+{
+    QString msg;
+    msg=QString(CMD_TRACING_KEY)+" "+
+        rc_name(name)+" "+
+        rc_tcp(tcp);
+    return msg;
+}
+
+QString my_cmd::cmd_goweld(int tcp,float speed,QString name)
+{
+    QString msg;
+    msg=QString(CMD_GOWELD_KEY)+" "+
+        rc_tcp(tcp)+" "+
+        rc_speed(speed)+" "+
+        rc_name(name);
     return msg;
 }
 
@@ -1325,9 +1352,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
     else if(key==CMD_TRACE_KEY)
     {
         int pn=0;
+        bool b_CREAT=false;
         bool b_SPEED=false;
         bool b_NAME=false;
-        bool b_TCP=false;
         bool b_CRAFT=false;
 
         QStringList param = list[1].split(" ");
@@ -1362,18 +1389,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
-                else if(paramname==CMD_TCP)
+                else if(paramname==CMD_CREAT)
                 {
-                    if(b_TCP==false)
+                    if(b_CREAT==false)
                     {
-                        b_TCP=true;
-                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_trace_tcp,return_msg))
+                        b_CREAT=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace_name_in,return_msg))
                         {
-                            return 1;
-                        }
-                        if(cmd_trace_tcp<0||cmd_trace_tcp>=ROBOTTCPNUM)
-                        {
-                            return_msg=QString::fromLocal8Bit("TCP的值超出设置范围");
                             return 1;
                         }
                     }
@@ -1388,7 +1410,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     if(b_NAME==false)
                     {
                         b_NAME=true;
-                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace_name,return_msg))
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace_name_out,return_msg))
                         {
                             return 1;
                         }
@@ -1427,14 +1449,14 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
             return 1;
         }
+        else if(b_CREAT==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
         else if(b_NAME==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
-            return 1;
-        }
-        else if(b_TCP==false)
-        {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
             return 1;
         }
         else if(b_CRAFT==false)
@@ -2406,6 +2428,249 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_TRACING_KEY)
+    {
+        int pn=0;
+        bool b_TCP=false;
+        bool b_NAME=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_TCP)
+                {
+                    if(b_TCP==false)
+                    {
+                        b_TCP=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracing_tcp,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracing_tcp<0||cmd_tracing_tcp>=ROBOTTCPNUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracing_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_TCP==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
+    else if(key==CMD_TRACEADD_KEY)
+    {
+        int pn=0;
+        bool b_TRACE=false;
+        bool b_NAME=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_TCP)
+                {
+                    if(b_TRACE==false)
+                    {
+                        std::vector<QString> namegroup;
+                        b_TRACE=true;
+                        if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,namegroup,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(namegroup.size()!=2)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有2个");
+                            return 1;
+                        }
+                        cmd_traceadd_name1=namegroup[0];
+                        cmd_traceadd_name2=namegroup[1];
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_traceadd_nameout,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_TRACE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
+    else if(key==CMD_GOWELD_KEY)
+    {
+        int pn=0;
+        bool b_SPEED=false;
+        bool b_TCP=false;
+        bool b_NAME=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_SPEED)
+                {
+                    if(b_SPEED==false)
+                    {
+                        b_SPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_goweld_speed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_goweld_speed<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TCP)
+                {
+                    if(b_TCP==false)
+                    {
+                        b_TCP=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_goweld_tcp,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_goweld_tcp<0||cmd_goweld_tcp>=ROBOTTCPNUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_goweld_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_SPEED==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_TCP==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
     else
     {
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
@@ -2722,6 +2987,13 @@ QString my_cmd::rc_creat(QString names)
 {
     QString msg;
     msg=QString(CMD_CREAT)+"["+names+"]";
+    return msg;
+}
+
+QString my_cmd::rc_trace(QString name1, QString name2)
+{
+    QString msg;
+    msg=QString(CMD_TRACE)+"["+name1+","+name2+"]";
     return msg;
 }
 

@@ -78,6 +78,11 @@
    </item>
    <item>
     <property name="text">
+     <string>GOWELD: 前往起弧点指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>IO: IO口指令</string>
     </property>
    </item>
@@ -123,7 +128,17 @@
    </item>
    <item>
     <property name="text">
-     <string>TRACE: 跟踪轨迹指令</string>
+     <string>TRACE: 生成跟踪轨迹工艺指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>TRACEADD: 生成跟踪轨迹工艺相加指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>TRACING: 跟踪轨迹工艺指令</string>
     </property>
    </item>
    <item>

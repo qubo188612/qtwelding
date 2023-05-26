@@ -267,6 +267,12 @@ void keyscanDlg::on_scanaddBtn_clicked()
 //长按到点按下
 void keyscanDlg::on_arriveBtn_pressed()
 {
+    int tcp=ui->scantcpcombo->currentIndex();
+    if(tcp<0||tcp>ui->scantcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
         ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
@@ -292,7 +298,6 @@ void keyscanDlg::on_arriveBtn_pressed()
     Robmovemodel movemod=cmd.cmd_scan_movemod;//获取到的移动模式
     if(movemod==MOVEJ||movemod==MOVEL)
     {
-        int tcp=ui->scantcpcombo->currentIndex();
         RobPos pos=cmd.cmd_scan_pos;//获取到移动坐标
         movemod=MOVEJ;//用关节移动方式到位
         m_mcs->robotcontrol->RobotOPEN_ELE();

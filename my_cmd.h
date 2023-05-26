@@ -15,7 +15,7 @@
 //焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEM[0]
 //焊机指令，举例 WELD: WORK[0]
 //采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[扫描第一条line]
-//跟踪指令，举例 TRACE: NAME[跟踪第一条line] SPEED[25] TCP[0] CRAFT[/home/qubo/caf.json]
+//跟踪指令，举例 TRACE: CREAT[跟踪第一条line] SPEED[25] CRAFT[/home/qubo/caf.json] NAME[焊接轨迹1]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
 //IO口输出指令，举例 IO: OUT[1,0,0,1,0,1,0,1]
 //IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1]
@@ -28,6 +28,9 @@
 //点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
 //寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
 //轨迹点采样指令，举例 SAMPLE: CREAT[跟踪第一条line] SPEED[25] TIME[16] NAME[跟踪第一条line采样结果]
+//跟踪焊接轨迹工艺指令，举例 TRACING: TCP[0] NAME[焊接轨迹1]
+//跟踪轨迹相加指令，举例 TRACEADD: TRACE[第一条，第二条] NAME[焊接轨迹1]
+//前往起弧点指令，举例 GOWELD: TCP[0] SPEED[25] NAME[焊接轨迹1]
 
 
 //key项
@@ -38,7 +41,7 @@
 #define CMD_WELD_KEY                    "WELD:"         //焊机命令集合KEY
 #define CMD_SCAN_KEY                    "SCAN:"         //采集命令集合KEY
 #define CMD_SSCAN_KEY                   "SSCAN:"        //点位采集命令集合KEY
-#define CMD_TRACE_KEY                   "TRACE:"        //跟踪命令集合KEY
+#define CMD_TRACE_KEY                   "TRACE:"        //生成跟踪轨迹工艺命令集合KEY
 #define CMD_CREAT_KEY                   "CREAT:"        //生成轨迹命令KEY
 #define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
 #define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
@@ -47,6 +50,9 @@
 #define CMD_COORD_KEY                   "COORD:"        //工件坐标系定位命令集合KEY
 #define CMD_GETPOS_KEY                  "GETPOS:"       //获取扫描的焊缝坐标值命令集合KEY
 #define CMD_SAMPLE_KEY                  "SAMPLE:"       //轨迹点采样命令集合KEY
+#define CMD_TRACING_KEY                 "TRACING:"      //跟踪轨迹轨迹工艺命令集合KEY
+#define CMD_TRACEADD_KEY                "TRACEADD:"     //生成跟踪轨迹工艺相加命令集合KEY
+#define CMD_GOWELD_KEY                  "GOWELD:"       //前往起弧点命令集合KEY
 
 //参数项
 #define CMD_MOVL                            "MOVL"                //直线移动
@@ -78,6 +84,7 @@
 #define CMD_POINTX                          "POINTX"              //实际零位矩阵零点的X方向基准点
 #define CMD_POINTO                          "POINTO"              //实际零位矩阵零点基准点
 #define CMD_CREAT                           "CREAT"               //跟踪轨迹参数
+#define CMD_TRACE                           "TRACE"               //跟踪轨迹相加参数
 
 
 /************************/
@@ -99,7 +106,7 @@ public:
     QString cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//圆采集命令
     QString cmd_sscan(QString s_pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//点位采集命令
     QString cmd_sscanC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//点位圆采集命令
-    QString cmd_trace(float speed,int tcp,QString craftfilepath,QString name);//跟踪命令
+    QString cmd_trace(QString name_in,float speed,QString craftfilepath,QString name_out);//生成跟踪工艺轨迹命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
     QString cmd_ioout(std::vector<int> io);//输出IO信号
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
@@ -112,6 +119,9 @@ public:
     QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
     QString cmd_getpos(int time,QString name);//获取扫描的焊缝坐标值命令
     QString cmd_sample(QString name_in,float speed,int time,QString name_out);//采样轨迹点命令
+    QString cmd_tracing(QString name,int tcp);//跟踪焊接轨迹工艺命令
+    QString cmd_traceadd(QString name1,QString name2,QString name_out);//跟踪焊接轨迹相加命令
+    QString cmd_goweld(int tcp,float speed,QString name);//前往起弧点命令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -146,9 +156,9 @@ public:
     QString cmd_scan_name;//获取到的扫描轨迹名字
     QString cmd_scan_change;//获取到的扫描变换矩阵名字
 
-    QString cmd_trace_name;//获取到跟踪轨迹名字
+    QString cmd_trace_name_in;//获取到跟踪轨迹名字
+    QString cmd_trace_name_out;//生成的焊接工艺轨迹名字
     float cmd_trace_speed;//获取到的跟踪速度
-    int cmd_trace_tcp;//获取到跟踪TCP
     QString cmd_trace_craftfilepath;//获取到的焊接工艺包路径
 
     QString cmd_creat_name;//获取到的生成的轨迹名字
@@ -217,6 +227,16 @@ public:
     float cmd_sample_speed;//获取到的采样点移动速度mm/s
     int cmd_sample_time;//获取到的采样点之间的时间间隔ms
 
+    QString cmd_tracing_name;//获取到的跟踪工艺轨迹名字
+    int cmd_tracing_tcp;//获取到的跟踪工艺轨迹tcp
+
+    QString cmd_traceadd_name1;//获取到的跟踪工艺轨迹1名字
+    QString cmd_traceadd_name2;//获取到的跟踪工艺轨迹2名字
+    QString cmd_traceadd_nameout;//获取到的跟踪工艺轨迹1+2的名字
+
+    int cmd_goweld_tcp; //获得到起弧点tcp
+    float cmd_goweld_speed;//获得到起弧点速度
+    QString cmd_goweld_name;//获得到起弧点跟踪工艺轨迹名字
 
 protected:
     QString rc_tcp(int tcp);
@@ -246,6 +266,7 @@ protected:
     QString rc_pointX(QString s_pointX);
     QString rc_pointO(QString s_pointO);
     QString rc_creat(QString names);
+    QString rc_trace(QString name1,QString name2);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

@@ -149,6 +149,11 @@ void keysearchDlg::setbutton(int name)
 void keysearchDlg::on_searchaddBtn_clicked()
 {
     int tcp=ui->searchtcpcombo->currentIndex();
+    if(tcp<0||tcp>ui->searchtcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
         sent_info_robot sendrob;

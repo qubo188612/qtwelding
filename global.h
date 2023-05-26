@@ -733,6 +733,21 @@ public:
     QString name; //跟踪轨迹名字
 };
 
+class Weld_trace_onec//跟踪工艺轨迹的一小段
+{
+public:
+    std::vector<RobPos> point;//跟踪轨迹结果
+    float speed;//这一小段的跟踪速度
+};
+
+class Weld_tracing_result  //跟踪工艺轨迹
+{
+public:
+    std::vector<Weld_trace_onec> trace;//跟踪轨迹结果
+    QString name; //跟踪工艺轨迹名字
+};
+
+
 //姿态类补偿类
 class ChangeRobPosVariable
 {

@@ -266,6 +266,11 @@ void keysscanDlg::on_sscanaddBtn_clicked()
     my_cmd cmd;
     QString name=ui->sscanname->text();
     QString msg;
+    if(tcp<0||tcp>ui->sscantcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->sscanspeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写采集速度"));

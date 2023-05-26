@@ -14,7 +14,6 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     {
         QString msg="TCP: "+QString::number(n);
         ui->movetcpcombo->addItem(msg);
-        ui->tracetcpcombo->addItem(msg);
         ui->scantcpcombo->addItem(msg);
         ui->ctlmovetcpcombo->addItem(msg);
     }
@@ -44,6 +43,9 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keysscan=new keysscanDlg(mcs);
     keysearchend=new keysearchendDlg(mcs);
     keysample=new keysampleDlg(mcs);
+    keytracing=new keytracingDlg(mcs);
+    keytraceadd=new keytraceaddDlg(mcs);
+    keygoweld=new keygoweldDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -72,6 +74,9 @@ setprojectDlg::~setprojectDlg()
     delete keysscan;
     delete keysearchend;
     delete keysample;
+    delete keytracing;
+    delete keytraceadd;
+    delete keygoweld;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -120,6 +125,11 @@ void setprojectDlg::close_dlg_show()
 void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
 {
     int tcp=ui->movetcpcombo->currentIndex();
+    if(tcp<0||tcp>ui->movetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
         sent_info_robot sendrob;
@@ -355,6 +365,11 @@ void setprojectDlg::on_welderarcoutBtn_clicked()//插入息弧指令
 void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
 {
     int tcp=ui->scantcpcombo->currentIndex();
+    if(tcp<0||tcp>ui->scantcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
         sent_info_robot sendrob;
@@ -481,9 +496,9 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
 {
     bool rc;
     int route=ui->tracetrackcombo->currentIndex();
-    QString name=ui->tracetrackcombo->currentText();
+    QString name_in=ui->tracetrackcombo->currentText();
+    QString name_out=ui->tracefilename->text();
     float speed=ui->tracespeed->text().toFloat(&rc);
-    int tcp=ui->tracetcpcombo->currentIndex();
     if(route<0||route>ui->tracetrackcombo->count()-1)
     {
         ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名字"));
@@ -497,6 +512,11 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("跟踪速度格式出错"));
+        return;
+    }
+    if(name_out.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写跟踪轨迹工艺名字"));
         return;
     }
     my_cmd cmd;
@@ -528,7 +548,7 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
             return;
         }
     }
-    QString msg=cmd.cmd_trace(speed,tcp,filepath,name);
+    QString msg=cmd.cmd_trace(name_in,speed,filepath,name_out);
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
     {
         m_mcs->project->project_cmdlist.push_back(msg);
@@ -996,10 +1016,10 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 keytrace->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    QString msg=keytrace->cmd_msg;
+                    QString msg;
                     QString key;
                     my_cmd cmd;
-                    if(0>=cmd.decodecmd(ui->customcmd->text(),msg,key))
+                    if(0>=cmd.decodecmd(keytrace->cmd_msg,msg,key))
                     {
                         //解码成功
                         if(key==CMD_TRACE_KEY)
@@ -1024,7 +1044,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                             }
                         }
                     }
-                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=keytrace->cmd_msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
                         ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
@@ -1245,6 +1265,96 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 if(rc!=0)//确定
                 {
                     QString msg=keysample->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_TRACING_KEY)
+            {
+                keytracing->init_dlg_show(cmdlist);
+                keytracing->setWindowTitle(othercmd->cmdname);
+                keytracing->setbutton(1);
+                int rc=keytracing->exec();
+                keytracing->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keytracing->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_TRACEADD_KEY)
+            {
+                keytraceadd->init_dlg_show(cmdlist);
+                keytraceadd->setWindowTitle(othercmd->cmdname);
+                keytraceadd->setbutton(1);
+                int rc=keytraceadd->exec();
+                keytraceadd->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keytraceadd->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_GOWELD_KEY)
+            {
+                keygoweld->init_dlg_show(cmdlist);
+                keygoweld->setWindowTitle(othercmd->cmdname);
+                keygoweld->setbutton(1);
+                int rc=keygoweld->exec();
+                keygoweld->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keygoweld->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
@@ -2125,6 +2235,90 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 return;
             }
         }
+        else if(key==CMD_TRACING_KEY)
+        {
+            keytracing->init_dlg_show();
+            keytracing->setWindowTitle(othercmd->cmdname);
+            keytracing->setbutton(0);
+            int rc=keytracing->exec();
+            keytracing->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keytracing->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹工艺指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹工艺指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_TRACEADD_KEY)
+        {
+            keytraceadd->init_dlg_show();
+            keytraceadd->setWindowTitle(othercmd->cmdname);
+            keytraceadd->setbutton(0);
+            int rc=keytraceadd->exec();
+            keytraceadd->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keytraceadd->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹工艺相加指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹工艺相加指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_GOWELD_KEY)
+        {
+            keygoweld->init_dlg_show();
+            keygoweld->setWindowTitle(othercmd->cmdname);
+            keygoweld->setbutton(0);
+            int rc=keygoweld->exec();
+            keygoweld->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keygoweld->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入前往起弧点指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消前往起弧点指令设置"));
+                return;
+            }
+        }
     }
     else
     {
@@ -2159,6 +2353,11 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2195,6 +2394,11 @@ void setprojectDlg::on_ctlposXaddBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2230,6 +2434,11 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2266,6 +2475,11 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2302,6 +2516,11 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2338,6 +2557,11 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2374,6 +2598,11 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2410,6 +2639,11 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2446,6 +2680,11 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2482,6 +2721,11 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2518,6 +2762,11 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2554,6 +2803,11 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2590,6 +2844,11 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2626,6 +2885,11 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2662,6 +2926,11 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2698,6 +2967,11 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2734,6 +3008,11 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
@@ -2770,6 +3049,11 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
     bool rc;
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
+    if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
     if(ui->ctlmovespeed->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写移动速度"));

@@ -28,6 +28,9 @@
 #include "keysscandlg.h"
 #include "keysearchenddlg.h"
 #include "keysampledlg.h"
+#include "keytracingdlg.h"
+#include "keytraceadddlg.h"
+#include "keygowelddlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -65,6 +68,9 @@ public:
     keysscanDlg *keysscan;
     keysearchendDlg *keysearchend;
     keysampleDlg *keysample;
+    keytracingDlg *keytracing;
+    keytraceaddDlg *keytraceadd;
+    keygoweldDlg *keygoweld;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;
