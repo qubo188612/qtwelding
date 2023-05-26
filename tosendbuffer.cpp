@@ -2805,22 +2805,19 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             switch(m_mcs->craft->pendulum_mode)
             {
                 case PENDULUM_ID_FLAT://平焊
-                {
-                /*
-                    CWeldTarject tarjectMath;
-                    if(!tarjectMath.pos_interpolation(weld,interpolatweld,48,speed))
-                    {
-                        main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹插值出错");
-                        m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                        line=n;
-                        return 1;
-                    }
-                */
-                }
+                break;
+                case PENDULUM_ID_SIMPLE:    //单摆
+                break;
+                case PENDULUM_ID_TRIANGLE:  //三角摆
+                break;
+                case PENDULUM_ID_L: //L摆
+                break;
+                case PENDULUM_ID_SINE:  //正弦摆
+                break;
+                case PENDULUM_ID_CIRCULAR:  //椭圆摆
                 break;
             }
+
             //这里添加姿态
             switch(m_mcs->craft->craft_id)
             {
@@ -3295,6 +3292,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
 
                         /*********************************/
                         //滤波轨道,只保留拐点，为了展会好看
+                        /*
                         if(interpolatweld.size()>0)
                         {
                             std::vector<RobPos> interpolatweld_media;//滤波轨道
@@ -3315,6 +3313,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             interpolatweld_media.push_back(interpolatweld[interpolatweld.size()-1]);
                             interpolatweld=interpolatweld_media;
                         }
+                        */
                         /********************************/
                     }
                     else

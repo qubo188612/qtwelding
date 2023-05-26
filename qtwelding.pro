@@ -19,6 +19,7 @@ SOURCES += \
         PictureBox.cpp \
         ResultData.cpp \
         TimeFunction.cpp \
+        WeldTarject.cpp \
         XTcp.cpp \
         calibration.cpp \
         cam_sen.cpp \
@@ -139,6 +140,7 @@ HEADERS += \
     PictureBox.h \
     ResultData.h \
     TimeFunction.h \
+    WeldTarject.h \
     XTcp.h \
     calibration.h \
     cam_sen.h \

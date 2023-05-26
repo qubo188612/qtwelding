@@ -336,10 +336,10 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ALS103_JIGUANGLONG_REG_ADD             0x0075
 #define ALS103_JIGUANGKUANDU_REG_ADD           0x0076
 #define ALS103_JIGUANGDUIBIDU_REG_ADD          0x0077
+#define ALS103_LVBOMOD_REG_ADD                 0x0078
 
 
-
-#define ALS103_REG_TOTALNUM                    0x0008
+#define ALS103_REG_TOTALNUM                    0x0009
 
 #define ALS103_INIT_REG_ADD                    0x007f
 

@@ -61,14 +61,14 @@ void setcraft2Dlg::UpdataUi()
     {
         case PENDULUM_ID_FLAT:
         {
-            ui->lineEdit_pendulum_phaseangle->setDisabled(false);
-            ui->lineEdit_pendulum_swing->setDisabled(false);
+            ui->lineEdit_pendulum_phaseangle->setDisabled(true);
+            ui->lineEdit_pendulum_swing->setDisabled(true);
         }
         break;
         default:
         {
-            ui->lineEdit_pendulum_phaseangle->setDisabled(true);
-            ui->lineEdit_pendulum_swing->setDisabled(true);
+            ui->lineEdit_pendulum_phaseangle->setDisabled(false);
+            ui->lineEdit_pendulum_swing->setDisabled(false);
         }
         break;
     }

@@ -22,17 +22,15 @@ typedef enum CRAFT_ID
     CRAFT_ID_CORRUGATED_POSTURE=3,          //波纹板变姿态
 }Craft_ID;
 
-#define PENDULUM_ID_TOTAL_NUM     1     //摆焊接模式总数
+#define PENDULUM_ID_TOTAL_NUM     6     //摆焊接模式总数
 typedef enum PENDULUM_MODE_ID   //摆焊模式
 {
     PENDULUM_ID_FLAT=0,     //平焊
-    /*
     PENDULUM_ID_SIMPLE=1,   //单摆
     PENDULUM_ID_TRIANGLE=2, //三角摆
     PENDULUM_ID_L=3,        //L摆
     PENDULUM_ID_SINE=4,     //正弦摆
     PENDULUM_ID_CIRCULAR=5, //椭圆摆
-    */
 }Pendulum_mode;
 
 typedef enum WELD_DIRECTION_ID  //焊缝走向

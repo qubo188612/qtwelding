@@ -95,6 +95,21 @@ QString Craft::Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
         case PENDULUM_ID_FLAT:
             msg=QString::fromLocal8Bit("平焊");
         break;
+        case PENDULUM_ID_SIMPLE:
+            msg=QString::fromLocal8Bit("单摆");
+        break;
+        case PENDULUM_ID_TRIANGLE:
+            msg=QString::fromLocal8Bit("三角摆");
+        break;
+        case PENDULUM_ID_L:
+            msg=QString::fromLocal8Bit("L摆");
+        break;
+        case PENDULUM_ID_SINE:
+            msg=QString::fromLocal8Bit("正弦摆");
+        break;
+        case PENDULUM_ID_CIRCULAR:
+            msg=QString::fromLocal8Bit("椭圆摆");
+        break;
     }
     return msg;
 }
@@ -194,6 +209,21 @@ QVariantHash Craft::encoed_json()
     {
         case PENDULUM_ID_FLAT:    //平焊
             p_id="PENDULUM_ID_FLAT";
+        break;
+        case PENDULUM_ID_SIMPLE:    //单摆
+            p_id="PENDULUM_ID_SIMPLE";
+        break;
+        case PENDULUM_ID_TRIANGLE:  //三角摆
+            p_id="PENDULUM_ID_TRIANGLE";
+        break;
+        case PENDULUM_ID_L: //L摆
+            p_id="PENDULUM_ID_L";
+        break;
+        case PENDULUM_ID_SINE:  //正弦摆
+            p_id="PENDULUM_ID_SINE";
+        break;
+        case PENDULUM_ID_CIRCULAR:  //椭圆摆
+            p_id="PENDULUM_ID_CIRCULAR";
         break;
     }
     data.insert("pendulum_mode", p_id);
@@ -303,9 +333,25 @@ int Craft::decoed_json(QByteArray allData)
             {
                 pendulum_mode=PENDULUM_ID_FLAT;
             }
-            else
+            else if(msg=="PENDULUM_ID_SIMPLE")  //单摆
             {
-
+                pendulum_mode=PENDULUM_ID_SIMPLE;
+            }
+            else if(msg=="PENDULUM_ID_TRIANGLE")  //三角摆
+            {
+                pendulum_mode=PENDULUM_ID_TRIANGLE;
+            }
+            else if(msg=="PENDULUM_ID_L")  //L摆
+            {
+                pendulum_mode=PENDULUM_ID_L;
+            }
+            else if(msg=="PENDULUM_ID_SINE")  //正弦摆
+            {
+                pendulum_mode=PENDULUM_ID_SINE;
+            }
+            else if(msg=="PENDULUM_ID_CIRCULAR")  //椭圆摆
+            {
+                pendulum_mode=PENDULUM_ID_CIRCULAR;
             }
         }
         else if(keyString=="pendulum_swing")
