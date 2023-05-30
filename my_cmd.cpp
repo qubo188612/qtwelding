@@ -2698,7 +2698,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 {
                     return 1;
                 }
-                if(paramname==CMD_TRACEADD)
+                if(paramname==CMD_TRACE)
                 {
                     if(b_TRACE==false)
                     {
@@ -3188,7 +3188,9 @@ QString my_cmd::rc_wave(wWAVEParam cmd_wave_info)
         QString::number(cmd_wave_info.angley,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
         QString::number(cmd_wave_info.startPos)+","+
         QString::number(cmd_wave_info.order)+","+
-        QString::number(cmd_wave_info.pendulum_mode)+"]";
+        QString::number(cmd_wave_info.pendulum_mode)+","+
+        QString::number(cmd_wave_info.timeGap)+","+
+        QString::number(cmd_wave_info.trend_mode)+"]";
     return msg;
 }
 

@@ -31,6 +31,7 @@
 #include "keytracingdlg.h"
 #include "keytraceadddlg.h"
 #include "keygowelddlg.h"
+#include "keywavedlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -71,6 +72,7 @@ public:
     keytracingDlg *keytracing;
     keytraceaddDlg *keytraceadd;
     keygoweldDlg *keygoweld;
+    keywaveDlg *keywave;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

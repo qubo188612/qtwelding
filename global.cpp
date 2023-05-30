@@ -94,3 +94,21 @@ QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
     }
     return msg;
 }
+
+QString Trend_mode_toQString(Trend_mode trend_mode)
+{
+    QString msg;
+    switch(trend_mode)
+    {
+        case TREND_MODE_X_Z:
+            msg=QString::fromLocal8Bit("X轴走向,开口朝Z轴正方向");
+        break;
+        case TREND_MODE_Y_Z:
+            msg=QString::fromLocal8Bit("Y轴走向,开口朝Z轴正方向");
+        break;
+        case TREND_MODE_Z_Y:
+            msg=QString::fromLocal8Bit("Z轴走向,开口朝Y轴负方向");
+        break;
+    }
+    return msg;
+}

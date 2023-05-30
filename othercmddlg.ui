@@ -143,6 +143,11 @@
    </item>
    <item>
     <property name="text">
+     <string>WAVE: 生成摆焊工艺指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>WELD: 起弧指令</string>
     </property>
    </item>

@@ -888,4 +888,6 @@ public:
 
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode);
 
+QString Trend_mode_toQString(Trend_mode trend_mode);
+
 #endif // GLOBAL_H

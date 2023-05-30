@@ -51,6 +51,7 @@ SOURCES += \
         keytraceadddlg.cpp \
         keytracedlg.cpp \
         keytracingdlg.cpp \
+        keywavedlg.cpp \
         keywelddlg.cpp \
         main.cpp \
         my_cmd.cpp \
@@ -114,6 +115,7 @@ FORMS += \
     keytraceadddlg.ui \
     keytracedlg.ui \
     keytracingdlg.ui \
+    keywavedlg.ui \
     keywelddlg.ui \
     newcraftdlg.ui \
     newprojectdlg.ui \
@@ -175,6 +177,7 @@ HEADERS += \
     keytraceadddlg.h \
     keytracedlg.h \
     keytracingdlg.h \
+    keywavedlg.h \
     keywelddlg.h \
     my_cmd.h \
     my_parameters.h \
