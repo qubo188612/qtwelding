@@ -9,9 +9,6 @@ Craft *Craft::Get()
 Craft::Craft()
 {
     craft_id=CRAFT_ID_FIXED_POSTURE;
-    pendulum_mode=PENDULUM_ID_FLAT;
-    pendulum_swing=0;
-    pendulum_phaseangle=0;
     posture_distance=POSTURE_DISTANCE_USE;
 }
 
@@ -82,33 +79,6 @@ QString Craft::craft_Id_toQString(Craft_ID craft_id)
         break;
         case CRAFT_ID_CORRUGATED_POSTURE:
             msg=QString::fromLocal8Bit("波纹板变姿态");
-        break;
-    }
-    return msg;
-}
-
-QString Craft::Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
-{
-    QString msg;
-    switch(pendulum_mode)
-    {
-        case PENDULUM_ID_FLAT:
-            msg=QString::fromLocal8Bit("平焊");
-        break;
-        case PENDULUM_ID_SIMPLE:
-            msg=QString::fromLocal8Bit("单摆");
-        break;
-        case PENDULUM_ID_TRIANGLE:
-            msg=QString::fromLocal8Bit("三角摆");
-        break;
-        case PENDULUM_ID_L:
-            msg=QString::fromLocal8Bit("L摆");
-        break;
-        case PENDULUM_ID_SINE:
-            msg=QString::fromLocal8Bit("正弦摆");
-        break;
-        case PENDULUM_ID_CIRCULAR:
-            msg=QString::fromLocal8Bit("椭圆摆");
         break;
     }
     return msg;
@@ -205,30 +175,6 @@ QVariantHash Craft::encoed_json()
         subData1.insert(line,arrData);
     }
     data.insert("posturelist", subData1);
-    switch(pendulum_mode)
-    {
-        case PENDULUM_ID_FLAT:    //平焊
-            p_id="PENDULUM_ID_FLAT";
-        break;
-        case PENDULUM_ID_SIMPLE:    //单摆
-            p_id="PENDULUM_ID_SIMPLE";
-        break;
-        case PENDULUM_ID_TRIANGLE:  //三角摆
-            p_id="PENDULUM_ID_TRIANGLE";
-        break;
-        case PENDULUM_ID_L: //L摆
-            p_id="PENDULUM_ID_L";
-        break;
-        case PENDULUM_ID_SINE:  //正弦摆
-            p_id="PENDULUM_ID_SINE";
-        break;
-        case PENDULUM_ID_CIRCULAR:  //椭圆摆
-            p_id="PENDULUM_ID_CIRCULAR";
-        break;
-    }
-    data.insert("pendulum_mode", p_id);
-    data.insert("pendulum_swing",pendulum_swing);
-    data.insert("pendulum_phaseangle",pendulum_phaseangle);
 
     /****************************/
     //这里添加补充参数
@@ -325,42 +271,6 @@ int Craft::decoed_json(QByteArray allData)
                     return 1;
                 }
             }
-        }
-        else if(keyString=="pendulum_mode")//工艺类型
-        {
-            QString msg=it.value().toString();
-            if(msg=="PENDULUM_ID_FLAT")     //平焊
-            {
-                pendulum_mode=PENDULUM_ID_FLAT;
-            }
-            else if(msg=="PENDULUM_ID_SIMPLE")  //单摆
-            {
-                pendulum_mode=PENDULUM_ID_SIMPLE;
-            }
-            else if(msg=="PENDULUM_ID_TRIANGLE")  //三角摆
-            {
-                pendulum_mode=PENDULUM_ID_TRIANGLE;
-            }
-            else if(msg=="PENDULUM_ID_L")  //L摆
-            {
-                pendulum_mode=PENDULUM_ID_L;
-            }
-            else if(msg=="PENDULUM_ID_SINE")  //正弦摆
-            {
-                pendulum_mode=PENDULUM_ID_SINE;
-            }
-            else if(msg=="PENDULUM_ID_CIRCULAR")  //椭圆摆
-            {
-                pendulum_mode=PENDULUM_ID_CIRCULAR;
-            }
-        }
-        else if(keyString=="pendulum_swing")
-        {
-            pendulum_swing=it.value().toDouble();
-        }
-        else if(keyString=="pendulum_phaseangle")
-        {
-            pendulum_phaseangle=it.value().toDouble();
         }
         //其他参数
         else if(keyString=="posture_distance")

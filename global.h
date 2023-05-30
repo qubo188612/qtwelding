@@ -847,5 +847,45 @@ typedef enum MainDlg_robmovestate_ID        //主页机器人移动状态
     MAINDLG_OUT3ADD_ING,    //机器人外部轴3正移动中
 }MainDlg_robmovestate;
 
+#define PENDULUM_ID_TOTAL_NUM     5     //摆焊接模式总数
+typedef enum PENDULUM_MODE_ID   //摆焊模式
+{
+    PENDULUM_ID_SIMPLE=0,   //单摆
+    PENDULUM_ID_TRIANGLE=1, //三角摆
+    PENDULUM_ID_L=2,        //L摆
+    PENDULUM_ID_SINE=3,     //正弦摆
+    PENDULUM_ID_CIRCULAR=4, //椭圆摆
+}Pendulum_mode;
+
+#define TREND_ID_TOTAL_NUM     3     //摆焊接模式总数
+typedef enum TREND_MODE_ID  //摆幅方向
+{
+    TREND_MODE_X_Z=0,     //X轴走向,开口朝Z轴正方向
+    TREND_MODE_Y_Z=1,     //Y轴走向,开口朝Z轴正方向
+    TREND_MODE_Z_Y=2,     //Z轴走向,开口朝Y轴负方向
+}Trend_mode;
+
+//摆焊参数
+class wWAVEParam
+{
+public:
+    float period;                  //周期(s)
+    float leftAmp;                 //左摆副mm
+    float rightAmp;                //右摆副mm
+    float leftAmp_z;               //左摆副上下mm
+    float rightAmp_z;              //右摆副上下mm
+    float leftStopTime;            //左摆停留时间(s)
+    float rightStopTime;           //右摆停留时间(s)
+    float anglex;                  //摆幅与焊缝角度
+    float angley;                  //摆幅与焊缝角度
+    unsigned int startPos;         //起摆位置
+    unsigned int  order;           //先往左摆还是右摆
+    Pendulum_mode pendulum_mode;   //摆焊接模式
+    unsigned int timeGap;          //两点之间采样点周期(ms)
+    Trend_mode trend_mode;         //摆焊走向
+    wWAVEParam();
+};
+
+QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode);
 
 #endif // GLOBAL_H

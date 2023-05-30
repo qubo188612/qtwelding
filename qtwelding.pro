@@ -70,7 +70,6 @@ SOURCES += \
         robotsetdlg.cpp \
         setcraft0dlg.cpp \
         setcraft1dlg.cpp \
-        setcraft2dlg.cpp \
         setcraft3dlg.cpp \
         setmovecdlg.cpp \
         setprojectdlg.cpp \
@@ -126,7 +125,6 @@ FORMS += \
     robotsetdlg.ui \
     setcraft0dlg.ui \
     setcraft1dlg.ui \
-    setcraft2dlg.ui \
     setcraft3dlg.ui \
     setmovecdlg.ui \
     setprojectdlg.ui \
@@ -195,7 +193,6 @@ HEADERS += \
     robotsetdlg.h \
     setcraft0dlg.h \
     setcraft1dlg.h \
-    setcraft2dlg.h \
     setcraft3dlg.h \
     setmovecdlg.h \
     setprojectdlg.h \

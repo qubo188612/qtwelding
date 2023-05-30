@@ -16,16 +16,8 @@ setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
     ui->lineEdit_RX->setValidator(adoubleValidator_posture);
     ui->lineEdit_RY->setValidator(adoubleValidator_posture);
     ui->lineEdit_RZ->setValidator(adoubleValidator_posture);
-    ui->lineEdit_pendulum_swing->setValidator(adoubleValidator_3);
-    ui->lineEdit_pendulum_phaseangle->setValidator(adoubleValidator_3);
 
     m_mcs=mcs;
-
-    for(int n=0;n<PENDULUM_ID_TOTAL_NUM;n++)
-    {
-        QString msg=m_mcs->craft->Pendulum_mode_toQString((Pendulum_mode)n);
-        ui->comboBox_pendulum_mode->addItem(msg);
-    }
 }
 
 setcraft0Dlg::~setcraft0Dlg()
@@ -38,7 +30,6 @@ setcraft0Dlg::~setcraft0Dlg()
 
 void setcraft0Dlg::init_dlg_show()
 {
-    ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()==1)
     {
         ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -57,8 +48,6 @@ void setcraft0Dlg::init_dlg_show()
         ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     }
-    ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',ROBOT_POSE_DECIMAL_PLACE));
-    ui->lineEdit_pendulum_phaseangle->setText(QString::number(m_mcs->craft->pendulum_phaseangle,'f',3));
     ui->record->clear();
     UpdataUi();
 }
@@ -94,12 +83,6 @@ void setcraft0Dlg::on_pushButton_clicked()//获取当前焊接姿态
     }
 }
 
-void setcraft0Dlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)//摆焊模式变化
-{
-    m_mcs->craft->pendulum_mode=(Pendulum_mode)index;
-    UpdataUi();
-}
-
 void setcraft0Dlg::on_pushButton_2_clicked()//确定并保存
 {
     m_mcs->craft->posturelist.resize(1);
@@ -108,31 +91,14 @@ void setcraft0Dlg::on_pushButton_2_clicked()//确定并保存
     m_mcs->craft->posturelist[0].Variable.Z=ui->lineEdit_Z->text().toFloat();
     m_mcs->craft->posturelist[0].posture.RX=ui->lineEdit_RX->text().toFloat();
     m_mcs->craft->posturelist[0].posture.RY=ui->lineEdit_RY->text().toFloat();
-    m_mcs->craft->posturelist[0].posture.RZ=ui->lineEdit_RZ->text().toFloat();
-
-    m_mcs->craft->pendulum_phaseangle=ui->lineEdit_pendulum_phaseangle->text().toFloat();
-    m_mcs->craft->pendulum_swing=ui->lineEdit_pendulum_swing->text().toFloat();
+    m_mcs->craft->posturelist[0].posture.RZ=ui->lineEdit_RZ->text().toFloat(); 
     m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
     done(1);
 }
 
 void setcraft0Dlg::UpdataUi()
 {
-    switch(m_mcs->craft->pendulum_mode)
-    {
-        case PENDULUM_ID_FLAT:
-        {
-            ui->lineEdit_pendulum_phaseangle->setDisabled(true);
-            ui->lineEdit_pendulum_swing->setDisabled(true);
-        }
-        break;
-        default:
-        {
-            ui->lineEdit_pendulum_phaseangle->setDisabled(false);
-            ui->lineEdit_pendulum_swing->setDisabled(false);
-        }
-        break;
-    }
+
 }
 
 

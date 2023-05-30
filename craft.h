@@ -22,36 +22,6 @@ typedef enum CRAFT_ID
     CRAFT_ID_CORRUGATED_POSTURE=3,          //波纹板变姿态
 }Craft_ID;
 
-#define PENDULUM_ID_TOTAL_NUM     6     //摆焊接模式总数
-typedef enum PENDULUM_MODE_ID   //摆焊模式
-{
-    PENDULUM_ID_FLAT=0,     //平焊
-    PENDULUM_ID_SIMPLE=1,   //单摆
-    PENDULUM_ID_TRIANGLE=2, //三角摆
-    PENDULUM_ID_L=3,        //L摆
-    PENDULUM_ID_SINE=4,     //正弦摆
-    PENDULUM_ID_CIRCULAR=5, //椭圆摆
-}Pendulum_mode;
-
-//摆焊参数
-class wWAVEParam
-{
-public:
-    double period;                  //周期(s)
-    double leftAmp;                 //左摆副mm
-    double rightAmp;                //右摆副mm
-    double leftAmp_z;               //左摆副上下mm
-    double rightAmp_z;              //右摆副上下mm
-    double leftStopTime;            //左摆停留时间
-    double rightStopTime;           //右摆停留时间
-    double anglex;                  //摆幅与焊缝角度
-    double angley;                  //摆幅与焊缝角度
-    unsigned int startPos;          //起摆位置
-    unsigned int  order;            //先往左摆还是右摆
-    Pendulum_mode pendulum_mode;    //摆焊接模式
-    wWAVEParam();
-};
-
 typedef enum WELD_DIRECTION_ID  //焊缝走向
 {
     WELD_DIRECTION_X=0,     //大致X走向
@@ -70,14 +40,6 @@ public:
     QString craft_path;       //最后一次工艺路径
 
     /**********************/
-    //普遍工艺参数
-    Pendulum_mode pendulum_mode;    //摆焊接模式
-
-    float pendulum_swing;   //摆焊接幅度
-
-    float pendulum_phaseangle;  //摆焊相角
-
-    /**************************/
     //其它工艺参数
     float posture_distance; //变姿态距离
 
@@ -85,8 +47,6 @@ public:
     /*************************/
 
     QString craft_Id_toQString(Craft_ID craft_id);
-
-    QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode);
 
     int LoadCraft(char* filename);    //读取工艺,返回值0:正确，返回值1:个路径问题，返回值2:工艺包格式问题
 

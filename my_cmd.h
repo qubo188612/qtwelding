@@ -29,8 +29,9 @@
 //寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
 //轨迹点采样指令，举例 SAMPLE: CREAT[跟踪第一条line] SPEED[25] TIME[16] NAME[跟踪第一条line采样结果]
 //跟踪焊接轨迹工艺指令，举例 TRACING: TCP[0] NAME[焊接轨迹1]
-//跟踪轨迹相加指令，举例 TRACEADD: TRACE[第一条，第二条] NAME[焊接轨迹1]
+//跟踪轨迹相加指令，举例 TRACEADD: TRACEADD[第一条，第二条] NAME[焊接轨迹1]
 //前往起弧点指令，举例 GOWELD: TCP[0] SPEED[25] NAME[焊接轨迹1]
+//摆焊指令，举例 WAVE: TRACE[第一条] WAVE[1,2,3,4,5,6,7,8,9,10,11,12] NAME[摆焊轨迹]
 
 
 //key项
@@ -53,6 +54,7 @@
 #define CMD_TRACING_KEY                 "TRACING:"      //跟踪轨迹轨迹工艺命令集合KEY
 #define CMD_TRACEADD_KEY                "TRACEADD:"     //生成跟踪轨迹工艺相加命令集合KEY
 #define CMD_GOWELD_KEY                  "GOWELD:"       //前往起弧点命令集合KEY
+#define CMD_WAVE_KEY                    "WAVE:"         //摆焊命令集合KEY
 
 //参数项
 #define CMD_MOVL                            "MOVL"                //直线移动
@@ -84,7 +86,9 @@
 #define CMD_POINTX                          "POINTX"              //实际零位矩阵零点的X方向基准点
 #define CMD_POINTO                          "POINTO"              //实际零位矩阵零点基准点
 #define CMD_CREAT                           "CREAT"               //跟踪轨迹参数
-#define CMD_TRACE                           "TRACE"               //跟踪轨迹相加参数
+#define CMD_TRACEADD                        "TRACEADD"            //跟踪轨迹相加参数
+#define CMD_WAVE                            "WAVE"                //摆焊参数
+#define CMD_TRACE                           "TRACE"               //跟踪轨迹
 
 
 /************************/
@@ -122,6 +126,7 @@ public:
     QString cmd_tracing(QString name,int tcp);//跟踪焊接轨迹工艺命令
     QString cmd_traceadd(QString name1,QString name2,QString name_out);//跟踪焊接轨迹相加命令
     QString cmd_goweld(int tcp,float speed,QString name);//前往起弧点命令
+    QString cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_out);//摆焊指令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -238,6 +243,10 @@ public:
     float cmd_goweld_speed;//获得到起弧点速度
     QString cmd_goweld_name;//获得到起弧点跟踪工艺轨迹名字
 
+    QString cmd_wave_namein;//获取到的跟踪原轨迹
+    wWAVEParam cmd_wave_info;//获得到的摆焊信息
+    QString cmd_wave_nameout;//获取到的摆焊轨迹
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -266,7 +275,9 @@ protected:
     QString rc_pointX(QString s_pointX);
     QString rc_pointO(QString s_pointO);
     QString rc_creat(QString names);
-    QString rc_trace(QString name1,QString name2);
+    QString rc_traceadd(QString name1,QString name2);
+    QString rc_wave(wWAVEParam cmd_wave_info);
+    QString rc_trace(QString name);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

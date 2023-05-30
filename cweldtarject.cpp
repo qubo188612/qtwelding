@@ -346,3 +346,296 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
 
     return true;
 }
+
+int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,std::vector<RobPos> *wave_out)
+{
+    unsigned int num = pTarject.size();
+    double bhx = 0,bhy = 0,bhz = 0;
+
+    unsigned int timeGap=waveparam.timeGap;
+    unsigned int wvTime;
+    unsigned int leftStopTime;
+    unsigned int rightStopTime;
+    double wvLeftAmp,wvRightAmp;
+    double wvLeftAmp_z,wvRightAmp_z;
+    double wvAngle1,wvAngle2;
+    unsigned int start;
+    bool order;
+    Pendulum_mode wvType;
+    bool bCycleComplate = false;
+    Trend_mode trend_mode;
+
+    (*wave_out).clear();
+
+    if(num<=1)
+        return -1;
+
+    leftStopTime = static_cast<unsigned int>(waveparam.leftStopTime * 1000);
+    rightStopTime = static_cast<unsigned int>(waveparam.rightStopTime * 1000);
+    wvTime =  static_cast<unsigned int>(waveparam.period * 1000);
+    wvLeftAmp = waveparam.leftAmp;
+    wvRightAmp = waveparam.rightAmp;
+    wvLeftAmp_z = waveparam.leftAmp_z;
+    wvRightAmp_z = waveparam.rightAmp_z;
+    wvAngle1 = 2*M_PI*waveparam.anglex/360;
+    wvAngle2 = 2*M_PI*waveparam.angley/360;
+    wvType = waveparam.pendulum_mode;
+    start = waveparam.startPos;
+    trend_mode = waveparam.trend_mode;
+    if(wvTime <= 0)
+        return -1;
+    if(waveparam.order == 0)
+    {
+        order = true;
+    }
+    else
+    {
+        order = false;
+    }
+    Eigen::Vector3d vectorBefore(0,1,0);
+    Eigen::Vector3d vectorAfter(pTarject.at(pTarject.size()-1).X - pTarject.at(0).X, pTarject.at(pTarject.size()-1).Y - pTarject.at(0).Y, pTarject.at(pTarject.size()-1).Z - pTarject.at(0).Z);
+    std::vector<RobPos> pTarject_out;
+    for(unsigned int i = 0;i < num;i ++)
+    {
+        double t = 0.0;
+        if(order)
+            t = ((i * timeGap) + (start*wvTime/4)) % wvTime;
+        else {
+            t = wvTime - ((i * timeGap) + (start*wvTime/4)) % wvTime;
+        }
+        switch (wvType) {
+            case PENDULUM_ID_SIMPLE:
+                if(t >=0 && t < wvTime/4)
+                {
+                    bhx = t * (wvLeftAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = t * (wvLeftAmp_z / (wvTime/4));
+                }
+                else if(t >= wvTime/4 && t < wvTime/2)
+                {
+                    bhx = wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = wvLeftAmp_z - (t - wvTime/4)  * (wvLeftAmp_z / (wvTime/4));
+                }
+                else if(t >= wvTime/2 && t < wvTime*3/4)
+                {
+                    bhx = - (t - wvTime/2)* (wvRightAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = (t - wvTime/2)* (wvRightAmp_z / (wvTime/4));
+                }
+                else if(t >= wvTime*3/4 && t < wvTime)
+                {
+                    bhx = - wvRightAmp + (t - wvTime*3/4) * (wvRightAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = wvRightAmp_z - (t - wvTime*3/4) * (wvRightAmp_z / (wvTime/4));
+                }
+                break;
+            case PENDULUM_ID_TRIANGLE:
+                if(t >=0 && t < wvTime/4)
+                {
+                    bhx = t * (wvLeftAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = 0;
+                }
+                else if(t >= wvTime/4 && t < wvTime/2)
+                {
+                    bhx = wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4));
+                }
+                else if(t >= wvTime/2 && t < wvTime*3/4)
+                {
+                    bhx = - (t - wvTime/2)* (wvLeftAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = - wvLeftAmp + (t - wvTime/2)  * (wvLeftAmp / (wvTime/4));
+                }
+                else if(t >= wvTime*3/4 && t < wvTime)
+                {
+                    bhx = - wvLeftAmp + (t - wvTime*3/4) * (wvLeftAmp / (wvTime/4));
+                    bhy = 0;
+                    bhz = 0;
+                }
+                break;
+            case PENDULUM_ID_L:
+                if(t >=0 && t < wvTime/4)
+                {
+                    bhx = t * (wvLeftAmp / (wvTime/4)) * sin((wvAngle1/2)*M_PI/180);
+                    bhy = 0;
+                    bhz = t * (wvLeftAmp / (wvTime/4)) * cos((wvAngle1/2)*M_PI/180);
+                }
+                else if(t >= wvTime/4 && t < wvTime/2)
+                {
+                    bhx = (wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4))) * sin((wvAngle1/2)*M_PI/180);
+                    bhy = 0;
+                    bhz = (wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4))) * cos((wvAngle1/2)*M_PI/180);
+                }
+                else if(t >= wvTime/2 && t < wvTime*3/4)
+                {
+                    bhx = - (t - wvTime/2) * (wvRightAmp / (wvTime/4)) * sin((wvAngle1/2)*M_PI/180);
+                    bhy = 0;
+                    bhz = (t - wvTime/2) * (wvRightAmp / (wvTime/4)) * cos((wvAngle1/2)*M_PI/180);
+                }
+                else if(t >= wvTime*3/4 && t < wvTime)
+                {
+                    bhx = (- wvRightAmp + (t - wvTime*3/4) * (wvRightAmp / (wvTime/4))) * sin((wvAngle1/2)*M_PI/180);
+                    bhy = 0;
+                    bhz = (wvRightAmp - (t - wvTime*3/4) * (wvRightAmp / (wvTime/4))) * cos((wvAngle1/2)*M_PI/180);
+                }
+                break;
+            case PENDULUM_ID_SINE:
+                if(t >=0 && t < wvTime/4)
+                {
+                    bhx = wvLeftAmp*sin(2*M_PI*t/wvTime);
+                    bhy = 0;
+                    bhz = 0;
+                }
+                else if(t >= wvTime/4 && t < wvTime/2)
+                {
+                    bhx = wvLeftAmp*sin(2*M_PI*t/wvTime);
+                    bhy = 0;
+                    bhz = 0;
+                }
+                else if(t >= wvTime/2 && t < wvTime*3/4)
+                {
+                    bhx = wvRightAmp*sin(2*M_PI*t/wvTime);
+                    bhy = 0;
+                    bhz = 0;
+                }
+                else if(t >= wvTime*3/4 && t < wvTime)
+                {
+                    bhx = wvRightAmp*sin(2*M_PI*t/wvTime);
+                    bhy = 0;
+                    bhz = 0;
+                }
+                break;
+            case PENDULUM_ID_CIRCULAR:
+             //   double width = weldWidth[i];
+             //   wvLeftAmp = (width - 1 + 2)/2;
+                //width + zhongxin = amp + 1
+                if(order)
+                {
+                    bhx = wvLeftAmp*cos(2*M_PI*t/wvTime);
+                }
+                else
+                {
+                    bhx = wvLeftAmp*cos(2*M_PI*t/wvTime);
+                }
+                bhy = wvRightAmp*sin(2*M_PI*t/wvTime);
+                bhz = 0;
+                break;
+        }
+        Eigen::Vector3d baifu_1,baifu_2;
+        if(trend_mode==TREND_MODE_Y_Z)//X轴走向,开口朝Z轴正方向
+        {
+            baifu_1(0)=0;
+            baifu_1(1)=-1;
+            baifu_1(2)=0;
+            baifu_2(0)=0;
+            baifu_2(1)=1;
+            baifu_2(2)=1;
+        }
+        else if(trend_mode==TREND_MODE_X_Z)//Y轴走向,开口朝Z轴正方向
+        {
+            baifu_1(0)=1;
+            baifu_1(1)=0;
+            baifu_1(2)=0;
+            baifu_2(0)=-1;
+            baifu_2(1)=0;
+            baifu_2(2)=1;
+        }
+        else if(trend_mode==TREND_MODE_Z_Y)//Z轴走向,开口朝Y轴负方向
+        {
+            baifu_1(0)=1;
+            baifu_1(1)=0;
+            baifu_1(2)=0;
+            baifu_2(0)=0;
+            baifu_2(1)=-1;
+            baifu_2(2)=0;
+        }
+
+        Eigen::Vector3d point(bhx,bhy,bhz);
+        Eigen::Vector3d userPoint(0,0,0);
+        //坐标转换：默认摆焊坐标系->用户摆焊坐标系 (旋转，默认摆焊以Y轴为行进方向，用户只可绕Y轴旋转)
+        Eigen::AngleAxisd rollAngle(Eigen::AngleAxisd(0,Eigen::Vector3d::UnitX()));
+        Eigen::AngleAxisd pitchAngle(Eigen::AngleAxisd(wvAngle2*M_PI/180,Eigen::Vector3d::UnitY()));
+        Eigen::AngleAxisd yawAngle(Eigen::AngleAxisd(0,Eigen::Vector3d::UnitZ()));
+        Eigen::Matrix3d rotMatrix;
+        rotMatrix=yawAngle*pitchAngle*rollAngle;
+        userPoint = rotMatrix*point;
+        Eigen::Vector3d base_x(1,0,0);
+        Eigen::Vector3d base_y(0,1,0);
+        Eigen::Vector3d base_z(0,0,1);
+        baifu_1.normalize();
+        baifu_2.normalize();
+        Eigen::Vector3d wave_x = baifu_1;	//左摆幅
+        Eigen::Vector3d wave_z = baifu_2;	//右摆幅
+        //Eigen::Vector3d wave_z(-1,0,0);	//右摆幅
+        //vectorAfter.normalize();
+        //Eigen::Vector3d wave_y = vectorAfter;
+        //Eigen::Vector3d wave_x(wave_y[1],-wave_y[0],0);
+        //Eigen::Vector3d wave_x = vectorAfter.cross(wave_z);	//左摆幅
+        Eigen::Vector3d wave_y = wave_z.cross(wave_x);
+        wave_z = wave_x.cross(wave_y);
+        //wave_x = wave_y.cross(wave_z);
+        std::array<Eigen::Vector3d ,3 > base;
+        std::array<Eigen::Vector3d ,3 > wave;
+        base[0] = base_x;
+        base[1] = base_y;
+        base[2] = base_z;
+        wave[0] = wave_x;
+        wave[1] = wave_y;
+        wave[2] = wave_z;
+        rotMatrix = ComputeDCM3(base,wave);
+        //坐标转换：用户摆焊坐标系->基坐标系
+        //rotMatrix = Eigen::Quaterniond::FromTwoVectors(vectorBefore, vectorAfter).toRotationMatrix();
+        Eigen::Vector3d wavePoint(0,0,0);
+        Eigen::Vector3d trans(pTarject[i].X,pTarject[i].Y,pTarject[i].Z);
+        wavePoint = rotMatrix*userPoint + trans;
+        pTarject[i].X = wavePoint.x();
+        pTarject[i].Y = wavePoint.y();
+        pTarject[i].Z = wavePoint.z();
+
+        pTarject_out.push_back(pTarject[i]);
+        if(t > wvTime/4 - timeGap/2 && t < wvTime/4 + timeGap/2)
+        {
+            int pushNum = leftStopTime/timeGap;
+            for(int push_i = 0;push_i < pushNum;push_i ++)
+            {
+                pTarject_out.push_back(pTarject[i]);
+            }
+        }
+        else if(t > wvTime*3/4 - timeGap/2 && t < wvTime*3/4 + timeGap/2)
+        {
+            int pushNum = rightStopTime/timeGap;
+            for(int push_i = 0;push_i < pushNum;push_i ++)
+            {
+                pTarject_out.push_back(pTarject[i]);
+            }
+        }
+    }
+    *wave_out=pTarject_out;
+    return 0;
+}
+
+Eigen::Matrix3d CWeldTarject::ComputeDCM3(std::array<Eigen::Vector3d, 3> &coord_1,std::array<Eigen::Vector3d, 3> &coord_2)
+{
+    using Eigen::Matrix3d;
+    using Eigen::Vector3d;
+    Matrix3d rotation = Matrix3d::Zero();
+
+    Vector3d i = coord_1[0], j = coord_1[1], k = coord_1[2];
+    Vector3d x = coord_2[0], y = coord_2[1], z = coord_2[2];
+
+    rotation(0, 0) = i.dot(x) / (i.norm()*x.norm());
+    rotation(0, 1) = i.dot(y) / (i.norm()*y.norm());
+    rotation(0, 2) = i.dot(z) / (i.norm()*z.norm());
+    rotation(1, 0) = j.dot(x) / (j.norm()*x.norm());
+    rotation(1, 1) = j.dot(y) / (j.norm()*y.norm());
+    rotation(1, 2) = j.dot(z) / (j.norm()*z.norm());
+    rotation(2, 0) = k.dot(x) / (k.norm()*x.norm());
+    rotation(2, 1) = k.dot(y) / (k.norm()*y.norm());
+    rotation(2, 2) = k.dot(z) / (k.norm()*z.norm());
+
+    return rotation;
+}
+

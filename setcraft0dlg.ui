@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>703</width>
+    <width>472</width>
     <height>461</height>
    </rect>
   </property>
@@ -83,7 +83,7 @@
     <rect>
      <x>30</x>
      <y>240</y>
-     <width>641</width>
+     <width>411</width>
      <height>121</height>
     </rect>
    </property>
@@ -101,79 +101,10 @@
     <string>调试信息:</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox_pendulum_mode">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>30</y>
-     <width>121</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>30</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>摆焊模式:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_10">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>70</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>摆幅:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_pendulum_swing">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>70</y>
-     <width>121</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_11">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>110</y>
-     <width>71</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>XY面摆角:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_pendulum_phaseangle">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>110</y>
-     <width>121</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>260</x>
      <y>380</y>
      <width>181</width>
      <height>61</height>
@@ -181,19 +112,6 @@
    </property>
    <property name="text">
     <string>确定并保存</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_12">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>110</y>
-     <width>21</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>度</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_RX">

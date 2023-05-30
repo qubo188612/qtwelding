@@ -52,3 +52,45 @@ Coord_Matrix4d_result::Coord_Matrix4d_result()
 {
     nEn=false;
 }
+
+wWAVEParam::wWAVEParam()
+{
+    period=0;
+    leftAmp=0;
+    rightAmp=0;
+    leftAmp_z=0;
+    rightAmp_z=0;
+    leftStopTime=0;
+    rightStopTime=0;
+    anglex=0;
+    angley=0;
+    startPos=0;
+    order=0;
+    pendulum_mode=PENDULUM_ID_SIMPLE;
+    timeGap=0;
+    trend_mode=TREND_MODE_X_Z;
+}
+
+QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
+{
+    QString msg;
+    switch(pendulum_mode)
+    {
+        case PENDULUM_ID_SIMPLE:
+            msg=QString::fromLocal8Bit("单摆");
+        break;
+        case PENDULUM_ID_TRIANGLE:
+            msg=QString::fromLocal8Bit("三角摆");
+        break;
+        case PENDULUM_ID_L:
+            msg=QString::fromLocal8Bit("L摆");
+        break;
+        case PENDULUM_ID_SINE:
+            msg=QString::fromLocal8Bit("正弦摆");
+        break;
+        case PENDULUM_ID_CIRCULAR:
+            msg=QString::fromLocal8Bit("椭圆摆");
+        break;
+    }
+    return msg;
+}

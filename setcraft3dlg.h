@@ -31,8 +31,6 @@ private slots:
 
     void on_pushButtonOK_clicked();
 
-    void on_comboBox_pendulum_mode_currentIndexChanged(int index);
-
     void on_radioButton_x_clicked();
 
     void on_radioButton_y_clicked();

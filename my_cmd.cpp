@@ -366,7 +366,7 @@ QString my_cmd::cmd_traceadd(QString name1,QString name2,QString name_out)
 {
     QString msg;
     msg=QString(CMD_TRACEADD_KEY)+" "+
-        rc_trace(name1,name2)+" "+
+        rc_traceadd(name1,name2)+" "+
         rc_name(name_out);
     return msg;
 }
@@ -387,6 +387,16 @@ QString my_cmd::cmd_goweld(int tcp,float speed,QString name)
         rc_tcp(tcp)+" "+
         rc_speed(speed)+" "+
         rc_name(name);
+    return msg;
+}
+
+QString my_cmd::cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_out)
+{
+    QString msg;
+    msg=QString(CMD_WAVE_KEY)+" "+
+        rc_trace(name_in)+" "+
+        rc_wave(cmd_wave_info)+" "+
+        rc_name(name_out);
     return msg;
 }
 
@@ -2502,7 +2512,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
     else if(key==CMD_TRACEADD_KEY)
     {
         int pn=0;
-        bool b_TRACE=false;
+        bool b_TRACEADD=false;
         bool b_NAME=false;
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -2515,12 +2525,12 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 {
                     return 1;
                 }
-                if(paramname==CMD_TRACE)
+                if(paramname==CMD_TRACEADD)
                 {
-                    if(b_TRACE==false)
+                    if(b_TRACEADD==false)
                     {
                         std::vector<QString> namegroup;
-                        b_TRACE=true;
+                        b_TRACEADD=true;
                         if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,namegroup,return_msg))
                         {
                             return 1;
@@ -2562,9 +2572,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 }
             }
         }
-        if(b_TRACE==false)
+        if(b_TRACEADD==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TRACEADD+QString::fromLocal8Bit("'项参数");
             return 1;
         }
         else if(b_NAME==false)
@@ -2668,6 +2678,165 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_NAME==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
+    else if(key==CMD_WAVE_KEY)
+    {
+        int pn=0;
+        bool b_TRACE=false;
+        bool b_NAME=false;
+        bool b_WAVE=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_TRACEADD)
+                {
+                    if(b_TRACE==false)
+                    {
+                        b_TRACE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_wave_namein,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_wave_nameout,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_WAVE)
+                {
+                    if(b_WAVE==false)
+                    {
+                        std::vector<float> f_datagroup;
+                        b_WAVE=true;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,f_datagroup,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(f_datagroup.size()!=14)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有14个");
+                            return 1;
+                        }
+                        cmd_wave_info.period=f_datagroup[0];
+                        cmd_wave_info.leftAmp=f_datagroup[1];
+                        cmd_wave_info.rightAmp=f_datagroup[2];
+                        cmd_wave_info.leftAmp_z=f_datagroup[3];
+                        cmd_wave_info.rightAmp_z=f_datagroup[4];
+                        cmd_wave_info.leftStopTime=f_datagroup[5];
+                        cmd_wave_info.rightStopTime=f_datagroup[6];
+                        cmd_wave_info.anglex=f_datagroup[7];
+                        cmd_wave_info.angley=f_datagroup[8];
+                        cmd_wave_info.startPos=(int)f_datagroup[9];
+                        cmd_wave_info.order=(int)f_datagroup[10];
+                        cmd_wave_info.pendulum_mode=(Pendulum_mode)((int)f_datagroup[11]);
+                        cmd_wave_info.timeGap=(int)f_datagroup[12];
+                        cmd_wave_info.trend_mode=(Trend_mode)((int)f_datagroup[13]);
+
+                        if(f_datagroup[0]<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的摆焊周期(第1个参数)必须大于0");
+                            return 1;
+                        }
+                        if(f_datagroup[1]<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的左摆焊幅度(第2个参数)必须大于0");
+                            return 1;
+                        }
+                        if(f_datagroup[2]<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的右摆焊幅度(第3个参数)必须大于0");
+                            return 1;
+                        }
+                        if(f_datagroup[5]<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的左摆停留时间(第6个参数)必须大于等于0");
+                            return 1;
+                        }
+                        if(f_datagroup[6]<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的右摆停留时间(第7个参数)必须大于等于0");
+                            return 1;
+                        }
+                        if((int)f_datagroup[9]<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的起摆位置(第9个参数)必须大于等于0");
+                            return 1;
+                        }
+                        if((int)f_datagroup[10]<0||(int)f_datagroup[10]>1)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的起摆位置(第10个参数)超出设置范围");
+                            return 1;
+                        }
+                        if((int)f_datagroup[11]<0||(int)f_datagroup[11]>=PENDULUM_ID_TOTAL_NUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的摆焊模式(第12个参数)超出设置范围");
+                            return 1;
+                        }
+                        if((int)f_datagroup[12]<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的采样时间(第13个参数)必须大于0");
+                            return 1;
+                        }
+                        if((int)f_datagroup[13]<0||(int)f_datagroup[13]>=TREND_ID_TOTAL_NUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的摆幅方向(第14个参数)超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_TRACE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TRACE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_WAVE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_WAVE+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }
@@ -2990,10 +3159,36 @@ QString my_cmd::rc_creat(QString names)
     return msg;
 }
 
-QString my_cmd::rc_trace(QString name1, QString name2)
+QString my_cmd::rc_traceadd(QString name1, QString name2)
 {
     QString msg;
-    msg=QString(CMD_TRACE)+"["+name1+","+name2+"]";
+    msg=QString(CMD_TRACEADD)+"["+name1+","+name2+"]";
+    return msg;
+}
+
+QString my_cmd::rc_trace(QString name)
+{
+    QString msg;
+    msg=QString(CMD_TRACE)+"["+name+"]";
+    return msg;
+}
+
+QString my_cmd::rc_wave(wWAVEParam cmd_wave_info)
+{
+    QString msg;
+    msg=QString(CMD_WAVE)+"["+
+        QString::number(cmd_wave_info.period,'f',3)+","+
+        QString::number(cmd_wave_info.leftAmp,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.rightAmp,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.leftAmp_z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.rightAmp_z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.leftStopTime,'f',3)+","+
+        QString::number(cmd_wave_info.rightStopTime,'f',3)+","+
+        QString::number(cmd_wave_info.anglex,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.angley,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.startPos)+","+
+        QString::number(cmd_wave_info.order)+","+
+        QString::number(cmd_wave_info.pendulum_mode)+"]";
     return msg;
 }
 

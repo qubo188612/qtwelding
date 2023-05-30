@@ -26,7 +26,6 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_comboBox_pendulum_mode_currentIndexChanged(int index);
 
 private:
     Ui::setcraft0Dlg *ui;

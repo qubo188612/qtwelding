@@ -13,19 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label_10">
-   <property name="geometry">
-    <rect>
-     <x>890</x>
-     <y>90</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>摆幅:</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_13">
    <property name="geometry">
     <rect>
@@ -50,39 +37,6 @@
    </property>
    <property name="text">
     <string>确定并保存</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_pendulum_phaseangle">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>130</y>
-     <width>121</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_11">
-   <property name="geometry">
-    <rect>
-     <x>890</x>
-     <y>130</y>
-     <width>71</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>XY面摆角:</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox_pendulum_mode">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>50</y>
-     <width>121</width>
-     <height>25</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLabel" name="label_15">
@@ -131,19 +85,6 @@
     <string>调试信息:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_12">
-   <property name="geometry">
-    <rect>
-     <x>1090</x>
-     <y>130</y>
-     <width>21</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>度</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_14">
    <property name="geometry">
     <rect>
@@ -157,16 +98,6 @@
     <string>补偿Y:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_pendulum_swing">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>90</y>
-     <width>121</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="lineEdit_Y">
    <property name="geometry">
     <rect>
@@ -175,19 +106,6 @@
      <width>121</width>
      <height>25</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
-    <rect>
-     <x>890</x>
-     <y>50</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>摆焊模式:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_X">

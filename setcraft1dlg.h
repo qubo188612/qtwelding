@@ -43,7 +43,6 @@ private slots:
 
     void on_robposlist_itemClicked(QListWidgetItem *item);
 
-    void on_comboBox_pendulum_mode_currentIndexChanged(int index);
 
 private:
     Ui::setcraft1Dlg *ui;

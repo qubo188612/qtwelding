@@ -882,6 +882,56 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     errmsg.push_back(return_msg);
                 }
             }
+            else if(key==CMD_WAVE_KEY)
+            {
+                QString name_in=cmd.cmd_wave_namein;//获取跟踪轨迹工艺名字
+                QString name_out=cmd.cmd_wave_nameout;//获取摆焊跟踪轨迹工艺名字
+                bool b_find=false;
+                for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
+                {
+                    if(m_mcs->project->project_interweld_trace[t].name==name_in)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==false)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                }
+                else
+                {
+                    b_find=0;
+                    for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
+                    {
+                        if(m_mcs->project->project_interweld_trace[t].name==name_out)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==1)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                    else
+                    {
+                        Weld_tracing_result trace;
+                        trace.name=name_out;
+                        m_mcs->project->project_interweld_trace.push_back(trace);
+                    }
+                }
+            }
         }
     }
 
@@ -2981,22 +3031,6 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             m_mcs->craft->LoadCraft((char*)fname.c_str());
             interpolatweld=m_mcs->project->project_weld_trace[weld_trace_num_in].point;
 
-            switch(m_mcs->craft->pendulum_mode)
-            {
-                case PENDULUM_ID_FLAT://平焊
-                break;
-                case PENDULUM_ID_SIMPLE:    //单摆
-                break;
-                case PENDULUM_ID_TRIANGLE:  //三角摆
-                break;
-                case PENDULUM_ID_L: //L摆
-                break;
-                case PENDULUM_ID_SINE:  //正弦摆
-                break;
-                case PENDULUM_ID_CIRCULAR:  //椭圆摆
-                break;
-            }
-
             //这里添加姿态
             switch(m_mcs->craft->craft_id)
             {
@@ -3696,6 +3730,52 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         #ifdef USE_MYROBOT_CONTROL
             m_mcs->robotcontrol->clear_movepoint_buffer();
         #endif
+        }
+        else if(key==CMD_WAVE_KEY)
+        {
+            QString name_in=cmd.cmd_wave_namein;
+            QString name_out=cmd.cmd_wave_nameout;
+            wWAVEParam wave_info=cmd.cmd_wave_info;
+            int weld_tracing_num_in;
+            int weld_tracing_num_out;
+            for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
+            {
+                if(name_in==m_mcs->project->project_interweld_trace[n].name)
+                {
+                    weld_tracing_num_in=n;//找到焊接轨道下标
+                    break;
+                }
+            }
+            for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
+            {
+                if(name_out==m_mcs->project->project_interweld_trace[n].name)
+                {
+                    weld_tracing_num_out=n;//找到焊接轨道下标
+                    break;
+                }
+            }
+            std::vector<Weld_trace_onec> trace_in=m_mcs->project->project_interweld_trace[weld_tracing_num_in].trace;
+            std::vector<Weld_trace_onec> trace_out(trace_in.size());
+            for(int n=0;n<trace_in.size();n++)
+            {
+                Weld_trace_onec trace=trace_in[n];
+                Weld_trace_onec wavetrace;
+                /***************/
+                //摆焊工艺
+                CWeldTarject tarjectMath;
+                if(0!=tarjectMath.creat_wave(trace.point,wave_info,&wavetrace.point))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                wavetrace.speed=trace.speed;
+                trace_out[n]=wavetrace;
+            }
+            m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace=trace_out;
         }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {

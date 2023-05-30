@@ -28,6 +28,11 @@ public:
                     int itp_time=16,                         //两个点之间的插值点的间隔运动时间:16ms为安川控制标准
                     float speed=1);                          //移动速度;
 
+    //创建摆焊轨迹
+    int creat_wave(std::vector<RobPos> pTarject,            //输入原来轨迹
+                   wWAVEParam waveparam,                    //输入摆焊信息
+                   std::vector<RobPos> *wave_out);          //输出摆焊轨迹
+
 protected:
     //根据不共线的空间三点计算圆心坐标
     bool getCenterOfCircle(std::vector<Eigen::Vector3d> points,  //输入空间三点
@@ -37,6 +42,8 @@ protected:
     bool coord2RT(std::vector<Eigen::Vector3d> coor_new,    //新坐标系
                   std::vector<Eigen::Vector3d> coor_old,    //旧坐标系
                   Eigen::Matrix3d &R);                      //旋转关系
+
+    Eigen::Matrix3d ComputeDCM3(std::array<Eigen::Vector3d, 3> &coord_1,std::array<Eigen::Vector3d, 3> &coord_2);
 };
 
 #endif // CWELDTARJECT_H

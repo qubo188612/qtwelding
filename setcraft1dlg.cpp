@@ -32,16 +32,8 @@ setcraft1Dlg::setcraft1Dlg(my_parameters *mcs,QWidget *parent) :
     ui->lineEdit_X->setValidator(adoubleValidator_pose);
     ui->lineEdit_Y->setValidator(adoubleValidator_pose);
     ui->lineEdit_Z->setValidator(adoubleValidator_pose);
-    ui->lineEdit_pendulum_swing->setValidator(adoubleValidator_3);
-    ui->lineEdit_pendulum_phaseangle->setValidator(adoubleValidator_3);
 
     m_mcs=mcs;
-
-    for(int n=0;n<PENDULUM_ID_TOTAL_NUM;n++)
-    {
-        QString msg=m_mcs->craft->Pendulum_mode_toQString((Pendulum_mode)n);
-        ui->comboBox_pendulum_mode->addItem(msg);
-    }
 }
 
 setcraft1Dlg::~setcraft1Dlg()
@@ -54,7 +46,6 @@ setcraft1Dlg::~setcraft1Dlg()
 
 void setcraft1Dlg::init_dlg_show()
 {
-    ui->comboBox_pendulum_mode->setModelColumn(m_mcs->craft->pendulum_mode);
     if(m_mcs->craft->posturelist.size()>=2)
     {
         ui->lineEdit_stX->setText(QString::number(m_mcs->craft->posturelist[0].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -105,9 +96,6 @@ void setcraft1Dlg::init_dlg_show()
     ui->lineEdit_X->setText(QString::number(0,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     ui->lineEdit_Y->setText(QString::number(0,'f',ROBOT_POSTURE_DECIMAL_PLACE));
     ui->lineEdit_Z->setText(QString::number(0,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-
-    ui->lineEdit_pendulum_swing->setText(QString::number(m_mcs->craft->pendulum_swing,'f',ROBOT_POSE_DECIMAL_PLACE));
-    ui->lineEdit_pendulum_phaseangle->setText(QString::number(m_mcs->craft->pendulum_phaseangle,'f',3));
 
     if(m_mcs->craft->posturelist.size()>1)
     {
@@ -352,8 +340,6 @@ void setcraft1Dlg::on_pushButtonOK_clicked()//确定并保存
         ui->record->append(msg);
         return;
     }
-    m_mcs->craft->pendulum_phaseangle=ui->lineEdit_pendulum_phaseangle->text().toFloat();
-    m_mcs->craft->pendulum_swing=ui->lineEdit_pendulum_swing->text().toFloat();
     m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
     done(1);
 }
@@ -449,28 +435,8 @@ void setcraft1Dlg::on_robposlist_itemClicked(QListWidgetItem *item)
 }
 
 
-void setcraft1Dlg::on_comboBox_pendulum_mode_currentIndexChanged(int index)
-{
-    m_mcs->craft->pendulum_mode=(Pendulum_mode)index;
-    UpdataUi();
-}
-
 void setcraft1Dlg::UpdataUi()
 {
-    switch(m_mcs->craft->pendulum_mode)
-    {
-        case PENDULUM_ID_FLAT:
-        {
-            ui->lineEdit_pendulum_phaseangle->setDisabled(true);
-            ui->lineEdit_pendulum_swing->setDisabled(true);
-        }
-        break;
-        default:
-        {
-            ui->lineEdit_pendulum_phaseangle->setDisabled(false);
-            ui->lineEdit_pendulum_swing->setDisabled(false);
-        }
-        break;
-    }
+
 }
 
