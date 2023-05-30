@@ -2515,7 +2515,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 {
                     return 1;
                 }
-                if(paramname==CMD_TCP)
+                if(paramname==CMD_TRACE)
                 {
                     if(b_TRACE==false)
                     {
