@@ -53,6 +53,11 @@
    </property>
    <item>
     <property name="text">
+     <string>AOUT: 模拟量输出指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>CAM: 激光器指令</string>
     </property>
    </item>

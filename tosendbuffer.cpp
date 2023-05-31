@@ -1712,7 +1712,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
                         {
                             std::vector<Scan_trace_line> scan_trace(1);
-                            std::vector<Eigen::Vector3d> weld_trace;
+                            std::vector<RobPos> weld_trace;
                             scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                             scan_trace[0].robottime=m_mcs->rob->robtime;
                             scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
@@ -1726,9 +1726,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                                 return 1;
                             }
                             m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=scan_trace[0].robotpos;
-                            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].x();
-                            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].y();
-                            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].z();
+                            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].X;
+                            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].Y;
+                            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].Z;
                             m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
                             b_find=true;
                         }
@@ -1967,7 +1967,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)
                 {
                     std::vector<Scan_trace_line> scan_trace(1);
-                    std::vector<Eigen::Vector3d> weld_trace;
+                    std::vector<RobPos> weld_trace;
                     scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                     scan_trace[0].robottime=m_mcs->rob->robtime;
                     scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
@@ -1981,9 +1981,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         return 1;
                     }
                     m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=scan_trace[0].robotpos;
-                    m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].x();
-                    m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].y();
-                    m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].z();
+                    m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].X;
+                    m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].Y;
+                    m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].Z;
                     m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
                     break;
                 }
@@ -2063,7 +2063,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     else
                     {
                         std::vector<Scan_trace_line> scan_trace(1);
-                        std::vector<Eigen::Vector3d> weld_trace;
+                        std::vector<RobPos> weld_trace;
                         scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                         scan_trace[0].robottime=m_mcs->rob->robtime;
                         scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
@@ -2077,9 +2077,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             return 1;
                         }
                         m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=scan_trace[0].robotpos;
-                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].x();
-                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].y();
-                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].z();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].X;
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].Y;
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].Z;
                         m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
                         unfindnum=0;    //统计清零
                     }
@@ -2198,7 +2198,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
                     {
                         std::vector<Scan_trace_line> scan_trace(1);
-                        std::vector<Eigen::Vector3d> weld_trace;
+                        std::vector<RobPos> weld_trace;
                         scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                         scan_trace[0].robottime=m_mcs->rob->robtime;
                         scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
@@ -2212,9 +2212,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             return 1;
                         }
                         m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=scan_trace[0].robotpos;
-                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].x();
-                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].y();
-                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].z();
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.X=weld_trace[0].X;
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Y=weld_trace[0].Y;
+                        m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos.Z=weld_trace[0].Z;
                         m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
                         b_find=true;
                     }
@@ -2672,7 +2672,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                     //这里添加轨迹拟合
                     std::vector<Scan_trace_line> scan_trace=m_mcs->project->project_scan_trace[scan_trace_num].point;
-                    std::vector<Eigen::Vector3d> weld_trace;
+                    std::vector<RobPos> weld_trace;
                     if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                     {
                         main_record.lock();
@@ -2682,13 +2682,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         line=n;
                         return 1;
                     }
-                    weld.resize(weld_trace.size());
-                    for(int n=0;n<weld.size();n++)
-                    {
-                        weld[n].X=weld_trace[n].x();
-                        weld[n].Y=weld_trace[n].y();
-                        weld[n].Z=weld_trace[n].z();
-                    }
+                    weld=weld_trace;
                 }
                 break;
                 case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
@@ -2720,7 +2714,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                     //这里添加轨迹拟合
                     std::vector<Scan_trace_line> scan_trace0,scan_trace1,scan_trace2;
-                    std::vector<Eigen::Vector3d> weld_trace0,weld_trace1,weld_trace2;
+                    std::vector<RobPos> weld_trace0,weld_trace1,weld_trace2;
                     scan_trace0=m_mcs->project->project_scan_trace[scan_trace_num_0].point;
                     if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace0,weld_trace0)||
                        false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace1,weld_trace1)||
@@ -2737,25 +2731,25 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     for(int n=0;n<weld_trace0.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace0[n].x();
-                        sing_linepoint(1)=weld_trace0[n].y();
-                        sing_linepoint(2)=weld_trace0[n].z();
+                        sing_linepoint(0)=weld_trace0[n].X;
+                        sing_linepoint(1)=weld_trace0[n].Y;
+                        sing_linepoint(2)=weld_trace0[n].Z;
                         linePoints.push_back(sing_linepoint);
                     }
                     for(int n=0;n<weld_trace1.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace1[n].x();
-                        sing_linepoint(1)=weld_trace1[n].y();
-                        sing_linepoint(2)=weld_trace1[n].z();
+                        sing_linepoint(0)=weld_trace1[n].X;
+                        sing_linepoint(1)=weld_trace1[n].Y;
+                        sing_linepoint(2)=weld_trace1[n].Z;
                         SidePoints.push_back(sing_linepoint);
                     }
                     for(int n=0;n<weld_trace2.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace2[n].x();
-                        sing_linepoint(1)=weld_trace2[n].y();
-                        sing_linepoint(2)=weld_trace2[n].z();
+                        sing_linepoint(0)=weld_trace2[n].X;
+                        sing_linepoint(1)=weld_trace2[n].Y;
+                        sing_linepoint(2)=weld_trace2[n].Z;
                         SidePoints.push_back(sing_linepoint);
                     }
                     if(linePoints.size()<=2&&SidePoints.size()<=4)
@@ -2769,20 +2763,30 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                     FitlineSide fitlineside;
                     Eigen::Vector3d endpoint=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints);//交点
-                    float f_headdis=(weld_trace0[0].x()-endpoint.x())*(weld_trace0[0].x()-endpoint.x())+
-                                    (weld_trace0[0].y()-endpoint.y())*(weld_trace0[0].y()-endpoint.y())+
-                                    (weld_trace0[0].z()-endpoint.z())*(weld_trace0[0].z()-endpoint.z());
-                    float f_tiledis=(weld_trace0[weld_trace0.size()-1].x()-endpoint.x())*(weld_trace0[weld_trace0.size()-1].x()-endpoint.x())+
-                                    (weld_trace0[weld_trace0.size()-1].y()-endpoint.y())*(weld_trace0[weld_trace0.size()-1].y()-endpoint.y())+
-                                    (weld_trace0[weld_trace0.size()-1].z()-endpoint.z())*(weld_trace0[weld_trace0.size()-1].z()-endpoint.z());
+                    RobPos Endpoint;
+                    float f_headdis=(weld_trace0[0].X-endpoint.x())*(weld_trace0[0].X-endpoint.x())+
+                                    (weld_trace0[0].Y-endpoint.y())*(weld_trace0[0].Y-endpoint.y())+
+                                    (weld_trace0[0].Z-endpoint.z())*(weld_trace0[0].Z-endpoint.z());
+                    float f_tiledis=(weld_trace0[weld_trace0.size()-1].X-endpoint.x())*(weld_trace0[weld_trace0.size()-1].X-endpoint.x())+
+                                    (weld_trace0[weld_trace0.size()-1].Y-endpoint.y())*(weld_trace0[weld_trace0.size()-1].Y-endpoint.y())+
+                                    (weld_trace0[weld_trace0.size()-1].Z-endpoint.z())*(weld_trace0[weld_trace0.size()-1].Z-endpoint.z());
                     if(f_tiledis>f_headdis)//距离平面越来越远,说明交点放在头部
                     {
-                        weld_trace0.insert(weld_trace0.begin(),endpoint);
+                        Endpoint=weld_trace0[0];
+                        Endpoint.X=endpoint.x();
+                        Endpoint.Y=endpoint.y();
+                        Endpoint.Z=endpoint.z();
+                        weld_trace0.insert(weld_trace0.begin(),Endpoint);
                     }
                     else//距离平面越来越近，说明交点放在尾部
                     {
-                        weld_trace0.push_back(endpoint);
+                        Endpoint=weld_trace0[weld_trace0.size()-1];
+                        Endpoint.X=endpoint.x();
+                        Endpoint.Y=endpoint.y();
+                        Endpoint.Z=endpoint.z();
+                        weld_trace0.push_back(Endpoint);
                     }
+                    weld=weld_trace0;
                 }
                 break;
                 case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
@@ -2830,7 +2834,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                     //这里添加轨迹拟合
                     std::vector<Scan_trace_line> scan_trace0,scan_trace1,scan_trace2,scan_trace3,scan_trace4;
-                    std::vector<Eigen::Vector3d> weld_trace0,weld_trace1,weld_trace2,weld_trace3,weld_trace4;
+                    std::vector<RobPos> weld_trace0,weld_trace1,weld_trace2,weld_trace3,weld_trace4;
                     scan_trace0=m_mcs->project->project_scan_trace[scan_trace_num_0].point;
                     if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace0,weld_trace0)||
                        false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace1,weld_trace1)||
@@ -2849,41 +2853,41 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     for(int n=0;n<weld_trace0.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace0[n].x();
-                        sing_linepoint(1)=weld_trace0[n].y();
-                        sing_linepoint(2)=weld_trace0[n].z();
+                        sing_linepoint(0)=weld_trace0[n].X;
+                        sing_linepoint(1)=weld_trace0[n].Y;
+                        sing_linepoint(2)=weld_trace0[n].Z;
                         linePoints.push_back(sing_linepoint);
                     }
                     for(int n=0;n<weld_trace1.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace1[n].x();
-                        sing_linepoint(1)=weld_trace1[n].y();
-                        sing_linepoint(2)=weld_trace1[n].z();
+                        sing_linepoint(0)=weld_trace1[n].X;
+                        sing_linepoint(1)=weld_trace1[n].Y;
+                        sing_linepoint(2)=weld_trace1[n].Z;
                         SidePoints1.push_back(sing_linepoint);
                     }
                     for(int n=0;n<weld_trace2.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace2[n].x();
-                        sing_linepoint(1)=weld_trace2[n].y();
-                        sing_linepoint(2)=weld_trace2[n].z();
+                        sing_linepoint(0)=weld_trace2[n].X;
+                        sing_linepoint(1)=weld_trace2[n].Y;
+                        sing_linepoint(2)=weld_trace2[n].Z;
                         SidePoints1.push_back(sing_linepoint);
                     }
                     for(int n=0;n<weld_trace3.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace3[n].x();
-                        sing_linepoint(1)=weld_trace3[n].y();
-                        sing_linepoint(2)=weld_trace3[n].z();
+                        sing_linepoint(0)=weld_trace3[n].X;
+                        sing_linepoint(1)=weld_trace3[n].Y;
+                        sing_linepoint(2)=weld_trace3[n].Z;
                         SidePoints2.push_back(sing_linepoint);
                     }
                     for(int n=0;n<weld_trace4.size();n++)
                     {
                         Eigen::Vector3d sing_linepoint;
-                        sing_linepoint(0)=weld_trace2[n].x();
-                        sing_linepoint(1)=weld_trace2[n].y();
-                        sing_linepoint(2)=weld_trace2[n].z();
+                        sing_linepoint(0)=weld_trace2[n].X;
+                        sing_linepoint(1)=weld_trace2[n].Y;
+                        sing_linepoint(2)=weld_trace2[n].Z;
                         SidePoints2.push_back(sing_linepoint);
                     }
                     if(linePoints.size()<=2&&SidePoints1.size()<=4)
@@ -2907,36 +2911,55 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     FitlineSide fitlineside;
                     Eigen::Vector3d endpoint1=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints1);//交点1
                     Eigen::Vector3d endpoint2=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints2);//交点2
+                    RobPos Endpoint1,Endpoint2;
 
-                    float f_headdis1=(weld_trace0[0].x()-endpoint1.x())*(weld_trace0[0].x()-endpoint1.x())+
-                                    (weld_trace0[0].y()-endpoint1.y())*(weld_trace0[0].y()-endpoint1.y())+
-                                    (weld_trace0[0].z()-endpoint1.z())*(weld_trace0[0].z()-endpoint1.z());
-                    float f_tiledis1=(weld_trace0[weld_trace0.size()-1].x()-endpoint1.x())*(weld_trace0[weld_trace0.size()-1].x()-endpoint1.x())+
-                                    (weld_trace0[weld_trace0.size()-1].y()-endpoint1.y())*(weld_trace0[weld_trace0.size()-1].y()-endpoint1.y())+
-                                    (weld_trace0[weld_trace0.size()-1].z()-endpoint1.z())*(weld_trace0[weld_trace0.size()-1].z()-endpoint1.z());
-                    float f_headdis2=(weld_trace0[0].x()-endpoint2.x())*(weld_trace0[0].x()-endpoint2.x())+
-                                    (weld_trace0[0].y()-endpoint2.y())*(weld_trace0[0].y()-endpoint2.y())+
-                                    (weld_trace0[0].z()-endpoint2.z())*(weld_trace0[0].z()-endpoint2.z());
-                    float f_tiledis2=(weld_trace0[weld_trace0.size()-1].x()-endpoint2.x())*(weld_trace0[weld_trace0.size()-1].x()-endpoint2.x())+
-                                    (weld_trace0[weld_trace0.size()-1].y()-endpoint2.y())*(weld_trace0[weld_trace0.size()-1].y()-endpoint2.y())+
-                                    (weld_trace0[weld_trace0.size()-1].z()-endpoint2.z())*(weld_trace0[weld_trace0.size()-1].z()-endpoint2.z());
+
+                    float f_headdis1=(weld_trace0[0].X-endpoint1.x())*(weld_trace0[0].X-endpoint1.x())+
+                                    (weld_trace0[0].Y-endpoint1.y())*(weld_trace0[0].Y-endpoint1.y())+
+                                    (weld_trace0[0].Z-endpoint1.z())*(weld_trace0[0].Z-endpoint1.z());
+                    float f_tiledis1=(weld_trace0[weld_trace0.size()-1].X-endpoint1.x())*(weld_trace0[weld_trace0.size()-1].X-endpoint1.x())+
+                                    (weld_trace0[weld_trace0.size()-1].Y-endpoint1.y())*(weld_trace0[weld_trace0.size()-1].Y-endpoint1.y())+
+                                    (weld_trace0[weld_trace0.size()-1].Z-endpoint1.z())*(weld_trace0[weld_trace0.size()-1].Z-endpoint1.z());
+                    float f_headdis2=(weld_trace0[0].X-endpoint2.x())*(weld_trace0[0].Y-endpoint2.x())+
+                                    (weld_trace0[0].Y-endpoint2.y())*(weld_trace0[0].Y-endpoint2.y())+
+                                    (weld_trace0[0].Z-endpoint2.z())*(weld_trace0[0].Z-endpoint2.z());
+                    float f_tiledis2=(weld_trace0[weld_trace0.size()-1].X-endpoint2.x())*(weld_trace0[weld_trace0.size()-1].X-endpoint2.x())+
+                                    (weld_trace0[weld_trace0.size()-1].Y-endpoint2.y())*(weld_trace0[weld_trace0.size()-1].Y-endpoint2.y())+
+                                    (weld_trace0[weld_trace0.size()-1].Z-endpoint2.z())*(weld_trace0[weld_trace0.size()-1].Z-endpoint2.z());
 
                     if(f_tiledis1>f_headdis1)//距离平面越来越远,说明交点放在头部
                     {
-                        weld_trace0.insert(weld_trace0.begin(),endpoint1);
+                        Endpoint1=weld_trace0[0];
+                        Endpoint1.X=endpoint1.x();
+                        Endpoint1.Y=endpoint1.y();
+                        Endpoint1.Z=endpoint1.z();
+                        weld_trace0.insert(weld_trace0.begin(),Endpoint1);
                     }
                     else//距离平面越来越近，说明交点放在尾部
                     {
-                        weld_trace0.push_back(endpoint1);
+                        Endpoint1=weld_trace0[weld_trace0.size()-1];
+                        Endpoint1.X=endpoint1.x();
+                        Endpoint1.Y=endpoint1.y();
+                        Endpoint1.Z=endpoint1.z();
+                        weld_trace0.push_back(Endpoint1);
                     }
                     if(f_tiledis2>f_headdis2)//距离平面越来越远,说明交点放在头部
                     {
-                        weld_trace0.insert(weld_trace0.begin(),endpoint2);
+                        Endpoint2=weld_trace0[0];
+                        Endpoint2.X=endpoint2.x();
+                        Endpoint2.Y=endpoint2.y();
+                        Endpoint2.Z=endpoint2.z();
+                        weld_trace0.insert(weld_trace0.begin(),Endpoint2);
                     }
                     else//距离平面越来越近，说明交点放在尾部
                     {
-                        weld_trace0.push_back(endpoint2);
+                        Endpoint2=weld_trace0[weld_trace0.size()-1];
+                        Endpoint2.X=endpoint2.x();
+                        Endpoint2.Y=endpoint2.y();
+                        Endpoint2.Z=endpoint2.z();
+                        weld_trace0.push_back(Endpoint2);
                     }
+                    weld=weld_trace0;
                 }
                 break;
             }
@@ -3777,6 +3800,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             }
             m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace=trace_out;
         }
+        else if(key==CMD_AOUT_KEY)
+        {
+            std::vector<float> aout=cmd.cmd_aout_output;
+            cmd_aout(aout);
+        }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {
             main_record.lock();
@@ -4022,6 +4050,24 @@ void toSendbuffer::cmd_ioout(std::vector<int> io)
     for(int n=0;n<io.size();n++)
     {
         sendrob.data[n]=io[n];
+    }
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_aout(std::vector<float> a)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_A_OUTPUT1_FH_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(a.size()*2);
+    for(int n=0;n<a.size();n++)
+    {
+        sendrob.data[n*2]=*((u_int16_t*)&a[n]);
+        sendrob.data[n*2+1]=*((u_int16_t*)&a[n]+1);
     }
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);

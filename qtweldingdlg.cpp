@@ -178,6 +178,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 qtweldingDlg::~qtweldingDlg()
 {
 #ifdef USE_MYROBOT_CONTROL      //是否使用程序自带接口
+    m_mcs->robotcontrol->RobotDisOPEN_ELE();    //机器人下使能
+    usleep(ROB_WORK_DELAY);
     m_mcs->robotcontrol->Close_control_modbus();//创建自带接口
 #endif
 
@@ -1473,13 +1475,17 @@ void qtweldingDlg::on_robotEncheckBox_stateChanged(int arg1)
 {
     if(arg1==0)
     {
-        m_mcs->robotcontrol->RobotCLOSE_ELE();
-        ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
+    #ifdef USE_MYROBOT_CONTROL
+        m_mcs->robotcontrol->RobotDisOPEN_ELE();
+    #endif
+        ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
     }
     else
     {
+    #ifdef USE_MYROBOT_CONTROL
         m_mcs->robotcontrol->RobotOPEN_ELE(false);
-        ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
+    #endif
+        ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
     }
 }
 
@@ -2082,7 +2088,7 @@ void qtgetrobThread::run()
                         static RobPos targetpos;//移动前往的目标点
                         static int tcp;
                         static float speed;
-                        Robmovemodel movemod=MOVEL;
+                        Robmovemodel movemod=MOVEJ;
                         if(_p->m_mcs->mainDlg_robmovestate==MAINDLG_NOTMOVE)//按钮停止机器人
                         {
                             #ifdef USE_MYROBOT_CONTROL

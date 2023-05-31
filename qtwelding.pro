@@ -33,6 +33,7 @@ SOURCES += \
         fitlineside.cpp \
         global.cpp \
         ipaddress.cpp \
+        keyaoutdlg.cpp \
         keycamdlg.cpp \
         keycoorddlg.cpp \
         keycreatdlg.cpp \
@@ -97,6 +98,7 @@ FORMS += \
     editcraftdlg.ui \
     editprojectdlg.ui \
     edittextdlg.ui \
+    keyaoutdlg.ui \
     keycamdlg.ui \
     keycoorddlg.ui \
     keycreatdlg.ui \
@@ -159,6 +161,7 @@ HEADERS += \
     fitlineside.h \
     global.h \
     ipaddress.h \
+    keyaoutdlg.h \
     keycamdlg.h \
     keycoorddlg.h \
     keycreatdlg.h \

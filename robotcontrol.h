@@ -123,6 +123,7 @@ public:
 
     void RobotOPEN_ELE(bool b_wait=true); //机器人上电
     void RobotCLOSE_ELE(); //机器人断电
+    void RobotDisOPEN_ELE();//下使能
 
     volatile bool b_startweld_init;   //刚起弧初始化变量标记
     volatile bool b_welding;        //焊接中

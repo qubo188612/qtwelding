@@ -400,6 +400,14 @@ QString my_cmd::cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_o
     return msg;
 }
 
+QString my_cmd::cmd_aout(std::vector<float> a)
+{
+    QString msg;
+    msg=QString(CMD_AOUT_KEY)+" "+
+        rc_aout(a);
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -2840,6 +2848,55 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_AOUT_KEY)
+    {
+        int pn=0;
+        bool b_AOUT=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_AOUT)
+                {
+                    if(b_AOUT==false)
+                    {
+                        b_AOUT=true;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,cmd_aout_output,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_aout_output.size()!=ROBOTAOUTPUTNUM)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(ROBOTAOUTPUTNUM)+QString::fromLocal8Bit("个");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_AOUT==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_AOUT+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
     else
     {
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
@@ -3191,6 +3248,22 @@ QString my_cmd::rc_wave(wWAVEParam cmd_wave_info)
         QString::number(cmd_wave_info.pendulum_mode)+","+
         QString::number(cmd_wave_info.timeGap)+","+
         QString::number(cmd_wave_info.trend_mode)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_aout(std::vector<float> a)
+{
+    QString msg;
+    QString data;
+    for(int i=0;i<a.size();i++)
+    {
+        data=data+QString::number(a[i],'f',3);
+        if(i<a.size()-1)
+        {
+            data=data+",";
+        }
+    }
+    msg=QString(CMD_AOUT)+"["+data+"]";
     return msg;
 }
 

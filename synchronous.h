@@ -10,7 +10,7 @@ class Synchronous
 public:
     static Synchronous *Get(my_parameters *mcs);
 
-    bool Scantrace_to_Weldtrace(std::vector<Scan_trace_line> scan_trace,std::vector<Eigen::Vector3d> &weld_trace);
+    bool Scantrace_to_Weldtrace(std::vector<Scan_trace_line> scan_trace,std::vector<RobPos> &weld_trace);
 
 protected:
     my_parameters *m_mcs;

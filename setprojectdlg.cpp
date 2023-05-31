@@ -47,6 +47,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keytraceadd=new keytraceaddDlg(mcs);
     keygoweld=new keygoweldDlg(mcs);
     keywave=new keywaveDlg(mcs);
+    keyaout=new keyaoutDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -79,6 +80,7 @@ setprojectDlg::~setprojectDlg()
     delete keytraceadd;
     delete keygoweld;
     delete keywave;
+    delete keyaout;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -1407,6 +1409,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_AOUT_KEY)
+            {
+                keyaout->init_dlg_show(cmdlist);
+                keyaout->setWindowTitle(othercmd->cmdname);
+                keyaout->setbutton(1);
+                int rc=keyaout->exec();
+                keyaout->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keyaout->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
         }
         else if(rc==-1)
         {
@@ -2379,6 +2411,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 return;
             }
         }
+        else if(key==CMD_AOUT_KEY)
+        {
+            keyaout->init_dlg_show();
+            keyaout->setWindowTitle(othercmd->cmdname);
+            keyaout->setbutton(0);
+            int rc=keyaout->exec();
+            keyaout->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keyaout->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入模拟量输出指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消模拟量输出指令设置"));
+                return;
+            }
+        }
     }
     else
     {
@@ -2392,12 +2452,16 @@ void setprojectDlg::on_ctlrobotEncheckBox_stateChanged(int arg1)
 {
     if(arg1==0)
     {
-        m_mcs->robotcontrol->RobotCLOSE_ELE();
+    #ifdef USE_MYROBOT_CONTROL
+        m_mcs->robotcontrol->RobotDisOPEN_ELE();
+    #endif
         ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
     }
     else
     {
+    #ifdef USE_MYROBOT_CONTROL
         m_mcs->robotcontrol->RobotOPEN_ELE(false);
+    #endif
         ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
     }
 }

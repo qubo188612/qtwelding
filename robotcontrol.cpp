@@ -304,6 +304,12 @@ void Robotcontrol::RobotInit()//机器人初始化
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
                 mutextotalcontrol_buf_group.unlock();
+
+                mutexsend_buf_group.lock();
+                msg="DOGroup(1,0,2,0,3,0,4,0,5,0,6,0,7,0,8,0)";    //机器人IO口设置0
+                str=msg.toStdString();
+                send_buf_group.push_back(str);
+                mutexsend_buf_group.unlock();
             }
         }
         break;
@@ -399,6 +405,58 @@ void Robotcontrol::RobotOPEN_ELE(bool b_wait)
                     sleep(3);
                 }
             }
+        }
+        break;
+        case ROBOT_MODEL_KUKA://库卡机器人
+        {
+
+        }
+        break;
+        case ROBOT_MODEL_KAWASAKI://川崎机器人
+        {
+
+        }
+        break;
+        case ROBOT_MODEL_YASKAWA://安川机器人
+        {
+
+        }
+        break;
+    }
+}
+
+void Robotcontrol::RobotDisOPEN_ELE()
+{
+    mutexmovepoint_buffer_group.lock();
+    movepoint_buffer.clear();
+    mutexmovepoint_buffer_group.unlock();
+    switch(rob_mod)
+    {
+        case ROBOT_MODEL_NULL://无机器人
+        {
+
+        }
+        break;
+        case ROBOT_MODEL_EMERGEN://智昌机器人
+        {
+
+        }
+        break;
+        case ROBOT_MODEL_DOBOT://越彊机器人
+        {
+            if(b_totalcontrol_Thread==true)
+            {
+                mutextotalcontrol_buf_group.lock();
+                QString msg="DisableRobot()";    //机器人下电使能
+                std::string str=msg.toStdString();
+                totalcontrol_buf_group.push_back(str);
+                mutextotalcontrol_buf_group.unlock();
+            }
+        }
+        break;
+        case ROBOT_MODEL_UR://优傲机器人
+        {
+
         }
         break;
         case ROBOT_MODEL_KUKA://库卡机器人
@@ -1608,6 +1666,8 @@ void RobotcontrolThread1::run() //接到上位机命令
                     _p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD]=65535;
+                    _p->mb_mapping->tab_registers[ROB_A_OUTPUT1_FH_REG_ADD]=65535;
+                    _p->mb_mapping->tab_registers[ROB_A_OUTPUT1_FL_REG_ADD]=65535;
                     int rc=modbus_reply(_p->ctx_robotcontrol, query, ret, _p->mb_mapping);
                     if(rc>=0)
                     {
@@ -1678,16 +1738,34 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 switch(u16data_elec_work)
                                                 {
                                                     case STATIC:    //空闲
-
+                                                    {
+                                                        QString msg="DOGroup(6,0,7,0,8,0)";
+                                                        std::string str=msg.toStdString();
+                                                        _p->send_buf_group.push_back(str);
+                                                    }
                                                     break;
                                                     case FIRE:         //起弧
-
+                                                    {
+                                                        QString msg="AO(2"+QString::number(eled,'f',3)+")";
+                                                        std::string str=msg.toStdString();
+                                                        msg="DO(6,0,7,1,8,0)";
+                                                        str=msg.toStdString();
+                                                        _p->send_buf_group.push_back(str);
+                                                    }
                                                     break;
                                                     case WIND:         //送丝
-
+                                                    {
+                                                        QString msg="DO(6,1,7,0,8,0)";
+                                                        std::string str=msg.toStdString();
+                                                        _p->send_buf_group.push_back(str);
+                                                    }
                                                     break;
                                                     case REWIND:       //退丝
-
+                                                    {
+                                                        QString msg="DO(6,0,7,0,8,1)";
+                                                        std::string str=msg.toStdString();
+                                                        _p->send_buf_group.push_back(str);
+                                                    }
                                                     break;
                                                     case GASS:         //出气
 
@@ -1697,6 +1775,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             break;
                                             case ROBOT_MODEL_UR://优傲机器人
                                             {
+                                                mutexsend_buf_group.lock();
                                                 switch(u16data_elec_work)
                                                 {
                                                     case STATIC:    //空闲
@@ -1715,6 +1794,7 @@ void RobotcontrolThread1::run() //接到上位机命令
 
                                                     break;
                                                 }
+                                                mutexsend_buf_group.unlock();
                                             }
                                             break;
                                             case ROBOT_MODEL_KUKA://库卡机器人
@@ -1896,7 +1976,21 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     break;
                                     case ROBOT_MODEL_DOBOT://越彊机器人
                                     {
-
+                                        mutexsend_buf_group.lock();
+                                        QString msg;    //机器人IO口设置0
+                                        QString msg2;
+                                        for(int n=0;n<ROBOTOUTPUTNUM;n++)
+                                        {
+                                            msg2=msg2+QString::number(n+1)+","+QString::number(io_output[n]);
+                                            if(n<ROBOTOUTPUTNUM-1)
+                                            {
+                                               msg2=msg2+",";
+                                            }
+                                        }
+                                        msg="DOGroup("+msg2+")";
+                                        std::string str=msg.toStdString();
+                                        _p->send_buf_group.push_back(str);
+                                        mutexsend_buf_group.unlock();
                                     }
                                     break;
                                     case ROBOT_MODEL_UR://优傲机器人
@@ -1935,6 +2029,65 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     break;
                                 }
                             }
+                            if(_p->mb_mapping->tab_registers[ROB_A_OUTPUT1_FH_REG_ADD]!=65535
+                             &&_p->mb_mapping->tab_registers[ROB_A_OUTPUT1_FL_REG_ADD]!=65535)//机器人模拟量有变化
+                            {
+                                std::vector<float> A_output(ROBOTAOUTPUTNUM);
+                                for(int n=0;n<ROBOTAOUTPUTNUM;n++)
+                                {
+                                    A_output[n]=*(float*)&_p->mb_mapping->tab_registers[ROB_A_OUTPUT1_FH_REG_ADD+n*2];
+                                }
+                                switch(_p->rob_mod)
+                                {
+                                    case ROBOT_MODEL_NULL://无机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_EMERGEN://智昌机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_DOBOT://越彊机器人
+                                    {
+                                        static float AO1=FLT_MAX_EXP;
+                                        static float AO2=FLT_MAX_EXP;
+                                        mutexsend_buf_group.lock();
+                                        if(A_output[0]!=AO1)
+                                        {
+                                            AO1=A_output[0];
+                                            QString msg="AO(1,"+QString::number(AO1,'f',3)+")";
+                                            std::string str=msg.toStdString();
+                                            _p->send_buf_group.push_back(str);
+                                        }
+                                        if(A_output[1]!=AO2)
+                                        {
+                                            AO2=A_output[1];
+                                            QString msg="AO(2,"+QString::number(AO2,'f',3)+")";
+                                            std::string str=msg.toStdString();
+                                            _p->send_buf_group.push_back(str);
+                                        }
+                                        mutexsend_buf_group.unlock();
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_UR://优傲机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_KUKA://库卡机器人
+                                    {
+
+                                    }
+                                    break;
+                                    case ROBOT_MODEL_KAWASAKI://川崎机器人
+                                    {
+
+                                    }
+                                    break;
+                                }
+                            }
                             if(_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]!=65535)//机器人要暂停或继续运行
                             {
                                 uint16_t stopreg=_p->mb_mapping->tab_registers[ROB_STOP_REG_ADD];
@@ -1964,7 +2117,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                 QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
-                                                msg="EnableRobot()";
+                                                msg="ResetRobot()";
                                                 str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
                                                 mutextotalcontrol_buf_group.unlock();

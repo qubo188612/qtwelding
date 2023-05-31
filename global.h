@@ -55,6 +55,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 #define ROBOTOUTPUTNUM              8   //机器人IO输出口总数
 #define ROBOTINPUTNUM               8   //机器人IO输入口总数
+#define ROBOTAOUTPUTNUM             4   //机器人模拟量输出口总数
 
 #define ROBOTTCPPOSOUTNUM           3   //机器人外部轴总数
 
@@ -124,6 +125,14 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_IO_OUTPUT6_REG_ADD                0x0055        //机器人IO输出口6
 #define ROB_IO_OUTPUT7_REG_ADD                0x0056        //机器人IO输出口7
 #define ROB_IO_OUTPUT8_REG_ADD                0x0057        //机器人IO输出口8
+#define ROB_A_OUTPUT1_FH_REG_ADD              0x0058        //机器人模拟量输出口1(A1FH)
+#define ROB_A_OUTPUT1_FL_REG_ADD              0x0059        //机器人模拟量输出口1(A1FL)
+#define ROB_A_OUTPUT2_FH_REG_ADD              0x005a        //机器人模拟量输出口2(A2FH)
+#define ROB_A_OUTPUT2_FL_REG_ADD              0x005b        //机器人模拟量输出口2(A2FL)
+#define ROB_A_OUTPUT3_FH_REG_ADD              0x005c        //机器人模拟量输出口3(A3FH)
+#define ROB_A_OUTPUT3_FL_REG_ADD              0x005d        //机器人模拟量输出口3(A3FL)
+#define ROB_A_OUTPUT4_FH_REG_ADD              0x005e        //机器人模拟量输出口4(A4FH)
+#define ROB_A_OUTPUT4_FL_REG_ADD              0x005f        //机器人模拟量输出口4(A4FL)
 
 #define ROB_MODEL_REG_ADD                     0x0100        //机器人型号
 #define ROB_TCP_NUM_REG_ADD                   0x0101        //TCP坐标系

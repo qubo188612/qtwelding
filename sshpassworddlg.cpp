@@ -29,7 +29,11 @@ sshpasswordDlg::sshpasswordDlg(my_parameters *mcs,QWidget *parent) :
     connect(ui->sshsetupBtn,&QPushButton::clicked,[=](){
         if(m_mcs->resultdata.setup_file.size()>0)
         {
-            QString st="/home/"+m_mcs->e2proomdata.sshdlg_usename+"/sunny-tis.tar";
+        //  QString st="/home/"+m_mcs->e2proomdata.sshdlg_usename+"/sunny-tis.tar";
+            QString strCmd = "sudo chmod -R 777 /dev";
+            strCmd += "\n"; //添加回车
+            emit sigSend(strCmd);
+            QString st="/dev/sunny-tis.tar";
             ui->record->append(QString::fromLocal8Bit("开始传输升级文件..."));
             emit sigSendFile(m_mcs->resultdata.setup_file,st);
         }
@@ -214,7 +218,7 @@ void sshpasswordDlg::slotDataArrived(QString strMsg, QString strIp, int nPort)
         if(strMsg.contains(m_mcs->e2proomdata.sshdlg_usename+"@"+m_mcs->e2proomdata.sshdlg_usename+":~$"))
         {
             m_mcs->resultdata.updata_step=5;
-            QString strCmd = "sudo docker load < sunny-tis.tar";
+            QString strCmd = "sudo docker load < /dev/sunny-tis.tar";
             strCmd += "\n"; //添加回车
             emit sigSend(strCmd);
         }

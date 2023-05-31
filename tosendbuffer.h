@@ -35,6 +35,7 @@ public:
     void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel work);//焊机电流和模式设置以及启停命令
     void cmd_elec(Weldworkmodel work);//焊机启停命令
     void cmd_ioout(std::vector<int> io);//IO输出命令
+    void cmd_aout(std::vector<float> a);//A模拟量输出命令
 
     int cmdlist_check();//检查指令
     int cmdlist_build(volatile int &line);//把机器人文件命令编译,line为当前开始的编译步骤
