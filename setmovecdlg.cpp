@@ -308,7 +308,7 @@ void setmovecDlg::on_arriveBtn_st_pressed()
         ui->record->append(QString::fromLocal8Bit("起点RZ数据格式出错"));
         return;
     }
-    m_mcs->robotcontrol->RobotOPEN_ELE();
+//  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -322,7 +322,7 @@ void setmovecDlg::on_arriveBtn_st_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    m_mcs->robotcontrol->RobotCLOSE_ELE();
+//  m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 
@@ -406,7 +406,7 @@ void setmovecDlg::on_arriveBtn_center_pressed()
         ui->record->append(QString::fromLocal8Bit("途径点RZ数据格式出错"));
         return;
     }
-    m_mcs->robotcontrol->RobotOPEN_ELE();
+//  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -420,7 +420,7 @@ void setmovecDlg::on_arriveBtn_center_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    m_mcs->robotcontrol->RobotCLOSE_ELE();
+//  m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 
@@ -504,7 +504,7 @@ void setmovecDlg::on_arriveBtn_ed_pressed()
         ui->record->append(QString::fromLocal8Bit("终点RZ数据格式出错"));
         return;
     }
-    m_mcs->robotcontrol->RobotOPEN_ELE();
+//  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -518,7 +518,7 @@ void setmovecDlg::on_arriveBtn_ed_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    m_mcs->robotcontrol->RobotCLOSE_ELE();
+//  m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 

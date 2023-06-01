@@ -21,18 +21,21 @@
 //IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1]
 //写PLC指令，举例 PLC: WRITEPLC[20] DATA16[2]
 //等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
-//寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] POINTNAME[寻位的点point1]
+//寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] NAME[寻位的点point1]
 //工件坐标系定位，举例 COORD: POINTX[寻位的点point1] POINTO[寻位的点point3] NAME[零位矩阵]
-//扫描的焊缝坐标值，举例 GETPOS: TIME[1000] POINTNAME[寻位的点point1]
+//扫描的焊缝坐标值，举例 GETPOS: TIME[1000] POINTNAME[寻位的点point1] ADD[1,2,3]
 //点位移动指令，举例 SMOV: SPEED[25] SMOVL[寻位的点point1] TCP[1] CHANGE[矩阵1]
 //点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
-//寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] POINTNAME[寻位的点point1]
+//寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[寻位的点point1]
 //轨迹点采样指令，举例 SAMPLE: CREAT[跟踪第一条line] SPEED[25] TIME[16] NAME[跟踪第一条line采样结果]
 //跟踪焊接轨迹工艺指令，举例 TRACING: TCP[0] NAME[焊接轨迹1]
 //跟踪轨迹相加指令，举例 TRACEADD: TRACEADD[第一条，第二条] NAME[焊接轨迹1]
 //前往起弧点指令，举例 GOWELD: TCP[0] SPEED[25] NAME[焊接轨迹1]
 //摆焊指令，举例 WAVE: TRACE[第一条] WAVE[1,2,3,4,5,6,7,8,9,10,11,12] NAME[摆焊轨迹]
 //模拟量输出指令，举例 AOUT: AOUT[0.1,0.2,0.3,0.4]
+//多点位生成焊接轨迹指令 CREATP: POINTS[点位1，点位2，点位3，点位4] NAME[跟踪第一条line]
+//重设点位的姿态 SETPOSE:POINT[点位1] POSE[1.2,1.3,1.6] NAME[点位2]
+//将当前TCP获取为点坐标 GETTCPPOS: NAME[寻位的点point1] ADD[1,2,3]
 
 
 //key项
@@ -57,6 +60,10 @@
 #define CMD_GOWELD_KEY                  "GOWELD:"       //前往起弧点命令集合KEY
 #define CMD_WAVE_KEY                    "WAVE:"         //摆焊命令集合KEY
 #define CMD_AOUT_KEY                    "AOUT:"         //模拟量输出命令集合KEY
+#define CMD_CREATP_KEY                  "CREATP:"       //利用点位生成轨迹
+#define CMD_SETPOSE_KEY                 "SETPOSE:"      //点坐标设姿态
+#define CMD_GETTCPPOS_KEY               "GETTCPPOS:"    //获取TCP的点坐标命令集合KEY
+
 
 //参数项
 #define CMD_MOVL                            "MOVL"                //直线移动
@@ -92,6 +99,10 @@
 #define CMD_WAVE                            "WAVE"                //摆焊参数
 #define CMD_TRACE                           "TRACE"               //跟踪轨迹
 #define CMD_AOUT                            "AOUT"                //模拟量输出
+#define CMD_ADD                             "ADD"                 //补偿
+#define CMD_POINTS                          "POINTS"              //点位参数
+#define CMD_POINT                           "POINT"               //点坐标名字
+#define CMD_POSE                            "POSE"                //姿态名字
 
 
 /************************/
@@ -124,13 +135,17 @@ public:
     QString cmd_searchend(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
     QString cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
     QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
-    QString cmd_getpos(int time,QString name);//获取扫描的焊缝坐标值命令
+    QString cmd_getpos(int time,QString name,std::vector<float> add);//获取扫描的焊缝坐标值命令
     QString cmd_sample(QString name_in,float speed,int time,QString name_out);//采样轨迹点命令
     QString cmd_tracing(QString name,int tcp);//跟踪焊接轨迹工艺命令
     QString cmd_traceadd(QString name1,QString name2,QString name_out);//跟踪焊接轨迹相加命令
     QString cmd_goweld(int tcp,float speed,QString name);//前往起弧点命令
     QString cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_out);//摆焊指令
     QString cmd_aout(std::vector<float> a);//输出模拟量
+    QString cmd_creatp(std::vector<QString> pointsname,QString name);//利用点位生成轨迹
+    QString cmd_setpose(QString name_in,std::vector<float> pose,QString name_out);//重设点位的姿态
+    QString cmd_gettcppos(QString name,std::vector<float> add);//获取tcp的点坐标值命令
+
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -211,6 +226,7 @@ public:
 
     int cmd_getpos_time=0;//获取坐标时的等待时间
     QString cmd_getpos_name;//获取坐标的名字
+    std::vector<float> cmd_getpos_add;//获取补偿
 
     int cmd_smove_tcp;//获取到点位移动TCP
     QString cmd_smove_pos;//获取到点位移动终点坐标
@@ -253,6 +269,16 @@ public:
 
     std::vector<float> cmd_aout_output;//获取到的A模拟量输出口信息
 
+    std::vector<QString> cmd_creatp_pointsname;//获取到的点位名字
+    QString cmd_creatp_name;//获取到的轨迹名字
+
+    QString cmd_setpose_namein;//获得重设点位姿态名字
+    QString cmd_setpose_nameout;//获得重设点位姿态名字结果
+    std::vector<float> cmd_setpose_pose;//获得重设点位姿态
+
+    QString cmd_gettcppos_name;//获取tcp坐标的名字
+    std::vector<float> cmd_gettcppos_add;//获取tcp坐标补偿
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -285,6 +311,10 @@ protected:
     QString rc_wave(wWAVEParam cmd_wave_info);
     QString rc_trace(QString name);
     QString rc_aout(std::vector<float> a);
+    QString rc_add(std::vector<float> add);
+    QString rc_points(std::vector<QString> pointsname);
+    QString rc_point(QString name);
+    QString rc_pose(std::vector<float> pose);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

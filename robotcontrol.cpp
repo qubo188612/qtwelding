@@ -722,9 +722,9 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                         QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+",SpeedL="+
-                                        QString::number((int)f_speed)+")";
+                                        QString::number((int)f_speed)+",CP=100)";
                     std::string str=msg.toStdString();
-                //  std::string str="MovL(1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2)";
+                //  std::string str="MovL(1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2,CP=50)";
                     _p->send_buf_group.push_back(str);
                     mutexsend_buf_group.unlock();
                 }
@@ -739,9 +739,9 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                         QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+",SpeedJ="+
-                                        QString::number((int)f_speed)+")";
+                                        QString::number((int)f_speed)+",CP=100)";
                     std::string str=msg.toStdString();
-                //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2)";
+                //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2,CP=50)";
                     _p->send_buf_group.push_back(str);
                     mutexsend_buf_group.unlock();
                 }
@@ -1678,174 +1678,191 @@ void RobotcontrolThread1::run() //接到上位机命令
                                 uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
                                 float eled=*(float*)&_p->mb_mapping->tab_registers[ROB_WELD_CURRENT_FH_REG_ADD];//电流
                                 Alternatingcurrent elem=(Alternatingcurrent)_p->mb_mapping->tab_registers[ROB_WELD_CURRENTMOD_REG_ADD];//交变电流模式
-                                switch(_p->weld_mod)
+                                static uint16_t old_u16data_elec_work=65535;
+
+                                if(old_u16data_elec_work!=u16data_elec_work)
                                 {
-                                    case WELD_MODEL_NULL://无焊机
+                                    switch(_p->weld_mod)
                                     {
-
-                                    }
-                                    break;
-                                    case WELD_MODEL_ROBOT_LINK://机器人直连
-                                    {
-                                        switch(_p->rob_mod)
+                                        case WELD_MODEL_NULL://无焊机
                                         {
-                                            case ROBOT_MODEL_NULL://无机器人
+
+                                        }
+                                        break;
+                                        case WELD_MODEL_ROBOT_LINK://机器人直连
+                                        {
+                                            switch(_p->rob_mod)
                                             {
-                                                switch(u16data_elec_work)
+                                                case ROBOT_MODEL_NULL://无机器人
                                                 {
-                                                    case STATIC:    //空闲
-
-                                                    break;
-                                                    case FIRE:         //起弧
-
-                                                    break;
-                                                    case WIND:         //送丝
-
-                                                    break;
-                                                    case REWIND:       //退丝
-
-                                                    break;
-                                                    case GASS:         //出气
-
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                            case ROBOT_MODEL_EMERGEN://智昌机器人
-                                            {
-                                                switch(u16data_elec_work)
-                                                {
-                                                    case STATIC:    //空闲
-
-                                                    break;
-                                                    case FIRE:         //起弧
-
-                                                    break;
-                                                    case WIND:         //送丝
-
-                                                    break;
-                                                    case REWIND:       //退丝
-
-                                                    break;
-                                                    case GASS:         //出气
-
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                            case ROBOT_MODEL_DOBOT://越彊机器人
-                                            {
-                                                switch(u16data_elec_work)
-                                                {
-                                                    case STATIC:    //空闲
+                                                    switch(u16data_elec_work)
                                                     {
-                                                        QString msg="DOGroup(6,0,7,0,8,0)";
-                                                        std::string str=msg.toStdString();
-                                                        _p->send_buf_group.push_back(str);
-                                                    }
-                                                    break;
-                                                    case FIRE:         //起弧
-                                                    {
-                                                        QString msg="AO(2"+QString::number(eled,'f',3)+")";
-                                                        std::string str=msg.toStdString();
-                                                        msg="DO(6,0,7,1,8,0)";
-                                                        str=msg.toStdString();
-                                                        _p->send_buf_group.push_back(str);
-                                                    }
-                                                    break;
-                                                    case WIND:         //送丝
-                                                    {
-                                                        QString msg="DO(6,1,7,0,8,0)";
-                                                        std::string str=msg.toStdString();
-                                                        _p->send_buf_group.push_back(str);
-                                                    }
-                                                    break;
-                                                    case REWIND:       //退丝
-                                                    {
-                                                        QString msg="DO(6,0,7,0,8,1)";
-                                                        std::string str=msg.toStdString();
-                                                        _p->send_buf_group.push_back(str);
-                                                    }
-                                                    break;
-                                                    case GASS:         //出气
+                                                        case STATIC:    //空闲
 
-                                                    break;
+                                                        break;
+                                                        case FIRE:         //起弧
+
+                                                        break;
+                                                        case WIND:         //送丝
+
+                                                        break;
+                                                        case REWIND:       //退丝
+
+                                                        break;
+                                                        case GASS:         //出气
+
+                                                        break;
+                                                    }
                                                 }
-                                            }
-                                            break;
-                                            case ROBOT_MODEL_UR://优傲机器人
-                                            {
-                                                mutexsend_buf_group.lock();
-                                                switch(u16data_elec_work)
+                                                break;
+                                                case ROBOT_MODEL_EMERGEN://智昌机器人
                                                 {
-                                                    case STATIC:    //空闲
+                                                    switch(u16data_elec_work)
+                                                    {
+                                                        case STATIC:    //空闲
 
-                                                    break;
-                                                    case FIRE:         //起弧
+                                                        break;
+                                                        case FIRE:         //起弧
 
-                                                    break;
-                                                    case WIND:         //送丝
+                                                        break;
+                                                        case WIND:         //送丝
 
-                                                    break;
-                                                    case REWIND:       //退丝
+                                                        break;
+                                                        case REWIND:       //退丝
 
-                                                    break;
-                                                    case GASS:         //出气
+                                                        break;
+                                                        case GASS:         //出气
 
-                                                    break;
+                                                        break;
+                                                    }
                                                 }
-                                                mutexsend_buf_group.unlock();
-                                            }
-                                            break;
-                                            case ROBOT_MODEL_KUKA://库卡机器人
-                                            {
-                                                mutexsend_buf_group.lock();
-                                                QDomDocument doc;
-                                                QDomText s_data;
-                                                QDomElement root_elem = doc.createElement("ROBOTCONTROL");
-                                                doc.appendChild(root_elem);
-                                                QDomElement obj;
-                                                obj=doc.createElement("WELD");
-                                                s_data=doc.createTextNode(QString::number(u16data_elec_work));
-                                                obj.appendChild(s_data);
-                                                root_elem.appendChild(obj);
-                                                if(u16data_elec_work==FIRE)
+                                                break;
+                                                case ROBOT_MODEL_DOBOT://越彊机器人
                                                 {
-                                                    obj=doc.createElement("ELED");
-                                                    s_data=doc.createTextNode(QString::number(eled,'f',3));
-                                                    obj.appendChild(s_data);
-                                                    root_elem.appendChild(obj);
-                                                    obj=doc.createElement("ELEM");
-                                                    s_data=doc.createTextNode(QString::number(elem));
-                                                    obj.appendChild(s_data);
-                                                    root_elem.appendChild(obj);
-                                                }
-                                                QString msg=doc.toString();
-                                                std::string str=msg.toStdString();
-                                                _p->send_buf_group.push_back(str);
-                                                mutexsend_buf_group.unlock();
-                                            }
-                                            break;
-                                            case ROBOT_MODEL_KAWASAKI://川崎机器人
-                                            {
-                                                switch(u16data_elec_work)
-                                                {
-                                                    case STATIC:    //空闲
-                                                        if(_p->b_welding==true)//从焊接过程中熄弧
+                                                    switch(u16data_elec_work)
+                                                    {
+                                                        case STATIC:    //空闲
                                                         {
-                                                            _p->b_welding=false;
-                                                            Robmovemodel_ID movemod=(Robmovemodel)_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD];
-                                                            float f_movX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_X_POS_FH_REG_ADD];
-                                                            float f_movY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Y_POS_FH_REG_ADD];
-                                                            float f_movZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Z_POS_FH_REG_ADD];
-                                                            float f_movRX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RX_POS_FH_REG_ADD];
-                                                            float f_movRY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY_POS_FH_REG_ADD];
-                                                            float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
-                                                            switch(movemod)
+                                                            QString msg="DOGroup(6,0,7,0,8,0)";
+                                                            std::string str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                        }
+                                                        break;
+                                                        case FIRE:         //起弧
+                                                        {
+                                                            QString msg="AO(2"+QString::number(eled,'f',3)+")";
+                                                            std::string str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                            msg="DOGroup(6,0,7,1,8,0)";
+                                                            str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                        }
+                                                        break;
+                                                        case WIND:         //送丝
+                                                        {
+                                                            QString msg="DOGroup(6,1,7,0,8,0)";
+                                                            std::string str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                        }
+                                                        break;
+                                                        case REWIND:       //退丝
+                                                        {
+                                                            QString msg="DOGroup(6,0,7,0,8,1)";
+                                                            std::string str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                        }
+                                                        break;
+                                                        case GASS:         //出气
+
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                                case ROBOT_MODEL_UR://优傲机器人
+                                                {
+                                                    mutexsend_buf_group.lock();
+                                                    switch(u16data_elec_work)
+                                                    {
+                                                        case STATIC:    //空闲
+
+                                                        break;
+                                                        case FIRE:         //起弧
+
+                                                        break;
+                                                        case WIND:         //送丝
+
+                                                        break;
+                                                        case REWIND:       //退丝
+
+                                                        break;
+                                                        case GASS:         //出气
+
+                                                        break;
+                                                    }
+                                                    mutexsend_buf_group.unlock();
+                                                }
+                                                break;
+                                                case ROBOT_MODEL_KUKA://库卡机器人
+                                                {
+                                                    mutexsend_buf_group.lock();
+                                                    QDomDocument doc;
+                                                    QDomText s_data;
+                                                    QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                                    doc.appendChild(root_elem);
+                                                    QDomElement obj;
+                                                    obj=doc.createElement("WELD");
+                                                    s_data=doc.createTextNode(QString::number(u16data_elec_work));
+                                                    obj.appendChild(s_data);
+                                                    root_elem.appendChild(obj);
+                                                    if(u16data_elec_work==FIRE)
+                                                    {
+                                                        obj=doc.createElement("ELED");
+                                                        s_data=doc.createTextNode(QString::number(eled,'f',3));
+                                                        obj.appendChild(s_data);
+                                                        root_elem.appendChild(obj);
+                                                        obj=doc.createElement("ELEM");
+                                                        s_data=doc.createTextNode(QString::number(elem));
+                                                        obj.appendChild(s_data);
+                                                        root_elem.appendChild(obj);
+                                                    }
+                                                    QString msg=doc.toString();
+                                                    std::string str=msg.toStdString();
+                                                    _p->send_buf_group.push_back(str);
+                                                    mutexsend_buf_group.unlock();
+                                                }
+                                                break;
+                                                case ROBOT_MODEL_KAWASAKI://川崎机器人
+                                                {
+                                                    switch(u16data_elec_work)
+                                                    {
+                                                        case STATIC:    //空闲
+                                                            if(_p->b_welding==true)//从焊接过程中熄弧
                                                             {
-                                                                case MOVEL:
+                                                                _p->b_welding=false;
+                                                                Robmovemodel_ID movemod=(Robmovemodel)_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD];
+                                                                float f_movX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_X_POS_FH_REG_ADD];
+                                                                float f_movY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Y_POS_FH_REG_ADD];
+                                                                float f_movZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_Z_POS_FH_REG_ADD];
+                                                                float f_movRX=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RX_POS_FH_REG_ADD];
+                                                                float f_movRY=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RY_POS_FH_REG_ADD];
+                                                                float f_movRZ=*(float*)&_p->mb_mapping->tab_registers[ROB_MOVE_RZ_POS_FH_REG_ADD];
+                                                                switch(movemod)
                                                                 {
-                                                                    QString msg="do lwe #["+
+                                                                    case MOVEL:
+                                                                    {
+                                                                        QString msg="do lwe #["+
+                                                                                QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                                QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                                QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                                QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
+                                                                                "],1,1\r\n";
+                                                                    }
+                                                                    break;
+                                                                    case MOVEJ:
+                                                                    {
+                                                                        QString msg="do jwe #["+
                                                                             QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                             QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                             QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
@@ -1853,80 +1870,70 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                                             QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                                                             QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
                                                                             "],1,1\r\n";
+                                                                    }
+                                                                    break;
+                                                                    case MOVEC:
+                                                                    {
+                                                                        //川崎没有单独的movec熄弧，用movej熄弧
+                                                                        QString msg="do jwe #["+
+                                                                            QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                            QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                            QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                                                            QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                            QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                                                            QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
+                                                                            "],1,1\r\n";
+                                                                    }
+                                                                    break;
                                                                 }
-                                                                break;
-                                                                case MOVEJ:
-                                                                {
-                                                                    QString msg="do jwe #["+
-                                                                        QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
-                                                                        "],1,1\r\n";
-                                                                }
-                                                                break;
-                                                                case MOVEC:
-                                                                {
-                                                                    //川崎没有单独的movec熄弧，用movej熄弧
-                                                                    QString msg="do jwe #["+
-                                                                        QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                                                        QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
-                                                                        "],1,1\r\n";
-                                                                }
-                                                                break;
                                                             }
-                                                        }
-                                                    break;
-                                                    case FIRE:         //起弧
-                                                        _p->b_startweld_init=true;
-                                                        _p->b_welding=true;
-                                                    break;
-                                                    case WIND:         //送丝
+                                                        break;
+                                                        case FIRE:         //起弧
+                                                            _p->b_startweld_init=true;
+                                                            _p->b_welding=true;
+                                                        break;
+                                                        case WIND:         //送丝
 
-                                                    break;
-                                                    case REWIND:       //退丝
+                                                        break;
+                                                        case REWIND:       //退丝
 
-                                                    break;
-                                                    case GASS:         //出气
+                                                        break;
+                                                        case GASS:         //出气
 
-                                                    break;
+                                                        break;
+                                                    }
                                                 }
+                                                break;
                                             }
-                                            break;
                                         }
-                                    }
-                                    break;
-                                    /*
-                                    case SOMEONE:   //非直连控制指令
-                                    {
-                                        switch(u16data_elec_work)
+                                        break;
+                                        /*
+                                        case SOMEONE:   //非直连控制指令
                                         {
-                                            case STATIC:    //空闲
+                                            switch(u16data_elec_work)
+                                            {
+                                                case STATIC:    //空闲
 
-                                            break;
-                                            case FIRE:         //起弧
+                                                break;
+                                                case FIRE:         //起弧
 
-                                            break;
-                                            case WIND:         //送丝
+                                                break;
+                                                case WIND:         //送丝
 
-                                            break;
-                                            case REWIND:       //退丝
+                                                break;
+                                                case REWIND:       //退丝
 
-                                            break;
-                                            case GASS:         //出气
+                                                break;
+                                                case GASS:         //出气
 
-                                            break;
+                                                break;
+                                            }
                                         }
+                                        break;
+                                        */
                                     }
-                                    break;
-                                    */
                                 }
+                                old_u16data_elec_work=u16data_elec_work;
                             }
                             if(_p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]!=65535)//机器人要移动
                             {

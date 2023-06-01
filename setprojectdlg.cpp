@@ -48,6 +48,9 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keygoweld=new keygoweldDlg(mcs);
     keywave=new keywaveDlg(mcs);
     keyaout=new keyaoutDlg(mcs);
+    keycreatp=new keycreatpDlg(mcs);
+    keysetpose=new keysetposeDlg(mcs);
+    keygettcppos=new keygettcpposDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -81,6 +84,9 @@ setprojectDlg::~setprojectDlg()
     delete keygoweld;
     delete keywave;
     delete keyaout;
+    delete keycreatp;
+    delete keysetpose;
+    delete keygettcppos;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -1439,6 +1445,96 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_CREATP_KEY)
+            {
+                keycreatp->init_dlg_show(cmdlist);
+                keycreatp->setWindowTitle(othercmd->cmdname);
+                keycreatp->setbutton(1);
+                int rc=keycreatp->exec();
+                keycreatp->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keycreatp->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_SETPOSE_KEY)
+            {
+                keysetpose->init_dlg_show(cmdlist);
+                keysetpose->setWindowTitle(othercmd->cmdname);
+                keysetpose->setbutton(1);
+                int rc=keysetpose->exec();
+                keysetpose->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keysetpose->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
+            else if(key==CMD_GETTCPPOS_KEY)
+            {
+                keygettcppos->init_dlg_show(cmdlist);
+                keygettcppos->setWindowTitle(othercmd->cmdname);
+                keygettcppos->setbutton(1);
+                int rc=keygettcppos->exec();
+                keygettcppos->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keygettcppos->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
         }
         else if(rc==-1)
         {
@@ -2436,6 +2532,90 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             else
             {
                 ui->record->append(QString::fromLocal8Bit("取消模拟量输出指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_CREATP_KEY)
+        {
+            keycreatp->init_dlg_show();
+            keycreatp->setWindowTitle(othercmd->cmdname);
+            keycreatp->setbutton(0);
+            int rc=keycreatp->exec();
+            keycreatp->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keycreatp->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入点坐标生成轨迹指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消点坐标生成轨迹指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_SETPOSE_KEY)
+        {
+            keysetpose->init_dlg_show();
+            keysetpose->setWindowTitle(othercmd->cmdname);
+            keysetpose->setbutton(0);
+            int rc=keysetpose->exec();
+            keysetpose->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keysetpose->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入点坐标姿态指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消点坐标姿态指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_GETTCPPOS_KEY)
+        {
+            keygettcppos->init_dlg_show();
+            keygettcppos->setWindowTitle(othercmd->cmdname);
+            keygettcppos->setbutton(0);
+            int rc=keygettcppos->exec();
+            keygettcppos->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keygettcppos->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入获取点坐标指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消获取点坐标指令设置"));
                 return;
             }
         }

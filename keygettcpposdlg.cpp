@@ -1,25 +1,25 @@
-#include "keygetposdlg.h"
-#include "ui_keygetposdlg.h"
+#include "keygettcpposdlg.h"
+#include "ui_keygettcpposdlg.h"
 
-keygetposDlg::keygetposDlg(my_parameters *mcs,QWidget *parent) :
+keygettcpposDlg::keygettcpposDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::keygetposDlg)
+    ui(new Ui::keygettcpposDlg)
 {
     ui->setupUi(this);
     m_mcs=mcs;
 }
 
-keygetposDlg::~keygetposDlg()
+keygettcpposDlg::~keygettcpposDlg()
 {
     delete ui;
 }
 
-void keygetposDlg::init_dlg_show()
+void keygettcpposDlg::init_dlg_show()
 {
     ui->record->clear();
 }
 
-void keygetposDlg::init_dlg_show(QString cmdlist)
+void keygettcpposDlg::init_dlg_show(QString cmdlist)
 {
     QString msg,key;
     my_cmd cmd;
@@ -28,11 +28,9 @@ void keygetposDlg::init_dlg_show(QString cmdlist)
     {
         if(key==CMD_GETPOS_KEY)//获取坐标点指令
         {
-            QString name=cmd.cmd_getpos_name;
-            int time=cmd.cmd_getpos_time;
-            std::vector<float> add=cmd.cmd_getpos_add;
-            ui->getposname->setText(name);
-            ui->getpostime->setText(QString::number(time));
+            QString name=cmd.cmd_gettcppos_name;
+            std::vector<float> add=cmd.cmd_gettcppos_add;
+            ui->gettcpposname->setText(name);
             ui->addXEdit->setText(QString::number(add[0],'f',ROBOT_POSE_DECIMAL_PLACE));
             ui->addYEdit->setText(QString::number(add[1],'f',ROBOT_POSE_DECIMAL_PLACE));
             ui->addZEdit->setText(QString::number(add[2],'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -41,46 +39,33 @@ void keygetposDlg::init_dlg_show(QString cmdlist)
     ui->record->clear();
 }
 
-void keygetposDlg::close_dlg_show()
+void keygettcpposDlg::close_dlg_show()
 {
 
 }
 
-void keygetposDlg::setbutton(int name)
+void keygettcpposDlg::setbutton(int name)
 {
     if(name==0)
     {
         b_inster=false;
-        ui->getposBtn->setText(QString::fromLocal8Bit("插入获取坐标点指令"));
+        ui->gettcpposBtn->setText(QString::fromLocal8Bit("插入获取坐标点指令"));
     }
     else
     {
         b_inster=false;
-        ui->getposBtn->setText(QString::fromLocal8Bit("替换获取坐标点指令"));
+        ui->gettcpposBtn->setText(QString::fromLocal8Bit("替换获取坐标点指令"));
     }
 }
 
-//获取坐标点指令
-void keygetposDlg::on_getposBtn_clicked()
+void keygettcpposDlg::on_gettcpposBtn_clicked()
 {
     my_cmd cmd;
     QString msg;
-    QString name=ui->getposname->text();
+    QString name=ui->gettcpposname->text();
     std::vector<float> add(3);
-    int time;
     bool rc;
-    if(ui->getpostime->text().isEmpty())
-    {
-        ui->record->append(QString::fromLocal8Bit("请填写获取时间"));
-        return;
-    }
-    time=ui->getpostime->text().toInt(&rc);
-    if(rc==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("获取时间格式出错"));
-        return;
-    }
-    if(ui->getposname->text().isEmpty())
+    if(ui->gettcpposname->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写坐标点名称"));
         return;
@@ -129,7 +114,7 @@ void keygetposDlg::on_getposBtn_clicked()
             }
         }
     }
-    msg=cmd.cmd_getpos(time,name,add);
+    msg=cmd.cmd_gettcppos(name,add);
     ui->record->append(QString::fromLocal8Bit("插入获取坐标点指令成功"));
     cmd_msg=msg;
     done(1);

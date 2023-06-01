@@ -1,48 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>keygetposDlg</class>
- <widget class="QDialog" name="keygetposDlg">
+ <class>keysetposeDlg</class>
+ <widget class="QDialog" name="keysetposeDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>294</height>
+    <width>591</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLineEdit" name="setposeRZEdit">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>81</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>坐标点名称:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>60</y>
+     <x>120</x>
+     <y>140</y>
      <width>101</width>
-     <height>17</height>
+     <height>25</height>
     </rect>
-   </property>
-   <property name="text">
-    <string>获取时间(ms):</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>238</x>
      <y>20</y>
      <width>67</width>
      <height>17</height>
@@ -52,23 +36,36 @@
     <string>调试窗口:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="getposBtn">
+  <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>18</x>
+     <y>20</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>输入点坐标:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="setposeBtn">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
      <y>220</y>
      <width>161</width>
      <height>61</height>
     </rect>
    </property>
    <property name="text">
-    <string>获取坐标点指令</string>
+    <string>点坐标姿态指令</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="getpostime">
+  <widget class="QLineEdit" name="setposeRXEdit">
    <property name="geometry">
     <rect>
-     <x>122</x>
+     <x>120</x>
      <y>60</y>
      <width>101</width>
      <height>25</height>
@@ -78,51 +75,18 @@
   <widget class="QTextBrowser" name="record">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>238</x>
      <y>40</y>
      <width>331</width>
      <height>241</height>
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="getposname">
+  <widget class="QLineEdit" name="setposeRYEdit">
    <property name="geometry">
     <rect>
-     <x>122</x>
-     <y>20</y>
-     <width>101</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
+     <x>120</x>
      <y>100</y>
-     <width>51</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>补偿X:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="addXEdit">
-   <property name="geometry">
-    <rect>
-     <x>122</x>
-     <y>100</y>
-     <width>101</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="addYEdit">
-   <property name="geometry">
-    <rect>
-     <x>122</x>
-     <y>140</y>
      <width>101</width>
      <height>25</height>
     </rect>
@@ -131,34 +95,70 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>140</y>
-     <width>51</width>
+     <x>18</x>
+     <y>100</y>
+     <width>91</width>
      <height>17</height>
     </rect>
    </property>
    <property name="text">
-    <string>补偿Y:</string>
+    <string>设置姿态RY:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>60</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>设置姿态RX:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>180</y>
-     <width>51</width>
+     <x>18</x>
+     <y>140</y>
+     <width>91</width>
      <height>17</height>
     </rect>
    </property>
    <property name="text">
-    <string>补偿Z:</string>
+    <string>设置姿态RZ:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="addZEdit">
+  <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>122</x>
+     <x>20</x>
      <y>180</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>生成点坐标:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="setposenameEdit">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>180</y>
+     <width>101</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="setposecomboBox">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>20</y>
      <width>101</width>
      <height>25</height>
     </rect>

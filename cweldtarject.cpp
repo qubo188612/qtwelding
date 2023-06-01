@@ -10,7 +10,7 @@ CWeldTarject::~CWeldTarject()
 
 }
 
-bool CWeldTarject::pos_interpolation(std::vector<RobPos> posw,std::vector<RobPos> &interpolatPos,int itp_time,float speed)
+bool CWeldTarject::pos_interpolation(CAL_POSTURE robot,std::vector<RobPos> posw,std::vector<RobPos> &interpolatPos,int itp_time,float speed)
 {
     //清空插值数据内存
     interpolatPos.clear();
@@ -22,52 +22,70 @@ bool CWeldTarject::pos_interpolation(std::vector<RobPos> posw,std::vector<RobPos
         interpolatPos=posw;
         return true;
     }
+    /*
     float last_point[3] = {posw[0].X,posw[0].Y,posw[0].Z};
     float temp_pos[3] = {posw[0].X,posw[0].Y,posw[0].Z};
     float pose[3] = {posw[0].RX,posw[0].RY,posw[0].RZ};
+    */
+    RobPos last_point=posw[0];
+    RobPos temp_pos=posw[0];
 
-    RobPos temp;
-    temp.X = last_point[0];
-    temp.Y = last_point[1];
-    temp.Z = last_point[2];
-    temp.RX = pose[0];
-    temp.RY = pose[1];
-    temp.RZ = pose[2];
+    RobPos temp=posw[0];
     interpolatPos.push_back(temp);
 
     for(size_t i = 1; i < posw.size(); i++)
     {
-        double detax = posw[i].X-last_point[0];
-        double detay = posw[i].Y-last_point[1];
-        double detaz = posw[i].Z-last_point[2];
+        double detax = posw[i].X-last_point.X;
+        double detay = posw[i].Y-last_point.Y;
+        double detaz = posw[i].Z-last_point.Z;
+        double detaout1 = posw[i].out_1-last_point.out_1;
+        double detaout2 = posw[i].out_2-last_point.out_2;
+        double detaout3 = posw[i].out_3-last_point.out_3;
         double dist = std::sqrt(detax * detax + detay * detay + detaz * detaz);
         double pos_time = dist*1000000/speed;	//us
         float index = pos_time/(itp_time*1000);
-        temp_pos[0] = posw[i].X;
-        temp_pos[1] = posw[i].Y;
-        temp_pos[2] = posw[i].Z;
+        temp_pos = posw[i];
+        Eigen::Vector3d stR,edR;
+        stR.x()=last_point.RX;
+        stR.y()=last_point.RY;
+        stR.z()=last_point.RZ;
+        edR.x()=posw[i].RX;
+        edR.y()=posw[i].RY;
+        edR.z()=posw[i].RZ;
+
         if(index >= 1)
         {
             float interval_x = detax/index;
             float interval_y = detay/index;
             float interval_z = detaz/index;
+            float interval_out1 = detaout1/index;
+            float interval_out2 = detaout2/index;
+            float interval_out3 = detaout3/index;
+
+            std::vector<Eigen::Vector3d> posR=Calibration::Attitudedifference(robot,stR,edR,index);
+
             for (size_t j = 0; j < index; j++)
             {
-                temp_pos[0] = last_point[0] + interval_x * (j+1);
-                temp_pos[1] = last_point[1] + interval_y * (j+1);
-                temp_pos[2] = last_point[2] + interval_z * (j+1);
+                temp_pos.X = last_point.X + interval_x * (j+1);
+                temp_pos.Y = last_point.Y + interval_y * (j+1);
+                temp_pos.Z = last_point.Z + interval_z * (j+1);
+                temp_pos.out_1 = last_point.out_1 + interval_out1 * (j+1);
+                temp_pos.out_2 = last_point.out_2 + interval_out2 * (j+1);
+                temp_pos.out_3 = last_point.out_3 + interval_out3 * (j+1);
                 RobPos temp;
-                temp.X = temp_pos[0];
-                temp.Y = temp_pos[1];
-                temp.Z = temp_pos[2];
-                temp.RX = pose[0];
-                temp.RY = pose[1];
-                temp.RZ = pose[2];
+                temp.X = temp_pos.X;
+                temp.Y = temp_pos.Y;
+                temp.Z = temp_pos.Z;
+                temp.RX = posR[j].x();
+                temp.RY = posR[j].y();
+                temp.RZ = posR[j].z();
+                temp.out_1 = temp_pos.out_1;
+                temp.out_2 = temp_pos.out_2;
+                temp.out_3 = temp_pos.out_3;
+                temp.nEn = true;
                 interpolatPos.push_back(temp);
             }
-            last_point[0] = temp_pos[0];
-            last_point[1] = temp_pos[1];
-            last_point[2] = temp_pos[2];
+            last_point = temp_pos;
         }
         else
         {
@@ -289,7 +307,7 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     }
     std::vector<RobPos> head_interpolatPos;
 
-    if(false==pos_interpolation(head_pos,head_interpolatPos,itp_time,speed))
+    if(false==pos_interpolation(robot,head_pos,head_interpolatPos,itp_time,speed))
         return false;
 
     if(head_interpolatPos.size()<4)
@@ -325,7 +343,7 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     }
     std::vector<RobPos> tail_interpolatPos;
 
-    if(false==pos_interpolation(tail_pos,tail_interpolatPos,itp_time,speed))
+    if(false==pos_interpolation(robot,tail_pos,tail_interpolatPos,itp_time,speed))
         return false;
 
     if(tail_interpolatPos.size()<4)

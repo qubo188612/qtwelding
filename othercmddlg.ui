@@ -73,12 +73,22 @@
    </item>
    <item>
     <property name="text">
+     <string>CREATP: 点坐标生成跟踪轨迹指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>DELAY: 延时指令</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>GETPOS: 获取扫描的焊缝坐标值指令</string>
+     <string>GETPOS: 获取扫描的点坐标值指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>GETTCPPOS: 获取TCP的点坐标值指令</string>
     </property>
    </item>
    <item>
@@ -119,6 +129,11 @@
    <item>
     <property name="text">
      <string>SEARCHEND: 终点寻位指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SETPOSE: 点坐标设姿态指令</string>
     </property>
    </item>
    <item>

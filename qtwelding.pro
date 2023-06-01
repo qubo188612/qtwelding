@@ -37,8 +37,10 @@ SOURCES += \
         keycamdlg.cpp \
         keycoorddlg.cpp \
         keycreatdlg.cpp \
+        keycreatpdlg.cpp \
         keydelaydlg.cpp \
         keygetposdlg.cpp \
+        keygettcpposdlg.cpp \
         keygowelddlg.cpp \
         keyiodlg.cpp \
         keymovdlg.cpp \
@@ -47,6 +49,7 @@ SOURCES += \
         keyscandlg.cpp \
         keysearchdlg.cpp \
         keysearchenddlg.cpp \
+        keysetposedlg.cpp \
         keysmovdlg.cpp \
         keysscandlg.cpp \
         keytraceadddlg.cpp \
@@ -102,8 +105,10 @@ FORMS += \
     keycamdlg.ui \
     keycoorddlg.ui \
     keycreatdlg.ui \
+    keycreatpdlg.ui \
     keydelaydlg.ui \
     keygetposdlg.ui \
+    keygettcpposdlg.ui \
     keygowelddlg.ui \
     keyiodlg.ui \
     keymovdlg.ui \
@@ -112,6 +117,7 @@ FORMS += \
     keyscandlg.ui \
     keysearchdlg.ui \
     keysearchenddlg.ui \
+    keysetposedlg.ui \
     keysmovdlg.ui \
     keysscandlg.ui \
     keytraceadddlg.ui \
@@ -165,8 +171,10 @@ HEADERS += \
     keycamdlg.h \
     keycoorddlg.h \
     keycreatdlg.h \
+    keycreatpdlg.h \
     keydelaydlg.h \
     keygetposdlg.h \
+    keygettcpposdlg.h \
     keygowelddlg.h \
     keyiodlg.h \
     keymovdlg.h \
@@ -175,6 +183,7 @@ HEADERS += \
     keyscandlg.h \
     keysearchdlg.h \
     keysearchenddlg.h \
+    keysetposedlg.h \
     keysmovdlg.h \
     keysscandlg.h \
     keytraceadddlg.h \

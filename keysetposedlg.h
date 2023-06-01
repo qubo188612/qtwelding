@@ -1,21 +1,21 @@
-#ifndef KEYGETPOSDLG_H
-#define KEYGETPOSDLG_H
+#ifndef KEYSETPOSEDLG_H
+#define KEYSETPOSEDLG_H
 
 #include <QDialog>
 #include "my_parameters.h"
 #include "my_cmd.h"
 
 namespace Ui {
-class keygetposDlg;
+class keysetposeDlg;
 }
 
-class keygetposDlg : public QDialog
+class keysetposeDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit keygetposDlg(my_parameters *mcs,QWidget *parent = nullptr);
-    ~keygetposDlg();
+    explicit keysetposeDlg(my_parameters *mcs,QWidget *parent = nullptr);
+    ~keysetposeDlg();
 
     my_parameters *m_mcs;
     QString cmd_msg;        //生成的指令
@@ -26,14 +26,13 @@ public:
 
     void setbutton(int name=0);
 
-
 private slots:
-    void on_getposBtn_clicked();
+    void on_setposeBtn_clicked();
 
 private:
-    Ui::keygetposDlg *ui;
+    Ui::keysetposeDlg *ui;
 
     bool b_inster;
 };
 
-#endif // KEYGETPOSDLG_H
+#endif // KEYSETPOSEDLG_H

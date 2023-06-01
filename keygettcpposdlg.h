@@ -1,21 +1,21 @@
-#ifndef KEYGETPOSDLG_H
-#define KEYGETPOSDLG_H
+#ifndef KEYGETTCPPOSDLG_H
+#define KEYGETTCPPOSDLG_H
 
 #include <QDialog>
 #include "my_parameters.h"
 #include "my_cmd.h"
 
 namespace Ui {
-class keygetposDlg;
+class keygettcpposDlg;
 }
 
-class keygetposDlg : public QDialog
+class keygettcpposDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit keygetposDlg(my_parameters *mcs,QWidget *parent = nullptr);
-    ~keygetposDlg();
+    explicit keygettcpposDlg(my_parameters *mcs,QWidget *parent = nullptr);
+    ~keygettcpposDlg();
 
     my_parameters *m_mcs;
     QString cmd_msg;        //生成的指令
@@ -26,14 +26,13 @@ public:
 
     void setbutton(int name=0);
 
-
 private slots:
-    void on_getposBtn_clicked();
+    void on_gettcpposBtn_clicked();
 
 private:
-    Ui::keygetposDlg *ui;
+    Ui::keygettcpposDlg *ui;
 
     bool b_inster;
 };
 
-#endif // KEYGETPOSDLG_H
+#endif // KEYGETTCPPOSDLG_H
