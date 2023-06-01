@@ -1057,6 +1057,34 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     m_mcs->project->projecr_robpos_trace.push_back(point);
                 }
             }
+            else if(key==CMD_CREATF_KEY)
+            {
+                QString name=cmd.cmd_creatf_name;//获取到生成的跟踪轨迹序号
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
+                {
+                    if(m_mcs->project->project_interweld_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                }
+                else
+                {
+                    Weld_tracing_result trace;
+                    trace.name=name;
+                    m_mcs->project->project_interweld_trace.push_back(trace);
+                }
+            }
         }
     }
 
@@ -1096,7 +1124,14 @@ int toSendbuffer::cmdlist_check()
             {
                 err=1;
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
+                if(rc==1)
+                {
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 该路径找不到焊接工艺参数文件");
+                }
+                else
+                {
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
+                }
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
             }
@@ -1124,6 +1159,27 @@ int toSendbuffer::cmdlist_check()
                 }
             }
         #endif
+        }
+        if(key==CMD_CREATF_KEY)
+        {
+            std::vector<RobPos> pos;
+            QString filename=cmd.cmd_creatf_filename;//获取到轨迹的文件路径
+            int rc=loadlog_creat(filename,pos);
+            if(rc!=0)
+            {
+                err=1;
+                main_record.lock();
+                if(rc==1)
+                {
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 该路径找不到轨迹文件");
+                }
+                else
+                {
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹的文件格式出错");
+                }
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+            }
         }
     }
     if(0!=cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))//查看是否有重名轨迹
@@ -3315,7 +3371,13 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 break;
                 case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
                 {
-
+                    for(int n=0;n<interpolatweld.size();n++)
+                    {
+                        interpolatweld[n].X=interpolatweld[n].X+m_mcs->craft->posturelist[0].Variable.X;
+                        interpolatweld[n].Y=interpolatweld[n].Y+m_mcs->craft->posturelist[0].Variable.Y;
+                        interpolatweld[n].Z=interpolatweld[n].Z+m_mcs->craft->posturelist[0].Variable.Z;
+                        interpolatweld[n].nEn=true;
+                    }
                 }
                 break;
                 case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
@@ -4050,6 +4112,45 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=pos;
             m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
         }
+        else if(key==CMD_CREATF_KEY)
+        {
+            QString filename=cmd.cmd_creatf_filename;//获取到要轨迹文件名字
+            QString name=cmd.cmd_creatf_name;//获取到的生成的轨迹名字
+            int weld_trace_num;//搜索到的焊接轨道序号
+            std::vector<RobPos> weld;//轨道
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_weld_trace[n].name)
+                {
+                    weld_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+            if(0!=loadlog_creat(filename,weld))
+            {
+                main_record.lock();
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹的文件格式出错");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            //规划后的轨道
+            m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
+
+            if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
+            {
+                QString dir="./log/";
+                QString key=SAVELOGFILE_CREATNAME_HEAD;
+                QString time;
+                std::string s_time;
+                TimeFunction to;
+                to.get_time_ms(&s_time);
+                time=QString::fromStdString(s_time);
+                dir=dir+time+key+name;
+                savelog_creat(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
+            }
+        }
         if(b_cmdlist_build==false)//流程停止或暂停了
         {
             main_record.lock();
@@ -4342,7 +4443,7 @@ int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> tra
             int v=trace[n].ros_line.targetpointoutcloud[m].v;
             pointdata="pointUV"+QString::number(m)+"("+QString::number(u)+","+QString::number(v)+")";
         }
-        msg="Line"+QString::number(n)+": "+pointdata+"\n";
+        msg="Line"+QString::number(n)+": "+pointdata+"\r\n";
         fp1.write(msg.toStdString().c_str());
     }
     fp1.close();
@@ -4360,7 +4461,7 @@ int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> tra
             float Z=trace[n].ros_line.targetpointoutcloud[m].y;
             pointdata="pointYZ"+QString::number(m)+"("+QString::number(Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")";
         }
-        msg="Line"+QString::number(n)+": "+pointdata+"\n";
+        msg="Line"+QString::number(n)+": "+pointdata+"\r\n";
         fp2.write(msg.toStdString().c_str());
     }
     fp2.close();
@@ -4371,7 +4472,7 @@ int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> tra
         return -1;
     for(int n=0;n<trace.size();n++)
     {
-        msg="Line"+QString::number(n)+":\n";
+        msg="Line"+QString::number(n)+":\r\n";
         fp3.write(msg.toStdString().c_str());
         for(int m=0;m<trace[n].ros_line.lasertrackoutcloud.size();m++)
         {
@@ -4379,7 +4480,7 @@ int toSendbuffer::savelog_scan(QString filename,std::vector<Scan_trace_line> tra
             int v=trace[n].ros_line.lasertrackoutcloud[m].v;
             float Y=trace[n].ros_line.lasertrackoutcloud[m].x;
             float Z=trace[n].ros_line.lasertrackoutcloud[m].y;
-            QString linedata="U="+QString::number(u)+",V="+QString::number(v)+",Y="+QString::number(Y,'f',ROBOT_POSE_DECIMAL_PLACE)+",Z="+QString::number(Z,'f',ROBOT_POSE_DECIMAL_PLACE)+"\n";
+            QString linedata="U="+QString::number(u)+",V="+QString::number(v)+",Y="+QString::number(Y,'f',ROBOT_POSE_DECIMAL_PLACE)+",Z="+QString::number(Z,'f',ROBOT_POSE_DECIMAL_PLACE)+"\r\n";
             fp3.write(linedata.toStdString().c_str());
         }
     }
@@ -4400,8 +4501,84 @@ int toSendbuffer::savelog_creat(QString filename,std::vector<RobPos> trace)
         return -1;
     for(int n=0;n<trace.size();n++)
     {
-        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+")\n";
+        msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                                           QString::number(trace[n].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
+                                           QString::number(trace[n].out_1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].out_2,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].out_3,'f',ROBOT_POSE_DECIMAL_PLACE)+")\r\n";
         fp.write(msg.toStdString().c_str());
+    }
+    fp.close();
+    return 0;
+}
+
+int toSendbuffer::loadlog_creat(QString filename,std::vector<RobPos> &trace)
+{
+    trace.clear();
+    QFile fp(filename);
+    if(!fp.open(QIODevice::ReadOnly))
+        return 1;
+    QString line;
+    QTextStream in(&fp);  //用文件构造流
+    line = in.readLine();//读取一行放到字符串里
+    while(!line.isNull())//字符串有内容
+    {
+        QString str = line;
+        QString smid;
+        RobPos pos;
+        str.chop(str.size()-str.lastIndexOf(")"));
+        smid=str.right(str.size()-str.indexOf("(")-1);
+        QStringList posgroup = smid.split(",");
+        if(posgroup.size()!=9)
+        {
+            return -1;
+        }
+        bool ok;
+        pos.X=posgroup[0].toFloat(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.Y=posgroup[1].toFloat(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.Z=posgroup[2].toFloat(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.RX=posgroup[3].toFloat(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.RY=posgroup[4].toFloat(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.RZ=posgroup[5].toFloat(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.out_1=posgroup[6].toInt(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.out_2=posgroup[7].toInt(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        pos.out_3=posgroup[8].toInt(&ok);
+        if(ok==false)
+        {
+            return -1;
+        }
+        trace.push_back(pos);
+        line=in.readLine();//循环读取下行
     }
     fp.close();
     return 0;
@@ -4422,7 +4599,8 @@ int toSendbuffer::savelog_trace(QString filename,std::vector<Weld_trace_onec> tr
         for(int m=0;m<trace[n].point.size();m++)
         {
             msg="Num"+QString::number(n)+","+QString::number(m)+": ("+QString::number(trace[n].point[m].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                      QString::number(trace[n].point[m].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+")\n";
+                      QString::number(trace[n].point[m].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
+                      QString::number(trace[n].point[m].out_1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].out_2,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].out_3,'f',ROBOT_POSE_DECIMAL_PLACE)+")\r\n";
             fp.write(msg.toStdString().c_str());
         }
     }

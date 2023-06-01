@@ -51,6 +51,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keycreatp=new keycreatpDlg(mcs);
     keysetpose=new keysetposeDlg(mcs);
     keygettcppos=new keygettcpposDlg(mcs);
+    keycreatf=new keycreatfDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -87,6 +88,7 @@ setprojectDlg::~setprojectDlg()
     delete keycreatp;
     delete keysetpose;
     delete keygettcppos;
+    delete keycreatf;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -1535,6 +1537,59 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_CREATF_KEY)
+            {
+                keycreatf->init_dlg_show(cmdlist);
+                keycreatf->setWindowTitle(othercmd->cmdname);
+                keycreatf->setbutton(1);
+                int rc=keycreatf->exec();
+                keycreatf->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg;
+                    QString key;
+                    my_cmd cmd;
+                    if(0>=cmd.decodecmd(keycreatf->cmd_msg,msg,key))
+                    {
+                        //解码成功
+                        if(key==CMD_CREATF_KEY)
+                        {
+                            QString filename=cmd.cmd_creatf_filename;
+                            std::vector<RobPos> weld;
+                            int rc=m_mcs->tosendbuffer->loadlog_creat(filename,weld);
+                            if(rc==1)
+                            {
+                                ui->record->append(QString::fromLocal8Bit("该路径找不到跟踪轨迹文件"));
+                                return;
+                            }
+                            else
+                            {
+                                ui->record->append(QString::fromLocal8Bit("跟踪轨迹文件格式错误"));
+                                return;
+                            }
+                        }
+                    }
+                    msg=keycreatf->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
         }
         else if(rc==-1)
         {
@@ -2616,6 +2671,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             else
             {
                 ui->record->append(QString::fromLocal8Bit("取消获取点坐标指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_CREATF_KEY)
+        {
+            keycreatf->init_dlg_show();
+            keycreatf->setWindowTitle(othercmd->cmdname);
+            keycreatf->setbutton(0);
+            int rc=keycreatf->exec();
+            keycreatf->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keycreatf->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹指令设置"));
                 return;
             }
         }

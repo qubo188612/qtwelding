@@ -73,6 +73,11 @@
    </item>
    <item>
     <property name="text">
+     <string>CREATF: 导入轨迹文件生成轨迹指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>CREATP: 点坐标生成跟踪轨迹指令</string>
     </property>
    </item>

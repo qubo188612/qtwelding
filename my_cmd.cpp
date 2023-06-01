@@ -437,6 +437,15 @@ QString my_cmd::cmd_gettcppos(QString name,std::vector<float> add)
     return msg;
 }
 
+QString my_cmd::cmd_creatf(QString filename,QString name)
+{
+    QString msg;
+    msg=QString(CMD_CREATF_KEY)+" "+
+        rc_file(filename)+" "+
+        rc_name(name);
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -3196,6 +3205,72 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_CREATF_KEY)
+    {
+        int pn=0;
+        bool b_NAME=false;
+        bool b_FILE=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_creatf_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_FILE)
+                {
+                    if(b_FILE==false)
+                    {
+                        b_FILE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_creatf_filename,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_FILE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_FILE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
     else
     {
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
@@ -3617,6 +3692,13 @@ QString my_cmd::rc_pose(std::vector<float> pose)
         }
     }
     msg=QString(CMD_POSE)+"["+data+"]";
+    return msg;
+}
+
+QString my_cmd::rc_file(QString filename)
+{
+    QString msg;
+    msg=QString(CMD_FILE)+"["+filename+"]";
     return msg;
 }
 

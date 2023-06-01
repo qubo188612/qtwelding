@@ -36,6 +36,7 @@
 #include "keycreatpdlg.h"
 #include "keysetposedlg.h"
 #include "keygettcpposdlg.h"
+#include "keycreatfdlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -81,6 +82,7 @@ public:
     keycreatpDlg *keycreatp;
     keysetposeDlg *keysetpose;
     keygettcpposDlg *keygettcppos;
+    keycreatfDlg *keycreatf;
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;
     traceedit2Dlg *traceedit2;

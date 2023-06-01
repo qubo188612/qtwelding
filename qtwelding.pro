@@ -37,6 +37,7 @@ SOURCES += \
         keycamdlg.cpp \
         keycoorddlg.cpp \
         keycreatdlg.cpp \
+        keycreatfdlg.cpp \
         keycreatpdlg.cpp \
         keydelaydlg.cpp \
         keygetposdlg.cpp \
@@ -75,6 +76,7 @@ SOURCES += \
         robotsetdlg.cpp \
         setcraft0dlg.cpp \
         setcraft1dlg.cpp \
+        setcraft2dlg.cpp \
         setcraft3dlg.cpp \
         setmovecdlg.cpp \
         setprojectdlg.cpp \
@@ -105,6 +107,7 @@ FORMS += \
     keycamdlg.ui \
     keycoorddlg.ui \
     keycreatdlg.ui \
+    keycreatfdlg.ui \
     keycreatpdlg.ui \
     keydelaydlg.ui \
     keygetposdlg.ui \
@@ -135,6 +138,7 @@ FORMS += \
     robotsetdlg.ui \
     setcraft0dlg.ui \
     setcraft1dlg.ui \
+    setcraft2dlg.ui \
     setcraft3dlg.ui \
     setmovecdlg.ui \
     setprojectdlg.ui \
@@ -171,6 +175,7 @@ HEADERS += \
     keycamdlg.h \
     keycoorddlg.h \
     keycreatdlg.h \
+    keycreatfdlg.h \
     keycreatpdlg.h \
     keydelaydlg.h \
     keygetposdlg.h \
@@ -208,6 +213,7 @@ HEADERS += \
     robotsetdlg.h \
     setcraft0dlg.h \
     setcraft1dlg.h \
+    setcraft2dlg.h \
     setcraft3dlg.h \
     setmovecdlg.h \
     setprojectdlg.h \

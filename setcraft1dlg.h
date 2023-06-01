@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QDoubleValidator>
 #include <QListWidgetItem>
-#include <my_parameters.h>
+#include "my_parameters.h"
 
 namespace Ui {
 class setcraft1Dlg;

@@ -68,6 +68,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     newcraft=new newcraftDlg(m_mcs);
     setcraft0=new setcraft0Dlg(m_mcs);
     setcraft1=new setcraft1Dlg(m_mcs);
+    setcraft2=new setcraft2Dlg(m_mcs);
     setcraft3=new setcraft3Dlg(m_mcs);
 
     ui->setupUi(this);
@@ -229,6 +230,7 @@ qtweldingDlg::~qtweldingDlg()
     delete newcraft;
     delete setcraft0;
     delete setcraft1;
+    delete setcraft2;
     delete setcraft3;
     delete adoubleValidator_speed;
     delete ui;
@@ -501,7 +503,10 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                     break;
                     case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
                     {
-
+                        setcraft2->init_dlg_show();
+                        setcraft2->setWindowTitle(msg);
+                        setcraft2->exec();
+                        setcraft2->close_dlg_show();
                     }
                     break;
                     case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
@@ -560,7 +565,10 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
                         break;
                         case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
                         {
-
+                            setcraft2->init_dlg_show();
+                            setcraft2->setWindowTitle(msg);
+                            setcraft2->exec();
+                            setcraft2->close_dlg_show();
                         }
                         break;
                         case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态

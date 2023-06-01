@@ -36,6 +36,7 @@
 //多点位生成焊接轨迹指令 CREATP: POINTS[点位1，点位2，点位3，点位4] NAME[跟踪第一条line]
 //重设点位的姿态 SETPOSE:POINT[点位1] POSE[1.2,1.3,1.6] NAME[点位2]
 //将当前TCP获取为点坐标 GETTCPPOS: NAME[寻位的点point1] ADD[1,2,3]
+//载入文件焊接轨迹指令 CREATF: FILE[文件路径] NAME[焊接轨迹1]
 
 
 //key项
@@ -63,6 +64,7 @@
 #define CMD_CREATP_KEY                  "CREATP:"       //利用点位生成轨迹
 #define CMD_SETPOSE_KEY                 "SETPOSE:"      //点坐标设姿态
 #define CMD_GETTCPPOS_KEY               "GETTCPPOS:"    //获取TCP的点坐标命令集合KEY
+#define CMD_CREATF_KEY                  "CREATF:"       //载入文件焊接轨迹命令集合KEY
 
 
 //参数项
@@ -103,6 +105,7 @@
 #define CMD_POINTS                          "POINTS"              //点位参数
 #define CMD_POINT                           "POINT"               //点坐标名字
 #define CMD_POSE                            "POSE"                //姿态名字
+#define CMD_FILE                            "FILE"                //轨迹名字
 
 
 /************************/
@@ -145,6 +148,7 @@ public:
     QString cmd_creatp(std::vector<QString> pointsname,QString name);//利用点位生成轨迹
     QString cmd_setpose(QString name_in,std::vector<float> pose,QString name_out);//重设点位的姿态
     QString cmd_gettcppos(QString name,std::vector<float> add);//获取tcp的点坐标值命令
+    QString cmd_creatf(QString filename,QString name);//利用文件生成轨迹
 
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
@@ -279,6 +283,9 @@ public:
     QString cmd_gettcppos_name;//获取tcp坐标的名字
     std::vector<float> cmd_gettcppos_add;//获取tcp坐标补偿
 
+    QString cmd_creatf_filename;//获取到的轨迹文件路径
+    QString cmd_creatf_name;//获取到的轨迹名字
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -315,6 +322,7 @@ protected:
     QString rc_points(std::vector<QString> pointsname);
     QString rc_point(QString name);
     QString rc_pose(std::vector<float> pose);
+    QString rc_file(QString filename);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

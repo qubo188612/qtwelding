@@ -47,6 +47,8 @@ public:
 
     void cmd_clear_elec_work();//清除焊接寄存器当前状态
 
+    int loadlog_creat(QString filename,std::vector<RobPos> &trace); //读取跟踪轨迹
+
 protected:
     toSendbuffer();
     ~toSendbuffer();
@@ -56,8 +58,9 @@ protected:
     u_int16_t u16data_elec_work;     //焊机启停寄存器值
 
     int savelog_scan(QString filename,std::vector<Scan_trace_line> trace);    //保存扫描轨迹
-    int savelog_creat(QString filename,std::vector<RobPos> trace); //保存跟踪(未添加姿态前)轨迹
-    int savelog_trace(QString filename,std::vector<Weld_trace_onec> trace); //保存跟踪轨迹
+    int savelog_creat(QString filename,std::vector<RobPos> trace); //保存跟踪轨迹
+    int savelog_trace(QString filename,std::vector<Weld_trace_onec> trace); //保存跟踪工艺轨迹
+
 };
 
 #endif // TOSENDBUFFER_H
