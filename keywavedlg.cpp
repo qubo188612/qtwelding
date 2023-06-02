@@ -249,25 +249,25 @@ void keywaveDlg::on_pushButton_clicked()
 
     if(waveanglex.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写L摆左测焊缝角度"));
+        ui->record->append(QString::fromLocal8Bit("请填写L摆夹角角度"));
         return;
     }
     cmd_wave_info.anglex=waveanglex.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("L摆左测焊缝角度内容格式错误"));
+        ui->record->append(QString::fromLocal8Bit("L摆夹角角度内容格式错误"));
         return;
     }
 
     if(waveangley.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写L摆右侧焊缝角度"));
+        ui->record->append(QString::fromLocal8Bit("请填写L摆夹角法线角度"));
         return;
     }
     cmd_wave_info.angley=waveangley.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("L摆右侧焊缝角度内容格式错误"));
+        ui->record->append(QString::fromLocal8Bit("L摆夹角法线角度内容格式错误"));
         return;
     }
 

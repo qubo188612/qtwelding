@@ -118,6 +118,11 @@
    </item>
    <item>
     <property name="text">
+     <string>PLOTPOS: 计算生成点坐标指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>SAMPLE: 轨迹点采样指令</string>
     </property>
    </item>

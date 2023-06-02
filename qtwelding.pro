@@ -46,6 +46,7 @@ SOURCES += \
         keyiodlg.cpp \
         keymovdlg.cpp \
         keyplcdlg.cpp \
+        keyplotposdlg.cpp \
         keysampledlg.cpp \
         keyscandlg.cpp \
         keysearchdlg.cpp \
@@ -65,6 +66,7 @@ SOURCES += \
         newprojectdlg.cpp \
         othercmddlg.cpp \
         plcsetdlg.cpp \
+        plotedit0dlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
         project.cpp \
@@ -116,6 +118,7 @@ FORMS += \
     keyiodlg.ui \
     keymovdlg.ui \
     keyplcdlg.ui \
+    keyplotposdlg.ui \
     keysampledlg.ui \
     keyscandlg.ui \
     keysearchdlg.ui \
@@ -132,6 +135,7 @@ FORMS += \
     newprojectdlg.ui \
     othercmddlg.ui \
     plcsetdlg.ui \
+    plotedit0dlg.ui \
     pshowdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
@@ -184,6 +188,7 @@ HEADERS += \
     keyiodlg.h \
     keymovdlg.h \
     keyplcdlg.h \
+    keyplotposdlg.h \
     keysampledlg.h \
     keyscandlg.h \
     keysearchdlg.h \
@@ -202,6 +207,7 @@ HEADERS += \
     newprojectdlg.h \
     othercmddlg.h \
     plcsetdlg.h \
+    plotedit0dlg.h \
     process.h \
     process1_scanbeforetrace.h \
     project.h \

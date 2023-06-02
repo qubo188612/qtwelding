@@ -64,11 +64,14 @@ bool CWeldTarject::pos_interpolation(CAL_POSTURE robot,std::vector<RobPos> posw,
 
             std::vector<Eigen::Vector3d> posR=Calibration::Attitudedifference(robot,stR,edR,index);
 
-            for (size_t j = 0; j < index; j++)
+            for (size_t j = 0; j < (int)index; j++)
             {
                 temp_pos.X = last_point.X + interval_x * (j+1);
                 temp_pos.Y = last_point.Y + interval_y * (j+1);
                 temp_pos.Z = last_point.Z + interval_z * (j+1);
+                temp_pos.RX = posR[j].x();
+                temp_pos.RY = posR[j].y();
+                temp_pos.RZ = posR[j].z();
                 temp_pos.out_1 = last_point.out_1 + interval_out1 * (j+1);
                 temp_pos.out_2 = last_point.out_2 + interval_out2 * (j+1);
                 temp_pos.out_3 = last_point.out_3 + interval_out3 * (j+1);
@@ -76,9 +79,9 @@ bool CWeldTarject::pos_interpolation(CAL_POSTURE robot,std::vector<RobPos> posw,
                 temp.X = temp_pos.X;
                 temp.Y = temp_pos.Y;
                 temp.Z = temp_pos.Z;
-                temp.RX = posR[j].x();
-                temp.RY = posR[j].y();
-                temp.RZ = posR[j].z();
+                temp.RX = temp_pos.RX;
+                temp.RY = temp_pos.RY;
+                temp.RZ = temp_pos.RZ;
                 temp.out_1 = temp_pos.out_1;
                 temp.out_2 = temp_pos.out_2;
                 temp.out_3 = temp_pos.out_3;
@@ -575,7 +578,7 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
         Eigen::Vector3d userPoint(0,0,0);
         //坐标转换：默认摆焊坐标系->用户摆焊坐标系 (旋转，默认摆焊以Y轴为行进方向，用户只可绕Y轴旋转)
         Eigen::AngleAxisd rollAngle(Eigen::AngleAxisd(0,Eigen::Vector3d::UnitX()));
-        Eigen::AngleAxisd pitchAngle(Eigen::AngleAxisd(wvAngle2*M_PI/180,Eigen::Vector3d::UnitY()));
+        Eigen::AngleAxisd pitchAngle(Eigen::AngleAxisd(wvAngle2/**M_PI/180*/,Eigen::Vector3d::UnitY()));
         Eigen::AngleAxisd yawAngle(Eigen::AngleAxisd(0,Eigen::Vector3d::UnitZ()));
         Eigen::Matrix3d rotMatrix;
         rotMatrix=yawAngle*pitchAngle*rollAngle;
@@ -587,14 +590,8 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
         baifu_2.normalize();
         Eigen::Vector3d wave_x = baifu_1;	//左摆幅
         Eigen::Vector3d wave_z = baifu_2;	//右摆幅
-        //Eigen::Vector3d wave_z(-1,0,0);	//右摆幅
-        //vectorAfter.normalize();
-        //Eigen::Vector3d wave_y = vectorAfter;
-        //Eigen::Vector3d wave_x(wave_y[1],-wave_y[0],0);
-        //Eigen::Vector3d wave_x = vectorAfter.cross(wave_z);	//左摆幅
         Eigen::Vector3d wave_y = wave_z.cross(wave_x);
         wave_z = wave_x.cross(wave_y);
-        //wave_x = wave_y.cross(wave_z);
         std::array<Eigen::Vector3d ,3 > base;
         std::array<Eigen::Vector3d ,3 > wave;
         base[0] = base_x;
@@ -656,4 +653,3 @@ Eigen::Matrix3d CWeldTarject::ComputeDCM3(std::array<Eigen::Vector3d, 3> &coord_
 
     return rotation;
 }
-

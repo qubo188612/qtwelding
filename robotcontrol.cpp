@@ -300,7 +300,7 @@ void Robotcontrol::RobotInit()//机器人初始化
             if(b_totalcontrol_Thread==true)
             {
                 mutextotalcontrol_buf_group.lock();
-                QString msg="CP(1)";    //机器人上电使能
+                QString msg="CP(100)";    //机器人上电使能
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
                 mutextotalcontrol_buf_group.unlock();
@@ -722,7 +722,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                         QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+",SpeedL="+
-                                        QString::number((int)f_speed)+",CP=100)";
+                                        QString::number((int)f_speed)+")";
                     std::string str=msg.toStdString();
                 //  std::string str="MovL(1.3,23,45,6,7,8,User=0,Tool=2,SpeedL=1.2,CP=50)";
                     _p->send_buf_group.push_back(str);
@@ -739,7 +739,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                         QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                         QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User=0,Tool="+
                                         QString::number(tcp)+",SpeedJ="+
-                                        QString::number((int)f_speed)+",CP=100)";
+                                        QString::number((int)f_speed)+")";
                     std::string str=msg.toStdString();
                 //  std::string str="MovJ(1.3,23,45,6,7,8,User=0,Tool=2,CP=50)";
                     _p->send_buf_group.push_back(str);

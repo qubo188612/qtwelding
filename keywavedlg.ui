@@ -297,7 +297,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>L摆左侧焊缝角度:</string>
+    <string>L摆夹角:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_11">
@@ -310,7 +310,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>L摆右侧焊缝角度:</string>
+    <string>摆平面法线角度:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="waveanglex">

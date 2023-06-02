@@ -37,7 +37,7 @@
 //重设点位的姿态 SETPOSE:POINT[点位1] POSE[1.2,1.3,1.6] NAME[点位2]
 //将当前TCP获取为点坐标 GETTCPPOS: NAME[寻位的点point1] ADD[1,2,3]
 //载入文件焊接轨迹指令 CREATF: FILE[文件路径] NAME[焊接轨迹1]
-
+//计算点的指令PLOTPOS: MODE[1] CREATS[第一条,第二条,第三条] NAME[点位3]
 
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
@@ -65,6 +65,7 @@
 #define CMD_SETPOSE_KEY                 "SETPOSE:"      //点坐标设姿态
 #define CMD_GETTCPPOS_KEY               "GETTCPPOS:"    //获取TCP的点坐标命令集合KEY
 #define CMD_CREATF_KEY                  "CREATF:"       //载入文件焊接轨迹命令集合KEY
+#define CMD_PLOTPOS_KEY                 "PLOTPOS:"      //计算点命令集合KEY
 
 
 //参数项
@@ -105,7 +106,8 @@
 #define CMD_POINTS                          "POINTS"              //点位参数
 #define CMD_POINT                           "POINT"               //点坐标名字
 #define CMD_POSE                            "POSE"                //姿态名字
-#define CMD_FILE                            "FILE"                //轨迹名字
+#define CMD_FILE                            "FILE"                //轨迹文件名字
+#define CMD_CREATS                          "CREATS"              //生成点用的轨迹名字
 
 
 /************************/
@@ -149,6 +151,7 @@ public:
     QString cmd_setpose(QString name_in,std::vector<float> pose,QString name_out);//重设点位的姿态
     QString cmd_gettcppos(QString name,std::vector<float> add);//获取tcp的点坐标值命令
     QString cmd_creatf(QString filename,QString name);//利用文件生成轨迹
+    QString cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,QString posname);//生成点的方法命令
 
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
@@ -286,6 +289,10 @@ public:
     QString cmd_creatf_filename;//获取到的轨迹文件路径
     QString cmd_creatf_name;//获取到的轨迹名字
 
+    Plotpos_edit_mode cmd_plotpos_mode;//获取到的生成点的模式
+    QString cmd_plotpos_name;//获取到的生成的点名字
+    std::vector<QString> cmd_plotpos_creatname;//获取到生成轨迹所需要的轨迹名字
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -323,6 +330,7 @@ protected:
     QString rc_point(QString name);
     QString rc_pose(std::vector<float> pose);
     QString rc_file(QString filename);
+    QString rc_creats(std::vector<QString> names);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

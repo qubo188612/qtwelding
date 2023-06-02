@@ -82,6 +82,33 @@ void keysetposeDlg::setbutton(int name)
     }
 }
 
+void keysetposeDlg::on_getposeBtn_clicked()
+{
+    //获取当前姿态
+    int num=0;
+    m_mcs->rob->TCPpos.nEn=false;
+    while (m_mcs->rob->TCPpos.nEn==false)
+    {
+        if(num>10)
+        {
+            break;
+        }
+        usleep(ROB_WORK_DELAY_STEP);
+        num++;
+    }
+    if(m_mcs->rob->TCPpos.nEn==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+    }
+    else
+    {
+        ui->setposeRXEdit->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->setposeRYEdit->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->setposeRZEdit->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->record->append(QString::fromLocal8Bit("获取当前机器人坐标完成"));
+    }
+}
+
 void keysetposeDlg::on_setposeBtn_clicked()
 {
     my_cmd cmd;
@@ -149,4 +176,7 @@ void keysetposeDlg::on_setposeBtn_clicked()
     cmd_msg=msg;
     done(1);
 }
+
+
+
 

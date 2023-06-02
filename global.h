@@ -807,6 +807,12 @@ typedef enum TRACE_EDIT_MODE_ID
     TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE=2,     //两端点三直线交点模式
 }Trace_edit_mode;
 
+//点生成模式
+typedef enum PLOTPOS_EDIT_MODE_ID
+{
+    PLOTPOS_EDIT_MODE_THREE_TO_ONE=0,           //三直线交点模式
+}Plotpos_edit_mode;
+
 //手眼标定模式
 typedef enum EYE_HAND_CALIBRATIONMODE_ID
 {

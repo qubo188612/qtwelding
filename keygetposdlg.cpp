@@ -55,7 +55,7 @@ void keygetposDlg::setbutton(int name)
     }
     else
     {
-        b_inster=false;
+        b_inster=true;
         ui->getposBtn->setText(QString::fromLocal8Bit("替换获取坐标点指令"));
     }
 }

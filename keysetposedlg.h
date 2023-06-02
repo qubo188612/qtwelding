@@ -29,6 +29,8 @@ public:
 private slots:
     void on_setposeBtn_clicked();
 
+    void on_getposeBtn_clicked();
+
 private:
     Ui::keysetposeDlg *ui;
 

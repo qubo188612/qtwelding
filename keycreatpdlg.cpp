@@ -16,6 +16,7 @@ keycreatpDlg::~keycreatpDlg()
 
 void keycreatpDlg::init_dlg_show()
 {
+    pointsname.clear();
     now_creatpline=-1;
     ui->creatplist->clear();
     ui->creatpcomboBox->clear();
@@ -106,11 +107,6 @@ void keycreatpDlg::on_creatpAddBtn_clicked()
     if(now_pointname.isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请选择要插入的点名称"));
-        return;
-    }
-    if(now_creatpline<0)
-    {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入点的位置"));
         return;
     }
     if(now_creatpline==pointsname.size()-1)
