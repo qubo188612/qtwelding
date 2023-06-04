@@ -5,6 +5,7 @@
 #include "QString"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <set>
 
 
 //#define WINDOWS_TCP 1   //linux仿windowstcp测试
@@ -69,7 +70,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define DO_NOTHING         0
 #define DO_WRITE_TASK      1
 
-#define ROB_WORK_DELAY          1000000       //机器人通讯反映时间(微秒)
+#define ROB_WORK_DELAY          100000       //机器人通讯反映时间(微秒)
 #define ROB_WORK_DELAY_STEP     10000        //机器人每步循环等待时间(微秒)
 
 /*****************************/
@@ -811,6 +812,7 @@ typedef enum TRACE_EDIT_MODE_ID
 typedef enum PLOTPOS_EDIT_MODE_ID
 {
     PLOTPOS_EDIT_MODE_THREE_TO_ONE=0,           //三直线交点模式
+    PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE=1,      //两点直线与三点交点模式
 }Plotpos_edit_mode;
 
 //手眼标定模式
@@ -904,5 +906,7 @@ public:
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode);
 
 QString Trend_mode_toQString(Trend_mode trend_mode);
+
+bool b_nosame_vector_QString(std::vector<QString> vec);//判断容器里是否有相同元素,没有则返回true
 
 #endif // GLOBAL_H

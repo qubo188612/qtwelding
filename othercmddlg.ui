@@ -73,6 +73,11 @@
    </item>
    <item>
     <property name="text">
+     <string>CREATC: 三点坐标生成圆弧跟踪轨迹指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>CREATF: 导入轨迹文件生成轨迹指令</string>
     </property>
    </item>
@@ -88,12 +93,17 @@
    </item>
    <item>
     <property name="text">
-     <string>GETPOS: 获取扫描的点坐标值指令</string>
+     <string>GETPOS: 生成扫描的点坐标值指令</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>GETTCPPOS: 获取TCP的点坐标值指令</string>
+     <string>GETTCPPOS: 生成一个TCP的点坐标值指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>GETTCPPOS2: 生成一个TCP数值的点坐标指令</string>
     </property>
    </item>
    <item>

@@ -98,6 +98,11 @@
       <string>三直线交点模式</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>两点直线与三点平面交点模式</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QLabel" name="label">

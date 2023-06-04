@@ -68,7 +68,7 @@ void Process1_scanbeforetrace::continue_process()
     usleep(ROB_WORK_DELAY);
     if(buildline<m_mcs->project->project_cmdlist.size())
     {
-        if(m_mcs->tosendbuffer->paused_key==CMD_TRACE_KEY)
+        if(m_mcs->tosendbuffer->paused_key==CMD_TRACING_KEY)//已经存在下位机了
         {
             buildline=buildline+1;//此处越界1没问题，之后会判断
         }

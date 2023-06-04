@@ -102,15 +102,6 @@
 #define E2POOM_MAINDLG_CIRCLERUN_MAX        1
 #define E2POOM_MAINDLG_CIRCLERUN_USE        0
 
-#define E2POOM_SETPROJECTDLG_SAVEBUFF                8
-#define E2POOM_SETPROJECTDLG_SYSPATH_MOTO            "./SAVE/E2P_SETPROJECTDLG.bsd"
-#define E2POOM_SETPROJECTDLG_CTLMOVESPEED_MIN        0
-#define E2POOM_SETPROJECTDLG_CTLMOVESPEED_USE        10
-#define E2POOM_SETPROJECTDLG_CTLMOVESPEED_MAX        200
-#define E2POOM_SETPROJECTDLG_CTLMOVETCP_MIN          0
-#define E2POOM_SETPROJECTDLG_CTLMOVETCP_USE          0
-#define E2POOM_SETPROJECTDLG_CTLMOVETCP_MAX          ROBOTTCPNUM
-
 
 class E2proomData
 {
@@ -248,22 +239,7 @@ public:
     Int32 maindlg_circlerun_use;
 
  /***************************/
-    //工程编辑页面
-    float setprojectdlg_ctlmovespeed;                 //移动速度
-    Int32 setprojectdlg_ctlmovetcp;                      //TCP
 
-    void read_setprojectdlg_para();
-    void write_setprojectdlg_para();
-    void init_setprojectdlg_para();
-
-    float setprojectdlg_ctlmovespeed_min;
-    float setprojectdlg_ctlmovespeed_max;
-    float setprojectdlg_ctlmovespeed_use;
-    Int32 setprojectdlg_ctlmovetcp_min;
-    Int32 setprojectdlg_ctlmovetcp_max;
-    Int32 setprojectdlg_ctlmovetcp_use;
-
- /***************************/
     void write();
 private:
     void read_para();

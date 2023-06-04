@@ -22,6 +22,11 @@ bool CWeldTarject::pos_interpolation(CAL_POSTURE robot,std::vector<RobPos> posw,
         interpolatPos=posw;
         return true;
     }
+    if(posw.size()==1)
+    {
+        interpolatPos=posw;
+        return true;
+    }
     /*
     float last_point[3] = {posw[0].X,posw[0].Y,posw[0].Z};
     float temp_pos[3] = {posw[0].X,posw[0].Y,posw[0].Z};

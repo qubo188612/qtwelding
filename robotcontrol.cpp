@@ -2121,11 +2121,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             case ROBOT_MODEL_DOBOT://越彊机器人
                                             {
                                                 mutextotalcontrol_buf_group.lock();
-                                                QString msg="StopScript()";
+                                            //  QString msg="StopScript()";
+                                            //  std::string str=msg.toStdString();
+                                            //  _p->totalcontrol_buf_group.push_back(str);
+                                                QString msg="ResetRobot()";
                                                 std::string str=msg.toStdString();
-                                                _p->totalcontrol_buf_group.push_back(str);
-                                                msg="ResetRobot()";
-                                                str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
                                                 mutextotalcontrol_buf_group.unlock();
                                             }
@@ -2217,7 +2217,8 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             {
                                                 mutextotalcontrol_buf_group.lock();
                                              // QString msg="PauseScript()";
-                                                QString msg="StopScript()";
+                                             // QString msg="StopScript()";
+                                                QString msg="ResetRobot()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
                                                 mutextotalcontrol_buf_group.unlock();

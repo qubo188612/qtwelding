@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <global.h>
 
+
 /************************/
 //项目0:命令集合
 //注释符号，举例 #测试
@@ -33,11 +34,15 @@
 //前往起弧点指令，举例 GOWELD: TCP[0] SPEED[25] NAME[焊接轨迹1]
 //摆焊指令，举例 WAVE: TRACE[第一条] WAVE[1,2,3,4,5,6,7,8,9,10,11,12] NAME[摆焊轨迹]
 //模拟量输出指令，举例 AOUT: AOUT[0.1,0.2,0.3,0.4]
-//多点位生成焊接轨迹指令 CREATP: POINTS[点位1，点位2，点位3，点位4] NAME[跟踪第一条line]
-//重设点位的姿态 SETPOSE:POINT[点位1] POSE[1.2,1.3,1.6] NAME[点位2]
-//将当前TCP获取为点坐标 GETTCPPOS: NAME[寻位的点point1] ADD[1,2,3]
-//载入文件焊接轨迹指令 CREATF: FILE[文件路径] NAME[焊接轨迹1]
-//计算点的指令PLOTPOS: MODE[1] CREATS[第一条,第二条,第三条] NAME[点位3]
+//多点位生成焊接轨迹指令, 举例 CREATP: POINTS[点位1，点位2，点位3，点位4] NAME[跟踪第一条line]
+//重设点位的姿态指令, 举例 SETPOSE: POINT[点位1] POSE[1.2,1.3,1.6] NAME[点位2]
+//将当前TCP获取为点坐标指令, 举例 GETTCPPOS: NAME[寻位的点point1] ADD[1,2,3]
+//生成一个TCP数值的点坐标指令，举例 GETTCPPOS2: POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[寻位的点point1]
+//载入文件焊接轨迹指令, 举例 CREATF: FILE[文件路径] NAME[焊接轨迹1]
+//用线计算点的指令, 举例 PLOTPOS: MODE[0] CREATS[第一条,第二条,第三条] NAME[点位3]
+//用五点计算点的指令, 举例 PLOTPOS: MODE[1] POINTS[点位1，点位2，点位3，点位4，点位5] NAME[交点]
+//三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SPEED[25] TIME[16] NAME[跟踪第一条line]
+
 
 //key项
 #define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
@@ -66,6 +71,8 @@
 #define CMD_GETTCPPOS_KEY               "GETTCPPOS:"    //获取TCP的点坐标命令集合KEY
 #define CMD_CREATF_KEY                  "CREATF:"       //载入文件焊接轨迹命令集合KEY
 #define CMD_PLOTPOS_KEY                 "PLOTPOS:"      //计算点命令集合KEY
+#define CMD_CREATC_KEY                  "CREATC:"       //三点生成圆弧焊接轨迹命令集合KEY
+#define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"   //生成一个TCP数值的点坐标命令集合KEY
 
 
 //参数项
@@ -107,7 +114,8 @@
 #define CMD_POINT                           "POINT"               //点坐标名字
 #define CMD_POSE                            "POSE"                //姿态名字
 #define CMD_FILE                            "FILE"                //轨迹文件名字
-#define CMD_CREATS                          "CREATS"              //生成点用的轨迹名字
+#define CMD_CREATS                          "CREATS"              //生成点用的轨迹名字         
+#define CMD_POS                             "POS"                 //机器人坐标
 
 
 /************************/
@@ -152,7 +160,8 @@ public:
     QString cmd_gettcppos(QString name,std::vector<float> add);//获取tcp的点坐标值命令
     QString cmd_creatf(QString filename,QString name);//利用文件生成轨迹
     QString cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,QString posname);//生成点的方法命令
-
+    QString cmd_creatc(std::vector<QString> pointsname,float speed,int time,QString name);//利用点位生成圆弧
+    QString cmd_gettcppos2(RobPos pos,QString name);//生成tcp数值的点坐标值命令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -292,6 +301,15 @@ public:
     Plotpos_edit_mode cmd_plotpos_mode;//获取到的生成点的模式
     QString cmd_plotpos_name;//获取到的生成的点名字
     std::vector<QString> cmd_plotpos_creatname;//获取到生成轨迹所需要的轨迹名字
+    std::vector<QString> cmd_plotpos_pointsname;//获取到生成点所需要的点名字
+
+    std::vector<QString> cmd_creatc_pointsname;//获取到的圆点位名字
+    QString cmd_creatc_name;//获取到的圆弧轨迹名字
+    float cmd_creatc_speed;//获取到的采样点移动速度mm/s
+    int cmd_creatc_time;//获取到的采样点之间的时间间隔ms
+
+    QString cmd_gettcppos2_name;//获取tcp坐标的名字
+    RobPos cmd_gettcppos2_pos;//获取tcp坐标
 
 protected:
     QString rc_tcp(int tcp);
@@ -331,6 +349,8 @@ protected:
     QString rc_pose(std::vector<float> pose);
     QString rc_file(QString filename);
     QString rc_creats(std::vector<QString> names);
+    QString rc_plot(Plotpos_edit_mode mode,std::vector<QString> names);
+    QString rc_pos(RobPos pos);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
@@ -341,6 +361,7 @@ protected:
     int de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,RobPos &pos1,RobPos &pos2,RobPos &pos3,QString &return_msg);
     int de_QString(QString parakey,QString msg,int data_fpos,int data_bpos,QString &QStringdata,QString &return_msg);
     int de_vector_QString(QString parakey,QString msg,int data_fpos,int data_bpos,std::vector<QString> &vector_QStringdata,QString &return_msg);
+
 };
 
 #endif // MY_CMD_H

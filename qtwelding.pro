@@ -36,11 +36,13 @@ SOURCES += \
         keyaoutdlg.cpp \
         keycamdlg.cpp \
         keycoorddlg.cpp \
+        keycreatcdlg.cpp \
         keycreatdlg.cpp \
         keycreatfdlg.cpp \
         keycreatpdlg.cpp \
         keydelaydlg.cpp \
         keygetposdlg.cpp \
+        keygettcppos2dlg.cpp \
         keygettcpposdlg.cpp \
         keygowelddlg.cpp \
         keyiodlg.cpp \
@@ -67,6 +69,7 @@ SOURCES += \
         othercmddlg.cpp \
         plcsetdlg.cpp \
         plotedit0dlg.cpp \
+        plotedit1dlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
         project.cpp \
@@ -108,11 +111,13 @@ FORMS += \
     keyaoutdlg.ui \
     keycamdlg.ui \
     keycoorddlg.ui \
+    keycreatcdlg.ui \
     keycreatdlg.ui \
     keycreatfdlg.ui \
     keycreatpdlg.ui \
     keydelaydlg.ui \
     keygetposdlg.ui \
+    keygettcppos2dlg.ui \
     keygettcpposdlg.ui \
     keygowelddlg.ui \
     keyiodlg.ui \
@@ -136,6 +141,7 @@ FORMS += \
     othercmddlg.ui \
     plcsetdlg.ui \
     plotedit0dlg.ui \
+    plotedit1dlg.ui \
     pshowdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
@@ -178,11 +184,13 @@ HEADERS += \
     keyaoutdlg.h \
     keycamdlg.h \
     keycoorddlg.h \
+    keycreatcdlg.h \
     keycreatdlg.h \
     keycreatfdlg.h \
     keycreatpdlg.h \
     keydelaydlg.h \
     keygetposdlg.h \
+    keygettcppos2dlg.h \
     keygettcpposdlg.h \
     keygowelddlg.h \
     keyiodlg.h \
@@ -208,6 +216,7 @@ HEADERS += \
     othercmddlg.h \
     plcsetdlg.h \
     plotedit0dlg.h \
+    plotedit1dlg.h \
     process.h \
     process1_scanbeforetrace.h \
     project.h \

@@ -43,6 +43,14 @@ uint64_t ntohll(uint64_t val)
     return (((uint64_t) ntohl(val)) << 32) + ntohl(val >> 32);
 }
 
+bool b_nosame_vector_QString(std::vector<QString> vec)
+{
+    if(std::set<QString>(vec.begin(),vec.end()).size()!=vec.size())
+        return false;
+    else
+        return true;
+}
+
 Point_robpos_result::Point_robpos_result()
 {
     nEn=false;

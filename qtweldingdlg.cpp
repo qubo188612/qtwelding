@@ -25,6 +25,10 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     QDir dir(filePath);
     if(!dir.exists())
         QDir().mkdir(filePath);
+    filePath =  "./temp";
+    QDir dir(filePath);
+    if(!dir.exists())
+        QDir().mkdir(filePath);
 #else
     std::string dir;
     dir = "./DATA";
@@ -41,6 +45,11 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     if (access(dir.c_str(), 0) == -1)
     {
       mkdir("./log",S_IRWXU);
+    }
+    dir = "./temp";
+    if (access(dir.c_str(), 0) == -1)
+    {
+      mkdir("./temp",S_IRWXU);
     }
 #endif
     m_mcs=m_mcs->Get();

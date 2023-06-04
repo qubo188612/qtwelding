@@ -5,6 +5,7 @@
 #include "my_parameters.h"
 #include "my_cmd.h"
 #include "plotedit0dlg.h"
+#include "plotedit1dlg.h"
 
 namespace Ui {
 class keyplotposDlg;
@@ -23,7 +24,7 @@ public:
     QString cmd_list_in;    //输入的指令
 
     plotedit0Dlg *plotedit0;
-
+    plotedit1Dlg *plotedit1;
 
     void init_dlg_show();
     void init_dlg_show(QString cmdlist);

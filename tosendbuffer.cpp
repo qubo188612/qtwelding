@@ -934,11 +934,11 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 }
                 else
                 {
-                    if(pointsname.size()<2)
+                    if(pointsname.size()<1)
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 点的参数个数至少要大于1个");
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 点的参数个数至少要大于等于1个");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1057,6 +1057,34 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     m_mcs->project->projecr_robpos_trace.push_back(point);
                 }
             }
+            else if(key==CMD_GETTCPPOS2_KEY)
+            {
+                QString name=cmd.cmd_gettcppos2_name;//获取到的点名字
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                {
+                    if(m_mcs->project->projecr_robpos_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    errmsg.push_back(return_msg);
+                    main_record.unlock();
+                }
+                else
+                {
+                    Point_robpos_result point;
+                    point.name=name;
+                    m_mcs->project->projecr_robpos_trace.push_back(point);
+                }
+            }
             else if(key==CMD_CREATF_KEY)
             {
                 QString name=cmd.cmd_creatf_name;//获取到生成的跟踪轨迹序号
@@ -1088,7 +1116,8 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
             else if(key==CMD_PLOTPOS_KEY)
             {
                 QString name=cmd.cmd_plotpos_name;//获取到的生成的点名字
-                std::vector<QString> creatsnames=cmd.cmd_plotpos_creatname;//获取到要跟踪的轨道名字
+                std::vector<QString> creatsnames=cmd.cmd_plotpos_creatname;//获取到要计算用的轨道名字
+                std::vector<QString> pointsnames=cmd.cmd_plotpos_pointsname;//获得到要计算用的点的名字
                 Plotpos_edit_mode mode=cmd.cmd_plotpos_mode;//获取到的计算模式
                 bool b_find=0;
                 for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
@@ -1120,7 +1149,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 main_record.lock();
                                 return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
                                            QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_THREE_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有3个");
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_CREATS)+QString::fromLocal8Bit("项的参数只能有3个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1162,6 +1191,56 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             }
                         }
                         break;
+                        case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
+                        {
+                            if(pointsnames.size()!=5)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
+                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE)+
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_POINTS)+QString::fromLocal8Bit("项的参数只能有5个");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            bool b_find=false;
+                            int m=0;
+                            for(m=0;m<pointsnames.size();m++)
+                            {
+                                b_find=false;
+                                for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                                {
+                                    if(pointsnames[m]==m_mcs->project->projecr_robpos_trace[t].name)
+                                    {
+                                        b_find=true;
+                                        break;
+                                    }
+                                }
+                                if(b_find==false)//没找到这个名字的点坐标
+                                {
+                                    break;
+                                }
+                            }
+                            if(b_find==false)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsnames[m]+QString::fromLocal8Bit("的点坐标");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            else
+                            {
+                                Point_robpos_result point;
+                                point.name=name;
+                                m_mcs->project->projecr_robpos_trace.push_back(point);
+                            }
+                        }
+                        break;
                         default:
                         {
                             err=1;
@@ -1172,6 +1251,74 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             errmsg.push_back(return_msg);
                         }
                         break;
+                    }
+                }
+            }
+            else if(key==CMD_CREATC_KEY)//用点生成圆弧轨迹指令
+            {
+                QString name=cmd.cmd_creatc_name;//获取到的生成的轨迹名字
+                std::vector<QString> pointsname=cmd.cmd_creatc_pointsname;//获取到要生成的轨道所用的点名字
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                {
+                    if(m_mcs->project->project_weld_trace[t].name==name)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                }
+                else
+                {
+                    if(pointsname.size()!=3)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 点的参数个数有且只有3个");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                    else
+                    {
+                        bool b_ok=true;
+                        for(int n=0;n<pointsname.size();n++)
+                        {
+                            QString pointname=pointsname[n];
+                            bool b_find=false;
+                            for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                            {
+                                if(m_mcs->project->projecr_robpos_trace[t].name==pointname)
+                                {
+                                    b_find=1;
+                                    break;
+                                }
+                            }
+                            if(b_find==false)
+                            {
+                                b_ok=false;
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointname+QString::fromLocal8Bit("的坐标点");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                            }
+                        }
+                        if(b_ok==true)
+                        {
+                            Weld_trace_result trace;
+                            trace.name=name;
+                            m_mcs->project->project_weld_trace.push_back(trace);
+                        }
                     }
                 }
             }
@@ -1441,26 +1588,59 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 break;
             }
-            usleep(ROB_WORK_DELAY);
-            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+            //判断下一句如果不是MOVE类型，那就必须等这句移动完
+            bool b_continuemove=false;//紧接着移动
+            for(int next=n+1;next<m_mcs->project->project_cmdlist.size();next++)
             {
-                if(b_cmdlist_build==false)     //停止
+                int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[next],msg,key);
+                if(rc>0)
                 {
+                    //语法出错
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n+1)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
-                    paused_key=key;
-                    cmd_lock(1);
                     line=n;
                     return 1;
                 }
-                sleep(0);
-            //  usleep(ROB_WORK_DELAY_STEP);
+                else if(rc<0)//注释行
+                {
+                    continue;
+                }
+                else if(rc==0)
+                {
+                    //下一句还是移动，可以紧接着动
+                    if(key==CMD_SMOV_KEY||
+                       key==CMD_MOV_KEY)
+                    {
+                        b_continuemove=true;//
+                    }
+                    break;
+                }
             }
-        #ifdef USE_MYROBOT_CONTROL
-            m_mcs->robotcontrol->clear_movepoint_buffer();
-        #endif
+            if(b_continuemove==false)
+            {
+                usleep(ROB_WORK_DELAY);
+                while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+                {
+                    if(b_cmdlist_build==false)     //停止
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("手动停止进程");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        paused_key=key;
+                        cmd_lock(1);
+                        line=n;
+                        return 1;
+                    }
+                    sleep(0);
+                //  usleep(ROB_WORK_DELAY_STEP);
+                }
+            #ifdef USE_MYROBOT_CONTROL
+                m_mcs->robotcontrol->clear_movepoint_buffer();
+            #endif
+            }
         }
         else if(key==CMD_SMOV_KEY)//点位移动指令
         {
@@ -1647,26 +1827,59 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 break;
             }
-            usleep(ROB_WORK_DELAY);
-            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+            //判断下一句如果不是MOVE类型，那就必须等这句移动完
+            bool b_continuemove=false;//紧接着移动
+            for(int next=n+1;next<m_mcs->project->project_cmdlist.size();next++)
             {
-                if(b_cmdlist_build==false)     //停止
+                int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[next],msg,key);
+                if(rc>0)
                 {
+                    //语法出错
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n+1)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
-                    paused_key=key;
-                    cmd_lock(1);
                     line=n;
                     return 1;
                 }
-                sleep(0);
-            //  usleep(ROB_WORK_DELAY_STEP);
+                else if(rc<0)//注释行
+                {
+                    continue;
+                }
+                else if(rc==0)
+                {
+                    //下一句还是移动，可以紧接着动
+                    if(key==CMD_SMOV_KEY||
+                       key==CMD_MOV_KEY)
+                    {
+                        b_continuemove=true;//
+                    }
+                    break;
+                }
             }
-        #ifdef USE_MYROBOT_CONTROL
-            m_mcs->robotcontrol->clear_movepoint_buffer();
-        #endif
+            if(b_continuemove==false)
+            {
+                usleep(ROB_WORK_DELAY);
+                while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+                {
+                    if(b_cmdlist_build==false)     //停止
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("手动停止进程");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        paused_key=key;
+                        cmd_lock(1);
+                        line=n;
+                        return 1;
+                    }
+                    sleep(0);
+                //  usleep(ROB_WORK_DELAY_STEP);
+                }
+            #ifdef USE_MYROBOT_CONTROL
+                m_mcs->robotcontrol->clear_movepoint_buffer();
+            #endif
+            }
         }
         else if(key==CMD_DELAY_KEY)//延时指令
         {
@@ -2915,7 +3128,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         {
             QString name=cmd.cmd_plotpos_name;//获取到的生成的点名字
             Plotpos_edit_mode mode=cmd.cmd_plotpos_mode;//获取到的轨迹生成模式
-            std::vector<QString> creatname=cmd.cmd_plotpos_creatname;//获取到生成轨迹所需要的轨迹名字
+            std::vector<QString> creatname=cmd.cmd_plotpos_creatname;//获取到生成点所需要的轨迹名字
+            std::vector<QString> pointsname=cmd.cmd_plotpos_pointsname;//获取到生成点所需要的点名字
             int robpos_trace_num;//搜索到的点序号
             RobPos Endpoint;
             for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
@@ -2996,6 +3210,152 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         line=n;
                         return 1;
                     }
+                    FitlineSide fitlineside;
+                    Eigen::Vector3d endpoint=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints);//交点
+
+                    float f_headdis=(weld_trace0[0].X-endpoint.x())*(weld_trace0[0].X-endpoint.x())+
+                                    (weld_trace0[0].Y-endpoint.y())*(weld_trace0[0].Y-endpoint.y())+
+                                    (weld_trace0[0].Z-endpoint.z())*(weld_trace0[0].Z-endpoint.z());
+                    float f_tiledis=(weld_trace0[weld_trace0.size()-1].X-endpoint.x())*(weld_trace0[weld_trace0.size()-1].X-endpoint.x())+
+                                    (weld_trace0[weld_trace0.size()-1].Y-endpoint.y())*(weld_trace0[weld_trace0.size()-1].Y-endpoint.y())+
+                                    (weld_trace0[weld_trace0.size()-1].Z-endpoint.z())*(weld_trace0[weld_trace0.size()-1].Z-endpoint.z());
+                    if(f_tiledis>f_headdis)//距离平面越来越远,说明交点放在头部
+                    {
+                        Endpoint=weld_trace0[0];
+                        Endpoint.X=endpoint.x();
+                        Endpoint.Y=endpoint.y();
+                        Endpoint.Z=endpoint.z();
+                    }
+                    else//距离平面越来越近，说明交点放在尾部
+                    {
+                        Endpoint=weld_trace0[weld_trace0.size()-1];
+                        Endpoint.X=endpoint.x();
+                        Endpoint.Y=endpoint.y();
+                        Endpoint.Z=endpoint.z();
+                    }
+                }
+                break;
+                case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
+                {
+                    int point_trace_num_0,point_trace_num_1;
+                    int point_trace_num_2,point_trace_num_3,point_trace_num_4;//搜索到的扫描轨道序号
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(pointsname[0]==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num_0=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(pointsname[1]==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num_1=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(pointsname[2]==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num_2=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(pointsname[3]==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num_3=n;
+                            break;
+                        }
+                    }
+                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    {
+                        if(pointsname[4]==m_mcs->project->projecr_robpos_trace[n].name)
+                        {
+                            point_trace_num_4=n;
+                            break;
+                        }
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num_0].nEn==false)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[0]+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num_1].nEn==false)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[1]+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num_2].nEn==false)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[2]+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num_3].nEn==false)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[3]+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    if(m_mcs->project->projecr_robpos_trace[point_trace_num_4].nEn==false)
+                    {
+                        //点无效
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[4]+QString::fromLocal8Bit("点没有获取到坐标值");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+
+                    std::vector<RobPos> weld_trace0;
+                    weld_trace0.push_back(m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos);
+                    weld_trace0.push_back(m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos);
+                    std::vector<Eigen::VectorXd> linePoints,SidePoints;
+                    for(int n=0;n<weld_trace0.size();n++)
+                    {
+                        Eigen::Vector3d sing_linepoint;
+                        sing_linepoint(0)=weld_trace0[n].X;
+                        sing_linepoint(1)=weld_trace0[n].Y;
+                        sing_linepoint(2)=weld_trace0[n].Z;
+                        linePoints.push_back(sing_linepoint);
+                    }
+                    Eigen::Vector3d sing_linepoint;
+                    sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.X;
+                    sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Y;
+                    sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Z;
+                    SidePoints.push_back(sing_linepoint);
+                    sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.X;
+                    sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.Y;
+                    sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.Z;
+                    SidePoints.push_back(sing_linepoint);
+                    sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.X;
+                    sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.Y;
+                    sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.Z;
+                    SidePoints.push_back(sing_linepoint);
+
                     FitlineSide fitlineside;
                     Eigen::Vector3d endpoint=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints);//交点
 
@@ -4328,6 +4688,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=pos;
             m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
         }
+        else if(key==CMD_GETTCPPOS2_KEY)
+        {
+            QString name=cmd.cmd_gettcppos2_name;//获取到要保存tcp的点名字
+            RobPos pos=cmd.cmd_gettcppos2_pos;
+            int robpos_trace_num;//获取要储存的tcp点下标
+            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            {
+                if(name==m_mcs->project->projecr_robpos_trace[n].name)
+                {
+                    robpos_trace_num=n;//找到要储存的扫描点下标
+                    break;
+                }
+            }
+            m_mcs->project->projecr_robpos_trace[robpos_trace_num].robotpos=pos;
+            m_mcs->project->projecr_robpos_trace[robpos_trace_num].nEn=true;
+        }
         else if(key==CMD_CREATF_KEY)
         {
             QString filename=cmd.cmd_creatf_filename;//获取到要轨迹文件名字
@@ -4353,6 +4729,66 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             }
             //规划后的轨道
             m_mcs->project->project_weld_trace[weld_trace_num].point=weld;
+
+            if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
+            {
+                QString dir="./log/";
+                QString key=SAVELOGFILE_CREATNAME_HEAD;
+                QString time;
+                std::string s_time;
+                TimeFunction to;
+                to.get_time_ms(&s_time);
+                time=QString::fromStdString(s_time);
+                dir=dir+time+key+name;
+                savelog_creat(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
+            }
+        }
+        else if(key==CMD_CREATC_KEY)
+        {
+            QString name=cmd.cmd_creatc_name;//获取到的生成的轨迹名字
+            std::vector<QString> pointsname=cmd.cmd_creatc_pointsname;//获取到要点的轨道名字
+            float speed=cmd.cmd_creatc_speed;
+            int time=cmd.cmd_creatc_time;
+            int weld_trace_num;//搜索到的焊接轨道序号
+            std::vector<RobPos> weld;//轨道
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(name==m_mcs->project->project_weld_trace[n].name)
+                {
+                    weld_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+            std::vector<int> weld_pointsname_num(pointsname.size());
+            for(int m=0;m<pointsname.size();m++)
+            {
+                QString pointname=pointsname[m];
+                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                {
+                    if(pointname==m_mcs->project->projecr_robpos_trace[n].name)
+                    {
+                        weld_pointsname_num[m]=n;//找到要储存的焊接点下标
+                        break;
+                    }
+                }
+            }
+            //把这些点按顺序连接
+            CWeldTarject tarjectMath;
+            std::vector<RobPos> interpolatPos;
+            RobPos pos1=m_mcs->project->projecr_robpos_trace[weld_pointsname_num[0]].robotpos;//获取到移动坐标
+            RobPos pos2=m_mcs->project->projecr_robpos_trace[weld_pointsname_num[1]].robotpos;//获取到移动坐标
+            RobPos pos3=m_mcs->project->projecr_robpos_trace[weld_pointsname_num[2]].robotpos;//获取到移动坐标
+            if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,time,speed))
+            {
+                main_record.lock();
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            //规划后的轨道
+            m_mcs->project->project_weld_trace[weld_trace_num].point=interpolatPos;
 
             if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
             {
