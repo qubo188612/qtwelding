@@ -16,6 +16,7 @@ public:
     my_parameters *m_mcs;
 
     void init_start_process();      //启动流程
+    void init_skip_start_process(int stline);  //从第stline行启动程序
     void stop_process();            //停止流程
     void paused_process();          //暂停流程
     void continue_process();        //继续流程
@@ -25,6 +26,8 @@ public:
     bool b_stop_thread;
 
     volatile int buildline;//当前执行的cmd行数
+
+    bool b_skip;    //是否要直接跳到第buildline行执行程序
 
 
 protected:

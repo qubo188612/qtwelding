@@ -279,6 +279,7 @@ void qtweldingDlg::UpdataUi()
         ui->posOut2addBtn->setDisabled(false);
         ui->posOut3subBtn->setDisabled(false);
         ui->posOut3addBtn->setDisabled(false);
+        ui->projectskiprunBtn->setDisabled(false);
     }
     else
     {
@@ -312,6 +313,7 @@ void qtweldingDlg::UpdataUi()
         ui->posOut2addBtn->setDisabled(true);
         ui->posOut3subBtn->setDisabled(true);
         ui->posOut3addBtn->setDisabled(true);
+        ui->projectskiprunBtn->setDisabled(true);
     }
     if(m_mcs->process->b_processpaused==false)
     {
@@ -374,6 +376,53 @@ void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
         ui->record->append(QString::fromLocal8Bit("停止运行工程"));
     }
     UpdataUi();
+}
+
+void qtweldingDlg::on_projectskiprunBtn_clicked()//从第N行开始运行工程
+{
+    if(m_mcs->process->b_processrun==false)
+    {
+        bool rc;
+        int skipline=ui->projectskiplineEdit->text().toInt(&rc);
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("行数格式错误"));
+            return;
+        }
+        if(ui->projectskiplineEdit->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填入程序的开始行数"));
+            return;
+        }
+        if(skipline<0)
+        {
+            ui->record->append(QString::fromLocal8Bit("程序的开始行数必须大于等于0"));
+            return;
+        }
+        if(skipline>=m_mcs->project->project_cmdlist.size())
+        {
+            ui->record->append(QString::fromLocal8Bit("程序的开始行数必须小于程序总行数"));
+            return;
+        }
+        //开始执行
+        if(m_mcs->rob->b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人未链接成功"));
+        }
+        else if(m_mcs->resultdata.link_result_state==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("激光头未链接成功"));
+        }
+        else
+        {
+            m_mcs->process->init_skip_start_process(skipline);
+            ui->record->append(QString::fromLocal8Bit("开始运行工程"));
+        }
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("请先停止运行工程"));
+    }
 }
 
 void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程
@@ -2585,6 +2634,9 @@ void qtplcThread::Stop()
 }
 
 */
+
+
+
 
 
 

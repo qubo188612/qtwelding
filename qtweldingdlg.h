@@ -238,6 +238,8 @@ private slots:
 
     void on_CircleRuncheckBox_stateChanged(int arg1);
 
+    void on_projectskiprunBtn_clicked();
+
 private:
     Ui::qtweldingDlg *ui;
 

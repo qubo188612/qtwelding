@@ -30,6 +30,18 @@ void Process::init_start_process()      //启动流程
     b_processpaused=false;
 }
 
+void Process::init_skip_start_process(int stline)
+{
+    switch(m_mcs->project->project_Id)
+    {
+        case PROGECT_ID_TEACH_SCAN:
+            m_mcs->process->process1_scanbeforetrace->init_skip_start_process(stline);
+        break;
+    }
+    b_processrun=true;
+    b_processpaused=false;
+}
+
 void Process::stop_process()           //停止流程
 {
     switch(m_mcs->project->project_Id)

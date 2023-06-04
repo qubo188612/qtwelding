@@ -476,6 +476,16 @@ QString my_cmd::cmd_gettcppos2(RobPos pos,QString name)
     return msg;
 }
 
+QString my_cmd::cmd_tracecontinue(QString name_in,RobPos pos,QString name_out)
+{
+    QString msg;
+    msg=QString(CMD_TRACECONTINUE_KEY)+" "+
+        rc_trace(name_in)+" "+
+        rc_pos(pos)+" "+
+        rc_name(name_out);
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -3611,6 +3621,94 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         if(b_NAME==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_POS==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POS+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
+    else if(key==CMD_TRACECONTINUE_KEY)
+    {
+        int pn=0;
+        bool b_TRACE=false;
+        bool b_NAME=false;
+        bool b_POS=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracecontinue_nameout,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TRACE)
+                {
+                    if(b_TRACE==false)
+                    {
+                        b_TRACE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracecontinue_namein,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_POS)
+                {
+                    if(b_POS==false)
+                    {
+                        b_POS=true;
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_tracecontinue_pos,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_TRACE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TRACE+QString::fromLocal8Bit("'项参数");
             return 1;
         }
         else if(b_POS==false)

@@ -18,6 +18,7 @@ public:
     bool b_processpaused;       //工程暂停
 
     void init_start_process();      //启动流程
+    void init_skip_start_process(int stline);  //从第stline行启动程序
     void stop_process();            //停止流程
     void paused_process();          //暂停流程
     void continue_process();        //继续流程

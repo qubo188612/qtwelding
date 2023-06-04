@@ -42,6 +42,7 @@
 //用线计算点的指令, 举例 PLOTPOS: MODE[0] CREATS[第一条,第二条,第三条] NAME[点位3]
 //用五点计算点的指令, 举例 PLOTPOS: MODE[1] POINTS[点位1，点位2，点位3，点位4，点位5] NAME[交点]
 //三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SPEED[25] TIME[16] NAME[跟踪第一条line]
+//生成点位附近继续焊接的轨迹指令，举例 TRACECONTINUE: TRACE[第一条] POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[焊接轨迹]
 
 
 //key项
@@ -73,6 +74,7 @@
 #define CMD_PLOTPOS_KEY                 "PLOTPOS:"      //计算点命令集合KEY
 #define CMD_CREATC_KEY                  "CREATC:"       //三点生成圆弧焊接轨迹命令集合KEY
 #define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"   //生成一个TCP数值的点坐标命令集合KEY
+#define CMD_TRACECONTINUE_KEY           "TRACECONTINUE:"   //生成点位附近继续焊接的轨迹命令集合KEY
 
 
 //参数项
@@ -162,6 +164,7 @@ public:
     QString cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,QString posname);//生成点的方法命令
     QString cmd_creatc(std::vector<QString> pointsname,float speed,int time,QString name);//利用点位生成圆弧
     QString cmd_gettcppos2(RobPos pos,QString name);//生成tcp数值的点坐标值命令
+    QString cmd_tracecontinue(QString name_in,RobPos pos,QString name_out);//生成点位附近继续焊接的轨迹指令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -310,6 +313,10 @@ public:
 
     QString cmd_gettcppos2_name;//获取tcp坐标的名字
     RobPos cmd_gettcppos2_pos;//获取tcp坐标
+
+    QString cmd_tracecontinue_namein;//获取继续焊接的原轨迹
+    RobPos cmd_tracecontinue_pos;//获取继续焊接起点
+    QString cmd_tracecontinue_nameout;//获取继续轨迹
 
 protected:
     QString rc_tcp(int tcp);

@@ -178,6 +178,11 @@
    </item>
    <item>
     <property name="text">
+     <string>TRACECONTINUE: 生成点位附近继续焊接的轨迹指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>TRACING: 跟踪轨迹工艺指令</string>
     </property>
    </item>
