@@ -423,6 +423,7 @@ void qtweldingDlg::on_projectskiprunBtn_clicked()//从第N行开始运行工程
     {
         ui->record->append(QString::fromLocal8Bit("请先停止运行工程"));
     }
+    UpdataUi();
 }
 
 void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程

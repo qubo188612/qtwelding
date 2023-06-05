@@ -418,12 +418,13 @@ QString my_cmd::cmd_creatp(std::vector<QString> pointsname,QString name)
     return msg;
 }
 
-QString my_cmd::cmd_setpose(QString name_in,std::vector<float> pose,QString name_out)
+QString my_cmd::cmd_setpose(QString name_in,std::vector<float> pose,std::vector<float> add,QString name_out)
 {
     QString msg;
     msg=QString(CMD_SETPOSE_KEY)+" "+
         rc_point(name_in)+" "+
         rc_pose(pose)+" "+
+        rc_add(add)+" "+
         rc_name(name_out);
     return msg;
 }
@@ -3085,6 +3086,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_NAME=false;
         bool b_POINT=false;
         bool b_POSE=false;
+        bool b_ADD=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -3150,6 +3152,27 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
+                else if(paramname==CMD_ADD)
+                {
+                    if(b_ADD==false)
+                    {
+                        b_ADD=true;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,cmd_setpose_add,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_setpose_add.size()!=3)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有3个");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
                 else
                 {
                     return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
@@ -3170,6 +3193,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_POSE==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POSE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_ADD==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_ADD+QString::fromLocal8Bit("'项参数");
             return 1;
         }
 

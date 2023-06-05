@@ -1644,9 +1644,8 @@ int toSendbuffer::cmdlist_skip(int stline)
     return 0;
 }
 
-int toSendbuffer::slopbuild(QString list,int n,QString &err)
+int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
 {
-    QString return_msg;
     QString msg,key;
     my_cmd cmd;
     int rc=cmd.decodecmd(list,msg,key);
@@ -2820,6 +2819,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &err)
         QString namein=cmd.cmd_setpose_namein;
         QString nameout=cmd.cmd_setpose_nameout;
         std::vector<float> pose=cmd.cmd_setpose_pose;
+        std::vector<float> add=cmd.cmd_setpose_add;
         int weld_namein_num;
         int weld_nameout_num;
         for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
@@ -2850,6 +2850,9 @@ int toSendbuffer::slopbuild(QString list,int n,QString &err)
         pos.RX=pose[0];
         pos.RY=pose[1];
         pos.RZ=pose[2];
+        pos.X=pos.X+add[0];
+        pos.Y=pos.Y+add[0];
+        pos.Z=pos.Z+add[0];
         m_mcs->project->projecr_robpos_trace[weld_nameout_num].robotpos=pos;
         m_mcs->project->projecr_robpos_trace[weld_nameout_num].nEn=true;
     }
@@ -3091,34 +3094,37 @@ int toSendbuffer::slopbuild(QString list,int n,QString &err)
                     return 1;
                 }
 
+
                 std::vector<RobPos> weld_trace0;
                 weld_trace0.push_back(m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos);
                 weld_trace0.push_back(m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos);
-                std::vector<Eigen::VectorXd> linePoints,SidePoints;
-                for(int n=0;n<weld_trace0.size();n++)
-                {
-                    Eigen::Vector3d sing_linepoint;
-                    sing_linepoint(0)=weld_trace0[n].X;
-                    sing_linepoint(1)=weld_trace0[n].Y;
-                    sing_linepoint(2)=weld_trace0[n].Z;
-                    linePoints.push_back(sing_linepoint);
-                }
-                Eigen::Vector3d sing_linepoint;
-                sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.X;
-                sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Y;
-                sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Z;
-                SidePoints.push_back(sing_linepoint);
-                sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.X;
-                sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.Y;
-                sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.Z;
-                SidePoints.push_back(sing_linepoint);
-                sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.X;
-                sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.Y;
-                sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.Z;
-                SidePoints.push_back(sing_linepoint);
+                Eigen::Vector3d a,b,c,d,e;
+                a.x()=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.X;
+                a.y()=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Y;
+                a.z()=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Z;
+                b.x()=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.X;
+                b.y()=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.Y;
+                b.z()=m_mcs->project->projecr_robpos_trace[point_trace_num_3].robotpos.Z;
+                c.x()=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.X;
+                c.y()=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.Y;
+                c.z()=m_mcs->project->projecr_robpos_trace[point_trace_num_4].robotpos.Z;
 
-                FitlineSide fitlineside;
-                Eigen::Vector3d endpoint=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints);//交点
+                d.x()=m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos.X;
+                d.y()=m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos.Y;
+                d.z()=m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos.Z;
+                e.x()=m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos.X;
+                e.y()=m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos.Y;
+                e.z()=m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos.Z;
+
+                Eigen::Vector3d ab=b-a;
+                Eigen::Vector3d ac=c-a;
+                Eigen::Vector3d nn=ab.cross(ac);
+
+                Eigen::Vector3d v=e-d;
+
+                double dot_product=nn.dot(v);
+                double t=-(nn.dot(d-a))/dot_product;
+                Eigen::Vector3d endpoint=d+t*v;
 
                 float f_headdis=(weld_trace0[0].X-endpoint.x())*(weld_trace0[0].X-endpoint.x())+
                                 (weld_trace0[0].Y-endpoint.y())*(weld_trace0[0].Y-endpoint.y())+
@@ -3280,14 +3286,15 @@ int toSendbuffer::slopbuild(QString list,int n,QString &err)
                 float dis=(point-point_st).norm();
                 if(dis<min_dis)
                 {
+                    min_dis=dis;
                     min_n=n;
                     min_m=m;
                 }
             }
         }
-        std::vector<Weld_trace_onec> newweld(weld.size()-(min_n+1)+1+1);
+        std::vector<Weld_trace_onec> newweld(weld.size()-(min_n+1)+1);
         Weld_trace_onec sing;
-        std::vector<RobPos> posgroup(weld[min_n].point.size()-min_m+1);
+        std::vector<RobPos> posgroup(weld[min_n].point.size()-min_m);
         for(int m=min_m;m<weld[min_n].point.size();m++)
         {
             posgroup[m-min_m]=weld[min_n].point[m];
@@ -3315,8 +3322,6 @@ int toSendbuffer::slopbuild(QString list,int n,QString &err)
         }
 
     }
-
-    err=return_msg;
     return 0;
 }
 
@@ -5589,8 +5594,8 @@ int toSendbuffer::savelog_point(QString filename,RobPos point)
     }
     fp.write(msg.toStdString().c_str());
     msg="pos("+QString::number(point.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(point.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(point.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-               QString::number(point.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(point.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(point.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
-               QString::number(point.out_1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(point.out_2,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(point.out_3,'f',ROBOT_POSE_DECIMAL_PLACE)+")\r\n";
+               QString::number(point.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(point.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(point.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+               QString::number(point.out_1)+","+QString::number(point.out_2)+","+QString::number(point.out_3)+")\r\n";
     fp.write(msg.toStdString().c_str());
     fp.close();
     return 0;
@@ -5622,7 +5627,7 @@ int toSendbuffer::loadlog_point(QString filename,RobPos &point)
             fp.close();
             return -1;
         }
-        int data=posgroup[0].toInt(&rc);
+        int data=posgroup[1].toInt(&rc);
         if(rc==false)
         {
             fp.close();
@@ -5630,11 +5635,11 @@ int toSendbuffer::loadlog_point(QString filename,RobPos &point)
         }
         if(data==0)
         {
-            point.nEn=0;
+            pos.nEn=0;
         }
         else
         {
-            point.nEn=1;
+            pos.nEn=1;
         }
         line = in.readLine();//读取一行放到字符串里
         if(!line.isNull())
@@ -5728,8 +5733,8 @@ int toSendbuffer::savelog_creat(QString filename,std::vector<RobPos> trace)
     for(int n=0;n<trace.size();n++)
     {
         msg="Num"+QString::number(n)+": ("+QString::number(trace[n].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                                           QString::number(trace[n].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
-                                           QString::number(trace[n].out_1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].out_2,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].out_3,'f',ROBOT_POSE_DECIMAL_PLACE)+")\r\n";
+                                           QString::number(trace[n].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                           QString::number(trace[n].out_1)+","+QString::number(trace[n].out_2)+","+QString::number(trace[n].out_3)+")\r\n";
         fp.write(msg.toStdString().c_str());
     }
     fp.close();
@@ -5835,8 +5840,8 @@ int toSendbuffer::savelog_trace(QString filename,std::vector<Weld_trace_onec> tr
         for(int m=0;m<trace[n].point.size();m++)
         {
             msg="Num"+QString::number(n)+","+QString::number(m)+": ("+QString::number(trace[n].point[m].X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                      QString::number(trace[n].point[m].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+
-                      QString::number(trace[n].point[m].out_1,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].out_2,'f',ROBOT_POSE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].out_3,'f',ROBOT_POSE_DECIMAL_PLACE)+")\r\n";
+                      QString::number(trace[n].point[m].RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+QString::number(trace[n].point[m].RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                      QString::number(trace[n].point[m].out_1)+","+QString::number(trace[n].point[m].out_2)+","+QString::number(trace[n].point[m].out_3)+")\r\n";
             fp.write(msg.toStdString().c_str());
         }
     }

@@ -41,6 +41,7 @@ void keysetposeDlg::init_dlg_show(QString cmdlist)
             QString namein=cmd.cmd_setpose_namein;
             QString nameout=cmd.cmd_setpose_nameout;
             std::vector<float> pose=cmd.cmd_setpose_pose;
+            std::vector<float> add=cmd.cmd_setpose_add;
             int point_trace_num;
             for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
             {
@@ -58,6 +59,9 @@ void keysetposeDlg::init_dlg_show(QString cmdlist)
             ui->setposeRXEdit->setText(QString::number(pose[0],'f',ROBOT_POSTURE_DECIMAL_PLACE));
             ui->setposeRYEdit->setText(QString::number(pose[1],'f',ROBOT_POSTURE_DECIMAL_PLACE));
             ui->setposeRZEdit->setText(QString::number(pose[2],'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            ui->setposeaddXEdit->setText(QString::number(add[0],'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->setposeaddYEdit->setText(QString::number(add[1],'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->setposeaddZEdit->setText(QString::number(add[2],'f',ROBOT_POSE_DECIMAL_PLACE));
         }
     }
     ui->record->clear();
@@ -116,6 +120,7 @@ void keysetposeDlg::on_setposeBtn_clicked()
     QString nameout=ui->setposenameEdit->text();
     QString namein=ui->setposecomboBox->currentText();
     std::vector<float> pose(3);
+    std::vector<float> add(3);
     bool rc;
     if(namein.isEmpty())
     {
@@ -160,6 +165,40 @@ void keysetposeDlg::on_setposeBtn_clicked()
         ui->record->append(QString::fromLocal8Bit("设置姿态RZ格式错误"));
         return;
     }
+
+    if(ui->setposeaddXEdit->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写设置补偿X"));
+        return;
+    }
+    add[0]=ui->setposeaddXEdit->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("设置补偿X格式错误"));
+        return;
+    }
+    if(ui->setposeaddYEdit->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写设置补偿Y"));
+        return;
+    }
+    add[1]=ui->setposeaddYEdit->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("设置补偿Y格式错误"));
+        return;
+    }
+    if(ui->setposeaddZEdit->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写设置补偿Z"));
+        return;
+    }
+    add[2]=ui->setposeaddZEdit->text().toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("设置补偿Z格式错误"));
+        return;
+    }
     if(b_inster==false)
     {
         for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
@@ -171,7 +210,7 @@ void keysetposeDlg::on_setposeBtn_clicked()
             }
         }
     }
-    msg=cmd.cmd_setpose(namein,pose,nameout);
+    msg=cmd.cmd_setpose(namein,pose,add,nameout);
     ui->record->append(QString::fromLocal8Bit("插入点坐标姿态指令成功"));
     cmd_msg=msg;
     done(1);

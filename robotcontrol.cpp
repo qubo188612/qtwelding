@@ -496,9 +496,15 @@ void Robotcontrol::RobotCLOSE_ELE()
             if(b_totalcontrol_Thread==true)
             {
                 mutextotalcontrol_buf_group.lock();
-                QString msg="ResetRobot()";    //机器人停止
+                QString msg="StopScript()";    //机器人停止
+             // QString msg="DisableRobot()";    //机器人停止
                 std::string str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
+                /*
+                msg="ResetRobot()";
+                str=msg.toStdString();
+                totalcontrol_buf_group.push_back(str);
+                */
                 mutextotalcontrol_buf_group.unlock();
                 usleep(ROB_WORK_DELAY);
             }
@@ -1750,8 +1756,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                         break;
                                                         case FIRE:         //起弧
                                                         {
-                                                            QString msg="AO(2"+QString::number(eled,'f',3)+")";
+                                                            QString msg="Sync()";
                                                             std::string str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                            msg="AO(2,"+QString::number(eled,'f',3)+")";
+                                                            str=msg.toStdString();
                                                             _p->send_buf_group.push_back(str);
                                                             msg="DOGroup(6,0,7,1,8,0)";
                                                             str=msg.toStdString();
@@ -2063,16 +2072,22 @@ void RobotcontrolThread1::run() //接到上位机命令
                                         mutexsend_buf_group.lock();
                                         if(A_output[0]!=AO1)
                                         {
-                                            AO1=A_output[0];
-                                            QString msg="AO(1,"+QString::number(AO1,'f',3)+")";
+                                            QString msg="Sync()";
                                             std::string str=msg.toStdString();
+                                            _p->send_buf_group.push_back(str);
+                                            AO1=A_output[0];
+                                            msg="AO(1,"+QString::number(AO1,'f',3)+")";
+                                            str=msg.toStdString();
                                             _p->send_buf_group.push_back(str);
                                         }
                                         if(A_output[1]!=AO2)
                                         {
-                                            AO2=A_output[1];
-                                            QString msg="AO(2,"+QString::number(AO2,'f',3)+")";
+                                            QString msg="Sync()";
                                             std::string str=msg.toStdString();
+                                            _p->send_buf_group.push_back(str);
+                                            AO2=A_output[1];
+                                            msg="AO(2,"+QString::number(AO2,'f',3)+")";
+                                            str=msg.toStdString();
                                             _p->send_buf_group.push_back(str);
                                         }
                                         mutexsend_buf_group.unlock();
@@ -2121,11 +2136,11 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             case ROBOT_MODEL_DOBOT://越彊机器人
                                             {
                                                 mutextotalcontrol_buf_group.lock();
-                                            //  QString msg="StopScript()";
-                                            //  std::string str=msg.toStdString();
-                                            //  _p->totalcontrol_buf_group.push_back(str);
-                                                QString msg="ResetRobot()";
+                                                QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                msg="ResetRobot()";
+                                                str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
                                                 mutextotalcontrol_buf_group.unlock();
                                             }
@@ -2217,10 +2232,13 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             {
                                                 mutextotalcontrol_buf_group.lock();
                                              // QString msg="PauseScript()";
-                                             // QString msg="StopScript()";
-                                                QString msg="ResetRobot()";
+                                                QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
+                                                /*
+                                                msg="ResetRobot()";
+                                                str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);*/
                                                 mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;
@@ -2285,9 +2303,14 @@ void RobotcontrolThread1::run() //接到上位机命令
                                             {
                                                 mutextotalcontrol_buf_group.lock();
                                             //  QString msg="ContinueScript()";
-                                                QString msg="ResetRobot()";
+                                                QString msg="StopScript()";
                                                 std::string str=msg.toStdString();
                                                 _p->totalcontrol_buf_group.push_back(str);
+                                                /*
+                                                msg="ResetRobot()";
+                                                str=msg.toStdString();
+                                                _p->totalcontrol_buf_group.push_back(str);
+                                                */
                                                 mutextotalcontrol_buf_group.unlock();
                                             }
                                             break;

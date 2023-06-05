@@ -35,7 +35,7 @@
 //摆焊指令，举例 WAVE: TRACE[第一条] WAVE[1,2,3,4,5,6,7,8,9,10,11,12] NAME[摆焊轨迹]
 //模拟量输出指令，举例 AOUT: AOUT[0.1,0.2,0.3,0.4]
 //多点位生成焊接轨迹指令, 举例 CREATP: POINTS[点位1，点位2，点位3，点位4] NAME[跟踪第一条line]
-//重设点位的姿态指令, 举例 SETPOSE: POINT[点位1] POSE[1.2,1.3,1.6] NAME[点位2]
+//重设点位的姿态指令, 举例 SETPOSE: POINT[点位1] POSE[1.2,1.3,1.6] ADD[1,2,3] NAME[点位2]
 //将当前TCP获取为点坐标指令, 举例 GETTCPPOS: NAME[寻位的点point1] ADD[1,2,3]
 //生成一个TCP数值的点坐标指令，举例 GETTCPPOS2: POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[寻位的点point1]
 //载入文件焊接轨迹指令, 举例 CREATF: FILE[文件路径] NAME[焊接轨迹1]
@@ -158,7 +158,7 @@ public:
     QString cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_out);//摆焊指令
     QString cmd_aout(std::vector<float> a);//输出模拟量
     QString cmd_creatp(std::vector<QString> pointsname,QString name);//利用点位生成轨迹
-    QString cmd_setpose(QString name_in,std::vector<float> pose,QString name_out);//重设点位的姿态
+    QString cmd_setpose(QString name_in,std::vector<float> pose,std::vector<float> add,QString name_out);//重设点位的姿态
     QString cmd_gettcppos(QString name,std::vector<float> add);//获取tcp的点坐标值命令
     QString cmd_creatf(QString filename,QString name);//利用文件生成轨迹
     QString cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,QString posname);//生成点的方法命令
@@ -294,6 +294,8 @@ public:
     QString cmd_setpose_namein;//获得重设点位姿态名字
     QString cmd_setpose_nameout;//获得重设点位姿态名字结果
     std::vector<float> cmd_setpose_pose;//获得重设点位姿态
+    std::vector<float> cmd_setpose_add;//获得重设点位姿态补偿
+
 
     QString cmd_gettcppos_name;//获取tcp坐标的名字
     std::vector<float> cmd_gettcppos_add;//获取tcp坐标补偿
