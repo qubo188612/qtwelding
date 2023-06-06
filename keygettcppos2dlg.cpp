@@ -17,6 +17,7 @@ keygettcppos2Dlg::~keygettcppos2Dlg()
 
 void keygettcppos2Dlg::init_dlg_show()
 {
+    cmd_list_in.clear();
     ui->record->clear();
     ui->arrive_pos->clear();
     ui->groupBox_2->setDisabled(true);
@@ -26,13 +27,14 @@ void keygettcppos2Dlg::init_dlg_show(QString cmdlist)
 {
     QString msg,key;
     my_cmd cmd;
+    cmd_list_in=cmdlist;
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
         if(key==CMD_GETTCPPOS2_KEY)//获得点坐标指令
         {
             QString name=cmd.cmd_gettcppos2_name;
-            RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+            RobPos pos=cmd.cmd_gettcppos2_pos;//获取到移动坐标
             QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                             QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                             QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
@@ -80,9 +82,11 @@ void keygettcppos2Dlg::on_arriveBtn_pressed()
     m_mcs->tosendbuffer->cmd_lock(0);
     float speed=m_mcs->e2proomdata.maindlg_movespeed;
     my_cmd cmd;
+    QString key,msg;
+    cmd.decodecmd(cmd_list_in,msg,key);
     Robmovemodel movemod=MOVEJ;//获取到的移动模式
     int tcp=m_mcs->e2proomdata.maindlg_movetcp;
-    RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+    RobPos pos=cmd.cmd_gettcppos2_pos;//获取到移动坐标
     movemod=MOVEJ;//用关节移动方式到位
 //  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动

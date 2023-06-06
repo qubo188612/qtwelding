@@ -112,6 +112,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->weld_current->setText(QString::fromLocal8Bit("0.000"));
     ui->weld_process->setText(QString::fromLocal8Bit("平焊"));
     ui->weld_alternating->setText(QString::fromLocal8Bit("直流"));
+    ui->robotEncheckBox->setCheckState(Qt::Checked);
 
     if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox==0)
     {
@@ -889,6 +890,21 @@ void qtweldingDlg::on_CircleRuncheckBox_stateChanged(int arg1)
         ui->record->append(QString::fromLocal8Bit("开启循环运行功能"));
     }
     m_mcs->e2proomdata.write_maindlg_para();
+}
+
+//切换TCP
+void qtweldingDlg::on_movetcpcombo_currentIndexChanged(int index)
+{
+    if(m_mcs->rob->b_link_ctx_posget==true)
+    {
+        int tcp=index;
+        m_mcs->tosendbuffer->cmd_settcp(tcp);
+        ui->record->append(QString::fromLocal8Bit("切换tcp"));
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+    }
 }
 
 //X-按下
@@ -2635,6 +2651,8 @@ void qtplcThread::Stop()
 }
 
 */
+
+
 
 
 

@@ -37,6 +37,8 @@ public:
     void cmd_elec(Weldworkmodel work);//焊机启停命令
     void cmd_ioout(std::vector<int> io);//IO输出命令
     void cmd_aout(std::vector<float> a);//A模拟量输出命令
+    void cmd_settcp(int tcp);//设置tcp;
+    void cmd_speed(float speed);//设置速度;
 
     int cmdlist_check();//检查指令
     int cmdlist_skip(int stline);//跳过执行步骤

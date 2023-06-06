@@ -61,6 +61,16 @@ Coord_Matrix4d_result::Coord_Matrix4d_result()
     nEn=false;
 }
 
+Weld_trace_onec::Weld_trace_onec()
+{
+    Sample=false;
+}
+
+Weld_trace_result::Weld_trace_result()
+{
+    Sample=false;
+}
+
 wWAVEParam::wWAVEParam()
 {
     period=0;

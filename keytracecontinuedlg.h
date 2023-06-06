@@ -19,6 +19,7 @@ public:
 
     my_parameters *m_mcs;
     QString cmd_msg;        //生成的指令
+    QString cmd_list_in;
 
     void init_dlg_show();
     void init_dlg_show(QString cmdlist);

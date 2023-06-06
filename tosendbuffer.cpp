@@ -1659,6 +1659,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         int weld_trace_num_in;//搜索到的焊接轨道序号
         int weld_trace_num_out;//搜索到的焊接轨道序号
         std::vector<RobPos> interpolatweld;//轨道
+        bool Sample;
 
         //这里添加移动命令
         for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
@@ -1685,7 +1686,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         std::string fname = code->fromUnicode(craftfilepath).data();
         m_mcs->craft->LoadCraft((char*)fname.c_str());
         interpolatweld=m_mcs->project->project_weld_trace[weld_trace_num_in].point;
-
+        Sample=m_mcs->project->project_weld_trace[weld_trace_num_in].Sample;
         //这里添加姿态
         switch(m_mcs->craft->craft_id)
         {
@@ -2199,6 +2200,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             break;
         }
         Weld_trace_onec trace_onec;
+        trace_onec.Sample=Sample;
         trace_onec.point=interpolatweld;
         trace_onec.speed=speed;
         m_mcs->project->project_interweld_trace[weld_trace_num_out].trace.push_back(trace_onec);
@@ -2658,6 +2660,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             return 1;
         }
         m_mcs->project->project_weld_trace[weld_trace_num].point=interpolatweld;
+        m_mcs->project->project_weld_trace[weld_trace_num].Sample=true;
         if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
         {
             QString dir="./log/";
@@ -2751,6 +2754,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 return 1;
             }
             wavetrace.speed=trace.speed;
+            wavetrace.Sample=trace.Sample;
             trace_out[n]=wavetrace;
         }
         m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace=trace_out;
@@ -3197,7 +3201,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         }
         //规划后的轨道
         m_mcs->project->project_weld_trace[weld_trace_num].point=interpolatPos;
-
+        m_mcs->project->project_weld_trace[weld_trace_num].Sample=true;
         if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
         {
             QString dir="./log/";
@@ -4983,13 +4987,38 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
             }
             //这里添加移动指令
+
             for(int n=0;n<m_mcs->project->project_interweld_trace[weld_tracing_num].trace.size();n++)
             {
                 Weld_trace_onec trace=m_mcs->project->project_interweld_trace[weld_tracing_num].trace[n];
                 for(int m=0;m<trace.point.size();m++)
                 {
                     RobPos pos=trace.point[m];
-                    cmd_move(pos,MOVEL,trace.speed,tcp);//这里考虑暂停如何加
+                    if(m==0)
+                    {
+                        cmd_move(pos,MOVEL,trace.speed,tcp);//这里考虑暂停如何加
+                    }
+                    else
+                    {
+                        if(trace.Sample==false)
+                            cmd_move(pos,MOVEL,trace.speed,tcp);//稀疏轨迹
+                        else
+                        {
+                            cmd_move(pos,MOVEP,trace.speed,tcp);//密集轨迹
+                            if(b_cmdlist_build==false)     //停止
+                            {
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("手动停止进程");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                paused_key=key;
+                                cmd_lock(1);
+                                line=n;
+                                return 1;
+                            }
+                            usleep(30000);
+                        }
+                    }
                 }
             }
             usleep(ROB_WORK_DELAY);
@@ -5161,6 +5190,35 @@ void toSendbuffer::cmd_lock(int lock)
     sendrob.ctx=m_mcs->rob->ctx_posget;
     sendrob.data.resize(1);
     sendrob.data[0]=lock;
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_settcp(int tcp)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_TCP_NUM_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(1);
+    sendrob.data[0]=tcp;
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_speed(float speed)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_MOVESPEED_FH_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(2);
+    sendrob.data[0]=*((u_int16_t*)&speed);
+    sendrob.data[1]=*((u_int16_t*)&speed+1);
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;

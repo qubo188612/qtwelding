@@ -739,14 +739,18 @@ public:
 class Weld_trace_result  //跟踪轨迹
 {
 public:
+    Weld_trace_result();
     std::vector<RobPos> point;//跟踪轨迹结果
+    bool Sample;   //是否采样过了
     QString name; //跟踪轨迹名字
 };
 
 class Weld_trace_onec//跟踪工艺轨迹的一小段
 {
 public:
+    Weld_trace_onec();
     std::vector<RobPos> point;//跟踪轨迹结果
+    bool Sample;   //是否采样过了
     float speed;//这一小段的跟踪速度
 };
 
@@ -771,6 +775,7 @@ typedef enum Robmovemodel_ID            //机器人移动方式
     MOVEL=0,        //直线运动
     MOVEJ=1,        //关节运动
     MOVEC=2,        //圆运动
+    MOVEP=3,        //密集点连续移动
 }Robmovemodel;
 
 typedef enum IOmodel_ID     //机器人IO口收发方式

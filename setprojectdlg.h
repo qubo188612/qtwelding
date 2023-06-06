@@ -229,6 +229,8 @@ private slots:
 
     void on_ctlposOut3addBtn_released();
 
+    void on_ctlmovetcpcombo_currentIndexChanged(int index);
+
 private:
     Ui::setprojectDlg *ui;
     int now_cmdline;         //当前指向CMD行数

@@ -2971,6 +2971,20 @@ void setprojectDlg::on_ctlrobotEncheckBox_stateChanged(int arg1)
     }
 }
 
+void setprojectDlg::on_ctlmovetcpcombo_currentIndexChanged(int index)
+{
+    if(m_mcs->rob->b_link_ctx_posget==true)
+    {
+        int tcp=index;
+        m_mcs->tosendbuffer->cmd_settcp(tcp);
+        ui->record->append(QString::fromLocal8Bit("切换tcp"));
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+    }
+}
+
 //机器人X-按下
 void setprojectDlg::on_ctlposXsubBtn_pressed()
 {
@@ -3807,3 +3821,6 @@ void setprojectThread::Stop()
     }
   }
 }
+
+
+

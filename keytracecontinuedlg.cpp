@@ -16,6 +16,7 @@ keytracecontinueDlg::~keytracecontinueDlg()
 
 void keytracecontinueDlg::init_dlg_show()
 {
+    cmd_list_in.clear();
     ui->record->clear();
     ui->arrive_pos->clear();
     ui->groupBox_2->setDisabled(true);
@@ -35,6 +36,7 @@ void keytracecontinueDlg::init_dlg_show(QString cmdlist)
     }
     QString msg,key;
     my_cmd cmd;
+    cmd_list_in=cmdlist;
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
@@ -42,7 +44,7 @@ void keytracecontinueDlg::init_dlg_show(QString cmdlist)
         {
             QString name=cmd.cmd_tracecontinue_nameout;
             QString namein=cmd.cmd_tracecontinue_namein;
-            RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+            RobPos pos=cmd.cmd_tracecontinue_pos;//获取到移动坐标
             int weld_trace_num;
             QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                             QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
@@ -104,9 +106,11 @@ void keytracecontinueDlg::on_arriveBtn_pressed()
     m_mcs->tosendbuffer->cmd_lock(0);
     float speed=m_mcs->e2proomdata.maindlg_movespeed;
     my_cmd cmd;
+    QString key,msg;
+    cmd.decodecmd(cmd_list_in,msg,key);
     Robmovemodel movemod=MOVEJ;//获取到的移动模式
     int tcp=m_mcs->e2proomdata.maindlg_movetcp;
-    RobPos pos=cmd.cmd_move_pos;//获取到移动坐标
+    RobPos pos=cmd.cmd_tracecontinue_pos;//获取到移动坐标
     movemod=MOVEJ;//用关节移动方式到位
 //  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
