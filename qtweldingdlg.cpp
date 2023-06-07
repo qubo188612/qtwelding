@@ -133,12 +133,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->weld_eled->setText(QString::number(m_mcs->e2proomdata.maindlg_Weldeled,'f',3));
     ui->weld_elem->setCurrentIndex(m_mcs->e2proomdata.maindlg_Weldelem);
 
-    for(int n=0;n<ROBOTTCPNUM;n++)
-    {
-        QString msg="TCP: "+QString::number(n);
-        ui->movetcpcombo->addItem(msg);
-    }
-    ui->movetcpcombo->setCurrentIndex(m_mcs->e2proomdata.maindlg_movetcp);
+
     adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->movespeed->setValidator(adoubleValidator_speed);
     ui->movespeed->setText(QString::number(m_mcs->e2proomdata.maindlg_movespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
@@ -180,6 +175,28 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
 //  b_thread4=true;
 //  thread4->start();
+
+    for(int n=0;n<ROBOTTCPNUM;n++)
+    {
+        QString msg="TCP: "+QString::number(n);
+        ui->movetcpcombo->addItem(msg);
+    }
+
+    connect(ui->movetcpcombo,&QComboBox::currentIndexChanged,[=](){
+        if(m_mcs->rob->b_link_ctx_posget==true)
+        {
+            int tcp=ui->movetcpcombo->currentIndex();
+            m_mcs->tosendbuffer->cmd_settcp(tcp);
+            ui->record->append(QString::fromLocal8Bit("切换tcp"));
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        }
+        UpdataUi();
+    });
+
+    ui->movetcpcombo->setCurrentIndex(m_mcs->e2proomdata.maindlg_movetcp);
 
     UpdataUi();
 
@@ -893,6 +910,7 @@ void qtweldingDlg::on_CircleRuncheckBox_stateChanged(int arg1)
 }
 
 //切换TCP
+/*
 void qtweldingDlg::on_movetcpcombo_currentIndexChanged(int index)
 {
     if(m_mcs->rob->b_link_ctx_posget==true)
@@ -906,6 +924,7 @@ void qtweldingDlg::on_movetcpcombo_currentIndexChanged(int index)
         ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
     }
 }
+*/
 
 //X-按下
 void qtweldingDlg::on_posXsubBtn_pressed()
@@ -1733,6 +1752,13 @@ void qtweldingDlg::ConnectRobot()
         else
         {
             ui->record->append(QString::fromLocal8Bit("机器人远程IP地址格式错误"));
+        }
+        //写入TCP
+        u16_data[0]=m_mcs->e2proomdata.maindlg_movetcp;
+        rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_TCP_NUM_REG_ADD,1,u16_data);
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人TCP设置失败"));
         }
         //写入外部轴数量
         u16_data[0]=m_mcs->rob->out_num;

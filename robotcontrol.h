@@ -119,7 +119,7 @@ public:
 
     uint8_t *totalcontrolrcv_buf;   //机器人接受发送总控数据回复信息
 
-    void RobotInit();   //机器人初始化
+    void RobotInit(int tcp);   //机器人初始化
 
     void RobotOPEN_ELE(bool b_wait=true); //机器人上电
     void RobotCLOSE_ELE(); //机器人断电

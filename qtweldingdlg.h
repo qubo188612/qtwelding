@@ -240,7 +240,7 @@ private slots:
 
     void on_projectskiprunBtn_clicked();
 
-    void on_movetcpcombo_currentIndexChanged(int index);
+//  void on_movetcpcombo_currentIndexChanged(int index);
 
 private:
     Ui::qtweldingDlg *ui;

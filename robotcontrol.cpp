@@ -278,7 +278,7 @@ void Robotcontrol::clear_movepoint_buffer()
     mutexmovepoint_buffer_group.unlock();
 }
 
-void Robotcontrol::RobotInit()//机器人初始化
+void Robotcontrol::RobotInit(int tcp)//机器人初始化
 {
     mutexmovepoint_buffer_group.lock();
     movepoint_buffer.clear();
@@ -307,13 +307,12 @@ void Robotcontrol::RobotInit()//机器人初始化
                 str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
                 mutextotalcontrol_buf_group.unlock();
-                /*
+
                 mutexsend_buf_group.lock();
-                msg="DOGroup(1,0,2,0,3,0,4,0,5,0,6,0,7,0,8,0)";    //机器人IO口设置0
+                msg="Tool("+QString::number(tcp)+")";
                 str=msg.toStdString();
                 send_buf_group.push_back(str);
                 mutexsend_buf_group.unlock();
-                */
             }
         }
         break;
@@ -1703,7 +1702,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                     fdmax = *fds.rbegin();
                     ret = 0;
                 }
-                else if (ret > 0)
+                else if (ret > 0 && (query[7] == 0x10||query[7] == 0x04))
                 {       
                     _p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD]=65535;
@@ -2549,6 +2548,7 @@ void RobotlinkThread::run() //连接机器人命令
                         QString::number(ip[1])+"."+
                         QString::number(ip[2])+"."+
                         QString::number(ip[3]);
+        int tcp=_p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD];
 
         static ROBOT_MODEL old_rob_mod=ROBOT_MODEL_NULL;    //老机器人型号
         _p->rob_mod=(ROBOT_MODEL)_p->mb_mapping->tab_registers[ROB_MODEL_REG_ADD];
@@ -3011,7 +3011,8 @@ void RobotlinkThread::run() //连接机器人命令
                 }
                 break;
             }
-            _p->RobotInit();
+            _p->RobotInit(tcp);
+
             main_record.lock();
             QString return_msg=QString::fromLocal8Bit("机器人状态获取成功");
             _p->m_mcs->main_record.push_back(return_msg);

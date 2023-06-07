@@ -5381,6 +5381,7 @@ void toSendbuffer::cmd_elec(Weldworkmodel work)
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
     m_mcs->rob->weld_state=(Weldworkmodel)work;
+    u16data_elec_work=work;
     send_group_robot.unlock();
 }
 
