@@ -459,7 +459,14 @@ void Robotcontrol::RobotDisOPEN_ELE()
         break;
         case ROBOT_MODEL_UR://优傲机器人
         {
-
+            if(b_totalcontrol_Thread==true)
+            {
+                mutextotalcontrol_buf_group.lock();
+                QString msg="power off\r\n";    //机器人下电使能
+                std::string str=msg.toStdString();
+                totalcontrol_buf_group.push_back(str);
+                mutextotalcontrol_buf_group.unlock();
+            }
         }
         break;
         case ROBOT_MODEL_KUKA://库卡机器人
@@ -2079,7 +2086,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     case ROBOT_MODEL_DOBOT://越彊机器人
                                     {
                                         mutexsend_buf_group.lock();
-                                        QString msg;    //机器人tcp口设置0
+                                        QString msg;
                                         msg="SpeedL("+QString::number((int)f_speed)+")";
                                         std::string str=msg.toStdString();
                                         _p->send_buf_group.push_back(str);
@@ -2088,7 +2095,16 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     break;
                                     case ROBOT_MODEL_UR://优傲机器人
                                     {
-
+                                        mutexsend_buf_group.lock();
+                                        QString msg;
+                                        float f_a=1.2;  //加速度
+                                        float t_min=0;  //函数返回前的最短时间
+                                        msg="speedl("+QString::number(f_speed,'f',ROBOT_SPEED_DECIMAL_PLACE)+","+
+                                                      QString::number(f_a,'f',ROBOT_SPEED_DECIMAL_PLACE)+","+
+                                                      QString::number(t_min,'f',3)+")";
+                                        std::string str=msg.toStdString();
+                                        _p->send_buf_group.push_back(str);
+                                        mutexsend_buf_group.unlock();
                                     }
                                     break;
                                     case ROBOT_MODEL_KUKA://库卡机器人
@@ -2517,6 +2533,10 @@ void RobotcontrolThread1::run() //接到上位机命令
                             }
                         }
                     }
+                }
+                else if (ret > 0)//读寄存器
+                {
+                    modbus_reply(_p->ctx_robotcontrol, query, ret, _p->mb_mapping);
                 }
                 sleep(0);
             }
