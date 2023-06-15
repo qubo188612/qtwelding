@@ -59,9 +59,9 @@ typedef enum PLC_MODEL_ID            //PLC型号（协议）
 #define ROBOT_UR_INFO_PORT                        30003    //优傲机器人数据信息获取端口
 #define ROBOT_UR_INFO_RECVBUFFER_MAX              1108     //优傲机器人数据信息最大个数
 
-#define ROBOT_KUKA_SEND_PORT                      30001    //库卡机器人运动指令数据信息发送端口
+#define ROBOT_KUKA_SEND_PORT                      54611    //库卡机器人运动指令数据信息发送端口
 #define ROBOT_KUKA_INFO_SENDRECVBUFFER_MAX        1440     //库卡机器人运动指令发送数据回复信息最大个数
-#define ROBOT_KUKA_INFO_PORT                      30003    //库卡机器人信息端口
+#define ROBOT_KUKA_INFO_PORT                      54610    //库卡机器人信息端口
 #define ROBOT_KUKA_INFO_RECVBUFFER_MAX            1440     //库卡机器人数据信息最大个数
 
 #define ROBOT_KAWASAKI_SEND_PORT                  23       //川崎机器人运动指令数据信息发送端口

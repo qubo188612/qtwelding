@@ -279,6 +279,8 @@ void qtweldingDlg::UpdataUi()
         ui->weld_gassBtn->setDisabled(false);
         ui->weld_windBtn->setDisabled(false);
         ui->weld_rewindBtn->setDisabled(false);
+        ui->setplcBtn->setDisabled(false);
+        ui->setweldBtn->setDisabled(false);
         ui->posXsubBtn->setDisabled(false);
         ui->posXaddBtn->setDisabled(false);
         ui->posYsubBtn->setDisabled(false);
@@ -313,6 +315,8 @@ void qtweldingDlg::UpdataUi()
         ui->weld_gassBtn->setDisabled(true);
         ui->weld_windBtn->setDisabled(true);
         ui->weld_rewindBtn->setDisabled(true);
+        ui->setplcBtn->setDisabled(true);
+        ui->setweldBtn->setDisabled(true);
         ui->posXsubBtn->setDisabled(true);
         ui->posXaddBtn->setDisabled(true);
         ui->posYsubBtn->setDisabled(true);
@@ -908,23 +912,6 @@ void qtweldingDlg::on_CircleRuncheckBox_stateChanged(int arg1)
     }
     m_mcs->e2proomdata.write_maindlg_para();
 }
-
-//切换TCP
-/*
-void qtweldingDlg::on_movetcpcombo_currentIndexChanged(int index)
-{
-    if(m_mcs->rob->b_link_ctx_posget==true)
-    {
-        int tcp=index;
-        m_mcs->tosendbuffer->cmd_settcp(tcp);
-        ui->record->append(QString::fromLocal8Bit("切换tcp"));
-    }
-    else
-    {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
-    }
-}
-*/
 
 //X-按下
 void qtweldingDlg::on_posXsubBtn_pressed()

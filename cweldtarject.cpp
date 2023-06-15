@@ -377,6 +377,13 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
 {
     unsigned int num = pTarject.size();
     double bhx = 0,bhy = 0,bhz = 0;
+    double brx = 0,bry = 0,brz = 0;
+    double leftaddbrx=waveparam.leftAddRX;
+    double leftaddbry=waveparam.leftAddRY;
+    double leftaddbrz=waveparam.leftAddRZ;
+    double rightaddbrx=waveparam.rightAddRX;
+    double rightaddbry=waveparam.rightAddRY;
+    double rightaddbrz=waveparam.rightAddRZ;
 
     unsigned int timeGap=waveparam.timeGap;
     unsigned int wvTime;
@@ -388,7 +395,6 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
     unsigned int start;
     bool order;
     Pendulum_mode wvType;
-    bool bCycleComplate = false;
     Trend_mode trend_mode;
 
     (*wave_out).clear();
@@ -421,12 +427,16 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
     Eigen::Vector3d vectorBefore(0,1,0);
     Eigen::Vector3d vectorAfter(pTarject.at(pTarject.size()-1).X - pTarject.at(0).X, pTarject.at(pTarject.size()-1).Y - pTarject.at(0).Y, pTarject.at(pTarject.size()-1).Z - pTarject.at(0).Z);
     std::vector<RobPos> pTarject_out;
+
     for(unsigned int i = 0;i < num;i ++)
     {
         double t = 0.0;
         if(order)
+        {
             t = ((i * timeGap) + (start*wvTime/4)) % wvTime;
-        else {
+        }
+        else
+        {
             t = wvTime - ((i * timeGap) + (start*wvTime/4)) % wvTime;
         }
         switch (wvType) {
@@ -436,24 +446,40 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhx = t * (wvLeftAmp / (wvTime/4));
                     bhy = 0;
                     bhz = t * (wvLeftAmp_z / (wvTime/4));
+
+                    brx = t * (leftaddbrx/(wvTime/4));
+                    bry = t * (leftaddbry/(wvTime/4));
+                    brz = t * (leftaddbrz/(wvTime/4));
                 }
                 else if(t >= wvTime/4 && t < wvTime/2)
                 {
                     bhx = wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4));
                     bhy = 0;
                     bhz = wvLeftAmp_z - (t - wvTime/4)  * (wvLeftAmp_z / (wvTime/4));
+
+                    brx = leftaddbrx - (t - wvTime/4)  * (leftaddbrx / (wvTime/4));
+                    bry = leftaddbry - (t - wvTime/4)  * (leftaddbry / (wvTime/4));
+                    brz = leftaddbrz - (t - wvTime/4)  * (leftaddbrz / (wvTime/4));
                 }
                 else if(t >= wvTime/2 && t < wvTime*3/4)
                 {
                     bhx = - (t - wvTime/2)* (wvRightAmp / (wvTime/4));
                     bhy = 0;
                     bhz = (t - wvTime/2)* (wvRightAmp_z / (wvTime/4));
+
+                    brx = (t - wvTime/2)* (rightaddbrx / (wvTime/4));
+                    bry = (t - wvTime/2)* (rightaddbry / (wvTime/4));
+                    brz = (t - wvTime/2)* (rightaddbrz / (wvTime/4));
                 }
                 else if(t >= wvTime*3/4 && t < wvTime)
                 {
                     bhx = - wvRightAmp + (t - wvTime*3/4) * (wvRightAmp / (wvTime/4));
                     bhy = 0;
                     bhz = wvRightAmp_z - (t - wvTime*3/4) * (wvRightAmp_z / (wvTime/4));
+
+                    brx = rightaddbrx - (t - wvTime*3/4) * (rightaddbrx / (wvTime/4));
+                    bry = rightaddbry - (t - wvTime*3/4) * (rightaddbry / (wvTime/4));
+                    brz = rightaddbrz - (t - wvTime*3/4) * (rightaddbrz / (wvTime/4));
                 }
                 break;
             case PENDULUM_ID_TRIANGLE:
@@ -615,7 +641,12 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
         pTarject[i].Y = wavePoint.y();
         pTarject[i].Z = wavePoint.z();
 
+        pTarject[i].RX=pTarject[i].RX+brx;
+        pTarject[i].RY=pTarject[i].RY+bry;
+        pTarject[i].RZ=pTarject[i].RZ+brz;
+
         pTarject_out.push_back(pTarject[i]);
+
         if(t > wvTime/4 - timeGap/2 && t < wvTime/4 + timeGap/2)
         {
             int pushNum = leftStopTime/timeGap;

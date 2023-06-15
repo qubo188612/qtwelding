@@ -871,7 +871,7 @@
     <rect>
      <x>1290</x>
      <y>690</y>
-     <width>161</width>
+     <width>101</width>
      <height>61</height>
     </rect>
    </property>
@@ -882,9 +882,9 @@
   <widget class="QPushButton" name="setCamtaskBtn">
    <property name="geometry">
     <rect>
-     <x>1570</x>
+     <x>1500</x>
      <y>690</y>
-     <width>161</width>
+     <width>101</width>
      <height>61</height>
     </rect>
    </property>
@@ -895,7 +895,7 @@
   <widget class="QLineEdit" name="Camtask">
    <property name="geometry">
     <rect>
-     <x>1470</x>
+     <x>1400</x>
      <y>720</y>
      <width>91</width>
      <height>25</height>
@@ -905,7 +905,7 @@
   <widget class="QLabel" name="label_22">
    <property name="geometry">
     <rect>
-     <x>1470</x>
+     <x>1400</x>
      <y>700</y>
      <width>71</width>
      <height>17</height>
@@ -1832,6 +1832,19 @@
      <string>out3-</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="arrvepointtestBtn">
+   <property name="geometry">
+    <rect>
+     <x>1630</x>
+     <y>690</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>到点测试</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>

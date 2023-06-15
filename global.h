@@ -900,6 +900,12 @@ public:
     float rightStopTime;           //右摆停留时间(s)
     float anglex;                  //摆幅与焊缝角度
     float angley;                  //摆幅与焊缝角度
+    float leftAddRX;               //左侧RX增量
+    float leftAddRY;               //左侧RY增量
+    float leftAddRZ;               //左侧RZ增量
+    float rightAddRX;              //右侧RX增量
+    float rightAddRY;              //右侧RY增量
+    float rightAddRZ;              //右侧RZ增量
     unsigned int startPos;         //起摆位置
     unsigned int  order;           //先往左摆还是右摆
     Pendulum_mode pendulum_mode;   //摆焊接模式

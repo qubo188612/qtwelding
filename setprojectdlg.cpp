@@ -27,6 +27,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     edittext=new edittextDlg();
     setmovec=new setmovecDlg(mcs);
     othercmd=new othercmdDlg(mcs);
+    arrvepointtest=new arrvepointtestDlg(mcs);
     keycam=new keycamDlg(mcs);
     keycreat=new keycreatDlg(mcs);
     keydelay=new keydelayDlg(mcs);
@@ -68,6 +69,7 @@ setprojectDlg::~setprojectDlg()
     delete edittext;
     delete setmovec;
     delete othercmd;
+    delete arrvepointtest;
     delete keycam;
     delete keycreat;
     delete keydelay;
@@ -2985,6 +2987,15 @@ void setprojectDlg::on_ctlmovetcpcombo_currentIndexChanged(int index)
     }
 }
 
+//到点测试
+void setprojectDlg::on_arrvepointtestBtn_clicked()
+{
+    arrvepointtest->init_dlg_show();
+    arrvepointtest->setWindowTitle("到点测试");
+    arrvepointtest->exec();
+    arrvepointtest->close_dlg_show();
+}
+
 //机器人X-按下
 void setprojectDlg::on_ctlposXsubBtn_pressed()
 {
@@ -3821,6 +3832,8 @@ void setprojectThread::Stop()
     }
   }
 }
+
+
 
 
 

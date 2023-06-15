@@ -20,6 +20,7 @@ SOURCES += \
         ResultData.cpp \
         TimeFunction.cpp \
         XTcp.cpp \
+        arrvepointtestdlg.cpp \
         calibration.cpp \
         cam_sen.cpp \
         cambuilddlg.cpp \
@@ -104,6 +105,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
+    arrvepointtestdlg.ui \
     cambuilddlg.ui \
     demarcatedlg.ui \
     editcraftdlg.ui \
@@ -170,6 +172,7 @@ HEADERS += \
     ResultData.h \
     TimeFunction.h \
     XTcp.h \
+    arrvepointtestdlg.h \
     calibration.h \
     cam_sen.h \
     cambuilddlg.h \

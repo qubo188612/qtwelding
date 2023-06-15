@@ -88,6 +88,12 @@ void keywaveDlg::init_dlg_show(QString cmdlist)
             ui->waveangley->setText(QString::number(wave_info.angley,'f',ROBOT_POSTURE_DECIMAL_PLACE));
             ui->waveStartPos->setText(QString::number(wave_info.startPos));
             ui->wavetimeGap->setText(QString::number(wave_info.timeGap));
+            ui->leftaddRX->setText(QString::number(wave_info.leftAddRX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            ui->leftaddRY->setText(QString::number(wave_info.leftAddRY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            ui->leftaddRZ->setText(QString::number(wave_info.leftAddRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            ui->rightaddRX->setText(QString::number(wave_info.rightAddRX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            ui->rightaddRY->setText(QString::number(wave_info.rightAddRY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+            ui->rightaddRZ->setText(QString::number(wave_info.rightAddRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
             ui->wavefilename->setText(name_out);
         }
     }
@@ -127,6 +133,12 @@ void keywaveDlg::on_pushButton_clicked()
     QString waveangley=ui->waveangley->text();
     QString waveStartPos=ui->waveStartPos->text();
     QString wavetimeGap=ui->wavetimeGap->text();
+    QString leftaddRX=ui->leftaddRX->text();
+    QString leftaddRY=ui->leftaddRY->text();
+    QString leftaddRZ=ui->leftaddRZ->text();
+    QString rightaddRX=ui->rightaddRX->text();
+    QString rightaddRY=ui->rightaddRY->text();
+    QString rightaddRZ=ui->rightaddRZ->text();
     wWAVEParam cmd_wave_info;
     bool rc;
     route=ui->wavefilenamecombo->currentIndex();
@@ -292,6 +304,78 @@ void keywaveDlg::on_pushButton_clicked()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("采样点时间间隔内容格式错误"));
+        return;
+    }
+
+    if(leftaddRX.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写单摆左摆姿态增量RX"));
+        return;
+    }
+    cmd_wave_info.leftAddRX=leftaddRX.toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("单摆左摆姿态增量RX内容格式错误"));
+        return;
+    }
+
+    if(leftaddRY.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写单摆左摆姿态增量RY"));
+        return;
+    }
+    cmd_wave_info.leftAddRY=leftaddRY.toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("单摆左摆姿态增量RY内容格式错误"));
+        return;
+    }
+
+    if(leftaddRZ.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写单摆左摆姿态增量RZ"));
+        return;
+    }
+    cmd_wave_info.leftAddRZ=leftaddRZ.toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("单摆左摆姿态增量RZ内容格式错误"));
+        return;
+    }
+
+    if(rightaddRX.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写单摆右摆姿态增量RX"));
+        return;
+    }
+    cmd_wave_info.rightAddRX=rightaddRX.toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("单摆右摆姿态增量RX内容格式错误"));
+        return;
+    }
+
+    if(rightaddRY.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写单摆右摆姿态增量RY"));
+        return;
+    }
+    cmd_wave_info.rightAddRY=rightaddRY.toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("单摆右摆姿态增量RY内容格式错误"));
+        return;
+    }
+
+    if(rightaddRZ.isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写单摆右摆姿态增量RZ"));
+        return;
+    }
+    cmd_wave_info.rightAddRZ=rightaddRZ.toFloat(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("单摆右摆姿态增量RZ内容格式错误"));
         return;
     }
 

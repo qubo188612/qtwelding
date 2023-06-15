@@ -964,7 +964,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     s_data=doc.createTextNode(QString::number(tcp));
                     obj.appendChild(s_data);
                     root_elem.appendChild(obj);
-                    obj=doc.createElement("MOVEMOD");
+                    obj=doc.createElement("MOVEMODE");
                     s_data=doc.createTextNode(QString::number(movemod));
                     obj.appendChild(s_data);
                     root_elem.appendChild(obj);
@@ -972,7 +972,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     s_data=doc.createTextNode(QString::number(f_speed,'f',ROBOT_POSE_DECIMAL_PLACE));
                     obj.appendChild(s_data);
                     root_elem.appendChild(obj);
-                    obj=doc.createElement("MOVEPOS");
+                    obj=doc.createElement("MOVEPOSE");
                     QDomElement objmin;
                     objmin=doc.createElement("X");
                     s_data=doc.createTextNode(QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -996,6 +996,18 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     obj.appendChild(objmin);
                     objmin=doc.createElement("RZ");
                     s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT1");
+                    s_data=doc.createTextNode(QString::number(i_out1));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT2");
+                    s_data=doc.createTextNode(QString::number(i_out2));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT3");
+                    s_data=doc.createTextNode(QString::number(i_out3));
                     objmin.appendChild(s_data);
                     obj.appendChild(objmin);
                     root_elem.appendChild(obj);
@@ -1017,7 +1029,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     s_data=doc.createTextNode(QString::number(tcp));
                     obj.appendChild(s_data);
                     root_elem.appendChild(obj);
-                    obj=doc.createElement("MOVEMOD");
+                    obj=doc.createElement("MOVEMODE");
                     s_data=doc.createTextNode(QString::number(movemod));
                     obj.appendChild(s_data);
                     root_elem.appendChild(obj);
@@ -1025,7 +1037,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     s_data=doc.createTextNode(QString::number(f_speed,'f',ROBOT_POSE_DECIMAL_PLACE));
                     obj.appendChild(s_data);
                     root_elem.appendChild(obj);
-                    obj=doc.createElement("MOVEPOS");
+                    obj=doc.createElement("MOVEPOSE");
                     QDomElement objmin;
                     objmin=doc.createElement("X");
                     s_data=doc.createTextNode(QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -1049,6 +1061,18 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     obj.appendChild(objmin);
                     objmin=doc.createElement("RZ");
                     s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT1");
+                    s_data=doc.createTextNode(QString::number(i_out1));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT2");
+                    s_data=doc.createTextNode(QString::number(i_out2));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT3");
+                    s_data=doc.createTextNode(QString::number(i_out3));
                     objmin.appendChild(s_data);
                     obj.appendChild(objmin);
                     objmin=doc.createElement("X1");
@@ -1073,6 +1097,18 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     obj.appendChild(objmin);
                     objmin=doc.createElement("RZ1");
                     s_data=doc.createTextNode(QString::number(f_movRZ1,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT11");
+                    s_data=doc.createTextNode(QString::number(i_out1_1));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT21");
+                    s_data=doc.createTextNode(QString::number(i_out1_2));
+                    objmin.appendChild(s_data);
+                    obj.appendChild(objmin);
+                    objmin=doc.createElement("OUT31");
+                    s_data=doc.createTextNode(QString::number(i_out1_3));
                     objmin.appendChild(s_data);
                     obj.appendChild(objmin);
                     root_elem.appendChild(obj);
@@ -2056,8 +2092,21 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     }
                                     break;
                                     case ROBOT_MODEL_KUKA://库卡机器人
-                                    {
-
+                                    {     
+                                        mutexsend_buf_group.lock();
+                                        QDomDocument doc;
+                                        QDomText s_data;
+                                        QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                        doc.appendChild(root_elem);
+                                        QDomElement obj;
+                                        obj=doc.createElement("TCP");
+                                        s_data=doc.createTextNode(QString::number(tcp));
+                                        obj.appendChild(s_data);
+                                        root_elem.appendChild(obj);
+                                        QString msg=doc.toString();
+                                        std::string str=msg.toStdString();
+                                        _p->send_buf_group.push_back(str);
+                                        mutexsend_buf_group.unlock();
                                     }
                                     break;
                                     case ROBOT_MODEL_KAWASAKI://川崎机器人
@@ -2109,7 +2158,20 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     break;
                                     case ROBOT_MODEL_KUKA://库卡机器人
                                     {
-
+                                        mutexsend_buf_group.lock();
+                                        QDomDocument doc;
+                                        QDomText s_data;
+                                        QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                        doc.appendChild(root_elem);
+                                        QDomElement obj;
+                                        obj=doc.createElement("MOVESPEED");
+                                        s_data=doc.createTextNode(QString::number(f_speed));
+                                        obj.appendChild(s_data);
+                                        root_elem.appendChild(obj);
+                                        QString msg=doc.toString();
+                                        std::string str=msg.toStdString();
+                                        _p->send_buf_group.push_back(str);
+                                        mutexsend_buf_group.unlock();
                                     }
                                     break;
                                     case ROBOT_MODEL_KAWASAKI://川崎机器人
@@ -2176,7 +2238,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                                         {
                                             QDomElement objmin;
                                             objmin=doc.createElement("OUT"+QString::number(n+1));
-                                            s_data=doc.createTextNode(QString::number(io_output[0]));
+                                            s_data=doc.createTextNode(QString::number(io_output[n]));
                                             objmin.appendChild(s_data);
                                             obj.appendChild(objmin);
                                         }
@@ -2240,7 +2302,26 @@ void RobotcontrolThread1::run() //接到上位机命令
                                     break;
                                     case ROBOT_MODEL_KUKA://库卡机器人
                                     {
-
+                                        mutexsend_buf_group.lock();
+                                        QDomDocument doc;
+                                        QDomText s_data;
+                                        QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                                        doc.appendChild(root_elem);
+                                        QDomElement obj;
+                                        obj=doc.createElement("AO");
+                                        for(int n=0;n<A_output.size();n++)
+                                        {
+                                            QDomElement objmin;
+                                            objmin=doc.createElement("OUT"+QString::number(n+1));
+                                            s_data=doc.createTextNode(QString::number(A_output[n],'f',3));
+                                            objmin.appendChild(s_data);
+                                            obj.appendChild(objmin);
+                                        }
+                                        root_elem.appendChild(obj);
+                                        QString msg=doc.toString();
+                                        std::string str=msg.toStdString();
+                                        _p->send_buf_group.push_back(str);
+                                        mutexsend_buf_group.unlock();
                                     }
                                     break;
                                     case ROBOT_MODEL_KAWASAKI://川崎机器人
@@ -3394,6 +3475,7 @@ void RobotrcvThread::run()//获取机器人数据
                     int rcvnum=_p->m_client.Recv((char*)_p->rcv_buf,ROBOT_KUKA_INFO_RECVBUFFER_MAX*2);
                     if(rcvnum>0)
                     {
+                        QString rcvmsg=QString::fromLocal8Bit((char*)_p->rcv_buf,rcvnum);
                         uint8_t state;
                         float f_robX;
                         float f_robY;
@@ -3401,10 +3483,12 @@ void RobotrcvThread::run()//获取机器人数据
                         float f_robRX;
                         float f_robRY;
                         float f_robRZ;
+                        int f_robout1;
+                        int f_robout2;
+                        int f_robout3;
                         float f_speed;
                         int i_ioinput;
 
-                        QString rcvmsg=QString::fromLocal8Bit((char*)_p->rcv_buf,rcvnum);
                         QDomDocument doc;
                         if(true==doc.setContent(rcvmsg))
                         {
@@ -3457,6 +3541,24 @@ void RobotrcvThread::run()//获取机器人数据
                                                 _p->mb_mapping->tab_registers[ROB_RZ_POS_FH_REG_ADD]=((uint16_t*)(&f_robRZ))[0];
                                                 _p->mb_mapping->tab_registers[ROB_RZ_POS_FL_REG_ADD]=((uint16_t*)(&f_robRZ))[1];
                                             }
+                                            else if(childobj.tagName()=="OUT1")
+                                            {
+                                                f_robout1=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_OUT1_POS_FH_REG_ADD]=((uint16_t*)(&f_robout1))[0];
+                                                _p->mb_mapping->tab_registers[ROB_OUT1_POS_FL_REG_ADD]=((uint16_t*)(&f_robout1))[1];
+                                            }
+                                            else if(childobj.tagName()=="OUT2")
+                                            {
+                                                f_robout2=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_OUT2_POS_FH_REG_ADD]=((uint16_t*)(&f_robout2))[0];
+                                                _p->mb_mapping->tab_registers[ROB_OUT2_POS_FL_REG_ADD]=((uint16_t*)(&f_robout2))[1];
+                                            }
+                                            else if(childobj.tagName()=="OUT3")
+                                            {
+                                                f_robout3=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_OUT3_POS_FH_REG_ADD]=((uint16_t*)(&f_robout3))[0];
+                                                _p->mb_mapping->tab_registers[ROB_OUT3_POS_FL_REG_ADD]=((uint16_t*)(&f_robout3))[1];
+                                            }
                                         }
                                     }
                                     else if(childobj.tagName()=="SPEED")
@@ -3468,22 +3570,113 @@ void RobotrcvThread::run()//获取机器人数据
                                     else if(childobj.tagName()=="STATE")
                                     {
                                         state=childobj.text().toInt();
-                                        _p->mb_mapping->tab_registers[ROB_STATE_REG_ADD]=state;
+                                    //  _p->mb_mapping->tab_registers[ROB_STATE_REG_ADD]=state;
                                     }
                                     else if(childobj.tagName()=="IO")
                                     {
                                         auto child = childobj.childNodes();
                                         for(int i=0;i<child.size();i++)
                                         {
+                                            auto childobj=child.at(i).toElement();
+                                            if(childobj.tagName()=="IN1")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN2")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT2_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN3")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT3_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN4")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT4_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN5")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT5_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN6")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT6_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN7")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT7_REG_ADD]=i_ioinput;
+                                            }
+                                            else if(childobj.tagName()=="IN8")
+                                            {
+                                                i_ioinput=childobj.text().toInt();
+                                                _p->mb_mapping->tab_registers[ROB_IO_OUTPUT8_REG_ADD]=i_ioinput;
+                                            }
+
+                                            /*
                                             QString msg="IN"+QString::number(i+1);
                                             if(childobj.hasAttribute(msg))
                                             {
                                                 i_ioinput=childobj.attributeNode(msg).value().toInt();
                                                 _p->mb_mapping->tab_registers[ROB_IO_OUTPUT1_REG_ADD+i]=i_ioinput;
                                             }
+                                            */
                                         }
                                     }
                                 }
+                            }
+                            if(state==0)
+                            {
+                                mutexmovepoint_buffer_group.lock();
+                                int num=_p->movepoint_buffer.size();
+                                if(num!=0)
+                                {
+                                    Pause_PointInfo moveinfo=_p->movepoint_buffer[num-1];
+                                    switch(moveinfo.movemod)
+                                    {
+                                        case MOVEL:
+                                        case MOVEJ:
+                                        {
+                                            if(fabs(f_robX-moveinfo.robpos.X)>0.1
+                                             ||fabs(f_robY-moveinfo.robpos.Y)>0.1
+                                             ||fabs(f_robZ-moveinfo.robpos.Z)>0.1
+                                             ||fabs(f_robRX-moveinfo.robpos.RX)>0.1
+                                             ||fabs(f_robRY-moveinfo.robpos.RY)>0.1
+                                             ||fabs(f_robRZ-moveinfo.robpos.RZ)>0.1
+                                             ||abs(f_robout1-moveinfo.robpos.out_1)>1
+                                             ||abs(f_robout2-moveinfo.robpos.out_2)>1
+                                             ||abs(f_robout3-moveinfo.robpos.out_3)>1)
+                                            {
+                                                state=1;
+                                            }
+                                        }
+                                        break;
+                                        case MOVEC:
+                                        {
+                                            if(fabs(f_robX-moveinfo.robpos.X1)>0.1
+                                             ||fabs(f_robY-moveinfo.robpos.Y1)>0.1
+                                             ||fabs(f_robZ-moveinfo.robpos.Z1)>0.1
+                                             ||fabs(f_robRX-moveinfo.robpos.RX1)>0.1
+                                             ||fabs(f_robRY-moveinfo.robpos.RY1)>0.1
+                                             ||fabs(f_robRZ-moveinfo.robpos.RZ1)>0.1
+                                             ||abs(f_robout1-moveinfo.robpos.out1_1)>1
+                                             ||abs(f_robout2-moveinfo.robpos.out1_2)>1
+                                             ||abs(f_robout3-moveinfo.robpos.out1_3)>1)
+                                            {
+                                                state=1;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                mutexmovepoint_buffer_group.unlock();
+                                _p->mb_mapping->tab_registers[ROB_STATE_REG_ADD]=state;
                             }
                         }
                     }

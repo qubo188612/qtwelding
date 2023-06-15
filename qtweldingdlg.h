@@ -46,7 +46,7 @@ class qtrecordThread;
 
 #define ROBOT_MAINDLG_MOVEPOS_STEP             100  //主页机器人移动目标点距离
 #define ROBOT_MAINDLG_MOVEPOS_STEPMIN          50   //主页机器人当前点距离移动目标点小于该值时更新新目标点
-#define ROBOT_MAINDLG_MOVEPOSTURE_STEP         5   //主页机器人移动目标点姿态距离(度)
+#define ROBOT_MAINDLG_MOVEPOSTURE_STEP         5    //主页机器人移动目标点姿态距离(度)
 #define ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN      2.5   //主页机器人当前点距离移动目标点姿态距离小于该值时更新新目标点姿态距离(度)
 #define ROBOT_MAINDLG_MOVEOUT_STEP             1000 //主页机器人移动第三轴目标点距离
 #define ROBOT_MAINDLG_MOVEOUT_STEPMIN          500  //主页机器人第三轴当前点距离移动目标点小于该值时更新新目标点
@@ -239,8 +239,6 @@ private slots:
     void on_CircleRuncheckBox_stateChanged(int arg1);
 
     void on_projectskiprunBtn_clicked();
-
-//  void on_movetcpcombo_currentIndexChanged(int index);
 
 private:
     Ui::qtweldingDlg *ui;

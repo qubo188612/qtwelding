@@ -2859,9 +2859,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         {
                             return 1;
                         }
-                        if(f_datagroup.size()!=14)
+                        if(f_datagroup.size()!=20)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有14个");
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有20个");
                             return 1;
                         }
                         cmd_wave_info.period=f_datagroup[0];
@@ -2878,6 +2878,12 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         cmd_wave_info.pendulum_mode=(Pendulum_mode)((int)f_datagroup[11]);
                         cmd_wave_info.timeGap=(int)f_datagroup[12];
                         cmd_wave_info.trend_mode=(Trend_mode)((int)f_datagroup[13]);
+                        cmd_wave_info.leftAddRX=f_datagroup[14];
+                        cmd_wave_info.leftAddRY=f_datagroup[15];
+                        cmd_wave_info.leftAddRZ=f_datagroup[16];
+                        cmd_wave_info.rightAddRX=f_datagroup[17];
+                        cmd_wave_info.rightAddRY=f_datagroup[18];
+                        cmd_wave_info.rightAddRZ=f_datagroup[19];
 
                         if(f_datagroup[0]<=0)
                         {
@@ -4101,7 +4107,7 @@ QString my_cmd::rc_wave(wWAVEParam cmd_wave_info)
         QString::number(cmd_wave_info.leftAmp,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
         QString::number(cmd_wave_info.rightAmp,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
         QString::number(cmd_wave_info.leftAmp_z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-        QString::number(cmd_wave_info.rightAmp_z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.rightAmp_z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+       
         QString::number(cmd_wave_info.leftStopTime,'f',3)+","+
         QString::number(cmd_wave_info.rightStopTime,'f',3)+","+
         QString::number(cmd_wave_info.anglex,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
@@ -4110,7 +4116,13 @@ QString my_cmd::rc_wave(wWAVEParam cmd_wave_info)
         QString::number(cmd_wave_info.order)+","+
         QString::number(cmd_wave_info.pendulum_mode)+","+
         QString::number(cmd_wave_info.timeGap)+","+
-        QString::number(cmd_wave_info.trend_mode)+"]";
+        QString::number(cmd_wave_info.trend_mode)+","+
+        QString::number(cmd_wave_info.leftAddRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.leftAddRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.leftAddRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.rightAddRX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.rightAddRY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+        QString::number(cmd_wave_info.rightAddRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"]";
     return msg;
 }
 

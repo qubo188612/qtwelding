@@ -41,6 +41,7 @@
 #include "keycreatcdlg.h"
 #include "keygettcppos2dlg.h"
 #include "keytracecontinuedlg.h"
+#include "arrvepointtestdlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
@@ -62,6 +63,7 @@ public:
     edittextDlg *edittext;
     setmovecDlg *setmovec;
     othercmdDlg *othercmd;
+    arrvepointtestDlg *arrvepointtest;
     keycamDlg *keycam;
     keycreatDlg *keycreat;
     keydelayDlg *keydelay;
@@ -230,6 +232,8 @@ private slots:
     void on_ctlposOut3addBtn_released();
 
     void on_ctlmovetcpcombo_currentIndexChanged(int index);
+
+    void on_arrvepointtestBtn_clicked();
 
 private:
     Ui::setprojectDlg *ui;
