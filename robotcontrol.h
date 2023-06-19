@@ -79,6 +79,8 @@ public:
     int sock;
     modbus_mapping_t * mb_mapping;
 
+    bool b_relink;//服务器重连
+
     RobotlinkThread *linkthread;
     bool link_state;
     bool b_stop_link_state;

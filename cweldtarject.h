@@ -30,7 +30,8 @@ public:
                     float speed=1);                          //移动速度;
 
     //创建摆焊轨迹
-    int creat_wave(std::vector<RobPos> pTarject,            //输入原来轨迹
+    int creat_wave(CAL_POSTURE robot,                       //输入姿态标准
+                   std::vector<RobPos> pTarject,            //输入原来轨迹
                    wWAVEParam waveparam,                    //输入摆焊信息
                    std::vector<RobPos> *wave_out);          //输出摆焊轨迹
 

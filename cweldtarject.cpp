@@ -373,7 +373,7 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
     return true;
 }
 
-int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,std::vector<RobPos> *wave_out)
+int CWeldTarject::creat_wave(CAL_POSTURE robot,std::vector<RobPos> pTarject,wWAVEParam waveparam,std::vector<RobPos> *wave_out)
 {
     unsigned int num = pTarject.size();
     double bhx = 0,bhy = 0,bhz = 0;
@@ -447,9 +447,18 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhy = 0;
                     bhz = t * (wvLeftAmp_z / (wvTime/4));
 
-                    brx = t * (leftaddbrx/(wvTime/4));
-                    bry = t * (leftaddbry/(wvTime/4));
-                    brz = t * (leftaddbrz/(wvTime/4));
+                    Eigen::Vector3d PosR_st;
+                    Eigen::Vector3d PosR_ed;
+                    PosR_st.x()=pTarject[i].RX;
+                    PosR_st.y()=pTarject[i].RY;
+                    PosR_st.z()=pTarject[i].RZ;
+                    PosR_ed.x()=pTarject[i].RX+leftaddbrx;
+                    PosR_ed.y()=pTarject[i].RY+leftaddbry;
+                    PosR_ed.z()=pTarject[i].RZ+leftaddbrz;
+                    Eigen::Vector3d pose=Calibration::Attitudedifference_N(robot,PosR_st,PosR_ed,wvTime/4,t);
+                    brx = pose.x();
+                    bry = pose.y();
+                    brz = pose.z();
                 }
                 else if(t >= wvTime/4 && t < wvTime/2)
                 {
@@ -457,9 +466,19 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhy = 0;
                     bhz = wvLeftAmp_z - (t - wvTime/4)  * (wvLeftAmp_z / (wvTime/4));
 
-                    brx = leftaddbrx - (t - wvTime/4)  * (leftaddbrx / (wvTime/4));
-                    bry = leftaddbry - (t - wvTime/4)  * (leftaddbry / (wvTime/4));
-                    brz = leftaddbrz - (t - wvTime/4)  * (leftaddbrz / (wvTime/4));
+                    Eigen::Vector3d PosR_st;
+                    Eigen::Vector3d PosR_ed;
+                    PosR_st.x()=pTarject[i].RX+leftaddbrx;
+                    PosR_st.y()=pTarject[i].RY+leftaddbry;
+                    PosR_st.z()=pTarject[i].RZ+leftaddbrz;
+                    PosR_ed.x()=pTarject[i].RX;
+                    PosR_ed.y()=pTarject[i].RY;
+                    PosR_ed.z()=pTarject[i].RZ;
+                    Eigen::Vector3d pose=Calibration::Attitudedifference_N(robot,PosR_st,PosR_ed,wvTime/2-wvTime/4,t-wvTime/4);
+                    brx = pose.x();
+                    bry = pose.y();
+                    brz = pose.z();
+
                 }
                 else if(t >= wvTime/2 && t < wvTime*3/4)
                 {
@@ -467,9 +486,19 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhy = 0;
                     bhz = (t - wvTime/2)* (wvRightAmp_z / (wvTime/4));
 
-                    brx = (t - wvTime/2)* (rightaddbrx / (wvTime/4));
-                    bry = (t - wvTime/2)* (rightaddbry / (wvTime/4));
-                    brz = (t - wvTime/2)* (rightaddbrz / (wvTime/4));
+                    Eigen::Vector3d PosR_st;
+                    Eigen::Vector3d PosR_ed;
+                    PosR_st.x()=pTarject[i].RX;
+                    PosR_st.y()=pTarject[i].RY;
+                    PosR_st.z()=pTarject[i].RZ;
+                    PosR_ed.x()=pTarject[i].RX+rightaddbrx;
+                    PosR_ed.y()=pTarject[i].RY+rightaddbry;
+                    PosR_ed.z()=pTarject[i].RZ+rightaddbrz;
+
+                    Eigen::Vector3d pose=Calibration::Attitudedifference_N(robot,PosR_st,PosR_ed,wvTime*3/4-wvTime/2,t-wvTime/2);
+                    brx = pose.x();
+                    bry = pose.y();
+                    brz = pose.z();
                 }
                 else if(t >= wvTime*3/4 && t < wvTime)
                 {
@@ -477,9 +506,18 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhy = 0;
                     bhz = wvRightAmp_z - (t - wvTime*3/4) * (wvRightAmp_z / (wvTime/4));
 
-                    brx = rightaddbrx - (t - wvTime*3/4) * (rightaddbrx / (wvTime/4));
-                    bry = rightaddbry - (t - wvTime*3/4) * (rightaddbry / (wvTime/4));
-                    brz = rightaddbrz - (t - wvTime*3/4) * (rightaddbrz / (wvTime/4));
+                    Eigen::Vector3d PosR_st;
+                    Eigen::Vector3d PosR_ed;
+                    PosR_st.x()=pTarject[i].RX+rightaddbrx;
+                    PosR_st.y()=pTarject[i].RY+rightaddbry;
+                    PosR_st.z()=pTarject[i].RZ+rightaddbrz;
+                    PosR_ed.x()=pTarject[i].RX;
+                    PosR_ed.y()=pTarject[i].RY;
+                    PosR_ed.z()=pTarject[i].RZ;
+                    Eigen::Vector3d pose=Calibration::Attitudedifference_N(robot,PosR_st,PosR_ed,wvTime-wvTime*3/4,t-wvTime*3/4);
+                    brx = pose.x();
+                    bry = pose.y();
+                    brz = pose.z();
                 }
                 break;
             case PENDULUM_ID_TRIANGLE:
@@ -488,24 +526,40 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhx = t * (wvLeftAmp / (wvTime/4));
                     bhy = 0;
                     bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime/4 && t < wvTime/2)
                 {
                     bhx = wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4));
                     bhy = 0;
                     bhz = - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4));
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime/2 && t < wvTime*3/4)
                 {
                     bhx = - (t - wvTime/2)* (wvLeftAmp / (wvTime/4));
                     bhy = 0;
                     bhz = - wvLeftAmp + (t - wvTime/2)  * (wvLeftAmp / (wvTime/4));
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime*3/4 && t < wvTime)
                 {
                     bhx = - wvLeftAmp + (t - wvTime*3/4) * (wvLeftAmp / (wvTime/4));
                     bhy = 0;
                     bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 break;
             case PENDULUM_ID_L:
@@ -514,24 +568,40 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhx = t * (wvLeftAmp / (wvTime/4)) * sin((wvAngle1/2)*M_PI/180);
                     bhy = 0;
                     bhz = t * (wvLeftAmp / (wvTime/4)) * cos((wvAngle1/2)*M_PI/180);
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime/4 && t < wvTime/2)
                 {
                     bhx = (wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4))) * sin((wvAngle1/2)*M_PI/180);
                     bhy = 0;
                     bhz = (wvLeftAmp - (t - wvTime/4)  * (wvLeftAmp / (wvTime/4))) * cos((wvAngle1/2)*M_PI/180);
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime/2 && t < wvTime*3/4)
                 {
                     bhx = - (t - wvTime/2) * (wvRightAmp / (wvTime/4)) * sin((wvAngle1/2)*M_PI/180);
                     bhy = 0;
                     bhz = (t - wvTime/2) * (wvRightAmp / (wvTime/4)) * cos((wvAngle1/2)*M_PI/180);
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime*3/4 && t < wvTime)
                 {
                     bhx = (- wvRightAmp + (t - wvTime*3/4) * (wvRightAmp / (wvTime/4))) * sin((wvAngle1/2)*M_PI/180);
                     bhy = 0;
                     bhz = (wvRightAmp - (t - wvTime*3/4) * (wvRightAmp / (wvTime/4))) * cos((wvAngle1/2)*M_PI/180);
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 break;
             case PENDULUM_ID_SINE:
@@ -540,40 +610,62 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
                     bhx = wvLeftAmp*sin(2*M_PI*t/wvTime);
                     bhy = 0;
                     bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime/4 && t < wvTime/2)
                 {
                     bhx = wvLeftAmp*sin(2*M_PI*t/wvTime);
                     bhy = 0;
                     bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime/2 && t < wvTime*3/4)
                 {
                     bhx = wvRightAmp*sin(2*M_PI*t/wvTime);
                     bhy = 0;
                     bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 else if(t >= wvTime*3/4 && t < wvTime)
                 {
                     bhx = wvRightAmp*sin(2*M_PI*t/wvTime);
                     bhy = 0;
                     bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
                 break;
             case PENDULUM_ID_CIRCULAR:
-             //   double width = weldWidth[i];
-             //   wvLeftAmp = (width - 1 + 2)/2;
-                //width + zhongxin = amp + 1
-                if(order)
                 {
-                    bhx = wvLeftAmp*cos(2*M_PI*t/wvTime);
+                 //   double width = weldWidth[i];
+                 //   wvLeftAmp = (width - 1 + 2)/2;
+                    //width + zhongxin = amp + 1
+                    if(order)
+                    {
+                        bhx = wvLeftAmp*cos(2*M_PI*t/wvTime);
+                    }
+                    else
+                    {
+                        bhx = wvLeftAmp*cos(2*M_PI*t/wvTime);
+                    }
+                    bhy = wvRightAmp*sin(2*M_PI*t/wvTime);
+                    bhz = 0;
+
+                    brx = pTarject[i].RX;
+                    bry = pTarject[i].RY;
+                    brz = pTarject[i].RZ;
                 }
-                else
-                {
-                    bhx = wvLeftAmp*cos(2*M_PI*t/wvTime);
-                }
-                bhy = wvRightAmp*sin(2*M_PI*t/wvTime);
-                bhz = 0;
                 break;
         }
         Eigen::Vector3d baifu_1,baifu_2;
@@ -641,9 +733,9 @@ int CWeldTarject::creat_wave(std::vector<RobPos> pTarject,wWAVEParam waveparam,s
         pTarject[i].Y = wavePoint.y();
         pTarject[i].Z = wavePoint.z();
 
-        pTarject[i].RX=pTarject[i].RX+brx;
-        pTarject[i].RY=pTarject[i].RY+bry;
-        pTarject[i].RZ=pTarject[i].RZ+brz;
+        pTarject[i].RX=brx;
+        pTarject[i].RY=bry;
+        pTarject[i].RZ=brz;
 
         pTarject_out.push_back(pTarject[i]);
 

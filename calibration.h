@@ -60,6 +60,12 @@ public:
                                                            Eigen::Vector3d PosR_ed,    //终点姿态
                                                            int differenceNum);         //插值个数
 
+    //获取第N个姿态
+    static Eigen::Vector3d Attitudedifference_N(CAL_POSTURE robot,          //输入姿态标准
+                                                Eigen::Vector3d PosR_st,    //起点姿态
+                                                Eigen::Vector3d PosR_ed,    //终点姿态
+                                                int differenceNum,          //插值个数
+                                                int N);                     //第N个值,N取值为0到differenceNum-1
 
 protected:
 

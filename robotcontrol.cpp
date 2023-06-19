@@ -34,6 +34,7 @@ Robotcontrol::Robotcontrol()
 {
     server_state=false;
     b_stop_server_state=false;
+    b_relink=false;
     link_state=false;
     b_stop_link_state=false;
     b_client=false;
@@ -307,10 +308,12 @@ void Robotcontrol::RobotInit(int tcp)//机器人初始化
                 str=msg.toStdString();
                 totalcontrol_buf_group.push_back(str);
                 mutextotalcontrol_buf_group.unlock();
-
+            }
+            if(b_sendent==true)
+            {
                 mutexsend_buf_group.lock();
-                msg="Tool("+QString::number(tcp)+")";
-                str=msg.toStdString();
+                QString msg="Tool("+QString::number(tcp)+")";
+                std::string str=msg.toStdString();
                 send_buf_group.push_back(str);
                 mutexsend_buf_group.unlock();
             }
@@ -323,7 +326,23 @@ void Robotcontrol::RobotInit(int tcp)//机器人初始化
         break;
         case ROBOT_MODEL_KUKA://库卡机器人
         {
-
+            if(b_sendent==true)
+            {
+                mutexsend_buf_group.lock();
+                QDomDocument doc;
+                QDomText s_data;
+                QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                doc.appendChild(root_elem);
+                QDomElement obj;
+                obj=doc.createElement("TCP");
+                s_data=doc.createTextNode(QString::number(tcp));
+                obj.appendChild(s_data);
+                root_elem.appendChild(obj);
+                QString msg=doc.toString();
+                std::string str=msg.toStdString();
+                send_buf_group.push_back(str);
+                mutexsend_buf_group.unlock();
+            }
         }
         break;
         case ROBOT_MODEL_KAWASAKI://川崎机器人
@@ -2653,7 +2672,7 @@ void RobotlinkThread::run() //连接机器人命令
 
         static ROBOT_MODEL old_rob_mod=ROBOT_MODEL_NULL;    //老机器人型号
         _p->rob_mod=(ROBOT_MODEL)_p->mb_mapping->tab_registers[ROB_MODEL_REG_ADD];
-        if(old_rodb_ip!=rodb_ip||old_rob_mod!=_p->rob_mod)
+        if(old_rodb_ip!=rodb_ip||old_rob_mod!=_p->rob_mod||_p->b_relink==true)
         {
             if(_p->b_client==true)
             {
@@ -2805,6 +2824,7 @@ void RobotlinkThread::run() //连接机器人命令
 
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
+                    _p->b_relink=false;
                 }
                 break;
                 case ROBOT_MODEL_DOBOT://越彊机器人
@@ -2894,6 +2914,7 @@ void RobotlinkThread::run() //连接机器人命令
                 #endif
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
+                    _p->b_relink=false;
                 }
                 break;
                 case ROBOT_MODEL_UR://优傲机器人
@@ -2983,6 +3004,7 @@ void RobotlinkThread::run() //连接机器人命令
                 #endif
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
+                    _p->b_relink=false;
                 }
                 break;
                 case ROBOT_MODEL_KUKA://库卡机器人
@@ -3044,6 +3066,7 @@ void RobotlinkThread::run() //连接机器人命令
 
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
+                    _p->b_relink=false;
                 }
                 break;
                 case ROBOT_MODEL_KAWASAKI://川崎机器人
@@ -3104,6 +3127,7 @@ void RobotlinkThread::run() //连接机器人命令
 
                     old_rodb_ip=rodb_ip;
                     old_rob_mod=_p->rob_mod;
+                    _p->b_relink=false;
                 }
                 break;
                 case ROBOT_MODEL_YASKAWA://安川机器人
@@ -3801,8 +3825,9 @@ void RobotsendThread::run()
                 if(send_buf.size()!=_p->m_sendent.Send(send_buf.c_str(),send_buf.size()))
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("远端机器人发送命令失败");
+                    QString return_msg=QString::fromLocal8Bit("远端机器人发送命令失败,系统尝试重连机器人");
                     _p->m_mcs->main_record.push_back(return_msg);
+                    _p->b_relink=true;
                     main_record.unlock();
                 }
             #ifdef OPEN_SHOW_ROBOTSOCKDATA
@@ -3937,8 +3962,9 @@ void RobottotalcontrolThread::run()
                 if(totalcontrolent_buf.size()!=_p->m_totalcontrolent.Send(totalcontrolent_buf.c_str(),totalcontrolent_buf.size()))
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("远端机器人发送总控命令失败");
+                    QString return_msg=QString::fromLocal8Bit("远端焊机发送命令失败,系统尝试重连机器人");
                     _p->m_mcs->main_record.push_back(return_msg);
+                    _p->b_relink=true;
                     main_record.unlock();
                 }
             #ifdef OPEN_SHOW_ROBOTSOCKDATA
@@ -4073,8 +4099,9 @@ void WeldsendThread::run()
                 if(send_buf.size()!=_p->m_weldsendent.Send(send_buf.c_str(),send_buf.size()))
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("远端焊机发送命令失败");
+                    QString return_msg=QString::fromLocal8Bit("远端焊机发送命令失败,系统尝试重连机器人");
                     _p->m_mcs->main_record.push_back(return_msg);
+                    _p->b_relink=true;
                     main_record.unlock();
                 }
             #ifdef OPEN_SHOW_WELDSOCKDATA

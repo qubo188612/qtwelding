@@ -2745,7 +2745,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             /***************/
             //摆焊工艺
             CWeldTarject tarjectMath;
-            if(0!=tarjectMath.creat_wave(trace.point,wave_info,&wavetrace.point))
+            if(0!=tarjectMath.creat_wave(m_mcs->rob->cal_posture_model,trace.point,wave_info,&wavetrace.point))
             {
                 main_record.lock();
                 return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");

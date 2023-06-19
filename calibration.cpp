@@ -181,7 +181,6 @@ bool Calibration::hand_on_yes_eyetohand (CAL_POSTURE robot,                     
 std::vector<Eigen::Vector3d> Calibration::Attitudedifference(CAL_POSTURE robot,Eigen::Vector3d PosR_st,Eigen::Vector3d PosR_ed,int differenceNum)
 {
     std::vector<Eigen::Vector3d> tempResult;
-    std::vector<Eigen::Vector3d> Result;
     Eigen::Matrix3d _3x3_PosR_st,_3x3_PosR_ed,_3x3_PosR_ed_T,_3x3_PosR_st_T;
     Eigen::Matrix3d addvalue;
     double d_add=1.0/(differenceNum+1);
@@ -244,6 +243,73 @@ std::vector<Eigen::Vector3d> Calibration::Attitudedifference(CAL_POSTURE robot,E
         sing[2]=s[2]*CAL_ANGLE;
         tempResult.push_back(sing);
     }
+    return tempResult;
+}
+
+Eigen::Vector3d Calibration::Attitudedifference_N(CAL_POSTURE robot,Eigen::Vector3d PosR_st,Eigen::Vector3d PosR_ed,int differenceNum,int N)
+{
+    Eigen::Vector3d tempResult;
+    Eigen::Matrix3d _3x3_PosR_st,_3x3_PosR_ed,_3x3_PosR_ed_T,_3x3_PosR_st_T;
+    Eigen::Matrix3d addvalue;
+    double d_add=1.0/(differenceNum+1);
+    //把姿态转化为旋转矩阵
+    std::array<double,3> pstst,psted;
+    Eigen::Vector3d tm_PosR_st,tm_PosR_ed;
+    char b_fan[3]={0,0,0};
+
+    tm_PosR_st=PosR_st;
+    tm_PosR_ed=PosR_ed;
+
+
+    pstst[0]=tm_PosR_st[0];
+    pstst[1]=tm_PosR_st[1];
+    pstst[2]=tm_PosR_st[2];
+    psted[0]=tm_PosR_ed[0];
+    psted[1]=tm_PosR_ed[1];
+    psted[2]=tm_PosR_ed[2];
+
+    _3x3_PosR_st=Euler2RotMatrixXYZ(robot,pstst);
+    _3x3_PosR_ed=Euler2RotMatrixXYZ(robot,psted);
+
+    //旋转矩阵变四元数
+    Eigen::Quaterniond quaternion_st,quaternion_ed;
+    quaternion_st = _3x3_PosR_st;
+    quaternion_ed = _3x3_PosR_ed;
+
+    double pointfilt;
+    pointfilt=quaternion_st.x()*quaternion_ed.x()+quaternion_st.y()*quaternion_ed.y()+quaternion_st.z()*quaternion_ed.z()+quaternion_st.w()*quaternion_ed.w();
+
+    if(pointfilt<0)
+    {
+        quaternion_ed.x()=-quaternion_ed.x();
+        quaternion_ed.y()=-quaternion_ed.y();
+        quaternion_ed.z()=-quaternion_ed.z();
+        quaternion_ed.w()=-quaternion_ed.w();
+    }
+
+    int i=N;
+    Eigen::Vector3d sing;
+    Eigen::Quaterniond tempaddvalue;
+    Eigen::Matrix3d tempres;
+    std::array<double, 3> s;
+    double dis;
+    tempaddvalue=quaternion_st;
+    tempaddvalue.x()=quaternion_st.x()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.x();
+    tempaddvalue.y()=quaternion_st.y()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.y();
+    tempaddvalue.z()=quaternion_st.z()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.z();
+    tempaddvalue.w()=quaternion_st.w()*(1-(i+1)*d_add)+(i+1)*d_add*quaternion_ed.w();
+    dis=sqrt(tempaddvalue.x()*tempaddvalue.x()+tempaddvalue.y()*tempaddvalue.y()+tempaddvalue.z()*tempaddvalue.z()+tempaddvalue.w()*tempaddvalue.w());
+    tempaddvalue.x()=tempaddvalue.x()/dis;
+    tempaddvalue.y()=tempaddvalue.y()/dis;
+    tempaddvalue.z()=tempaddvalue.z()/dis;
+    tempaddvalue.w()=tempaddvalue.w()/dis;
+    tempres=tempaddvalue;
+    s=RotMatrixXYZ2Euler(robot,tempres);
+    sing[0]=s[0]*CAL_ANGLE;
+    sing[1]=s[1]*CAL_ANGLE;
+    sing[2]=s[2]*CAL_ANGLE;
+    tempResult=sing;
+
     return tempResult;
 }
 
