@@ -1702,6 +1702,20 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     interpolatweld[n].RZ=m_mcs->craft->posturelist[0].posture.RZ;
                     interpolatweld[n].nEn=true;
                 }
+
+
+                /*********************************/
+                /*
+                //只保留起终点，为了库卡演示好看
+                std::vector<RobPos> temp_interpolatweld(2);
+                if(interpolatweld.size()>=10)
+                {
+                   temp_interpolatweld[0]=interpolatweld[5];
+                   temp_interpolatweld[1]=interpolatweld[interpolatweld.size()-5];
+                }
+                interpolatweld=temp_interpolatweld;
+                */
+                /********************************/
             }
             break;
             case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
@@ -4696,9 +4710,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
                     {
                         Scan_trace_line res;
-                        res.robotpos=m_mcs->rob->TCPpos;
                         res.robottime=m_mcs->rob->robtime;
                         res.ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        res.robotpos.X=res.ros_line.robpos.posx;
+                        res.robotpos.Y=res.ros_line.robpos.posy;
+                        res.robotpos.Z=res.ros_line.robpos.posz;
+                        res.robotpos.RX=res.ros_line.robpos.posrx;
+                        res.robotpos.RY=res.ros_line.robpos.posry;
+                        res.robotpos.RZ=res.ros_line.robpos.posrz;
+                        res.robotpos.out_1=res.ros_line.robpos.posout1;
+                        res.robotpos.out_2=res.ros_line.robpos.posout2;
+                        res.robotpos.out_3=res.ros_line.robpos.posout3;
+                        res.robotpos.nEn=1;
+                    #else
+                        res.robotpos=m_mcs->rob->TCPpos;
+                    #endif
                         m_mcs->project->project_scan_trace[scan_trace_num].point.push_back(res);
                     }
                     m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
@@ -4978,6 +5005,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             QString name=cmd.cmd_tracing_name;
             int tcp=cmd.cmd_tracing_tcp;
             int weld_tracing_num;
+            int time=cmd.cmd_tracing_time;
             for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
             {
                 if(name==m_mcs->project->project_interweld_trace[n].name)
@@ -5016,9 +5044,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                                 line=n;
                                 return 1;
                             }
-                            usleep(30000);
                         }
                     }
+                    usleep(time*1000);
                 }
             }
             usleep(ROB_WORK_DELAY);

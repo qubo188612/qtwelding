@@ -4115,49 +4115,53 @@ void getposThread::run()
                             emit Send_show_pos_list();
                         }
                     }
-                }
-                //往激光器写入机器人实时坐标信息
-                if(_p->m_mcs->rob->b_link_ctx_posget==true)
-                {
-                    sent_info_leaser sentdata;
-                    int32_t *i32_data;
-                    uint16_t u16_data[2];
-                    sentdata.ctx=_p->m_mcs->resultdata.ctx_result;
-                    sentdata.addr=ALS_REALTIME_POSX_REG_ADD;
-                    sentdata.data.reserve(0x15);
-                    i32_data=(int32_t*)u16_data;
-                    *i32_data=_p->m_mcs->rob->TCPpos.X*1000;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.Y*1000;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.Z*1000;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.RX*10000;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.RY*10000;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.out_1;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.out_2;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    *i32_data=_p->m_mcs->rob->TCPpos.out_3;
-                    sentdata.data.push_back(u16_data[0]);
-                    sentdata.data.push_back(u16_data[1]);
-                    //工具号、坐标系、用户坐标系全用0
-                    sentdata.data.push_back(0);
-                    sentdata.data.push_back(0);
-                    sentdata.data.push_back(0);
-                    modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+                    /*******************************/
+                    //往激光器写入机器人实时坐标信息
+                #if OPEN_TIMESTAMP==1
+                    if(_p->m_mcs->rob->b_link_ctx_posget==true)
+                    {
+                        sent_info_leaser sentdata;
+                        int32_t *i32_data;
+                        uint16_t u16_data[2];
+                        sentdata.ctx=_p->m_mcs->resultdata.ctx_result;
+                        sentdata.addr=ALS_REALTIME_POSX_REG_ADD;
+                        sentdata.data.reserve(0x15);
+                        i32_data=(int32_t*)u16_data;
+                        *i32_data=_p->m_mcs->rob->TCPpos.X*1000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.Y*1000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.Z*1000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.RX*10000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.RY*10000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.RZ*10000;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.out_1;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.out_2;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        *i32_data=_p->m_mcs->rob->TCPpos.out_3;
+                        sentdata.data.push_back(u16_data[0]);
+                        sentdata.data.push_back(u16_data[1]);
+                        //工具号、坐标系、用户坐标系全用0
+                        sentdata.data.push_back(0);
+                        sentdata.data.push_back(0);
+                        sentdata.data.push_back(0);
+                        modbus_write_registers(sentdata.ctx,sentdata.addr,sentdata.data.size(),sentdata.data.data());
+                    }
+                #endif
+                    /******************************/
                 }
             }
             if(_p->m_mcs->cam->sop_cam[0].b_updataimage_finish==true)

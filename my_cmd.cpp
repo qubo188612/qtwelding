@@ -372,12 +372,13 @@ QString my_cmd::cmd_traceadd(QString name1,QString name2,QString name_out)
     return msg;
 }
 
-QString my_cmd::cmd_tracing(QString name,int tcp)
+QString my_cmd::cmd_tracing(QString name,int tcp,int time)
 {
     QString msg;
     msg=QString(CMD_TRACING_KEY)+" "+
         rc_name(name)+" "+
-        rc_tcp(tcp);
+        rc_tcp(tcp)+" "+
+        rc_time(time);
     return msg;
 }
 
@@ -2562,6 +2563,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         int pn=0;
         bool b_TCP=false;
         bool b_NAME=false;
+        bool b_TIME=false;
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -2585,6 +2587,27 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         if(cmd_tracing_tcp<0||cmd_tracing_tcp>=ROBOTTCPNUM)
                         {
                             return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TIME)
+                {
+                    if(b_TIME==false)
+                    {
+                        b_TIME=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracing_time,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracing_time<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
                             return 1;
                         }
                     }
@@ -2625,6 +2648,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_NAME==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_TIME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }

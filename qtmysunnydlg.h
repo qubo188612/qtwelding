@@ -80,7 +80,7 @@ public:
     volatile bool b_init_show_pos_list_finish;
     volatile bool b_init_set_task;
 
-    int ctx_result_dosomeing;
+    volatile int ctx_result_dosomeing;
 
     int32_t tabWidget_task; //当前选择的tab任务
     int32_t zoom_left;

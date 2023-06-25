@@ -46,6 +46,7 @@ void keytracingDlg::init_dlg_show(QString cmdlist)
         {
             int tcp=cmd.cmd_tracing_tcp;//获取到跟踪TCP
             QString name=cmd.cmd_tracing_name;
+            int time=cmd.cmd_tracing_time;
             int weld_tracing_num;
             if(tcp>=0&&tcp<ROBOTTCPNUM)
             {
@@ -63,6 +64,7 @@ void keytracingDlg::init_dlg_show(QString cmdlist)
             {
                 ui->tracingfilenamecombo->setCurrentIndex(weld_tracing_num);
             }
+            ui->timelineEdit->setText(QString::number(time));
         }
     }
     ui->record->clear();
@@ -90,6 +92,7 @@ void keytracingDlg::on_pushButton_clicked()
     int tcp=ui->tracingtcpcombo->currentIndex();
     QString name=ui->tracingfilenamecombo->currentText();
     int route=ui->tracingfilenamecombo->currentIndex();
+    QString stime=ui->timelineEdit->text();
     if(tcp<0||tcp>ui->tracingtcpcombo->count()-1)
     {
         ui->record->append(QString::fromLocal8Bit("请选择一个坐标系"));
@@ -100,9 +103,21 @@ void keytracingDlg::on_pushButton_clicked()
         ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹工艺"));
         return;
     }
+    if(ui->timelineEdit->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写采样点发送间隔时间"));
+        return;
+    }
+    bool rc;
+    int time=stime.toInt(&rc);
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("采样点时间格式错误"));
+        return;
+    }
     my_cmd cmd;
     QString msg;
-    msg=cmd.cmd_tracing(name,tcp);
+    msg=cmd.cmd_tracing(name,tcp,time);
     cmd_msg=msg;
     done(1);
 }

@@ -163,13 +163,12 @@ void arrvepointtestDlg::on_updataleaser_clicked()
             ui->record->append(QString::fromLocal8Bit("扫描计算结果出错"));
             return;
         }
-        RobPos pos=scan_trace[0].robotpos;
-        ui->lineEdit_X->setText(QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_Y->setText(QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_Z->setText(QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE));
-        ui->lineEdit_RX->setText(QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_RY->setText(QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->lineEdit_RZ->setText(QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_X->setText(QString::number(weld_trace[0].X,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Y->setText(QString::number(weld_trace[0].Y,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_Z->setText(QString::number(weld_trace[0].Z,'f',ROBOT_POSE_DECIMAL_PLACE));
+        ui->lineEdit_RX->setText(QString::number(scan_trace[0].robotpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RY->setText(QString::number(scan_trace[0].robotpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+        ui->lineEdit_RZ->setText(QString::number(scan_trace[0].robotpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->record->append(QString::fromLocal8Bit("更新机器人坐标完成"));
     }
 }

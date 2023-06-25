@@ -1767,7 +1767,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                 else if (ret > 0 && (query[7] == 0x10||query[7] == 0x04))
                 {       
                     _p->mb_mapping->tab_registers[ROB_MOVEMOD_REG_ADD]=65535;
-                    _p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD]=65535;
+                //  _p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_STOP_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_MOVESPEED_FH_REG_ADD]=65535;
                     _p->mb_mapping->tab_registers[ROB_MOVESPEED_FL_REG_ADD]=65535;
@@ -2080,7 +2080,10 @@ void RobotcontrolThread1::run() //接到上位机命令
                                           i_out1,i_out2,i_out3,i_out1_1,i_out1_2,i_out1_3,
                                           movemod,tcp,f_speed);
                             }
-                            else if(_p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD]!=65535)//机器人只是单独改TCP
+                            //机器人只是单独改TCP
+                            else if((query[7] == 0x10&&ROB_TCP_NUM_REG_ADD==(((uint16_t)query[8])<<8)+(uint16_t)query[9]&&1==(((uint16_t)query[10])<<8)+(uint16_t)query[11])
+                                  ||(query[7] == 0x04&&ROB_TCP_NUM_REG_ADD==(((uint16_t)query[8])<<8)+(uint16_t)query[9]))
+
                             {
                                 uint16_t tcp=_p->mb_mapping->tab_registers[ROB_TCP_NUM_REG_ADD];
                                 switch(_p->rob_mod)

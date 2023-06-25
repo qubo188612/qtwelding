@@ -29,7 +29,7 @@
 //点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
 //寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[寻位的点point1]
 //轨迹点采样指令，举例 SAMPLE: CREAT[跟踪第一条line] SPEED[25] TIME[16] NAME[跟踪第一条line采样结果]
-//跟踪焊接轨迹工艺指令，举例 TRACING: TCP[0] NAME[焊接轨迹1]
+//跟踪焊接轨迹工艺指令，举例 TRACING: TCP[0] NAME[焊接轨迹1] TIME[100]
 //跟踪轨迹相加指令，举例 TRACEADD: TRACEADD[第一条，第二条] NAME[焊接轨迹1]
 //前往起弧点指令，举例 GOWELD: TCP[0] SPEED[25] NAME[焊接轨迹1]
 //摆焊指令，举例 WAVE: TRACE[第一条] WAVE[1,2,3,4,5,6,7,8,9,10,11,12,0,0,0,0,0,0] NAME[摆焊轨迹]
@@ -152,7 +152,7 @@ public:
     QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
     QString cmd_getpos(int time,QString name,std::vector<float> add);//获取扫描的焊缝坐标值命令
     QString cmd_sample(QString name_in,float speed,int time,QString name_out);//采样轨迹点命令
-    QString cmd_tracing(QString name,int tcp);//跟踪焊接轨迹工艺命令
+    QString cmd_tracing(QString name,int tcp,int time);//跟踪焊接轨迹工艺命令
     QString cmd_traceadd(QString name1,QString name2,QString name_out);//跟踪焊接轨迹相加命令
     QString cmd_goweld(int tcp,float speed,QString name);//前往起弧点命令
     QString cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_out);//摆焊指令
@@ -273,6 +273,7 @@ public:
 
     QString cmd_tracing_name;//获取到的跟踪工艺轨迹名字
     int cmd_tracing_tcp;//获取到的跟踪工艺轨迹tcp
+    int cmd_tracing_time;//密集采样点发送间隔
 
     QString cmd_traceadd_name1;//获取到的跟踪工艺轨迹1名字
     QString cmd_traceadd_name2;//获取到的跟踪工艺轨迹2名字

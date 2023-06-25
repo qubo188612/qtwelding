@@ -241,6 +241,8 @@ private:
 
     void updatacmdlistUi();
 
+    int task_setmaindlgtcp(int tcp);    //设置tcp
+
     QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
 };
 

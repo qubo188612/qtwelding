@@ -1,6 +1,8 @@
 #include "keysearchdlg.h"
 #include "ui_keysearchdlg.h"
 
+extern QMutex send_group_robot;
+
 keysearchDlg::keysearchDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::keysearchDlg)
@@ -156,6 +158,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
+        send_group_robot.lock();
         sent_info_robot sendrob;
         sendrob.addr=ROB_TCP_NUM_REG_ADD;
         sendrob.ctx=m_mcs->rob->ctx_posget;
@@ -164,6 +167,7 @@ void keysearchDlg::on_searchaddBtn_clicked()
         m_mcs->rob->b_send_group_robot=false;
         m_mcs->rob->send_group_robot.push_back(sendrob);
         m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+        send_group_robot.unlock();
         usleep(ROB_WORK_DELAY);
         int num=0;
         while(m_mcs->rob->b_send_group_robot==false)

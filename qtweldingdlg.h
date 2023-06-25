@@ -46,8 +46,8 @@ class qtrecordThread;
 
 #define ROBOT_MAINDLG_MOVEPOS_STEP             100      //100  //主页机器人移动目标点距离
 #define ROBOT_MAINDLG_MOVEPOS_STEPMIN          50       //50   //主页机器人当前点距离移动目标点小于该值时更新新目标点
-#define ROBOT_MAINDLG_MOVEPOSTURE_STEP         2        //主页机器人移动目标点姿态距离(度)
-#define ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN      1        //主页机器人当前点距离移动目标点姿态距离小于该值时更新新目标点姿态距离(度)
+#define ROBOT_MAINDLG_MOVEPOSTURE_STEP         5        //主页机器人移动目标点姿态距离(度)
+#define ROBOT_MAINDLG_MOVEPOSTURE_STEPMIN      2.5      //主页机器人当前点距离移动目标点姿态距离小于该值时更新新目标点姿态距离(度)
 #define ROBOT_MAINDLG_MOVEOUT_STEP             1000     //主页机器人移动第三轴目标点距离
 #define ROBOT_MAINDLG_MOVEOUT_STEPMIN          500      //主页机器人第三轴当前点距离移动目标点小于该值时更新新目标点
 
@@ -105,6 +105,8 @@ public:
 
     unsigned short robotpos_rcv_data[19+ROBOTINPUTNUM+ROBOTTCPPOSOUTNUM*2];
 //  unsigned short plc_rcv_data[PLC_RED_NUM];
+
+
 
 
 private slots:
@@ -257,6 +259,8 @@ private:
     void StopAlgCamer();       //停止算法
 
     void UpdataUi();            //控件使能
+
+    int task_setmaindlgtcp(int tcp);   //设置tcp
 
     QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
 };

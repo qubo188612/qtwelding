@@ -2,6 +2,7 @@
 #include "ui_setprojectdlg.h"
 
 extern QMutex send_group_leaser;
+extern QMutex send_group_robot;
 
 setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
@@ -154,6 +155,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
+        send_group_robot.lock();
         sent_info_robot sendrob;
         sendrob.addr=ROB_TCP_NUM_REG_ADD;
         sendrob.ctx=m_mcs->rob->ctx_posget;
@@ -162,6 +164,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         m_mcs->rob->b_send_group_robot=false;
         m_mcs->rob->send_group_robot.push_back(sendrob);
         m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+        send_group_robot.unlock();
         usleep(ROB_WORK_DELAY);
         int num=0;
         while(m_mcs->rob->b_send_group_robot==false)
@@ -394,6 +397,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
+        send_group_robot.lock();
         sent_info_robot sendrob;
         sendrob.addr=ROB_TCP_NUM_REG_ADD;
         sendrob.ctx=m_mcs->rob->ctx_posget;
@@ -402,6 +406,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         m_mcs->rob->b_send_group_robot=false;
         m_mcs->rob->send_group_robot.push_back(sendrob);
         m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+        send_group_robot.unlock();
         usleep(ROB_WORK_DELAY);
         int num=0;
         while(m_mcs->rob->b_send_group_robot==false)
@@ -1870,7 +1875,7 @@ void setprojectDlg::on_ConnectCamBtn_clicked()//连接相机
             b_thread1=true;
             thread1->start();
 
-            m_mcs->cam->sop_cam[0].InitConnect(ui->widget);
+            m_mcs->cam->sop_cam[0].InitConnect(ui->widget,2);
 
             m_mcs->tosendbuffer->cmd_cam(m_mcs->resultdata.task,1);
 
@@ -2996,6 +3001,54 @@ void setprojectDlg::on_arrvepointtestBtn_clicked()
     arrvepointtest->close_dlg_show();
 }
 
+int setprojectDlg::task_setmaindlgtcp(int tcp)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.addr=ROB_TCP_NUM_REG_ADD;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.data.resize(1);
+    sendrob.data[0]=tcp;
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+    usleep(ROB_WORK_DELAY);
+    int num=0;
+    while(m_mcs->rob->b_send_group_robot==false)
+    {
+        if(num>10)
+        {
+            break;
+        }
+        usleep(ROB_WORK_DELAY_STEP);
+        num++;
+    }
+    if(m_mcs->rob->b_send_group_robot==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+        return 1;
+    }
+    usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
+    num=0;
+    m_mcs->rob->TCPpos.nEn=false;
+    while (m_mcs->rob->TCPpos.nEn==false)
+    {
+        if(num>10)
+        {
+            break;
+        }
+        usleep(ROB_WORK_DELAY_STEP);
+        num++;
+    }
+    if(m_mcs->rob->TCPpos.nEn==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        return 1;
+    }
+    return 0;
+}
+
 //机器人X-按下
 void setprojectDlg::on_ctlposXsubBtn_pressed()
 {
@@ -3026,6 +3079,8 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_XSUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人X轴负移动"));
     return;
 }
@@ -3067,6 +3122,8 @@ void setprojectDlg::on_ctlposXaddBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_XADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人X轴正移动"));
 }
 
@@ -3107,6 +3164,8 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_YSUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人Y轴负移动"));
     return;
 }
@@ -3148,6 +3207,8 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_YADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人Y轴正移动"));
     return;
 }
@@ -3189,6 +3250,8 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_ZSUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人Z轴负移动"));
     return;
 }
@@ -3230,6 +3293,8 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_ZADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人Z轴正移动"));
     return;
 }
@@ -3271,6 +3336,8 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_RXSUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人RX轴负移动"));
     return;
 }
@@ -3312,6 +3379,8 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_RXADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人RX轴正移动"));
     return;
 }
@@ -3353,6 +3422,8 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_RYSUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人RY轴负移动"));
     return;
 }
@@ -3394,6 +3465,8 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_RYADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人RY轴正移动"));
     return;
 }
@@ -3435,6 +3508,8 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_RZSUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人RZ轴负移动"));
     return;
 }
@@ -3476,6 +3551,8 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_RZADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人RZ轴正移动"));
     return;
 }
@@ -3517,6 +3594,8 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT1SUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人OUT1轴负移动"));
     return;
 }
@@ -3558,6 +3637,8 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT1ADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人OUT1轴正移动"));
     return;
 }
@@ -3599,6 +3680,8 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT2SUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人OUT2轴负移动"));
     return;
 }
@@ -3640,6 +3723,8 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT2ADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人OUT2轴正移动"));
     return;
 }
@@ -3681,6 +3766,8 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT3SUB;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人OUT3轴负移动"));
     return;
 }
@@ -3722,6 +3809,8 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT3ADD;
+    if(0!=task_setmaindlgtcp(tcp))
+        return;
     ui->record->append(QString::fromLocal8Bit("机器人OUT3轴正移动"));
     return;
 }
