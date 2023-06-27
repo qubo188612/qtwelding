@@ -42,6 +42,16 @@ void Process::init_skip_start_process(int stline)
     b_processpaused=false;
 }
 
+void Process::check_data_process()
+{
+    switch(m_mcs->project->project_Id)
+    {
+        case PROGECT_ID_TEACH_SCAN:
+            m_mcs->process->process1_scanbeforetrace->check_data_process();
+        break;
+    }
+}
+
 void Process::stop_process()           //停止流程
 {
     switch(m_mcs->project->project_Id)

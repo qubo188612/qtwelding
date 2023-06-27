@@ -25,6 +25,7 @@ SOURCES += \
         cam_sen.cpp \
         cambuilddlg.cpp \
         ccoordchange.cpp \
+        checkscandatadlg.cpp \
         craft.cpp \
         cweldtarject.cpp \
         demarcatedlg.cpp \
@@ -107,6 +108,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 FORMS += \
     arrvepointtestdlg.ui \
     cambuilddlg.ui \
+    checkscandatadlg.ui \
     demarcatedlg.ui \
     editcraftdlg.ui \
     editprojectdlg.ui \
@@ -177,6 +179,7 @@ HEADERS += \
     cam_sen.h \
     cambuilddlg.h \
     ccoordchange.h \
+    checkscandatadlg.h \
     craft.h \
     cweldtarject.h \
     demarcatedlg.h \

@@ -246,7 +246,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
        }
     });
 
-    connect(ui->comboBox,&QComboBox::currentIndexChanged,[=](){
+    connect(ui->comboBox,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),[=](){
         u_int16_t robotmod=ui->comboBox->currentIndex();
         UpdataRobot(robotmod);
     });

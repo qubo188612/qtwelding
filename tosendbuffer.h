@@ -39,6 +39,7 @@ public:
     void cmd_aout(std::vector<float> a);//A模拟量输出命令
     void cmd_settcp(int tcp);//设置tcp;
     void cmd_speed(float speed);//设置速度;
+    void cmd_totalcontrol(bool nEn);//设置总控
 
     int cmdlist_check();//检查指令
     int cmdlist_skip(int stline);//跳过执行步骤

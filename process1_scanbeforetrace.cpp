@@ -54,6 +54,17 @@ void Process1_scanbeforetrace::init_skip_start_process(int stline)
     thread->start();
 }
 
+void Process1_scanbeforetrace::check_data_process()
+{
+    int rc;
+    rc=m_mcs->tosendbuffer->cmdlist_check();//检查指令
+    if(rc!=0)
+    {
+        return;
+    }
+    m_mcs->tosendbuffer->cmdlist_skip(m_mcs->project->project_cmdlist.size()-1);
+}
+
 void Process1_scanbeforetrace::stop_process()
 {
     m_mcs->tosendbuffer->cmdlist_stopbuild();
@@ -117,7 +128,9 @@ void Process1Thread::run()
         {
             goto OUT_THREAD_ERROR;
         }
+    #ifdef USE_MYROBOT_CONTROL
         _p->m_mcs->robotcontrol->RobotOPEN_ELE();//机器人上电
+    #endif
         if(_p->b_thread==false)
         {
             goto OUT_THREAD_ERROR;
@@ -148,7 +161,7 @@ OUT_THREAD_ERROR:
     _p->thread->quit();
     _p->thread->wait();
     _p->b_thread=false;
-    _p->m_mcs->robotcontrol->RobotCLOSE_ELE();//机器人断电
+    _p->m_mcs->tosendbuffer->cmd_lock(0);//机器人停止
  // 以后用停止
 }
 

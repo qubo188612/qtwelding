@@ -26,6 +26,7 @@
 #include "setprojectdlg.h"
 #include "editcraftdlg.h"
 #include "newcraftdlg.h"
+#include "checkscandatadlg.h"
 #include "setcraft0dlg.h"
 #include "setcraft1dlg.h"
 #include "setcraft2dlg.h"
@@ -93,6 +94,7 @@ public:
     setprojectDlg *setproject;
     editcraftDlg *editcraft;
     newcraftDlg *newcraft;
+    checkscandataDlg *checkscandata;
     setcraft0Dlg *setcraft0;
     setcraft1Dlg *setcraft1;
     setcraft2Dlg *setcraft2;
@@ -241,6 +243,8 @@ private slots:
     void on_CircleRuncheckBox_stateChanged(int arg1);
 
     void on_projectskiprunBtn_clicked();
+
+    void on_projectcheckdataBtn_clicked();
 
 private:
     Ui::qtweldingDlg *ui;

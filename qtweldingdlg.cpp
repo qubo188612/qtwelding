@@ -75,6 +75,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     setproject=new setprojectDlg(m_mcs);
     editcraft=new editcraftDlg(m_mcs);
     newcraft=new newcraftDlg(m_mcs);
+    checkscandata=new checkscandataDlg(m_mcs);
     setcraft0=new setcraft0Dlg(m_mcs);
     setcraft1=new setcraft1Dlg(m_mcs);
     setcraft2=new setcraft2Dlg(m_mcs);
@@ -112,7 +113,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->weld_current->setText(QString::fromLocal8Bit("0.000"));
     ui->weld_process->setText(QString::fromLocal8Bit("平焊"));
     ui->weld_alternating->setText(QString::fromLocal8Bit("直流"));
-    ui->robotEncheckBox->setCheckState(Qt::Checked);
+//  ui->robotEncheckBox->setCheckState(Qt::Unchecked);
+//  m_mcs->mainDlg_robotEnable=false;
 
     if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox==0)
     {
@@ -182,7 +184,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
         ui->movetcpcombo->addItem(msg);
     }
 
-    connect(ui->movetcpcombo,&QComboBox::currentIndexChanged,[=](){
+    ui->movetcpcombo->setCurrentIndex(m_mcs->e2proomdata.maindlg_movetcp);
+
+    connect(ui->movetcpcombo,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),[=](){
         if(m_mcs->rob->b_link_ctx_posget==true)
         {
             int tcp=ui->movetcpcombo->currentIndex();
@@ -195,8 +199,6 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
         }
         UpdataUi();
     });
-
-    ui->movetcpcombo->setCurrentIndex(m_mcs->e2proomdata.maindlg_movetcp);
 
     UpdataUi();
 
@@ -255,6 +257,7 @@ qtweldingDlg::~qtweldingDlg()
     delete setproject;
     delete editcraft;
     delete newcraft;
+    delete checkscandata;
     delete setcraft0;
     delete setcraft1;
     delete setcraft2;
@@ -300,6 +303,8 @@ void qtweldingDlg::UpdataUi()
         ui->posOut3subBtn->setDisabled(false);
         ui->posOut3addBtn->setDisabled(false);
         ui->projectskiprunBtn->setDisabled(false);
+        ui->projectcheckdataBtn->setDisabled(false);
+        ui->robotEncheckBox->setDisabled(false);
     }
     else
     {
@@ -336,6 +341,8 @@ void qtweldingDlg::UpdataUi()
         ui->posOut3subBtn->setDisabled(true);
         ui->posOut3addBtn->setDisabled(true);
         ui->projectskiprunBtn->setDisabled(true);
+        ui->projectcheckdataBtn->setDisabled(true);
+        ui->robotEncheckBox->setDisabled(true);
     }
     if(m_mcs->process->b_processpaused==false)
     {
@@ -384,6 +391,14 @@ void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
         else if(m_mcs->resultdata.link_result_state==false)
         {
             ui->record->append(QString::fromLocal8Bit("激光头未链接成功"));
+        }
+        else if(m_mcs->mainDlg_robotEnable==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        }
+        else if(m_mcs->rob->b_link_ctx_posget_remote==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人远端未链接成功"));
         }
         else
         {
@@ -435,6 +450,14 @@ void qtweldingDlg::on_projectskiprunBtn_clicked()//从第N行开始运行工程
         {
             ui->record->append(QString::fromLocal8Bit("激光头未链接成功"));
         }
+        else if(m_mcs->mainDlg_robotEnable==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        }
+        else if(m_mcs->rob->b_link_ctx_posget_remote==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人远端未链接成功"));
+        }
         else
         {
             m_mcs->process->init_skip_start_process(skipline);
@@ -446,6 +469,16 @@ void qtweldingDlg::on_projectskiprunBtn_clicked()//从第N行开始运行工程
         ui->record->append(QString::fromLocal8Bit("请先停止运行工程"));
     }
     UpdataUi();
+}
+
+//查看扫描数据
+void qtweldingDlg::on_projectcheckdataBtn_clicked()
+{
+    m_mcs->process->check_data_process();
+    checkscandata->init_dlg_show();
+    checkscandata->setWindowTitle(QString::fromLocal8Bit("查看变量数据"));
+    checkscandata->exec();
+    checkscandata->close_dlg_show();
 }
 
 void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程
@@ -934,6 +967,11 @@ void qtweldingDlg::on_posXsubBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -973,6 +1011,11 @@ void qtweldingDlg::on_posXaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1009,6 +1052,11 @@ void qtweldingDlg::on_posYsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1050,6 +1098,11 @@ void qtweldingDlg::on_posYaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1087,6 +1140,11 @@ void qtweldingDlg::on_posZsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1128,6 +1186,11 @@ void qtweldingDlg::on_posZaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1165,6 +1228,11 @@ void qtweldingDlg::on_posRXsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1206,6 +1274,11 @@ void qtweldingDlg::on_posRXaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1243,6 +1316,11 @@ void qtweldingDlg::on_posRYsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1284,6 +1362,11 @@ void qtweldingDlg::on_posRYaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1321,6 +1404,11 @@ void qtweldingDlg::on_posRZsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1362,6 +1450,11 @@ void qtweldingDlg::on_posRZaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1399,6 +1492,11 @@ void qtweldingDlg::on_posOut1subBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1440,6 +1538,11 @@ void qtweldingDlg::on_posOut1addBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1477,6 +1580,11 @@ void qtweldingDlg::on_posOut2subBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1518,6 +1626,11 @@ void qtweldingDlg::on_posOut2addBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1555,6 +1668,11 @@ void qtweldingDlg::on_posOut3subBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -1596,6 +1714,11 @@ void qtweldingDlg::on_posOut3addBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -1618,16 +1741,40 @@ void qtweldingDlg::on_robotEncheckBox_stateChanged(int arg1)
 {
     if(arg1==0)
     {
+        if(m_mcs->rob->b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+            return;
+        }
+        else
+        {
+            m_mcs->tosendbuffer->cmd_totalcontrol(false);
+        }
+        /*
     #ifdef USE_MYROBOT_CONTROL
         m_mcs->robotcontrol->RobotDisOPEN_ELE();
     #endif
+        */
+        m_mcs->mainDlg_robotEnable=false;
         ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
     }
     else
     {
+        if(m_mcs->rob->b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+            return;
+        }
+        else
+        {
+            m_mcs->tosendbuffer->cmd_totalcontrol(true);
+        }
+        /*
     #ifdef USE_MYROBOT_CONTROL
         m_mcs->robotcontrol->RobotOPEN_ELE(false);
     #endif
+        */
+        m_mcs->mainDlg_robotEnable=true;
         ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
     }
 }
@@ -2259,28 +2406,32 @@ void qtgetrobThread::run()
                 if(_p->m_mcs->rob->ctx_robot_dosomeing==DO_NOTHING)
                 {
                 //访问机器人坐标通信
-                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_X_POS_FH_REG_ADD,19+ROBOTINPUTNUM+ROBOTTCPPOSOUTNUM*2,_p->robotpos_rcv_data))
+                    if(0<=modbus_read_registers(_p->m_mcs->rob->ctx_posget,ROB_CONNECT_STATE_REG_ADD,21+ROBOTINPUTNUM+ROBOTTCPPOSOUTNUM*2,_p->robotpos_rcv_data))
                     {
-                        _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[0]);
-                        _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[2]);
-                        _p->m_mcs->rob->TCPpos.Z=*((float*)&_p->robotpos_rcv_data[4]);
-                        _p->m_mcs->rob->TCPpos.RX=*((float*)&_p->robotpos_rcv_data[6]);
-                        _p->m_mcs->rob->TCPpos.RY=*((float*)&_p->robotpos_rcv_data[8]);
-                        _p->m_mcs->rob->TCPpos.RZ=*((float*)&_p->robotpos_rcv_data[10]);
+                        if(_p->robotpos_rcv_data[0]==0)
+                            _p->m_mcs->rob->b_link_ctx_posget_remote=false;
+                        else
+                            _p->m_mcs->rob->b_link_ctx_posget_remote=true;
+                        _p->m_mcs->rob->TCPpos.X=*((float*)&_p->robotpos_rcv_data[2]);
+                        _p->m_mcs->rob->TCPpos.Y=*((float*)&_p->robotpos_rcv_data[4]);
+                        _p->m_mcs->rob->TCPpos.Z=*((float*)&_p->robotpos_rcv_data[6]);
+                        _p->m_mcs->rob->TCPpos.RX=*((float*)&_p->robotpos_rcv_data[8]);
+                        _p->m_mcs->rob->TCPpos.RY=*((float*)&_p->robotpos_rcv_data[10]);
+                        _p->m_mcs->rob->TCPpos.RZ=*((float*)&_p->robotpos_rcv_data[12]);
                         _p->m_mcs->rob->TCPpos.nEn=true;
-                        _p->m_mcs->rob->robot_speed=*((float*)&_p->robotpos_rcv_data[12]);
-                        _p->m_mcs->rob->robot_state=(ROBOT_STATE)_p->robotpos_rcv_data[14];
-                        _p->m_mcs->rob->robtime.hour=(int16_t)_p->robotpos_rcv_data[15];
-                        _p->m_mcs->rob->robtime.min=(int16_t)_p->robotpos_rcv_data[16];
-                        _p->m_mcs->rob->robtime.sec=(int16_t)_p->robotpos_rcv_data[17];
-                        _p->m_mcs->rob->robtime.msec=(int16_t)_p->robotpos_rcv_data[18];
+                        _p->m_mcs->rob->robot_speed=*((float*)&_p->robotpos_rcv_data[14]);
+                        _p->m_mcs->rob->robot_state=(ROBOT_STATE)_p->robotpos_rcv_data[16];
+                        _p->m_mcs->rob->robtime.hour=(int16_t)_p->robotpos_rcv_data[17];
+                        _p->m_mcs->rob->robtime.min=(int16_t)_p->robotpos_rcv_data[18];
+                        _p->m_mcs->rob->robtime.sec=(int16_t)_p->robotpos_rcv_data[19];
+                        _p->m_mcs->rob->robtime.msec=(int16_t)_p->robotpos_rcv_data[20];
                         for(int n=0;n<ROBOTINPUTNUM;n++)
                         {
-                            _p->m_mcs->rob->robioinput[n]=(int16_t)_p->robotpos_rcv_data[19+n];
+                            _p->m_mcs->rob->robioinput[n]=(int16_t)_p->robotpos_rcv_data[21+n];
                         }
-                        _p->m_mcs->rob->TCPpos.out_1=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM]);
-                        _p->m_mcs->rob->TCPpos.out_2=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+2]);
-                        _p->m_mcs->rob->TCPpos.out_3=*((int32_t*)&_p->robotpos_rcv_data[19+ROBOTINPUTNUM+4]);
+                        _p->m_mcs->rob->TCPpos.out_1=*((int32_t*)&_p->robotpos_rcv_data[21+ROBOTINPUTNUM]);
+                        _p->m_mcs->rob->TCPpos.out_2=*((int32_t*)&_p->robotpos_rcv_data[21+ROBOTINPUTNUM+2]);
+                        _p->m_mcs->rob->TCPpos.out_3=*((int32_t*)&_p->robotpos_rcv_data[21+ROBOTINPUTNUM+4]);
                     }
 
                     /*****************************/
@@ -2293,9 +2444,9 @@ void qtgetrobThread::run()
                         Robmovemodel movemod=MOVEJ;
                         if(_p->m_mcs->mainDlg_robmovestate==MAINDLG_NOTMOVE)//按钮停止机器人
                         {
-                            #ifdef USE_MYROBOT_CONTROL
+                        #ifdef USE_MYROBOT_CONTROL
                             _p->m_mcs->robotcontrol->clear_movepoint_buffer();//清空运动后续缓存
-                            #endif
+                        #endif
                             _p->m_mcs->tosendbuffer->cmd_lock(0);//停止运动
                             _p->m_mcs->mainDlg_robmovestate=MAINDLG_STATIC;
                         }
@@ -2770,6 +2921,12 @@ void qtplcThread::Stop()
 }
 
 */
+
+
+
+
+
+
 
 
 

@@ -90,7 +90,6 @@ void keygettcppos2Dlg::on_arriveBtn_pressed()
     int tcp=m_mcs->e2proomdata.maindlg_movetcp;
     RobPos pos=cmd.cmd_gettcppos2_pos;//获取到移动坐标
     movemod=MOVEJ;//用关节移动方式到位
-//  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -104,7 +103,6 @@ void keygettcppos2Dlg::on_arriveBtn_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-//  m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 

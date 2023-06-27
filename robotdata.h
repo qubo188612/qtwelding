@@ -71,7 +71,7 @@ typedef enum PLC_MODEL_ID            //PLC型号（协议）
 
 #define ROBOT_EMERGEN_TOTALCONTROL_RORT             30007    //智昌机器人总控指令数据信息发送端口
 #define ROBOT_EMERGEN_INFO_TOTALCONTROLCVBUFFER_MAX 1440     //智昌机器人运动指令发送数据回复信息最大个数
-#define ROBOT_EMERGEN_SEND_PORT                     30009    //智昌机器人运动指令端口数据信息发送端口
+#define ROBOT_EMERGEN_SEND_PORT                     30006    //智昌机器人运动指令端口数据信息发送端口
 #define ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX       1440     //智昌机器人运动指令发送数据回复信息最大个数
 #define ROBOT_EMERGEN_INFO_PORT                     30008    //智昌机器人信息端口
 #define ROBOT_EMERGEN_INFO_RECVBUFFER_MAX           1440     //智昌机器人数据信息端口
@@ -124,8 +124,9 @@ public:
 
     void DisconnectRobot();
 
-    modbus_t *ctx_posget;       //机器人信息模块访问
-    bool b_link_ctx_posget;     //机器人信息模块访问连接
+    modbus_t *ctx_posget;               //机器人信息模块访问
+    bool b_link_ctx_posget;             //机器人信息模块访问连接
+    bool b_link_ctx_posget_remote;      //机器人远端连接
 
     std::vector<sent_info_robot> send_group_robot;    //发送机器人数据队列
     volatile bool b_send_group_robot;       //发送机器人数据是否异常

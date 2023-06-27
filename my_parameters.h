@@ -47,6 +47,8 @@ public:
 
     MainDlg_robmovestate mainDlg_robmovestate;  //主页机器人移动状态
 
+    bool mainDlg_robotEnable;//主页机器人使能
+
     Synchronous *synchronous;    //手眼转换计算
 
     Robotcontrol *robotcontrol;     //自带机器人协议

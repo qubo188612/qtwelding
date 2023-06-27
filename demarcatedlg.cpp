@@ -251,6 +251,20 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
     {
         TCP_Leaserpos sing;
         sing.robotpos=m_mcs->rob->TCPpos;
+    #if OPEN_TIMESTAMP==1
+        sing.robotpos.X=m_mcs->cam->sop_cam[0].ros_line->robpos.posx;
+        sing.robotpos.Y=m_mcs->cam->sop_cam[0].ros_line->robpos.posy;
+        sing.robotpos.Z=m_mcs->cam->sop_cam[0].ros_line->robpos.posz;
+        sing.robotpos.RX=m_mcs->cam->sop_cam[0].ros_line->robpos.posrx;
+        sing.robotpos.RY=m_mcs->cam->sop_cam[0].ros_line->robpos.posry;
+        sing.robotpos.RZ=m_mcs->cam->sop_cam[0].ros_line->robpos.posrz;
+        sing.robotpos.out_1=m_mcs->cam->sop_cam[0].ros_line->robpos.posout1;
+        sing.robotpos.out_2=m_mcs->cam->sop_cam[0].ros_line->robpos.posout2;
+        sing.robotpos.out_3=m_mcs->cam->sop_cam[0].ros_line->robpos.posout3;
+        sing.robotpos.nEn=1;
+    #else
+        sing.robotpos=m_mcs->rob->TCPpos;
+    #endif
         sing.leaserpos.Y=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].x;
         sing.leaserpos.Z=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].y;
         sing.leaserpos.nEn=true;
@@ -314,7 +328,20 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
         else
         {
             TCP_Leaserpos sing;
+        #if OPEN_TIMESTAMP==1
+            sing.robotpos.X=m_mcs->cam->sop_cam[0].ros_line->robpos.posx;
+            sing.robotpos.Y=m_mcs->cam->sop_cam[0].ros_line->robpos.posy;
+            sing.robotpos.Z=m_mcs->cam->sop_cam[0].ros_line->robpos.posz;
+            sing.robotpos.RX=m_mcs->cam->sop_cam[0].ros_line->robpos.posrx;
+            sing.robotpos.RY=m_mcs->cam->sop_cam[0].ros_line->robpos.posry;
+            sing.robotpos.RZ=m_mcs->cam->sop_cam[0].ros_line->robpos.posrz;
+            sing.robotpos.out_1=m_mcs->cam->sop_cam[0].ros_line->robpos.posout1;
+            sing.robotpos.out_2=m_mcs->cam->sop_cam[0].ros_line->robpos.posout2;
+            sing.robotpos.out_3=m_mcs->cam->sop_cam[0].ros_line->robpos.posout3;
+            sing.robotpos.nEn=1;
+        #else
             sing.robotpos=m_mcs->rob->TCPpos;
+        #endif
             sing.leaserpos.Y=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].x;
             sing.leaserpos.Z=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].y;
             sing.leaserpos.nEn=true;

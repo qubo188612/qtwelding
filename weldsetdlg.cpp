@@ -43,7 +43,7 @@ void weldsetDlg::close_dlg_show()
 
 void weldsetDlg::on_weld_model_currentIndexChanged(int index)
 {
-    if(index==WELD_MODEL_NULL)
+    if(index==WELD_MODEL_NULL||m_mcs->rob->weld_model==WELD_MODEL_ROBOT_LINK)
     {
         ui->label_3->setEnabled(false);
         ui->weld_ip->setEnabled(false);

@@ -83,41 +83,42 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 //机器人信息和指令传输端口                        (1477-1496)
 #define ROB_CONTROL_REG_TOTALNUM              0x500         //机器人控制器寄存器总个数
 
+#define ROB_CONNECT_STATE_REG_ADD             0x0000       //机器人远端链接状态
 
-#define ROB_X_POS_FH_REG_ADD                  0x0000       //机器人当前坐标
-#define ROB_X_POS_FL_REG_ADD                  0x0001
-#define ROB_Y_POS_FH_REG_ADD                  0x0002
-#define ROB_Y_POS_FL_REG_ADD                  0x0003
-#define ROB_Z_POS_FH_REG_ADD                  0x0004
-#define ROB_Z_POS_FL_REG_ADD                  0x0005
-#define ROB_RX_POS_FH_REG_ADD                 0x0006
-#define ROB_RX_POS_FL_REG_ADD                 0x0007
-#define ROB_RY_POS_FH_REG_ADD                 0x0008
-#define ROB_RY_POS_FL_REG_ADD                 0x0009
-#define ROB_RZ_POS_FH_REG_ADD                 0x000a
-#define ROB_RZ_POS_FL_REG_ADD                 0x000b
-#define ROB_SPEED_FH_REG_ADD                  0x000c        //机器人当前速度
-#define ROB_SPEED_FL_REG_ADD                  0x000d
-#define ROB_STATE_REG_ADD                     0x000e        //机器人当前状态
-#define ROB_TIME_HOURS_REG_ADD                0x000f        //当前时间时
-#define ROB_TIME_MINUTES_REG_ADD              0x0010        //当前时间分
-#define ROB_TIME_SECONDS_REG_ADD              0x0011        //当前时间秒
-#define ROB_TIME_MILLISECONDS_REG_ADD         0x0012        //当前时间毫秒
-#define ROB_IO_INPUT1_REG_ADD                 0x0013        //机器人IO输入口1
-#define ROB_IO_INPUT2_REG_ADD                 0x0014        //机器人IO输入口2
-#define ROB_IO_INPUT3_REG_ADD                 0x0015        //机器人IO输入口3
-#define ROB_IO_INPUT4_REG_ADD                 0x0016        //机器人IO输入口4
-#define ROB_IO_INPUT5_REG_ADD                 0x0017        //机器人IO输入口5
-#define ROB_IO_INPUT6_REG_ADD                 0x0018        //机器人IO输入口6
-#define ROB_IO_INPUT7_REG_ADD                 0x0019        //机器人IO输入口7
-#define ROB_IO_INPUT8_REG_ADD                 0x001a        //机器人IO输入口8
-#define ROB_OUT1_POS_FH_REG_ADD               0x001b        //机器人外部轴1
-#define ROB_OUT1_POS_FL_REG_ADD               0x001c        //机器人外部轴1
-#define ROB_OUT2_POS_FH_REG_ADD               0x001d        //机器人外部轴2
-#define ROB_OUT2_POS_FL_REG_ADD               0x001e        //机器人外部轴2
-#define ROB_OUT3_POS_FH_REG_ADD               0x001f        //机器人外部轴3
-#define ROB_OUT3_POS_FL_REG_ADD               0x0020        //机器人外部轴3
-#define ROB_OUTNUM_REG_ADD                    0x0021        //机器人外部轴数量
+#define ROB_X_POS_FH_REG_ADD                  0x0002       //机器人当前坐标
+#define ROB_X_POS_FL_REG_ADD                  0x0003
+#define ROB_Y_POS_FH_REG_ADD                  0x0004
+#define ROB_Y_POS_FL_REG_ADD                  0x0005
+#define ROB_Z_POS_FH_REG_ADD                  0x0006
+#define ROB_Z_POS_FL_REG_ADD                  0x0007
+#define ROB_RX_POS_FH_REG_ADD                 0x0008
+#define ROB_RX_POS_FL_REG_ADD                 0x0009
+#define ROB_RY_POS_FH_REG_ADD                 0x000a
+#define ROB_RY_POS_FL_REG_ADD                 0x000b
+#define ROB_RZ_POS_FH_REG_ADD                 0x000c
+#define ROB_RZ_POS_FL_REG_ADD                 0x000d
+#define ROB_SPEED_FH_REG_ADD                  0x000e        //机器人当前速度
+#define ROB_SPEED_FL_REG_ADD                  0x000f
+#define ROB_STATE_REG_ADD                     0x0010        //机器人当前状态
+#define ROB_TIME_HOURS_REG_ADD                0x0011        //当前时间时
+#define ROB_TIME_MINUTES_REG_ADD              0x0012        //当前时间分
+#define ROB_TIME_SECONDS_REG_ADD              0x0013        //当前时间秒
+#define ROB_TIME_MILLISECONDS_REG_ADD         0x0014        //当前时间毫秒
+#define ROB_IO_INPUT1_REG_ADD                 0x0015        //机器人IO输入口1
+#define ROB_IO_INPUT2_REG_ADD                 0x0016        //机器人IO输入口2
+#define ROB_IO_INPUT3_REG_ADD                 0x0017        //机器人IO输入口3
+#define ROB_IO_INPUT4_REG_ADD                 0x0018        //机器人IO输入口4
+#define ROB_IO_INPUT5_REG_ADD                 0x0019        //机器人IO输入口5
+#define ROB_IO_INPUT6_REG_ADD                 0x001a        //机器人IO输入口6
+#define ROB_IO_INPUT7_REG_ADD                 0x001b        //机器人IO输入口7
+#define ROB_IO_INPUT8_REG_ADD                 0x001c        //机器人IO输入口8
+#define ROB_OUT1_POS_FH_REG_ADD               0x001d        //机器人外部轴1
+#define ROB_OUT1_POS_FL_REG_ADD               0x001e        //机器人外部轴1
+#define ROB_OUT2_POS_FH_REG_ADD               0x001f        //机器人外部轴2
+#define ROB_OUT2_POS_FL_REG_ADD               0x0020        //机器人外部轴2
+#define ROB_OUT3_POS_FH_REG_ADD               0x0021        //机器人外部轴3
+#define ROB_OUT3_POS_FL_REG_ADD               0x0022        //机器人外部轴3
+#define ROB_OUTNUM_REG_ADD                    0x0023        //机器人外部轴数量
 
 #define ROB_IO_OUTPUT1_REG_ADD                0x0050        //机器人IO输出口1
 #define ROB_IO_OUTPUT2_REG_ADD                0x0051        //机器人IO输出口2
@@ -202,6 +203,7 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROB_IPADDR_4_REG_ADD                  0x0303        //远程IP
 
 #define ROB_STOP_REG_ADD                      0x0400        //急停
+#define ROB_TOLTAL_CONTROL_REG_ADD            0x0401        //机器人控制系统连接
 
 /*****************************/
 //相机任务号文件查询TCP传输端口

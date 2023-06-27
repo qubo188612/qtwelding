@@ -26,6 +26,8 @@ my_parameters::my_parameters()
     {
         cam->sop_cam[n].ipaddress=ip->camer_ip[n].ip;
     }
+
+    mainDlg_robotEnable=false;
 //  main_record.reserve(600000);
 }
 

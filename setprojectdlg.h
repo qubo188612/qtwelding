@@ -157,7 +157,7 @@ private slots:
 
     void on_SaveAsBtn_clicked();
 
-    void on_ctlrobotEncheckBox_stateChanged(int arg1);
+//  void on_ctlrobotEncheckBox_stateChanged(int arg1);
 
     void on_ctlposXsubBtn_pressed();
 
@@ -234,6 +234,8 @@ private slots:
     void on_ctlmovetcpcombo_currentIndexChanged(int index);
 
     void on_arrvepointtestBtn_clicked();
+
+    void on_ctlrobotEncheckBox_clicked();
 
 private:
     Ui::setprojectDlg *ui;

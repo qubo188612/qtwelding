@@ -106,7 +106,6 @@ void arrvepointtestDlg::on_arriveBtn_pressed()
     Robmovemodel movemod=MOVEJ;//获取到的移动模式
     int tcp=m_mcs->e2proomdata.maindlg_movetcp;
     movemod=MOVEJ;//用关节移动方式到位
-//  m_mcs->robotcontrol->RobotOPEN_ELE();
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     ui->record->append(QString::fromLocal8Bit("开始到位中..."));
 }
@@ -120,7 +119,6 @@ void arrvepointtestDlg::on_arriveBtn_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-//  m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 
@@ -155,9 +153,22 @@ void arrvepointtestDlg::on_updataleaser_clicked()
     {
         std::vector<Scan_trace_line> scan_trace(1);
         std::vector<RobPos> weld_trace;
-        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
         scan_trace[0].robottime=m_mcs->rob->robtime;
         scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+    #if OPEN_TIMESTAMP==1
+        scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+        scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+        scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+        scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+        scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+        scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+        scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+        scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+        scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+        scan_trace[0].robotpos.nEn=1;
+    #else
+        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+    #endif
         if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
         {
             ui->record->append(QString::fromLocal8Bit("扫描计算结果出错"));

@@ -23,6 +23,7 @@ RobotData::RobotData()
 
     b_connect=false;
     b_link_ctx_posget=false;
+    b_link_ctx_posget_remote=false;
     b_connect_plc=false;
     b_link_ctx_plc=false;
     robot_speed=0;
@@ -181,6 +182,7 @@ int RobotData::ConnectRobot(QString ip,int port)         //连接机器人
             return 1;
         }
         b_link_ctx_posget=true;
+        b_link_ctx_posget_remote=false;
     }
     robot_state=ROBOT_STATE_IDLE;
     b_connect=true;
@@ -195,6 +197,7 @@ void RobotData::DisconnectRobot()
          {
             modbus_close(ctx_posget);
             modbus_free(ctx_posget);
+            b_link_ctx_posget_remote=false;
             b_link_ctx_posget=false;
          }
          b_connect=false;

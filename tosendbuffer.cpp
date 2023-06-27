@@ -2772,6 +2772,18 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             trace_out[n]=wavetrace;
         }
         m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace=trace_out;
+        if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存轨迹
+        {
+            QString dir="./log/";
+            QString key=SAVELOGFILE_CREATNAME_HEAD;
+            QString time;
+            std::string s_time;
+            TimeFunction to;
+            to.get_time_ms(&s_time);
+            time=QString::fromStdString(s_time);
+            dir=dir+time+key+name_out;
+            savelog_creat(dir,m_mcs->project->project_weld_trace[weld_tracing_num_out].point);
+        }
     }
     else if(key==CMD_CREATP_KEY)
     {
@@ -4113,9 +4125,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         {
                             std::vector<Scan_trace_line> scan_trace(1);
                             std::vector<RobPos> weld_trace;
-                            scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                             scan_trace[0].robottime=m_mcs->rob->robtime;
                             scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                        #if OPEN_TIMESTAMP==1
+                            scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                            scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                            scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                            scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                            scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                            scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                            scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                            scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                            scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                            scan_trace[0].robotpos.nEn=1;
+                        #else
+                            scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                        #endif
                             if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                             {
                                 main_record.lock();
@@ -4371,9 +4396,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     std::vector<Scan_trace_line> scan_trace(1);
                     std::vector<RobPos> weld_trace;
-                    scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                     scan_trace[0].robottime=m_mcs->rob->robtime;
                     scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                #if OPEN_TIMESTAMP==1
+                    scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                    scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                    scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                    scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                    scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                    scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                    scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                    scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                    scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                    scan_trace[0].robotpos.nEn=1;
+                #else
+                    scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                #endif
                     if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                     {
                         main_record.lock();
@@ -4467,9 +4505,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         std::vector<Scan_trace_line> scan_trace(1);
                         std::vector<RobPos> weld_trace;
-                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                         scan_trace[0].robottime=m_mcs->rob->robtime;
                         scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                        scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                        scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                        scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                        scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                        scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                        scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                        scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                        scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                        scan_trace[0].robotpos.nEn=1;
+                    #else
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                    #endif
                         if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                         {
                             main_record.lock();
@@ -4535,9 +4586,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         std::vector<Scan_trace_line> scan_trace(1);
                         std::vector<RobPos> weld_trace;
-                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
                         scan_trace[0].robottime=m_mcs->rob->robtime;
                         scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                        scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                        scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                        scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                        scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                        scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                        scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                        scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                        scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                        scan_trace[0].robotpos.nEn=1;
+                    #else
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                    #endif
                         if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                         {
                             main_record.lock();
@@ -4968,9 +5032,22 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
                     {
                         Scan_trace_line res;
-                        res.robotpos=m_mcs->rob->TCPpos;
                         res.robottime=m_mcs->rob->robtime;
                         res.ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        res.robotpos.X=res.ros_line.robpos.posx;
+                        res.robotpos.Y=res.ros_line.robpos.posy;
+                        res.robotpos.Z=res.ros_line.robpos.posz;
+                        res.robotpos.RX=res.ros_line.robpos.posrx;
+                        res.robotpos.RY=res.ros_line.robpos.posry;
+                        res.robotpos.RZ=res.ros_line.robpos.posrz;
+                        res.robotpos.out_1=res.ros_line.robpos.posout1;
+                        res.robotpos.out_2=res.ros_line.robpos.posout2;
+                        res.robotpos.out_3=res.ros_line.robpos.posout3;
+                        res.robotpos.nEn=1;
+                    #else
+                        res.robotpos=m_mcs->rob->TCPpos;
+                    #endif
                         m_mcs->project->project_scan_trace[scan_trace_num].point.push_back(res);
                     }
                     m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
@@ -5466,6 +5543,23 @@ void toSendbuffer::cmd_aout(std::vector<float> a)
         sendrob.data[n*2]=*((u_int16_t*)&a[n]);
         sendrob.data[n*2+1]=*((u_int16_t*)&a[n]+1);
     }
+    m_mcs->rob->b_send_group_robot=false;
+    m_mcs->rob->send_group_robot.push_back(sendrob);
+    m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+    send_group_robot.unlock();
+}
+
+void toSendbuffer::cmd_totalcontrol(bool nEn)
+{
+    send_group_robot.lock();
+    sent_info_robot sendrob;
+    sendrob.ctx=m_mcs->rob->ctx_posget;
+    sendrob.addr=ROB_TOLTAL_CONTROL_REG_ADD;
+    sendrob.data.resize(1);
+    if(nEn==true)
+        sendrob.data[0]=1;
+    else
+        sendrob.data[0]=0;
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;

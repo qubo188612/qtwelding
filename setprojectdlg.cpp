@@ -109,6 +109,10 @@ setprojectDlg::~setprojectDlg()
 
 void setprojectDlg::init_dlg_show()
 {
+    if(m_mcs->mainDlg_robotEnable==true)
+        ui->ctlrobotEncheckBox->setCheckState(Qt::Checked);
+    else
+        ui->ctlrobotEncheckBox->setCheckState(Qt::Unchecked);
     ui->ctlmovespeed->setText(QString::number(m_mcs->e2proomdata.maindlg_movespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
     ui->ctlmovetcpcombo->setCurrentIndex(m_mcs->e2proomdata.maindlg_movetcp);
     now_cmdline=m_mcs->project->project_cmdlist.size()-1;
@@ -2960,21 +2964,47 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
 }
 
 //机器人使能
-void setprojectDlg::on_ctlrobotEncheckBox_stateChanged(int arg1)
+
+void setprojectDlg::on_ctlrobotEncheckBox_clicked()
 {
+    bool arg1=ui->ctlrobotEncheckBox->isChecked();
     if(arg1==0)
     {
+        if(m_mcs->rob->b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+            return;
+        }
+        else
+        {
+            m_mcs->tosendbuffer->cmd_totalcontrol(false);
+        }
+        /*
     #ifdef USE_MYROBOT_CONTROL
         m_mcs->robotcontrol->RobotDisOPEN_ELE();
     #endif
-        ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
+        */
+        m_mcs->mainDlg_robotEnable=false;
+        ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
     }
     else
     {
+        if(m_mcs->rob->b_connect==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+            return;
+        }
+        else
+        {
+            m_mcs->tosendbuffer->cmd_totalcontrol(true);
+        }
+    /*
     #ifdef USE_MYROBOT_CONTROL
         m_mcs->robotcontrol->RobotOPEN_ELE(false);
     #endif
-        ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
+    */
+        m_mcs->mainDlg_robotEnable=true;
+        ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
     }
 }
 
@@ -3075,6 +3105,11 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3118,6 +3153,11 @@ void setprojectDlg::on_ctlposXaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3158,6 +3198,11 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3203,6 +3248,11 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3244,6 +3294,11 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3289,6 +3344,11 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3330,6 +3390,11 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3375,6 +3440,11 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3416,6 +3486,11 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3461,6 +3536,11 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3502,6 +3582,11 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3547,6 +3632,11 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3588,6 +3678,11 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3633,6 +3728,11 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3674,6 +3774,11 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3719,6 +3824,11 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3762,6 +3872,11 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
         return;
     }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        return;
+    }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
     m_mcs->e2proomdata.maindlg_movetcp=tcp;
     m_mcs->e2proomdata.write_maindlg_para();
@@ -3803,6 +3918,11 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        return;
+    }
+    if(m_mcs->mainDlg_robotEnable==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3921,6 +4041,8 @@ void setprojectThread::Stop()
     }
   }
 }
+
+
 
 
 

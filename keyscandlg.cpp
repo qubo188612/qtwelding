@@ -304,7 +304,6 @@ void keyscanDlg::on_arriveBtn_pressed()
     {
         RobPos pos=cmd.cmd_scan_pos;//获取到移动坐标
         movemod=MOVEJ;//用关节移动方式到位
-//      m_mcs->robotcontrol->RobotOPEN_ELE();
         m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     }
     else
@@ -324,7 +323,6 @@ void keyscanDlg::on_arriveBtn_released()
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-//  m_mcs->robotcontrol->RobotCLOSE_ELE();
     ui->record->append(QString::fromLocal8Bit("停止到位"));
 }
 
