@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QListWidgetItem>
 #include "my_parameters.h"
+#include <pcl/common/common_headers.h>
+#include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/cloud_viewer.h>
 
 namespace Ui {
 class checkscandataDlg;
@@ -22,9 +25,10 @@ public:
     void init_dlg_show();
     void close_dlg_show();
 
-    int tab2nowline;
-    int tab3nowline;
-    int tab4nowline;
+
+    pcl::visualization::PCLVisualizer::Ptr tab2viewer;
+    pcl::visualization::PCLVisualizer::Ptr tab3viewer;
+    pcl::visualization::PCLVisualizer::Ptr tab4viewer;
 
 private slots:
     void on_tab1listWidget_itemClicked(QListWidgetItem *item);
@@ -37,11 +41,6 @@ private slots:
 
     void on_tab4listWidget_itemClicked(QListWidgetItem *item);
 
-    void on_tab2viewcloudBtn_clicked();
-
-    void on_tab3viewcloudBtn_clicked();
-
-    void on_tab4viewcloudBtn_clicked();
 
 private:
     Ui::checkscandataDlg *ui;

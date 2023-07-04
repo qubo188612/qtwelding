@@ -13,7 +13,6 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui->tabWidget->setTabText(2,QString::fromLocal8Bit("跟踪轨迹"));
     ui->tabWidget->setTabText(3,QString::fromLocal8Bit("工艺轨迹"));
     ui->tabWidget->setTabText(4,QString::fromLocal8Bit("变换矩阵"));
-
 }
 
 checkscandataDlg::~checkscandataDlg()
@@ -34,15 +33,6 @@ void checkscandataDlg::init_dlg_show()
     ui->tab1realout1->clear();
     ui->tab1realout2->clear();
     ui->tab1realout3->clear();
-
-    tab2nowline=-1;
-    ui->tab2viewcloudBtn->setDisabled(true);
-
-    tab3nowline=-1;
-    ui->tab3viewcloudBtn->setDisabled(true);
-
-    tab4nowline=-1;
-    ui->tab4viewcloudBtn->setDisabled(true);
 
     ui->tab5state->clear();
     ui->tab5a11_label->clear();
@@ -91,6 +81,22 @@ void checkscandataDlg::init_dlg_show()
         QString name=m_mcs->project->projecr_coord_matrix4d[n].name;
         ui->tab5listWidget->addItem(name);
     }
+
+    tab2viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+    ui->tab2widget->SetRenderWindow(tab2viewer->getRenderWindow());
+    tab2viewer->setupInteractor(ui->tab2widget->GetInteractor(), ui->tab2widget->GetRenderWindow());
+    tab2viewer->addCoordinateSystem();  //添加坐标系
+
+    tab3viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+    ui->tab3widget->SetRenderWindow(tab3viewer->getRenderWindow());
+    tab3viewer->setupInteractor(ui->tab3widget->GetInteractor(), ui->tab3widget->GetRenderWindow());
+    tab3viewer->addCoordinateSystem();  //添加坐标系
+
+    tab4viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+    ui->tab4widget->SetRenderWindow(tab4viewer->getRenderWindow());
+    tab4viewer->setupInteractor(ui->tab4widget->GetInteractor(), ui->tab4widget->GetRenderWindow());
+    tab4viewer->addCoordinateSystem();  //添加坐标系
+
 }
 
 void checkscandataDlg::close_dlg_show()
@@ -163,92 +169,160 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
 //扫描轨迹选择
 void checkscandataDlg::on_tab2listWidget_itemClicked(QListWidgetItem *item)
 {
-    tab2nowline=ui->tab2listWidget->currentRow();
+    int tab2nowline=ui->tab2listWidget->currentRow();
     ui->tab2listWidget->setCurrentRow(tab2nowline);
-    ui->tab2viewcloudBtn->setDisabled(false);
-}
 
-//查看扫描轨迹
-void checkscandataDlg::on_tab2viewcloudBtn_clicked()
-{
     if(tab2nowline>=0)
     {
-        int scan_num;
+        int index;
         QString name=ui->tab2listWidget->currentItem()->text();
         for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
         {
             if(name==m_mcs->project->project_scan_trace[n].name)
             {
-                scan_num=n;
+                index=n;
                 break;
             }
         }
-        /***********/
-        //点云展示
+        std::vector<Scan_trace_line> lines;
+        lines=m_mcs->project->project_scan_trace[index].point;
+        std::vector<RobPos>cv_cloud;
+        m_mcs->synchronous->Scantraceline_to_Weldtrace(lines,cv_cloud);
 
-        /***********/
+        pcl::PointCloud<pcl::PointXYZRGB>::Ptr rgbclould;
+        rgbclould.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+        rgbclould->clear();
+
+        uint32_t R=255,G=0,B=0;
+        uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
+        if(cv_cloud.size()>0)
+        {
+            for(int n=0;n<cv_cloud.size();n++)
+            {
+                pcl::PointXYZRGB point;
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-cv_cloud[0].X;
+                point.y=cv_cloud[n].Y-cv_cloud[0].Y;
+                point.z=cv_cloud[n].Z-cv_cloud[0].Z;
+                rgbclould->points.push_back(point);
+            }
+        }
+        rgbclould->width=rgbclould->points.size();
+        rgbclould->height=1;
+
+        tab2viewer->removeAllPointClouds();
+        tab2viewer->removeAllShapes();
+        tab2viewer->addPointCloud(rgbclould);
+        ui->tab2widget->update();
     }
 }
 
 //跟踪轨迹选择
 void checkscandataDlg::on_tab3listWidget_itemClicked(QListWidgetItem *item)
 {
-    tab3nowline=ui->tab3listWidget->currentRow();
+    int tab3nowline=ui->tab3listWidget->currentRow();
     ui->tab3listWidget->setCurrentRow(tab3nowline);
-    ui->tab3viewcloudBtn->setDisabled(false);
-}
 
-//查看跟踪轨迹
-void checkscandataDlg::on_tab3viewcloudBtn_clicked()
-{
     if(tab3nowline>=0)
     {
-        int weld_num;
+        int index;
         QString name=ui->tab3listWidget->currentItem()->text();
         for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
         {
             if(name==m_mcs->project->project_weld_trace[n].name)
             {
-                weld_num=n;
+                index=n;
                 break;
             }
         }
-        /***********/
-        //点云展示
+        std::vector<RobPos> cv_cloud;
+        cv_cloud=m_mcs->project->project_weld_trace[index].point;
 
-        /***********/
+        pcl::PointCloud<pcl::PointXYZRGB>::Ptr rgbclould;
+        rgbclould.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+        rgbclould->clear();
+
+        uint32_t R=255,G=0,B=0;
+        uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
+        if(cv_cloud.size()>0)
+        {
+            for(int n=0;n<cv_cloud.size();n++)
+            {
+                pcl::PointXYZRGB point;
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-cv_cloud[0].X;
+                point.y=cv_cloud[n].Y-cv_cloud[0].Y;
+                point.z=cv_cloud[n].Z-cv_cloud[0].Z;
+                rgbclould->points.push_back(point);
+            }
+        }
+        rgbclould->width=rgbclould->points.size();
+        rgbclould->height=1;
+
+        tab3viewer->removeAllPointClouds();
+        tab3viewer->removeAllShapes();
+        tab3viewer->addPointCloud(rgbclould);
+        ui->tab3widget->update();
     }
 }
 
 //跟踪工艺选择
 void checkscandataDlg::on_tab4listWidget_itemClicked(QListWidgetItem *item)
 {
-    tab4nowline=ui->tab4listWidget->currentRow();
+    int tab4nowline=ui->tab4listWidget->currentRow();
     ui->tab4listWidget->setCurrentRow(tab4nowline);
-    ui->tab4viewcloudBtn->setDisabled(false);
-}
 
-//查看跟踪工艺轨迹
-void checkscandataDlg::on_tab4viewcloudBtn_clicked()
-{
     if(tab4nowline>=0)
     {
-        int interweld_num;
+        int index;
         QString name=ui->tab4listWidget->currentItem()->text();
         for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
         {
             if(name==m_mcs->project->project_interweld_trace[n].name)
             {
-                interweld_num=n;
+                index=n;
                 break;
             }
         }
-        /***********/
-        //点云展示
+        std::vector<Weld_trace_onec> trace;
+        trace=m_mcs->project->project_interweld_trace[index].trace;
+        std::vector<RobPos> cv_cloud;
+        for(int n=0;n<trace.size();n++)
+        {
+            for(int m=0;m<trace[n].point.size();m++)
+            {
+                cv_cloud.push_back(trace[n].point[m]);
+            }
+        }
 
-        /***********/
+        pcl::PointCloud<pcl::PointXYZRGB>::Ptr rgbclould;
+        rgbclould.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+        rgbclould->clear();
+
+        uint32_t R=255,G=0,B=0;
+        uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
+        if(cv_cloud.size()>0)
+        {
+            for(int n=0;n<cv_cloud.size();n++)
+            {
+                pcl::PointXYZRGB point;
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-cv_cloud[0].X;
+                point.y=cv_cloud[n].Y-cv_cloud[0].Y;
+                point.z=cv_cloud[n].Z-cv_cloud[0].Z;
+                rgbclould->points.push_back(point);
+            }
+        }
+        rgbclould->width=rgbclould->points.size();
+        rgbclould->height=1;
+
+        tab4viewer->removeAllPointClouds();
+        tab4viewer->removeAllShapes();
+        tab4viewer->addPointCloud(rgbclould);
+        ui->tab4widget->update();
     }
 }
+
 
 //变换矩阵选择
 void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)

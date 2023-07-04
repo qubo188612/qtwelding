@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>880</width>
     <height>480</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>20</y>
-     <width>621</width>
+     <width>861</width>
      <height>441</height>
     </rect>
    </property>
@@ -60,7 +60,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>321</width>
+       <width>181</width>
        <height>371</height>
       </rect>
      </property>
@@ -309,22 +309,19 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>321</width>
+       <width>181</width>
        <height>371</height>
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="tab2viewcloudBtn">
+    <widget class="QVTKWidget" name="tab2widget" native="true">
      <property name="geometry">
       <rect>
-       <x>400</x>
-       <y>170</y>
-       <width>151</width>
-       <height>61</height>
+       <x>200</x>
+       <y>20</y>
+       <width>651</width>
+       <height>371</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>查看轨迹点云</string>
      </property>
     </widget>
    </widget>
@@ -337,22 +334,19 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>321</width>
+       <width>181</width>
        <height>371</height>
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="tab3viewcloudBtn">
+    <widget class="QVTKWidget" name="tab3widget" native="true">
      <property name="geometry">
       <rect>
-       <x>400</x>
-       <y>170</y>
-       <width>151</width>
-       <height>61</height>
+       <x>200</x>
+       <y>20</y>
+       <width>651</width>
+       <height>371</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>查看轨迹点云</string>
      </property>
     </widget>
    </widget>
@@ -365,22 +359,19 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>321</width>
+       <width>181</width>
        <height>371</height>
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="tab4viewcloudBtn">
+    <widget class="QVTKWidget" name="tab4widget" native="true">
      <property name="geometry">
       <rect>
-       <x>400</x>
-       <y>170</y>
-       <width>151</width>
-       <height>61</height>
+       <x>200</x>
+       <y>20</y>
+       <width>651</width>
+       <height>371</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>查看轨迹点云</string>
      </property>
     </widget>
    </widget>
@@ -393,7 +384,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>321</width>
+       <width>181</width>
        <height>371</height>
       </rect>
      </property>
@@ -533,7 +524,7 @@
       <rect>
        <x>380</x>
        <y>320</y>
-       <width>61</width>
+       <width>71</width>
        <height>17</height>
       </rect>
      </property>
@@ -546,7 +537,7 @@
       <rect>
        <x>380</x>
        <y>240</y>
-       <width>61</width>
+       <width>71</width>
        <height>17</height>
       </rect>
      </property>
@@ -559,7 +550,7 @@
       <rect>
        <x>380</x>
        <y>280</y>
-       <width>61</width>
+       <width>71</width>
        <height>17</height>
       </rect>
      </property>
@@ -583,6 +574,14 @@
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QVTKWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QVTKWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

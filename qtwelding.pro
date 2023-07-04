@@ -301,6 +301,29 @@ INCLUDEPATH +=/opt/ros/galactic/include \
 LIBS += /opt/ros/galactic/lib/lib*.so
 LIBS += /opt/ros/galactic/lib/x86_64-linux-gnu/lib*.so
 
+#Eigen库的添加
+INCLUDEPATH += /usr/include/eigen3
+
+#QSsh库的添加
+INCLUDEPATH += /home/qubo/QSsh/src/libs/qssh \
+
+LIBS += /home/qubo/QSsh/build/lib/lib*
+
+#VTK库添加
+INCLUDEPATH +=/usr/local/include/vtk-7.1 \
+
+LIBS += /usr/local/lib/libvtk*
+
+#Boost
+INCLUDEPATH += /usr/include/boost
+
+LIBS += /usr/lib/x86_64-linux-gnu/libboost_*.so
+
+#PCL库添加
+INCLUDEPATH +=/usr/local/include/pcl-1.12 \
+
+LIBS += /usr/local/lib/libpcl_*
+
 #自定义ROS接口添加
 INCLUDEPATH +=/home/qubo/myRos2test/install/tutorial_interfaces/include \
 
@@ -311,11 +334,5 @@ INCLUDEPATH += /home/qubo/modbus/libmodbus/install/include \
 
 LIBS += /home/qubo/modbus/libmodbus/install/lib/libmodbus.so
 
-#Eigen库的添加
-INCLUDEPATH += /usr/include/eigen3
 
-#QSsh库的添加
-INCLUDEPATH += /home/qubo/QSsh/src/libs/qssh \
-
-LIBS += /home/qubo/QSsh/build/lib/lib*
 }

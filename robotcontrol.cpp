@@ -3381,6 +3381,49 @@ void RobotrcvThread::run()//获取机器人数据
                             _p->mb_mapping->tab_registers[ROB_RY_POS_FL_REG_ADD]=((uint16_t*)(&f_robRY))[1];
                             _p->mb_mapping->tab_registers[ROB_RZ_POS_FH_REG_ADD]=((uint16_t*)(&f_robRZ))[0];
                             _p->mb_mapping->tab_registers[ROB_RZ_POS_FL_REG_ADD]=((uint16_t*)(&f_robRZ))[1];
+
+                            uint8_t state=0;
+                            if(state==0)
+                            {
+                                mutexmovepoint_buffer_group.lock();
+                                int num=_p->movepoint_buffer.size();
+                                if(num!=0)
+                                {
+                                    Pause_PointInfo moveinfo=_p->movepoint_buffer[num-1];
+                                    switch(moveinfo.movemod)
+                                    {
+                                        case MOVEL:
+                                        case MOVEJ:
+                                        {
+                                            if(fabs(x-moveinfo.robpos.X)>0.1
+                                             ||fabs(y-moveinfo.robpos.Y)>0.1
+                                             ||fabs(z-moveinfo.robpos.Z)>0.1
+                                             ||fabs(f_robRX-moveinfo.robpos.RX)>0.1
+                                             ||fabs(f_robRY-moveinfo.robpos.RY)>0.1
+                                             ||fabs(f_robRZ-moveinfo.robpos.RZ)>0.1)
+                                            {
+                                                state=1;
+                                            }
+                                        }
+                                        break;
+                                        case MOVEC:
+                                        {
+                                            if(fabs(x-moveinfo.robpos.X1)>0.1
+                                             ||fabs(y-moveinfo.robpos.Y1)>0.1
+                                             ||fabs(z-moveinfo.robpos.Z1)>0.1
+                                             ||fabs(f_robRX-moveinfo.robpos.RX1)>0.1
+                                             ||fabs(f_robRY-moveinfo.robpos.RY1)>0.1
+                                             ||fabs(f_robRZ-moveinfo.robpos.RZ1)>0.1)
+                                            {
+                                                state=1;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                mutexmovepoint_buffer_group.unlock();
+                                _p->mb_mapping->tab_registers[ROB_STATE_REG_ADD]=state;
+                            }
                         }
                     }
                 }
