@@ -83,21 +83,6 @@
       <height>25</height>
      </rect>
     </property>
-    <item>
-     <property name="text">
-      <string>单扫对单轨模式</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>三直线交点模式</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>两端三直线交点模式</string>
-     </property>
-    </item>
    </widget>
   </widget>
   <widget class="QLabel" name="label">

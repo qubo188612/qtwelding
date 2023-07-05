@@ -43,6 +43,7 @@ SOURCES += \
         keycreatfdlg.cpp \
         keycreatpdlg.cpp \
         keydelaydlg.cpp \
+        keyfilterdlg.cpp \
         keygetposdlg.cpp \
         keygettcppos2dlg.cpp \
         keygettcpposdlg.cpp \
@@ -121,6 +122,7 @@ FORMS += \
     keycreatfdlg.ui \
     keycreatpdlg.ui \
     keydelaydlg.ui \
+    keyfilterdlg.ui \
     keygetposdlg.ui \
     keygettcppos2dlg.ui \
     keygettcpposdlg.ui \
@@ -197,6 +199,7 @@ HEADERS += \
     keycreatfdlg.h \
     keycreatpdlg.h \
     keydelaydlg.h \
+    keyfilterdlg.h \
     keygetposdlg.h \
     keygettcppos2dlg.h \
     keygettcpposdlg.h \

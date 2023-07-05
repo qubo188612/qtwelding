@@ -43,38 +43,40 @@
 //用五点计算点的指令, 举例 PLOTPOS: MODE[1] POINTS[点位1，点位2，点位3，点位4，点位5] NAME[交点]
 //三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SPEED[25] TIME[16] NAME[跟踪第一条line]
 //生成点位附近继续焊接的轨迹指令，举例 TRACECONTINUE: TRACE[第一条] POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[焊接轨迹]
+//滤波指令，举例 FILTER: CREAT[跟踪第一条line] MODE[1] NAME[滤波后轨迹1] FILTERS[1,2,3,4,5,6,7,8]
 
 
 //key项
-#define CMD_MOV_KEY                     "MOV:"          //移动命令集合KEY
-#define CMD_SMOV_KEY                    "SMOV:"         //点位移动命令集合KEY
-#define CMD_DELAY_KEY                   "DELAY:"        //延时命令集合KEY
-#define CMD_CAM_KEY                     "CAM:"          //激光命令集合KEY
-#define CMD_WELD_KEY                    "WELD:"         //焊机命令集合KEY
-#define CMD_SCAN_KEY                    "SCAN:"         //采集命令集合KEY
-#define CMD_SSCAN_KEY                   "SSCAN:"        //点位采集命令集合KEY
-#define CMD_TRACE_KEY                   "TRACE:"        //生成跟踪轨迹工艺命令集合KEY
-#define CMD_CREAT_KEY                   "CREAT:"        //生成轨迹命令KEY
-#define CMD_IO_KEY                      "IO:"           //IO命令集合KEY
-#define CMD_PLC_KEY                     "PLC:"          //PLC命令集合KEY
-#define CMD_SEARCH_KEY                  "SEARCH:"       //寻位命令集合KEY
-#define CMD_SEARCHEND_KEY               "SEARCHEND:"    //寻位末尾命令集合KEY
-#define CMD_COORD_KEY                   "COORD:"        //工件坐标系定位命令集合KEY
-#define CMD_GETPOS_KEY                  "GETPOS:"       //获取扫描的焊缝坐标值命令集合KEY
-#define CMD_SAMPLE_KEY                  "SAMPLE:"       //轨迹点采样命令集合KEY
-#define CMD_TRACING_KEY                 "TRACING:"      //跟踪轨迹轨迹工艺命令集合KEY
-#define CMD_TRACEADD_KEY                "TRACEADD:"     //生成跟踪轨迹工艺相加命令集合KEY
-#define CMD_GOWELD_KEY                  "GOWELD:"       //前往起弧点命令集合KEY
-#define CMD_WAVE_KEY                    "WAVE:"         //摆焊命令集合KEY
-#define CMD_AOUT_KEY                    "AOUT:"         //模拟量输出命令集合KEY
-#define CMD_CREATP_KEY                  "CREATP:"       //利用点位生成轨迹
-#define CMD_SETPOSE_KEY                 "SETPOSE:"      //点坐标设姿态
-#define CMD_GETTCPPOS_KEY               "GETTCPPOS:"    //获取TCP的点坐标命令集合KEY
-#define CMD_CREATF_KEY                  "CREATF:"       //载入文件焊接轨迹命令集合KEY
-#define CMD_PLOTPOS_KEY                 "PLOTPOS:"      //计算点命令集合KEY
-#define CMD_CREATC_KEY                  "CREATC:"       //三点生成圆弧焊接轨迹命令集合KEY
-#define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"   //生成一个TCP数值的点坐标命令集合KEY
-#define CMD_TRACECONTINUE_KEY           "TRACECONTINUE:"   //生成点位附近继续焊接的轨迹命令集合KEY
+#define CMD_MOV_KEY                     "MOV:"              //移动命令集合KEY
+#define CMD_SMOV_KEY                    "SMOV:"             //点位移动命令集合KEY
+#define CMD_DELAY_KEY                   "DELAY:"            //延时命令集合KEY
+#define CMD_CAM_KEY                     "CAM:"              //激光命令集合KEY
+#define CMD_WELD_KEY                    "WELD:"             //焊机命令集合KEY
+#define CMD_SCAN_KEY                    "SCAN:"             //采集命令集合KEY
+#define CMD_SSCAN_KEY                   "SSCAN:"            //点位采集命令集合KEY
+#define CMD_TRACE_KEY                   "TRACE:"            //生成跟踪轨迹工艺命令集合KEY
+#define CMD_CREAT_KEY                   "CREAT:"            //生成轨迹命令KEY
+#define CMD_IO_KEY                      "IO:"               //IO命令集合KEY
+#define CMD_PLC_KEY                     "PLC:"              //PLC命令集合KEY
+#define CMD_SEARCH_KEY                  "SEARCH:"           //寻位命令集合KEY
+#define CMD_SEARCHEND_KEY               "SEARCHEND:"        //寻位末尾命令集合KEY
+#define CMD_COORD_KEY                   "COORD:"            //工件坐标系定位命令集合KEY
+#define CMD_GETPOS_KEY                  "GETPOS:"           //获取扫描的焊缝坐标值命令集合KEY
+#define CMD_SAMPLE_KEY                  "SAMPLE:"           //轨迹点采样命令集合KEY
+#define CMD_TRACING_KEY                 "TRACING:"          //跟踪轨迹轨迹工艺命令集合KEY
+#define CMD_TRACEADD_KEY                "TRACEADD:"         //生成跟踪轨迹工艺相加命令集合KEY
+#define CMD_GOWELD_KEY                  "GOWELD:"           //前往起弧点命令集合KEY
+#define CMD_WAVE_KEY                    "WAVE:"             //摆焊命令集合KEY
+#define CMD_AOUT_KEY                    "AOUT:"             //模拟量输出命令集合KEY
+#define CMD_CREATP_KEY                  "CREATP:"           //利用点位生成轨迹
+#define CMD_SETPOSE_KEY                 "SETPOSE:"          //点坐标设姿态
+#define CMD_GETTCPPOS_KEY               "GETTCPPOS:"        //获取TCP的点坐标命令集合KEY
+#define CMD_CREATF_KEY                  "CREATF:"           //载入文件焊接轨迹命令集合KEY
+#define CMD_PLOTPOS_KEY                 "PLOTPOS:"          //计算点命令集合KEY
+#define CMD_CREATC_KEY                  "CREATC:"           //三点生成圆弧焊接轨迹命令集合KEY
+#define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"       //生成一个TCP数值的点坐标命令集合KEY
+#define CMD_TRACECONTINUE_KEY           "TRACECONTINUE:"    //生成点位附近继续焊接的轨迹命令集合KEY
+#define CMD_FILTER_KEY                  "FILTER:"           //扫描轨迹滤波命令集合KEY
 
 
 //参数项
@@ -118,6 +120,7 @@
 #define CMD_FILE                            "FILE"                //轨迹文件名字
 #define CMD_CREATS                          "CREATS"              //生成点用的轨迹名字         
 #define CMD_POS                             "POS"                 //机器人坐标
+#define CMD_FILTERS                         "FILTERS"             //滤波项参数
 
 
 /************************/
@@ -165,6 +168,7 @@ public:
     QString cmd_creatc(std::vector<QString> pointsname,float speed,int time,QString name);//利用点位生成圆弧
     QString cmd_gettcppos2(RobPos pos,QString name);//生成tcp数值的点坐标值命令
     QString cmd_tracecontinue(QString name_in,RobPos pos,QString name_out);//生成点位附近继续焊接的轨迹指令
+    QString cmd_filter(QString name_in,Filter_mode mode,filterParam filters,QString name_out);//扫描轨迹滤波指令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -321,6 +325,12 @@ public:
     RobPos cmd_tracecontinue_pos;//获取继续焊接起点
     QString cmd_tracecontinue_nameout;//获取继续轨迹
 
+    QString cmd_filter_namein;//获取到的扫描轨迹名字
+    Filter_mode cmd_filter_mode;//获取到的扫描滤波模式
+    filterParam cmd_filters;//获取到的滤波参数
+    QString cmd_filter_nameout;//生成的滤波轨迹名字
+
+
 protected:
     QString rc_tcp(int tcp);
     QString rc_speed(float speed);
@@ -361,6 +371,7 @@ protected:
     QString rc_creats(std::vector<QString> names);
     QString rc_plot(Plotpos_edit_mode mode,std::vector<QString> names);
     QString rc_pos(RobPos pos);
+    QString rc_filters(filterParam filters);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

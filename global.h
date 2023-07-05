@@ -808,21 +808,6 @@ typedef enum Alternatingcurrent_ID    //交变电流
     ALTERNATING=1,  //交流电
 }Alternatingcurrent;
 
-//轨迹生成模式
-typedef enum TRACE_EDIT_MODE_ID
-{
-    TRACE_EDIT_MODE_ONE_TO_ONE=0,                //单扫对单轨道模式
-    TRACE_EDIT_MODE_THREE_TO_ONE=1,              //三直线交点模式
-    TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE=2,     //两端点三直线交点模式
-}Trace_edit_mode;
-
-//点生成模式
-typedef enum PLOTPOS_EDIT_MODE_ID
-{
-    PLOTPOS_EDIT_MODE_THREE_TO_ONE=0,           //三直线交点模式
-    PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE=1,      //两点直线与三点交点模式
-}Plotpos_edit_mode;
-
 //手眼标定模式
 typedef enum EYE_HAND_CALIBRATIONMODE_ID
 {
@@ -890,6 +875,28 @@ typedef enum TREND_MODE_ID  //摆幅方向
     TREND_MODE_Z_Y=2,     //Z轴走向,开口朝Y轴负方向
 }Trend_mode;
 
+#define FILTER_ID_TOTAL_NUM    2    //滤波模式
+typedef enum FILTER_MODE_ID//扫描轨迹滤波模式
+{
+    FILTER_MEDIAN=0,            //中值滤波
+    FILTER_CURVE_FIT=1,         //曲线拟合
+}Filter_mode;
+
+#define TRACE_EDIT_ID_TOTAL_NUM    3    //轨迹生成模式总数
+typedef enum TRACE_EDIT_MODE_ID         //轨迹生成模式
+{
+    TRACE_EDIT_MODE_ONE_TO_ONE=0,                //单扫对单轨道模式
+    TRACE_EDIT_MODE_THREE_TO_ONE=1,              //三直线交点模式
+    TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE=2,     //两端点三直线交点模式
+}Trace_edit_mode;
+
+#define PLOTPOS_EDIT_ID_TOTAL_NUM    2    //点生成模式总数
+typedef enum PLOTPOS_EDIT_MODE_ID        //点生成模式
+{
+    PLOTPOS_EDIT_MODE_THREE_TO_ONE=0,           //三直线交点模式
+    PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE=1,      //两点直线与三点交点模式
+}Plotpos_edit_mode;
+
 //摆焊参数
 class wWAVEParam
 {
@@ -917,9 +924,24 @@ public:
     wWAVEParam();
 };
 
+//滤波参数
+class filterParam
+{
+public:
+    float distance;         //滤波距离
+    float mutation_limit;   //滤波距离内防突变限制
+    filterParam();
+};
+
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode);
 
 QString Trend_mode_toQString(Trend_mode trend_mode);
+
+QString Trace_edit_mode_toQString(Trace_edit_mode trace_edit_mode);
+
+QString Plotpos_edit_mode_toQString(Plotpos_edit_mode plotpos_edit_mode);
+
+QString Filter_mode_toQString(Filter_mode filter_mode);
 
 bool b_nosame_vector_QString(std::vector<QString> vec);//判断容器里是否有相同元素,没有则返回true
 

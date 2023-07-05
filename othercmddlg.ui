@@ -93,6 +93,11 @@
    </item>
    <item>
     <property name="text">
+     <string>FILTER: 扫描轨迹滤波指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>GETPOS: 生成扫描的点坐标值指令</string>
     </property>
    </item>

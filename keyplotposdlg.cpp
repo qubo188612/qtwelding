@@ -10,6 +10,12 @@ keyplotposDlg::keyplotposDlg(my_parameters *mcs,QWidget *parent) :
 
     plotedit0=new plotedit0Dlg(mcs);
     plotedit1=new plotedit1Dlg(mcs);
+
+    for(int n=0;n<PLOTPOS_EDIT_ID_TOTAL_NUM;n++)
+    {
+        QString msg=Plotpos_edit_mode_toQString((Plotpos_edit_mode)n);
+        ui->plotposmodecombo->addItem(msg);
+    }
 }
 
 keyplotposDlg::~keyplotposDlg()

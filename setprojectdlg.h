@@ -41,6 +41,7 @@
 #include "keycreatcdlg.h"
 #include "keygettcppos2dlg.h"
 #include "keytracecontinuedlg.h"
+#include "keyfilterdlg.h"
 #include "arrvepointtestdlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
@@ -93,6 +94,7 @@ public:
     keycreatcDlg *keycreatc;
     keygettcppos2Dlg *keygettcppos2;
     keytracecontinueDlg *keytracecontinue;
+    keyfilterDlg *keyfilter;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

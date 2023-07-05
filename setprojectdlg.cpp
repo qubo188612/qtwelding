@@ -19,6 +19,12 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
         ui->ctlmovetcpcombo->addItem(msg);
     }
 
+    for(int n=0;n<TRACE_EDIT_ID_TOTAL_NUM;n++)
+    {
+        QString msg=Trace_edit_mode_toQString((Trace_edit_mode)n);
+        ui->traceeditcombo->addItem(msg);
+    }
+
     adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->movespeed->setValidator(adoubleValidator_speed);
     ui->tracespeed->setValidator(adoubleValidator_speed);
@@ -58,6 +64,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keycreatc=new keycreatcDlg(mcs);
     keygettcppos2=new keygettcppos2Dlg(mcs);
     keytracecontinue=new keytracecontinueDlg(mcs);
+    keyfilter=new keyfilterDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -100,6 +107,7 @@ setprojectDlg::~setprojectDlg()
     delete keycreatc;
     delete keygettcppos2;
     delete keytracecontinue;
+    delete keyfilter;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -1730,6 +1738,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_FILTER_KEY)
+            {
+                keyfilter->init_dlg_show(cmdlist);
+                keyfilter->setWindowTitle(othercmd->cmdname);
+                keyfilter->setbutton(1);
+                int rc=keyfilter->exec();
+                keyfilter->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keyfilter->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
         }
         else if(rc==-1)
         {
@@ -2952,6 +2990,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             else
             {
                 ui->record->append(QString::fromLocal8Bit("取消继续跟踪轨迹指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_FILTER_KEY)
+        {
+            keyfilter->init_dlg_show();
+            keyfilter->setWindowTitle(othercmd->cmdname);
+            keyfilter->setbutton(0);
+            int rc=keyfilter->exec();
+            keyfilter->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keyfilter->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入扫描轨迹滤波指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消扫描轨迹滤波指令设置"));
                 return;
             }
         }

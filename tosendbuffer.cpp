@@ -1372,6 +1372,57 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     }
                 }
             }
+            else if(key==CMD_FILTER_KEY)
+            {
+                QString name_in=cmd.cmd_filter_namein;//获取到的滤波的轨迹名字
+                QString name_out=cmd.cmd_filter_nameout;
+                bool b_find=0;
+                for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                {
+                    if(m_mcs->project->project_weld_trace[t].name==name_out)
+                    {
+                        b_find=1;
+                        break;
+                    }
+                }
+                if(b_find==1)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果轨迹与已有的轨迹重名");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                }
+                else
+                {
+                    b_find=0;
+                    for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                    {
+                        if(name_in==m_mcs->project->project_weld_trace[t].name)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==0)//没找到name_in这个名字的轨迹
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的焊接轨迹");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    else
+                    {
+                        Weld_trace_result trace;
+                        trace.name=name_out;
+                        m_mcs->project->project_weld_trace.push_back(trace);
+                    }
+                }
+            }
         }
     }
 
@@ -3350,7 +3401,63 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             dir=dir+time+key+name_in;
             savelog_trace(dir,m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace);
         }
+    }
+    else if(key==CMD_FILTER_KEY)
+    {
+        QString namein=cmd.cmd_filter_namein;//获取到的要滤波的轨迹名称
+        QString nameout=cmd.cmd_filter_nameout;//获取到的滤波结果名称
+        Filter_mode mode=cmd.cmd_filter_mode;
+        filterParam filters=cmd.cmd_filters;//滤波参数
+        int weld_trace_creatnum,weld_trace_num;
+        std::vector<RobPos> weld,interpolatweld;//轨道
 
+        for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+        {
+            if(namein==m_mcs->project->project_weld_trace[n].name)
+            {
+                weld_trace_creatnum=n;//找到要储存的焊接轨道下标
+                break;
+            }
+        }
+        for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+        {
+            if(nameout==m_mcs->project->project_weld_trace[n].name)
+            {
+                weld_trace_num=n;//找到要储存的焊接轨道下标
+                break;
+            }
+        }
+
+        weld=m_mcs->project->project_weld_trace[weld_trace_creatnum].point;
+
+        switch(mode)
+        {
+            case FILTER_MEDIAN://中值滤波
+            {
+                interpolatweld=weld;
+            }
+            break;
+            case FILTER_CURVE_FIT://曲线拟合
+            {
+                interpolatweld=weld;
+            }
+            break;
+        }
+
+        m_mcs->project->project_weld_trace[weld_trace_num].point=interpolatweld;
+        m_mcs->project->project_weld_trace[weld_trace_num].Sample=m_mcs->project->project_weld_trace[weld_trace_creatnum].Sample;
+        if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存焊接轨迹
+        {
+            QString dir="./log/";
+            QString key=SAVELOGFILE_CREATNAME_HEAD;
+            QString time;
+            std::string s_time;
+            TimeFunction to;
+            to.get_time_ms(&s_time);
+            time=QString::fromStdString(s_time);
+            dir=dir+time+key+nameout;
+            savelog_creat(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
+        }
     }
     return 0;
 }

@@ -11,6 +11,12 @@ keycreatDlg::keycreatDlg(my_parameters *mcs,QWidget *parent) :
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs);
+
+    for(int n=0;n<TRACE_EDIT_ID_TOTAL_NUM;n++)
+    {
+        QString msg=Trace_edit_mode_toQString((Trace_edit_mode)n);
+        ui->traceeditcombo->addItem(msg);
+    }
 }
 
 keycreatDlg::~keycreatDlg()

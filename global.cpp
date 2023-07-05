@@ -89,6 +89,12 @@ wWAVEParam::wWAVEParam()
     trend_mode=TREND_MODE_X_Z;
 }
 
+filterParam::filterParam()
+{
+    distance=10;
+    mutation_limit=10;
+}
+
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
 {
     QString msg;
@@ -126,6 +132,54 @@ QString Trend_mode_toQString(Trend_mode trend_mode)
         break;
         case TREND_MODE_Z_Y:
             msg=QString::fromLocal8Bit("Z轴走向,开口朝Y轴负方向");
+        break;
+    }
+    return msg;
+}
+
+QString Trace_edit_mode_toQString(Trace_edit_mode trace_edit_mode)
+{
+    QString msg;
+    switch(trace_edit_mode)
+    {
+        case TRACE_EDIT_MODE_ONE_TO_ONE:
+            msg=QString::fromLocal8Bit("单扫对单轨道模式");
+        break;
+        case TRACE_EDIT_MODE_THREE_TO_ONE:
+            msg=QString::fromLocal8Bit("三直线交点模式");
+        break;
+        case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE:
+            msg=QString::fromLocal8Bit("两端点三直线交点模式");
+        break;
+    }
+    return msg;
+}
+
+QString Plotpos_edit_mode_toQString(Plotpos_edit_mode plotpos_edit_mode)
+{
+    QString msg;
+    switch(plotpos_edit_mode)
+    {
+        case PLOTPOS_EDIT_MODE_THREE_TO_ONE:
+            msg=QString::fromLocal8Bit("三直线交点模式");
+        break;
+        case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
+            msg=QString::fromLocal8Bit("两点直线与三点交点模式");
+        break;
+    }
+    return msg;
+}
+
+QString Filter_mode_toQString(Filter_mode filter_mode)
+{
+    QString msg;
+    switch(filter_mode)
+    {
+        case FILTER_MEDIAN:
+            msg=QString::fromLocal8Bit("中值滤波");
+        break;
+        case FILTER_CURVE_FIT:
+            msg=QString::fromLocal8Bit("曲线拟合");
         break;
     }
     return msg;

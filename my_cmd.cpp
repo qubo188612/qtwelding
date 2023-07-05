@@ -488,6 +488,17 @@ QString my_cmd::cmd_tracecontinue(QString name_in,RobPos pos,QString name_out)
     return msg;
 }
 
+QString my_cmd::cmd_filter(QString name_in,Filter_mode mode,filterParam filters,QString name_out)
+{
+    QString msg;
+    msg=QString(CMD_FILTER_KEY)+" "+
+        rc_creat(name_in)+" "+
+        rc_mode(mode)+" "+
+        rc_filters(filters)+" "+
+        rc_name(name_out);
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -3779,6 +3790,148 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_FILTER_KEY)
+    {
+        int pn=0;
+        bool b_CREAT=false;
+        bool b_NAME=false;
+        bool b_MODE=false;
+        bool b_FILTERS=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_filter_nameout,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CREAT)
+                {
+                    if(b_CREAT==false)
+                    {
+                        b_CREAT=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_filter_namein,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MODE)
+                {
+                    if(b_MODE==false)
+                    {
+                        b_MODE=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_filter_mode=(Filter_mode)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_FILTERS)
+                {
+                    if(b_FILTERS==false)
+                    {
+                        std::vector<float> f_datagroup;
+                        b_FILTERS=true;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,f_datagroup,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(f_datagroup.size()!=2)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有2个");
+                            return 1;
+                        }
+                        cmd_filters.distance=f_datagroup[0];
+                        cmd_filters.mutation_limit=f_datagroup[1];
+                        if(f_datagroup[0]<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的滤波距离(第1个参数)必须大于等于0");
+                            return 1;
+                        }
+                        if(f_datagroup[1]<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("的突变限制(第2个参数)必须大于等于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_CREAT==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_MODE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_FILTERS==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_FILTERS+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+
+        //判断滤波参数是否合理
+        switch(cmd_filter_mode)
+        {
+            case FILTER_MEDIAN:
+            {
+
+            }
+            break;
+            default:
+            break;
+        }
+    }
     else
     {
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
@@ -4270,6 +4423,17 @@ QString my_cmd::rc_pos(RobPos pos)
                  QString::number(pos.out_2)+","+
                  QString::number(pos.out_3)+
               "]";
+    return msg;
+}
+
+QString my_cmd::rc_filters(filterParam filters)
+{
+    QString msg;
+    QString data;
+
+    msg=QString(CMD_FILTERS)+"["+
+        QString::number(filters.distance,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+        QString::number(filters.mutation_limit,'f',ROBOT_POSE_DECIMAL_PLACE)+"]";
     return msg;
 }
 
