@@ -91,8 +91,13 @@ wWAVEParam::wWAVEParam()
 
 filterParam::filterParam()
 {
-    distance=10;
-    mutation_limit=10;
+    msl_search_size=0.1;        //设置搜索半径
+    msl_poly=1;                   //多项式最高阶,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
+    msl_samp_radius=0.05;       //设置上采样半径
+    msl_samp_step=0.03;
+
+    sor_nearpoint_num=50;                //每个点参考的邻域点数量
+    sor_standard_deviation=1.0;       //标准差
 }
 
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
@@ -175,11 +180,11 @@ QString Filter_mode_toQString(Filter_mode filter_mode)
     QString msg;
     switch(filter_mode)
     {
-        case FILTER_MEDIAN:
-            msg=QString::fromLocal8Bit("中值滤波");
+        case FILTER_MLS:
+            msg=QString::fromLocal8Bit("MLS滤波");
         break;
-        case FILTER_CURVE_FIT:
-            msg=QString::fromLocal8Bit("曲线拟合");
+        case FILTER_SOR:
+            msg=QString::fromLocal8Bit("SOR滤波");
         break;
     }
     return msg;

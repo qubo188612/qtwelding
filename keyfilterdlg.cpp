@@ -12,6 +12,7 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
     {
         QString msg=Filter_mode_toQString((Filter_mode)n);
         ui->filtermodecombo->addItem(msg);
+        ui->tabWidget->setTabText(n,msg);
     }
 }
 
@@ -67,8 +68,11 @@ void keyfilterDlg::init_dlg_show(QString cmdlist)
             {
                 ui->filtermodecombo->setCurrentIndex(mode);
             }
-            ui->filters1lineEdit->setText(QString::number(filters.distance,'f',ROBOT_POSE_DECIMAL_PLACE));
-            ui->filters2lineEdit->setText(QString::number(filters.mutation_limit,'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->msl_search_size->setText(QString::number(filters.msl_search_size,'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->msl_poly->setText(QString::number(filters.msl_poly));
+            ui->msl_samp_radius->setText(QString::number(filters.msl_samp_radius,'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->msl_samp_step->setText(QString::number(filters.msl_samp_step,'f',ROBOT_POSE_DECIMAL_PLACE));
+
             ui->filternamelineEdit->setText(nameout);
 
         }
@@ -85,12 +89,19 @@ void keyfilterDlg::setbutton(int name)
 {
     if(name==0)
     {
+        b_inster=false;
         ui->pushButton->setText(QString::fromLocal8Bit("插入轨迹滤波指令"));
     }
     else
     {
+        b_inster=true;
         ui->pushButton->setText(QString::fromLocal8Bit("替换轨迹滤波指令"));
     }
+}
+
+void keyfilterDlg::on_filtermodecombo_currentIndexChanged(int index)
+{
+    ui->tabWidget->setCurrentIndex(index);
 }
 
 void keyfilterDlg::on_pushButton_clicked()
@@ -102,6 +113,7 @@ void keyfilterDlg::on_pushButton_clicked()
     QString name=ui->filternamelineEdit->text();
     filterParam filters;
     float f_data;
+    int i_data;
 
     if(route<0||route>ui->filternamecombo->count()-1)
     {
@@ -118,36 +130,114 @@ void keyfilterDlg::on_pushButton_clicked()
         ui->record->append(QString::fromLocal8Bit("请填写生成轨迹"));
         return;
     }
-    if(ui->filters1lineEdit->text().isEmpty())
+    switch(mode)
     {
-        ui->record->append(QString::fromLocal8Bit("请填写滤波距离"));
-        return;
-    }
-    f_data=ui->filters1lineEdit->text().toFloat(&rc);
-    if(rc==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("滤波距离格式错误"));
-        return;
-    }
-    filters.distance=f_data;
+        case FILTER_MLS:
+        {
+            if(ui->msl_search_size->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写搜索半径"));
+                return;
+            }
+            f_data=ui->msl_search_size->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("搜索半径格式错误"));
+                return;
+            }
+            filters.msl_search_size=f_data;
 
-    if(ui->filters2lineEdit->text().isEmpty())
-    {
-        ui->record->append(QString::fromLocal8Bit("请填写突变限制"));
-        return;
-    }
-    f_data=ui->filters2lineEdit->text().toFloat(&rc);
-    if(rc==false)
-    {
-        ui->record->append(QString::fromLocal8Bit("突变限制格式错误"));
-        return;
-    }
-    filters.mutation_limit=f_data;
+            if(ui->msl_poly->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写拟合阶次"));
+                return;
+            }
+            i_data=ui->msl_poly->text().toInt(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("拟合阶次格式错误"));
+                return;
+            }
+            filters.msl_poly=i_data;
 
+            if(ui->msl_samp_radius->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写上采样半径"));
+                return;
+            }
+            f_data=ui->msl_samp_radius->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("上采样半径格式错误"));
+                return;
+            }
+            filters.msl_samp_radius=f_data;
+
+            if(ui->msl_samp_step->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写上采样步长"));
+                return;
+            }
+            f_data=ui->msl_samp_step->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("上采样步长格式错误"));
+                return;
+            }
+            filters.msl_samp_step=f_data;
+        }
+        break;
+        case FILTER_SOR:
+        {
+            if(ui->sor_nearpoint_num->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写邻域点数"));
+                return;
+            }
+            i_data=ui->sor_nearpoint_num->text().toInt(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("邻域点数格式错误"));
+                return;
+            }
+            filters.sor_nearpoint_num=i_data;
+
+            if(ui->sor_standard_deviation->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写标准差"));
+                return;
+            }
+            f_data=ui->sor_standard_deviation->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("标准差格式错误"));
+                return;
+            }
+            filters.sor_standard_deviation=f_data;
+
+        }
+        break;
+    }
     my_cmd cmd;
     QString msg=cmd.cmd_filter(creatname,(Filter_mode)mode,filters,name);
+    if(b_inster==false)//插入
+    {
+        std::vector<QString> err_msg;
+        m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg);
+        for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+        {
+            if(name==m_mcs->project->project_weld_trace[n].name)
+            {
+                ui->record->append(QString::fromLocal8Bit("生成轨迹与已有的轨迹重名"));
+                return;
+            }
+        }
+    }
     ui->record->append(QString::fromLocal8Bit("插入轨迹滤波指令成功"));
     cmd_msg=msg;
     done(1);
 }
+
+
+
 

@@ -494,7 +494,7 @@ QString my_cmd::cmd_filter(QString name_in,Filter_mode mode,filterParam filters,
     msg=QString(CMD_FILTER_KEY)+" "+
         rc_creat(name_in)+" "+
         rc_mode(mode)+" "+
-        rc_filters(filters)+" "+
+        rc_filters(filters,mode)+" "+
         rc_name(name_out);
     return msg;
 }
@@ -3797,6 +3797,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_NAME=false;
         bool b_MODE=false;
         bool b_FILTERS=false;
+        std::vector<float> f_datagroup;
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -3862,27 +3863,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 {
                     if(b_FILTERS==false)
                     {
-                        std::vector<float> f_datagroup;
                         b_FILTERS=true;
                         if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,f_datagroup,return_msg))
                         {
-                            return 1;
-                        }
-                        if(f_datagroup.size()!=2)
-                        {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有2个");
-                            return 1;
-                        }
-                        cmd_filters.distance=f_datagroup[0];
-                        cmd_filters.mutation_limit=f_datagroup[1];
-                        if(f_datagroup[0]<0)
-                        {
-                            return_msg=paramname+QString::fromLocal8Bit("的滤波距离(第1个参数)必须大于等于0");
-                            return 1;
-                        }
-                        if(f_datagroup[1]<0)
-                        {
-                            return_msg=paramname+QString::fromLocal8Bit("的突变限制(第2个参数)必须大于等于0");
                             return 1;
                         }
                     }
@@ -3923,9 +3906,59 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         //判断滤波参数是否合理
         switch(cmd_filter_mode)
         {
-            case FILTER_MEDIAN:
+            case FILTER_MLS:
             {
+                if(f_datagroup.size()!=4)
+                {
+                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有4个");
+                    return 1;
+                }
+                if(f_datagroup[0]<=0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的搜索半径(第1个参数)必须大于0");
+                    return 1;
+                }
+                if(f_datagroup[1]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的拟合阶次(第2个参数)必须大于等于0");
+                    return 1;
+                }
+                if(f_datagroup[2]<=0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的上采样半径(第3个参数)必须大于等于0");
+                    return 1;
+                }
+                if(f_datagroup[3]<=0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的上采样步长(第4个参数)必须大于等于0");
+                    return 1;
+                }
+                cmd_filters.msl_search_size=f_datagroup[0];        //设置搜索半径
+                cmd_filters.msl_poly=f_datagroup[1];                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
+                cmd_filters.msl_samp_radius=f_datagroup[2];        //设置上采样半径
+                cmd_filters.msl_samp_step=f_datagroup[3];          //设置上采样步长
+            }
+            break;
+            case FILTER_SOR:
+            {
+                if(f_datagroup.size()!=2)
+                {
+                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有2个");
+                    return 1;
+                }
+                if(f_datagroup[0]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于0");
+                    return 1;
+                }
+                if(f_datagroup[1]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于0");
+                    return 1;
+                }
 
+                cmd_filters.sor_nearpoint_num=f_datagroup[0];                //每个点参考的邻域点数量
+                cmd_filters.sor_standard_deviation=f_datagroup[1];       //标准差
             }
             break;
             default:
@@ -4426,14 +4459,30 @@ QString my_cmd::rc_pos(RobPos pos)
     return msg;
 }
 
-QString my_cmd::rc_filters(filterParam filters)
+QString my_cmd::rc_filters(filterParam filters,Filter_mode mode)
 {
     QString msg;
     QString data;
 
-    msg=QString(CMD_FILTERS)+"["+
-        QString::number(filters.distance,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-        QString::number(filters.mutation_limit,'f',ROBOT_POSE_DECIMAL_PLACE)+"]";
+    switch(mode)
+    {
+        case FILTER_MLS:
+        {
+            msg=QString(CMD_FILTERS)+"["+
+                QString::number(filters.msl_search_size,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                QString::number(filters.msl_poly)+","+
+                QString::number(filters.msl_samp_radius,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                QString::number(filters.msl_search_size,'f',ROBOT_POSE_DECIMAL_PLACE)+"]";
+        }
+        break;
+        case FILTER_SOR:
+        {
+            msg=QString(CMD_FILTERS)+"["+
+                QString::number(filters.sor_nearpoint_num)+","+
+                QString::number(filters.sor_standard_deviation,'f',3)+"]";
+        }
+        break;
+    }
     return msg;
 }
 

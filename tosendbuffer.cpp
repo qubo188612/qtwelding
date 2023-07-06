@@ -3432,14 +3432,28 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
 
         switch(mode)
         {
-            case FILTER_MEDIAN://中值滤波
+            case FILTER_MLS://中值滤波
             {
-                interpolatweld=weld;
+                if(0!=Mypcl::Moving_Least_Squares(weld,interpolatweld,filters.msl_search_size,filters.msl_poly,filters.msl_samp_radius,filters.msl_samp_step))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
             }
             break;
-            case FILTER_CURVE_FIT://曲线拟合
+            case FILTER_SOR://曲线拟合
             {
-                interpolatweld=weld;
+                if(0!=Mypcl::Statistical_Outlier_Removal(weld,interpolatweld,filters.sor_nearpoint_num,filters.sor_standard_deviation))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
             }
             break;
         }

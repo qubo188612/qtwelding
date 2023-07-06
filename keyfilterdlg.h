@@ -29,8 +29,11 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_filtermodecombo_currentIndexChanged(int index);
+
 private:
     Ui::keyfilterDlg *ui;
+    bool b_inster;//是否替换
 };
 
 #endif // KEYFILTERDLG_H

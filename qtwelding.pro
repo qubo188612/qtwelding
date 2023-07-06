@@ -16,6 +16,7 @@ SOURCES += \
         CConnectionForSshClient.cpp \
         E2proomData.cpp \
         FileOut.cpp \
+        MyPlcFunction.cpp \
         PictureBox.cpp \
         ResultData.cpp \
         TimeFunction.cpp \
@@ -172,6 +173,7 @@ HEADERS += \
     CConnectionForSshClient.h \
     E2proomData.h \
     FileOut.h \
+    MyPlcFunction.h \
     PictureBox.h \
     ResultData.h \
     TimeFunction.h \

@@ -878,8 +878,8 @@ typedef enum TREND_MODE_ID  //摆幅方向
 #define FILTER_ID_TOTAL_NUM    2    //滤波模式
 typedef enum FILTER_MODE_ID//扫描轨迹滤波模式
 {
-    FILTER_MEDIAN=0,            //中值滤波
-    FILTER_CURVE_FIT=1,         //曲线拟合
+    FILTER_MLS=0,         //MLS滤波
+    FILTER_SOR=1,         //SOR滤波
 }Filter_mode;
 
 #define TRACE_EDIT_ID_TOTAL_NUM    3    //轨迹生成模式总数
@@ -928,8 +928,14 @@ public:
 class filterParam
 {
 public:
-    float distance;         //滤波距离
-    float mutation_limit;   //滤波距离内防突变限制
+    float msl_search_size;        //设置搜索半径
+    int msl_poly;                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
+    float msl_samp_radius;        //设置上采样半径
+    float msl_samp_step;          //设置上采样步长
+
+    int sor_nearpoint_num;                //每个点参考的邻域点数量
+    float sor_standard_deviation;       //标准差
+
     filterParam();
 };
 

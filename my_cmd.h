@@ -371,7 +371,7 @@ protected:
     QString rc_creats(std::vector<QString> names);
     QString rc_plot(Plotpos_edit_mode mode,std::vector<QString> names);
     QString rc_pos(RobPos pos);
-    QString rc_filters(filterParam filters);
+    QString rc_filters(filterParam filters,Filter_mode mode);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);
