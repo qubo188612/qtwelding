@@ -9,25 +9,6 @@ Mypcl::~Mypcl()
 {
 
 }
-/*
-int Mypcl::Moving_Least_Squares(std::vector<RobPos> robpos_in,           //输入点云
-                                std::vector<RobPos> &robpos_out,         //输出点云
-                                float msl_search_size,                   //设置搜索半径
-                                int msl_poly,                            //多项式最高阶
-                                float msl_samp_radius,                   //设置上采样半径
-                                float msl_samp_step)                     //设置上采样步长
-{
-    return 0;
-}
-
-int Mypcl::Statistical_Outlier_Removal(std::vector<RobPos> robpos_in,           //输入点云
-                                       std::vector<RobPos> &robpos_out,         //输出点云
-                                       int sor_nearpoint_num,                   //设置邻域点数量
-                                       float sor_standard_deviation)            //标准差
-{
-    return 0;
-}
-*/
 
 int Mypcl::Moving_Least_Squares(std::vector<RobPos> robpos_in,            //输入点云
                                  std::vector<RobPos> &robpos_out,         //输出点云

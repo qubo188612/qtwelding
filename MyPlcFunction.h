@@ -2,7 +2,6 @@
 #define MYPLCFUNCTION_H
 
 #include "global.h"
-#include <Eigen/Dense>
 #include <pcl/common/common_headers.h>
 #include <pcl/surface/mls.h>
 #include <pcl/kdtree/kdtree_flann.h>
