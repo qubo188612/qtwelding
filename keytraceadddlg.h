@@ -26,11 +26,16 @@ public:
 
     void setbutton(int name=0);
 
+    void Updata();
+
 private slots:
     void on_pushButton_clicked();
 
+    void on_samplelinkcheckBox_stateChanged(int arg1);
+
 private:
     Ui::keytraceaddDlg *ui;
+    bool b_sample_link;
 };
 
 #endif // KEYTRACEADDDLG_H

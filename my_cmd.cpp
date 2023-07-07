@@ -22,6 +22,10 @@ my_cmd::my_cmd()
     cmd_search_side=0;//寻位寻找两侧的范围
     cmd_search_sidespeed=0;//寻位寻找两侧的空闲移动速度
     cmd_getpos_time=0;//获取坐标时的等待时间
+    cmd_traceadd_samplelink=false;//是否要在连接处采样
+    cmd_traceadd_samplespeed=0;//获取到的连接处的采样点移动速度mm/s
+    cmd_traceadd_speed=0;//获取到的连接处的焊接移动速度mm/s
+    cmd_traceadd_time=0;//获取到的连接处的采样点之间的时间间隔ms
 }
 
 QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString change)
@@ -363,12 +367,24 @@ QString my_cmd::cmd_sample(QString name_in,float speed,int time,QString name_out
     return msg;
 }
 
-QString my_cmd::cmd_traceadd(QString name1,QString name2,QString name_out)
+QString my_cmd::cmd_traceadd(QString name1,QString name2,QString name_out,bool b_link,float linkspeed,float linksamplespeed,int linktime)
 {
     QString msg;
-    msg=QString(CMD_TRACEADD_KEY)+" "+
-        rc_traceadd(name1,name2)+" "+
-        rc_name(name_out);
+    if(b_link==false)
+    {
+        msg=QString(CMD_TRACEADD_KEY)+" "+
+            rc_traceadd(name1,name2)+" "+
+            rc_name(name_out);
+    }
+    else
+    {
+        msg=QString(CMD_TRACEADD_KEY)+" "+
+            rc_traceadd(name1,name2)+" "+
+            rc_speed(linkspeed)+" "+
+            rc_samplespeed(linksamplespeed)+" "+
+            rc_time(linktime)+" "+
+            rc_name(name_out);
+    }
     return msg;
 }
 
@@ -2672,6 +2688,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         int pn=0;
         bool b_TRACEADD=false;
         bool b_NAME=false;
+        bool b_SPEED=false;
+        bool b_SAMPLESPEED=false;
+        bool b_TIME=false;
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
         {
@@ -2723,6 +2742,69 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
+                else if(paramname==CMD_SPEED)
+                {
+                    if(b_SPEED==false)
+                    {
+                        b_SPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_traceadd_speed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_traceadd_speed<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SAMPLESPEED)
+                {
+                    if(b_SAMPLESPEED==false)
+                    {
+                        b_SAMPLESPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_traceadd_samplespeed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_traceadd_samplespeed<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TIME)
+                {
+                    if(b_TIME==false)
+                    {
+                        b_TIME=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_traceadd_time,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_traceadd_time<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
                 else
                 {
                     return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
@@ -2738,6 +2820,30 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_NAME==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+
+        if(b_TIME==false&&b_SPEED==false&&b_SAMPLESPEED==false)
+        {
+            cmd_traceadd_samplelink=false;
+        }
+        else if(b_TIME==true&&b_SPEED==true&&b_SAMPLESPEED==true)
+        {
+            cmd_traceadd_samplelink=true;
+        }
+        else if(b_TIME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_SPEED==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_SAMPLESPEED==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+b_SAMPLESPEED+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }
@@ -3908,35 +4014,17 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         {
             case FILTER_MLS:
             {
-                if(f_datagroup.size()!=4)
+                if(f_datagroup.size()!=1)
                 {
-                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有4个");
+                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有1个");
                     return 1;
                 }
-                if(f_datagroup[0]<=0)
+                if(f_datagroup[0]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的搜索半径(第1个参数)必须大于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的拟合阶次(第1个参数)必须大于等于0");
                     return 1;
                 }
-                if(f_datagroup[1]<0)
-                {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的拟合阶次(第2个参数)必须大于等于0");
-                    return 1;
-                }
-                if(f_datagroup[2]<=0)
-                {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的上采样半径(第3个参数)必须大于等于0");
-                    return 1;
-                }
-                if(f_datagroup[3]<=0)
-                {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的上采样步长(第4个参数)必须大于等于0");
-                    return 1;
-                }
-                cmd_filters.msl_search_size=f_datagroup[0];        //设置搜索半径
-                cmd_filters.msl_poly=f_datagroup[1];                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
-                cmd_filters.msl_samp_radius=f_datagroup[2];        //设置上采样半径
-                cmd_filters.msl_samp_step=f_datagroup[3];          //设置上采样步长
+                cmd_filters.msl_poly=f_datagroup[0];                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合    //设置上采样步长
             }
             break;
             case FILTER_SOR:
@@ -4469,10 +4557,7 @@ QString my_cmd::rc_filters(filterParam filters,Filter_mode mode)
         case FILTER_MLS:
         {
             msg=QString(CMD_FILTERS)+"["+
-                QString::number(filters.msl_search_size,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                QString::number(filters.msl_poly)+","+
-                QString::number(filters.msl_samp_radius,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
-                QString::number(filters.msl_search_size,'f',ROBOT_POSE_DECIMAL_PLACE)+"]";
+                QString::number(filters.msl_poly)+"]";
         }
         break;
         case FILTER_SOR:
@@ -4483,6 +4568,13 @@ QString my_cmd::rc_filters(filterParam filters,Filter_mode mode)
         }
         break;
     }
+    return msg;
+}
+
+QString my_cmd::rc_samplespeed(float speed)
+{
+    QString msg;
+    msg=QString(CMD_SAMPLESPEED)+"["+QString::number(speed,'f',3)+"]";
     return msg;
 }
 

@@ -91,10 +91,7 @@ wWAVEParam::wWAVEParam()
 
 filterParam::filterParam()
 {
-    msl_search_size=0.1;        //设置搜索半径
     msl_poly=1;                   //多项式最高阶,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
-    msl_samp_radius=0.05;       //设置上采样半径
-    msl_samp_step=0.03;
 
     sor_nearpoint_num=50;                //每个点参考的邻域点数量
     sor_standard_deviation=1.0;       //标准差

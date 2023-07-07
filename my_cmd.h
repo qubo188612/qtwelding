@@ -30,7 +30,7 @@
 //寻位末尾指令，举例 SEARCHEND: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[寻位的点point1]
 //轨迹点采样指令，举例 SAMPLE: CREAT[跟踪第一条line] SPEED[25] TIME[16] NAME[跟踪第一条line采样结果]
 //跟踪焊接轨迹工艺指令，举例 TRACING: TCP[0] NAME[焊接轨迹1] TIME[100]
-//跟踪轨迹相加指令，举例 TRACEADD: TRACEADD[第一条，第二条] NAME[焊接轨迹1]
+//跟踪轨迹相加指令，举例 TRACEADD: TRACEADD[第一条，第二条] NAME[焊接轨迹1] SPEED[25] TIME[16]
 //前往起弧点指令，举例 GOWELD: TCP[0] SPEED[25] NAME[焊接轨迹1]
 //摆焊指令，举例 WAVE: TRACE[第一条] WAVE[1,2,3,4,5,6,7,8,9,10,11,12,0,0,0,0,0,0] NAME[摆焊轨迹]
 //模拟量输出指令，举例 AOUT: AOUT[0.1,0.2,0.3,0.4]
@@ -41,7 +41,7 @@
 //载入文件焊接轨迹指令, 举例 CREATF: FILE[文件路径] NAME[焊接轨迹1]
 //用线计算点的指令, 举例 PLOTPOS: MODE[0] CREATS[第一条,第二条,第三条] NAME[点位3]
 //用五点计算点的指令, 举例 PLOTPOS: MODE[1] POINTS[点位1，点位2，点位3，点位4，点位5] NAME[交点]
-//三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SPEED[25] TIME[16] NAME[跟踪第一条line]
+//三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SAMPLESPEED[25] SPEED[25] TIME[16] NAME[跟踪第一条line]
 //生成点位附近继续焊接的轨迹指令，举例 TRACECONTINUE: TRACE[第一条] POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[焊接轨迹]
 //滤波指令，举例 FILTER: CREAT[跟踪第一条line] MODE[1] NAME[滤波后轨迹1] FILTERS[1,2,3,4,5,6,7,8]
 
@@ -121,6 +121,7 @@
 #define CMD_CREATS                          "CREATS"              //生成点用的轨迹名字         
 #define CMD_POS                             "POS"                 //机器人坐标
 #define CMD_FILTERS                         "FILTERS"             //滤波项参数
+#define CMD_SAMPLESPEED                     "SAMPLESPEED"         //连接工艺轨迹时的连接处采样速度
 
 
 /************************/
@@ -156,7 +157,7 @@ public:
     QString cmd_getpos(int time,QString name,std::vector<float> add);//获取扫描的焊缝坐标值命令
     QString cmd_sample(QString name_in,float speed,int time,QString name_out);//采样轨迹点命令
     QString cmd_tracing(QString name,int tcp,int time);//跟踪焊接轨迹工艺命令
-    QString cmd_traceadd(QString name1,QString name2,QString name_out);//跟踪焊接轨迹相加命令
+    QString cmd_traceadd(QString name1,QString name2,QString name_out,bool b_link,float linkspeed=0,float linksamplespeed=0,int linktime=0);//跟踪焊接轨迹相加命令
     QString cmd_goweld(int tcp,float speed,QString name);//前往起弧点命令
     QString cmd_wave(QString name_in,wWAVEParam cmd_wave_info,QString name_out);//摆焊指令
     QString cmd_aout(std::vector<float> a);//输出模拟量
@@ -282,6 +283,10 @@ public:
     QString cmd_traceadd_name1;//获取到的跟踪工艺轨迹1名字
     QString cmd_traceadd_name2;//获取到的跟踪工艺轨迹2名字
     QString cmd_traceadd_nameout;//获取到的跟踪工艺轨迹1+2的名字
+    bool cmd_traceadd_samplelink;//是否要在连接处采样
+    float cmd_traceadd_speed;//获取到的连接处的焊接移动速度mm/s
+    float cmd_traceadd_samplespeed;//获取到的连接处的采样点移动速度mm/s
+    int cmd_traceadd_time;//获取到的连接处的采样点之间的时间间隔ms
 
     int cmd_goweld_tcp; //获得到起弧点tcp
     float cmd_goweld_speed;//获得到起弧点速度
@@ -372,6 +377,7 @@ protected:
     QString rc_plot(Plotpos_edit_mode mode,std::vector<QString> names);
     QString rc_pos(RobPos pos);
     QString rc_filters(filterParam filters,Filter_mode mode);
+    QString rc_samplespeed(float speed);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

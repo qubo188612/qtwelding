@@ -7,6 +7,9 @@ keytraceaddDlg::keytraceaddDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+
+    b_sample_link=false;
+    Updata();
 }
 
 keytraceaddDlg::~keytraceaddDlg()
@@ -51,6 +54,10 @@ void keytraceaddDlg::init_dlg_show(QString cmdlist)
             QString name1=cmd.cmd_traceadd_name1;
             QString name2=cmd.cmd_traceadd_name2;
             QString nameout=cmd.cmd_traceadd_nameout;
+            float speed=cmd.cmd_traceadd_speed;
+            float samplespeed=cmd.cmd_traceadd_samplespeed;
+            int time=cmd.cmd_traceadd_time;
+
             int weld_traceadd_num1;
             int weld_traceadd_num2;
             for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
@@ -78,6 +85,19 @@ void keytraceaddDlg::init_dlg_show(QString cmdlist)
                 ui->tracingfilenamecombo_2->setCurrentIndex(weld_traceadd_num2);
             }
             ui->tracefilename->setText(nameout);
+
+            b_sample_link=cmd.cmd_traceadd_samplelink;
+            if(b_sample_link==true)
+            {
+                ui->samplelinkcheckBox->setCheckState(Qt::Checked);
+                ui->speedlineEdit->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+                ui->sampletimelineEdit->setText(QString::number(time));
+                ui->samplespeedlineEdit->setText(QString::number(samplespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+            }
+            else
+            {
+                ui->samplelinkcheckBox->setCheckState(Qt::Unchecked);
+            }
         }
     }
     ui->record->clear();
@@ -100,13 +120,29 @@ void keytraceaddDlg::setbutton(int name)
     }
 }
 
+void keytraceaddDlg::Updata()
+{
+    if(b_sample_link==false)
+    {
+        ui->groupBox->setDisabled(true);
+    }
+    else
+    {
+        ui->groupBox->setDisabled(false);
+    }
+}
+
 void keytraceaddDlg::on_pushButton_clicked()
 {
+    bool rc;
     QString name1=ui->tracingfilenamecombo_1->currentText();
     int route1=ui->tracingfilenamecombo_1->currentIndex();
     QString name2=ui->tracingfilenamecombo_2->currentText();
     int route2=ui->tracingfilenamecombo_2->currentIndex();
     QString nameout=ui->tracefilename->text();
+    float samplespeed=0;
+    float speed=0;
+    int time=0;
     if(route1<0||route1>ui->tracingfilenamecombo_1->count()-1)
     {
         ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹1工艺"));
@@ -122,10 +158,53 @@ void keytraceaddDlg::on_pushButton_clicked()
         ui->record->append(QString::fromLocal8Bit("请填写生成的跟踪轨迹工艺名字"));
         return;
     }
+    if(b_sample_link==true)
+    {
+        samplespeed=ui->samplespeedlineEdit->text().toFloat(&rc);
+        if(ui->samplespeedlineEdit->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写采样速度"));
+            return;
+        }
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("采样速度格式出错"));
+            return;
+        }
+        time=ui->sampletimelineEdit->text().toInt(&rc);
+        if(ui->sampletimelineEdit->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写采样间隔"));
+            return;
+        }
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("采样间隔格式出错"));
+            return;
+        }
+        speed=ui->speedlineEdit->text().toFloat(&rc);
+        if(ui->speedlineEdit->text().isEmpty())
+        {
+            ui->record->append(QString::fromLocal8Bit("请填写焊接速度"));
+            return;
+        }
+        if(rc==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("焊接速度格式出错"));
+            return;
+        }
+    }
     my_cmd cmd;
     QString msg;
-    msg=cmd.cmd_traceadd(name1,name2,nameout);
+    msg=cmd.cmd_traceadd(name1,name2,nameout,b_sample_link,speed,samplespeed,time);
     cmd_msg=msg;
     done(1);
+}
+
+
+void keytraceaddDlg::on_samplelinkcheckBox_stateChanged(int arg1)
+{
+    b_sample_link=arg1;
+    Updata();
 }
 

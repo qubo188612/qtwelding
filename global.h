@@ -928,10 +928,7 @@ public:
 class filterParam
 {
 public:
-    float msl_search_size;        //设置搜索半径
     int msl_poly;                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
-    float msl_samp_radius;        //设置上采样半径
-    float msl_samp_step;          //设置上采样步长
 
     int sor_nearpoint_num;                //每个点参考的邻域点数量
     float sor_standard_deviation;       //标准差

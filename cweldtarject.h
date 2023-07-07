@@ -33,7 +33,16 @@ public:
     int creat_wave(CAL_POSTURE robot,                       //输入姿态标准
                    std::vector<RobPos> pTarject,            //输入原来轨迹
                    wWAVEParam waveparam,                    //输入摆焊信息
-                   std::vector<RobPos> *wave_out);          //输出摆焊轨迹
+                   std::vector<RobPos> *wave_out,           //输出摆焊轨迹
+                   double *t_end);                          //输出末尾的摆焊所在周期
+
+    //继续摆焊轨迹
+    int creat_wave_continue(CAL_POSTURE robot,                       //输入姿态标准
+                            std::vector<RobPos> pTarject,            //输入原来轨迹
+                            wWAVEParam waveparam,                    //输入摆焊信息
+                            std::vector<RobPos> *wave_out,           //输出摆焊轨迹
+                            double t_st,                             //输出上次的摆焊所在周期
+                            double *t_end);                          //输出末尾的摆焊所在周期
 
 protected:
     //根据不共线的空间三点计算圆心坐标

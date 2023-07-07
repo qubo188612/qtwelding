@@ -1,5 +1,4 @@
 #include "MyPlcFunction.h"
-#include <pcl/kdtree/kdtree_flann.h>
 
 Mypcl::Mypcl()
 {
@@ -10,13 +9,29 @@ Mypcl::~Mypcl()
 {
 
 }
-
+/*
 int Mypcl::Moving_Least_Squares(std::vector<RobPos> robpos_in,           //输入点云
+                                std::vector<RobPos> &robpos_out,         //输出点云
+                                float msl_search_size,                   //设置搜索半径
+                                int msl_poly,                            //多项式最高阶
+                                float msl_samp_radius,                   //设置上采样半径
+                                float msl_samp_step)                     //设置上采样步长
+{
+    return 0;
+}
+
+int Mypcl::Statistical_Outlier_Removal(std::vector<RobPos> robpos_in,           //输入点云
+                                       std::vector<RobPos> &robpos_out,         //输出点云
+                                       int sor_nearpoint_num,                   //设置邻域点数量
+                                       float sor_standard_deviation)            //标准差
+{
+    return 0;
+}
+*/
+
+int Mypcl::Moving_Least_Squares(std::vector<RobPos> robpos_in,            //输入点云
                                  std::vector<RobPos> &robpos_out,         //输出点云
-                                 float msl_search_size,                   //设置搜索半径
-                                 int msl_poly,                            //多项式最高阶
-                                 float msl_samp_radius,                   //设置上采样半径
-                                 float msl_samp_step)                     //设置上采样步长
+                                 int msl_poly)                            //多项式最高阶
 { 
     if(robpos_in.size()<=3)
     {
@@ -26,21 +41,25 @@ int Mypcl::Moving_Least_Squares(std::vector<RobPos> robpos_in,           //输�
     pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ> mls;
     pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
+
     for(int n=0;n<robpos_in.size();n++)
     {
         pcl::PointXYZ point;
         point.x=robpos_in[n].X;
         point.y=robpos_in[n].Y;
         point.z=robpos_in[n].Z;
+        point.data[3]=n;
         input_cloud->push_back(point);
     }
 
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
+    tree->setInputCloud(input_cloud);
+
     mls.setInputCloud(input_cloud);
-    mls.setSearchRadius(msl_search_size); // 设置搜索半径
+    mls.setComputeNormals(false);  //设置在最小二乘计算中是否需要存储计算的法线
     mls.setPolynomialOrder(msl_poly);
-    mls.setUpsamplingMethod(pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ>::SAMPLE_LOCAL_PLANE);
-    mls.setUpsamplingRadius(msl_samp_radius); // 设置上采样半径
-    mls.setUpsamplingStepSize(msl_samp_step); // 设置上采样步长
+    mls.setSearchMethod(tree);
+    mls.setSearchRadius(INT_MAX); // 设置搜索半径
 
     // 设置输出点云的大小与输入点云相同
     pcl::PointCloud<pcl::PointXYZ>::Ptr output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -48,24 +67,24 @@ int Mypcl::Moving_Least_Squares(std::vector<RobPos> robpos_in,           //输�
 
     mls.process(*output_cloud);
 
-    if(output_cloud->points.size()!=robpos_in.size())
+    robpos_out.reserve(output_cloud->points.size());
+    for(int n=0;n<output_cloud->points.size();n++)
     {
-        return 1;
-    }
-    robpos_out=robpos_in;
-    for(int n=0;n<robpos_out.size();n++)
-    {
-        robpos_out[n].X=output_cloud->points[n].x;
-        robpos_out[n].Y=output_cloud->points[n].y;
-        robpos_out[n].Z=output_cloud->points[n].z;
+        RobPos pos;
+        int id=output_cloud->points[n].data[3];
+        pos=robpos_in[id];
+        pos.X=output_cloud->points[n].x;
+        pos.Y=output_cloud->points[n].y;
+        pos.Z=output_cloud->points[n].z;
+        robpos_out.push_back(pos);
     }
     return 0;
 }
 
 int Mypcl::Statistical_Outlier_Removal(std::vector<RobPos> robpos_in,           //输入点云
-                                        std::vector<RobPos> &robpos_out,         //输出点云
-                                        int sor_nearpoint_num,                   //设置邻域点数量
-                                        float sor_standard_deviation)            //标准差
+                                       std::vector<RobPos> &robpos_out,         //输出点云
+                                       int sor_nearpoint_num,                   //设置邻域点数量
+                                       float sor_standard_deviation)            //标准差
 {
     if(robpos_in.size()<=3)
     {
@@ -82,6 +101,7 @@ int Mypcl::Statistical_Outlier_Removal(std::vector<RobPos> robpos_in,           
         point.x=robpos_in[n].X;
         point.y=robpos_in[n].Y;
         point.z=robpos_in[n].Z;
+        point.data[3]=n;
         input_cloud->push_back(point);
     }
 
@@ -95,16 +115,16 @@ int Mypcl::Statistical_Outlier_Removal(std::vector<RobPos> robpos_in,           
 
     sor.filter(*output_cloud);
 
-    if(output_cloud->points.size()!=robpos_in.size())
+    robpos_out.reserve(output_cloud->points.size());
+    for(int n=0;n<output_cloud->points.size();n++)
     {
-        return 1;
-    }
-    robpos_out=robpos_in;
-    for(int n=0;n<robpos_out.size();n++)
-    {
-        robpos_out[n].X=output_cloud->points[n].x;
-        robpos_out[n].Y=output_cloud->points[n].y;
-        robpos_out[n].Z=output_cloud->points[n].z;
+        RobPos pos;
+        int id=output_cloud->points[n].data[3];
+        pos=robpos_in[id];
+        pos.X=output_cloud->points[n].x;
+        pos.Y=output_cloud->points[n].y;
+        pos.Z=output_cloud->points[n].z;
+        robpos_out.push_back(pos);
     }
     return 0;
 }

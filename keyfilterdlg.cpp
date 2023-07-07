@@ -11,9 +11,13 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
     for(int n=0;n<FILTER_ID_TOTAL_NUM;n++)
     {
         QString msg=Filter_mode_toQString((Filter_mode)n);
-        ui->filtermodecombo->addItem(msg);
         ui->tabWidget->setTabText(n,msg);
     }
+
+    filterParam filters;
+    ui->msl_poly->setText(QString::number(filters.msl_poly));
+    ui->sor_nearpoint_num->setText(QString::number(filters.sor_nearpoint_num));
+    ui->sor_standard_deviation->setText(QString::number(filters.sor_standard_deviation,'f',3));
 }
 
 keyfilterDlg::~keyfilterDlg()
@@ -64,14 +68,13 @@ void keyfilterDlg::init_dlg_show(QString cmdlist)
             {
                 ui->filternamecombo->setCurrentIndex(weld_trace_creatnum);
             }
-            if(mode>=0&&mode<ui->filtermodecombo->count())
+            if(mode>=0&&mode<ui->tabWidget->count())
             {
-                ui->filtermodecombo->setCurrentIndex(mode);
+                ui->tabWidget->setCurrentIndex(mode);
             }
-            ui->msl_search_size->setText(QString::number(filters.msl_search_size,'f',ROBOT_POSE_DECIMAL_PLACE));
             ui->msl_poly->setText(QString::number(filters.msl_poly));
-            ui->msl_samp_radius->setText(QString::number(filters.msl_samp_radius,'f',ROBOT_POSE_DECIMAL_PLACE));
-            ui->msl_samp_step->setText(QString::number(filters.msl_samp_step,'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->sor_nearpoint_num->setText(QString::number(filters.sor_nearpoint_num));
+            ui->sor_standard_deviation->setText(QString::number(filters.sor_standard_deviation,'f',3));
 
             ui->filternamelineEdit->setText(nameout);
 
@@ -99,17 +102,12 @@ void keyfilterDlg::setbutton(int name)
     }
 }
 
-void keyfilterDlg::on_filtermodecombo_currentIndexChanged(int index)
-{
-    ui->tabWidget->setCurrentIndex(index);
-}
-
 void keyfilterDlg::on_pushButton_clicked()
 {
     bool rc;
     int route=ui->filternamecombo->currentIndex();
     QString creatname=ui->filternamecombo->currentText();
-    int mode=ui->filtermodecombo->currentIndex();
+    int mode=ui->tabWidget->currentIndex();
     QString name=ui->filternamelineEdit->text();
     filterParam filters;
     float f_data;
@@ -120,7 +118,7 @@ void keyfilterDlg::on_pushButton_clicked()
         ui->record->append(QString::fromLocal8Bit("请选择要滤波的轨迹名字"));
         return;
     }
-    if(mode<0||mode>ui->filtermodecombo->count()-1)
+    if(mode<0||mode>ui->tabWidget->count()-1)
     {
         ui->record->append(QString::fromLocal8Bit("请选择滤波模式"));
         return;
@@ -134,19 +132,6 @@ void keyfilterDlg::on_pushButton_clicked()
     {
         case FILTER_MLS:
         {
-            if(ui->msl_search_size->text().isEmpty())
-            {
-                ui->record->append(QString::fromLocal8Bit("请填写搜索半径"));
-                return;
-            }
-            f_data=ui->msl_search_size->text().toFloat(&rc);
-            if(rc==false)
-            {
-                ui->record->append(QString::fromLocal8Bit("搜索半径格式错误"));
-                return;
-            }
-            filters.msl_search_size=f_data;
-
             if(ui->msl_poly->text().isEmpty())
             {
                 ui->record->append(QString::fromLocal8Bit("请填写拟合阶次"));
@@ -159,32 +144,6 @@ void keyfilterDlg::on_pushButton_clicked()
                 return;
             }
             filters.msl_poly=i_data;
-
-            if(ui->msl_samp_radius->text().isEmpty())
-            {
-                ui->record->append(QString::fromLocal8Bit("请填写上采样半径"));
-                return;
-            }
-            f_data=ui->msl_samp_radius->text().toFloat(&rc);
-            if(rc==false)
-            {
-                ui->record->append(QString::fromLocal8Bit("上采样半径格式错误"));
-                return;
-            }
-            filters.msl_samp_radius=f_data;
-
-            if(ui->msl_samp_step->text().isEmpty())
-            {
-                ui->record->append(QString::fromLocal8Bit("请填写上采样步长"));
-                return;
-            }
-            f_data=ui->msl_samp_step->text().toFloat(&rc);
-            if(rc==false)
-            {
-                ui->record->append(QString::fromLocal8Bit("上采样步长格式错误"));
-                return;
-            }
-            filters.msl_samp_step=f_data;
         }
         break;
         case FILTER_SOR:

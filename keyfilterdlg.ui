@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
-    <height>451</height>
+    <width>591</width>
+    <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>370</y>
+     <x>70</x>
+     <y>330</y>
      <width>161</width>
      <height>61</height>
     </rect>
@@ -29,7 +29,7 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>240</x>
      <y>20</y>
      <width>67</width>
      <height>17</height>
@@ -42,10 +42,10 @@
   <widget class="QTextBrowser" name="record">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>240</x>
      <y>40</y>
      <width>331</width>
-     <height>391</height>
+     <height>351</height>
     </rect>
    </property>
   </widget>
@@ -89,7 +89,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>310</y>
+     <y>290</y>
      <width>71</width>
      <height>17</height>
     </rect>
@@ -102,17 +102,7 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>310</y>
-     <width>141</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="filtermodecombo">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>70</y>
+     <y>290</y>
      <width>141</width>
      <height>25</height>
     </rect>
@@ -122,13 +112,13 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>120</y>
-     <width>451</width>
+     <y>100</y>
+     <width>211</width>
      <height>171</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -138,7 +128,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>30</y>
        <width>71</width>
        <height>17</height>
       </rect>
@@ -147,79 +137,10 @@
       <string>拟合阶次:</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="msl_search_size">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>91</width>
-       <height>25</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="msl_poly">
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>80</y>
-       <width>91</width>
-       <height>25</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_12">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>71</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>搜索半径:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_15">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>80</y>
-       <width>81</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>上采样步长:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_13">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>30</y>
-       <width>81</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>上采样半径:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="msl_samp_step">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>80</y>
-       <width>91</width>
-       <height>25</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="msl_samp_radius">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
        <y>30</y>
        <width>91</width>
        <height>25</height>

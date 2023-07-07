@@ -2744,6 +2744,10 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         QString name1=cmd.cmd_traceadd_name1;//获取跟踪轨迹工艺1名字
         QString name2=cmd.cmd_traceadd_name2;//获取跟踪轨迹工艺2名字
         QString name_out=cmd.cmd_traceadd_nameout;
+        bool b_link=cmd.cmd_traceadd_samplelink;//连接处采样
+        float speed=cmd.cmd_traceadd_speed;
+        float samplespeed=cmd.cmd_traceadd_samplespeed;
+        int time=cmd.cmd_traceadd_time;
         int weld_tracing_num1;
         int weld_tracing_num2;
         int weld_tracing_num_out;
@@ -2775,8 +2779,48 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         std::vector<Weld_trace_onec> trace2=m_mcs->project->project_interweld_trace[weld_tracing_num2].trace;
         std::vector<Weld_trace_onec> traceout=m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace;
         traceout.insert(traceout.end(),trace1.begin(),trace1.end());
+        if(b_link==true)//中间采样连接
+        {          
+            if(trace1.size()>0&&trace2.size()>0)
+            {
+                if(trace1[trace1.size()-1].point.size()>0&&trace2[trace2.size()-1].point.size()>0)
+                {
+                    Weld_trace_onec tracelink;
+                    RobPos headpoint=trace1[trace1.size()-1].point[trace1[trace1.size()-1].point.size()-1];
+                    RobPos lastpoint=trace2[0].point[0];
+                    std::vector<RobPos> weld(2),interpolatweld;
+                    weld[0]=headpoint;
+                    weld[1]=lastpoint;
+                    CWeldTarject tarjectMath;
+                    if(!tarjectMath.pos_interpolation(m_mcs->rob->cal_posture_model,weld,interpolatweld,time,samplespeed))
+                    {
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹采样出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        return 1;
+                    }
+                    tracelink.point=interpolatweld;
+                    tracelink.Sample=true;
+                    tracelink.speed=speed;
+                    traceout.push_back(tracelink);
+                }
+            }
+        }
         traceout.insert(traceout.end(),trace2.begin(),trace2.end());
         m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace=traceout;
+        if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存轨迹
+        {
+            QString dir="./log/";
+            QString key=SAVELOGFILE_TRACENAME_HEAD;
+            QString time;
+            std::string s_time;
+            TimeFunction to;
+            to.get_time_ms(&s_time);
+            time=QString::fromStdString(s_time);
+            dir=dir+time+key+name_out;
+            savelog_trace(dir,m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace);
+        }
     }
     else if(key==CMD_WAVE_KEY)
     {
@@ -2803,6 +2847,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         }
         std::vector<Weld_trace_onec> trace_in=m_mcs->project->project_interweld_trace[weld_tracing_num_in].trace;
         std::vector<Weld_trace_onec> trace_out(trace_in.size());
+        double wavet_in,wavet_out;
         for(int n=0;n<trace_in.size();n++)
         {
             Weld_trace_onec trace=trace_in[n];
@@ -2810,13 +2855,28 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             /***************/
             //摆焊工艺
             CWeldTarject tarjectMath;
-            if(0!=tarjectMath.creat_wave(m_mcs->rob->cal_posture_model,trace.point,wave_info,&wavetrace.point))
+            if(n==0)
             {
-                main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");
-                m_mcs->main_record.push_back(return_msg);
-                main_record.unlock();
-                return 1;
+                if(0!=tarjectMath.creat_wave(m_mcs->rob->cal_posture_model,trace.point,wave_info,&wavetrace.point,&wavet_out))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+            }
+            else
+            {
+                wavet_in=wavet_out;
+                if(0!=tarjectMath.creat_wave_continue(m_mcs->rob->cal_posture_model,trace.point,wave_info,&wavetrace.point,wavet_in,&wavet_out))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
             }
             wavetrace.speed=trace.speed;
             wavetrace.Sample=trace.Sample;
@@ -2826,14 +2886,14 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         if(m_mcs->e2proomdata.maindlg_SaveDatacheckBox!=0)//保存轨迹
         {
             QString dir="./log/";
-            QString key=SAVELOGFILE_CREATNAME_HEAD;
+            QString key=SAVELOGFILE_TRACENAME_HEAD;
             QString time;
             std::string s_time;
             TimeFunction to;
             to.get_time_ms(&s_time);
             time=QString::fromStdString(s_time);
             dir=dir+time+key+name_out;
-            savelog_creat(dir,m_mcs->project->project_weld_trace[weld_tracing_num_out].point);
+            savelog_trace(dir,m_mcs->project->project_interweld_trace[weld_tracing_num_out].trace);
         }
     }
     else if(key==CMD_CREATP_KEY)
@@ -3434,7 +3494,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         {
             case FILTER_MLS://中值滤波
             {
-                if(0!=Mypcl::Moving_Least_Squares(weld,interpolatweld,filters.msl_search_size,filters.msl_poly,filters.msl_samp_radius,filters.msl_samp_step))
+                if(0!=Mypcl::Moving_Least_Squares(weld,interpolatweld,filters.msl_poly))
                 {
                     main_record.lock();
                     return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
