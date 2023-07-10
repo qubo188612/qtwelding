@@ -80,7 +80,11 @@ void checkscandataDlg::init_dlg_show()
     {
         QString name=m_mcs->project->projecr_coord_matrix4d[n].name;
         ui->tab5listWidget->addItem(name);
-    }
+    }  
+    tab1viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+    ui->tab1widget->SetRenderWindow(tab1viewer->getRenderWindow());
+    tab1viewer->setupInteractor(ui->tab1widget->GetInteractor(), ui->tab1widget->GetRenderWindow());
+    tab1viewer->addCoordinateSystem();  //添加坐标系
 
     tab2viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
     ui->tab2widget->SetRenderWindow(tab2viewer->getRenderWindow());
@@ -110,6 +114,10 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
     QString name=ui->tab1listWidget->currentItem()->text();
     int nowline=ui->tab1listWidget->currentRow();
     ui->tab1listWidget->setCurrentRow(nowline);
+    std::vector<RobPos>cv_cloud;
+    int cv_num=0;
+    bool b_cv_num=false;
+
     if(name.isEmpty())
     {
         ui->tab1pointstate->clear();
@@ -125,7 +133,7 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
     }
     else
     {
-        int pointnum;
+        int pointnum=0;
         QString msg;
         for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
         {
@@ -163,7 +171,64 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
             ui->tab1realout2->setText(QString::number(robotpos.out_2));
             ui->tab1realout3->setText(QString::number(robotpos.out_3));
         }
+
+        int tempcv_num=0;
+        cv_cloud.reserve(m_mcs->project->projecr_robpos_trace.size());
+        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        {
+            if(m_mcs->project->projecr_robpos_trace[n].nEn==true)
+            {
+                if(n==pointnum)
+                {
+                    cv_num=tempcv_num;
+                    b_cv_num=true;
+                }
+                cv_cloud.push_back(m_mcs->project->projecr_robpos_trace[n].robotpos);
+                tempcv_num++;
+            }
+        }
     }
+
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr rgbclould;
+    rgbclould.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    rgbclould->clear();
+
+
+    if(cv_cloud.size()>0)
+    {
+        for(int n=0;n<cv_cloud.size();n++)
+        {
+            if(b_cv_num==true&&n==cv_num)
+            {
+                uint32_t R=0,G=255,B=0;
+                uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
+                pcl::PointXYZRGB point;
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-cv_cloud[0].X;
+                point.y=cv_cloud[n].Y-cv_cloud[0].Y;
+                point.z=cv_cloud[n].Z-cv_cloud[0].Z;
+                rgbclould->points.push_back(point);
+            }
+            else
+            {
+                uint32_t R=255,G=0,B=0;
+                uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
+                pcl::PointXYZRGB point;
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-cv_cloud[0].X;
+                point.y=cv_cloud[n].Y-cv_cloud[0].Y;
+                point.z=cv_cloud[n].Z-cv_cloud[0].Z;
+                rgbclould->points.push_back(point);
+            }
+        }
+    }
+    rgbclould->width=rgbclould->points.size();
+    rgbclould->height=1;
+
+    tab1viewer->removeAllPointClouds();
+    tab1viewer->removeAllShapes();
+    tab1viewer->addPointCloud(rgbclould);
+    ui->tab1widget->update();
 }
 
 //扫描轨迹选择

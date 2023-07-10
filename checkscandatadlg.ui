@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>891</width>
-    <height>480</height>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>20</y>
      <width>861</width>
-     <height>441</height>
+     <height>491</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -32,8 +32,8 @@
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>20</y>
+       <x>10</x>
+       <y>400</y>
        <width>81</width>
        <height>17</height>
       </rect>
@@ -45,8 +45,8 @@
     <widget class="QLabel" name="tab1pointstate">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>50</y>
+       <x>80</x>
+       <y>400</y>
        <width>261</width>
        <height>17</height>
       </rect>
@@ -68,9 +68,9 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>80</y>
-       <width>51</width>
+       <x>10</x>
+       <y>420</y>
+       <width>41</width>
        <height>17</height>
       </rect>
      </property>
@@ -81,8 +81,8 @@
     <widget class="QLabel" name="tab1realposRX">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>170</y>
+       <x>450</x>
+       <y>420</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -94,8 +94,8 @@
     <widget class="QLabel" name="tab1realposZ">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>140</y>
+       <x>310</x>
+       <y>420</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -107,8 +107,8 @@
     <widget class="QLabel" name="tab1realout2">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>290</y>
+       <x>180</x>
+       <y>440</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -120,9 +120,9 @@
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>110</y>
-       <width>51</width>
+       <x>140</x>
+       <y>420</y>
+       <width>41</width>
        <height>17</height>
       </rect>
      </property>
@@ -133,8 +133,8 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>200</y>
+       <x>540</x>
+       <y>420</y>
        <width>51</width>
        <height>17</height>
       </rect>
@@ -146,8 +146,8 @@
     <widget class="QLabel" name="tab1realout1">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>260</y>
+       <x>50</x>
+       <y>440</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -159,8 +159,8 @@
     <widget class="QLabel" name="tab1realout3">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>320</y>
+       <x>310</x>
+       <y>440</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -172,9 +172,9 @@
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>290</y>
-       <width>51</width>
+       <x>140</x>
+       <y>440</y>
+       <width>41</width>
        <height>17</height>
       </rect>
      </property>
@@ -185,8 +185,8 @@
     <widget class="QLabel" name="tab1realposX">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>80</y>
+       <x>50</x>
+       <y>420</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -198,8 +198,8 @@
     <widget class="QLabel" name="tab1realposRZ">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>230</y>
+       <x>730</x>
+       <y>420</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -211,9 +211,9 @@
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>140</y>
-       <width>51</width>
+       <x>270</x>
+       <y>420</y>
+       <width>41</width>
        <height>17</height>
       </rect>
      </property>
@@ -224,8 +224,8 @@
     <widget class="QLabel" name="tab1realposY">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>110</y>
+       <x>180</x>
+       <y>420</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -237,8 +237,8 @@
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>170</y>
+       <x>400</x>
+       <y>420</y>
        <width>51</width>
        <height>17</height>
       </rect>
@@ -250,9 +250,9 @@
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>260</y>
-       <width>51</width>
+       <x>10</x>
+       <y>440</y>
+       <width>41</width>
        <height>17</height>
       </rect>
      </property>
@@ -263,8 +263,8 @@
     <widget class="QLabel" name="tab1realposRY">
      <property name="geometry">
       <rect>
-       <x>320</x>
-       <y>200</y>
+       <x>590</x>
+       <y>420</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -276,9 +276,9 @@
     <widget class="QLabel" name="label_12">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>320</y>
-       <width>51</width>
+       <x>270</x>
+       <y>440</y>
+       <width>41</width>
        <height>17</height>
       </rect>
      </property>
@@ -289,14 +289,24 @@
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>230</y>
+       <x>680</x>
+       <y>420</y>
        <width>51</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
       <string>posRZ:</string>
+     </property>
+    </widget>
+    <widget class="QVTKWidget" name="tab1widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>651</width>
+       <height>371</height>
+      </rect>
      </property>
     </widget>
    </widget>

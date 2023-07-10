@@ -25,7 +25,7 @@ public:
     void init_dlg_show();
     void close_dlg_show();
 
-
+    pcl::visualization::PCLVisualizer::Ptr tab1viewer;
     pcl::visualization::PCLVisualizer::Ptr tab2viewer;
     pcl::visualization::PCLVisualizer::Ptr tab3viewer;
     pcl::visualization::PCLVisualizer::Ptr tab4viewer;

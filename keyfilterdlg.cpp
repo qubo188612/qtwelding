@@ -8,6 +8,11 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
 
+#if !defined USE_PLC_FILTER
+    ui->tabWidget->removeTab(0);
+    ui->tabWidget->removeTab(0);
+#endif
+
     for(int n=0;n<FILTER_ID_TOTAL_NUM;n++)
     {
         QString msg=Filter_mode_toQString((Filter_mode)n);
@@ -15,9 +20,16 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
     }
 
     filterParam filters;
+#if USE_PLC_FILTER==1
     ui->msl_poly->setText(QString::number(filters.msl_poly));
     ui->sor_nearpoint_num->setText(QString::number(filters.sor_nearpoint_num));
     ui->sor_standard_deviation->setText(QString::number(filters.sor_standard_deviation,'f',3));
+#endif
+    ui->svd_Degree->setText(QString::number(filters.svd_Degree));
+    ui->svd_WindowSize->setText(QString::number(filters.svd_WindowSize));
+    ui->svd_SingularThreshold->setText(QString::number(filters.svd_SingularThreshold,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->gaussian_SmoothingRadius->setText(QString::number(filters.gaussian_SmoothingRadius,'f',ROBOT_POSE_DECIMAL_PLACE));
+    ui->gaussian_SmoothingSigma->setText(QString::number(filters.gaussian_SmoothingSigma,'f',3));
 }
 
 keyfilterDlg::~keyfilterDlg()
@@ -72,9 +84,16 @@ void keyfilterDlg::init_dlg_show(QString cmdlist)
             {
                 ui->tabWidget->setCurrentIndex(mode);
             }
+        #if USE_PLC_FILTER==1
             ui->msl_poly->setText(QString::number(filters.msl_poly));
             ui->sor_nearpoint_num->setText(QString::number(filters.sor_nearpoint_num));
             ui->sor_standard_deviation->setText(QString::number(filters.sor_standard_deviation,'f',3));
+        #endif
+            ui->svd_Degree->setText(QString::number(filters.svd_Degree));
+            ui->svd_WindowSize->setText(QString::number(filters.svd_WindowSize));
+            ui->svd_SingularThreshold->setText(QString::number(filters.svd_SingularThreshold,'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->gaussian_SmoothingRadius->setText(QString::number(filters.gaussian_SmoothingRadius,'f',ROBOT_POSE_DECIMAL_PLACE));
+            ui->gaussian_SmoothingSigma->setText(QString::number(filters.gaussian_SmoothingSigma,'f',3));
 
             ui->filternamelineEdit->setText(nameout);
 
@@ -130,6 +149,7 @@ void keyfilterDlg::on_pushButton_clicked()
     }
     switch(mode)
     {
+    #if USE_PLC_FILTER==1
         case FILTER_MLS:
         {
             if(ui->msl_poly->text().isEmpty())
@@ -174,6 +194,78 @@ void keyfilterDlg::on_pushButton_clicked()
             }
             filters.sor_standard_deviation=f_data;
 
+        }
+        break;
+    #endif
+        case FILTER_SVD:
+        {
+            if(ui->svd_Degree->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写拟合阶次"));
+                return;
+            }
+            i_data=ui->svd_Degree->text().toInt(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("拟合阶次格式错误"));
+                return;
+            }
+            filters.svd_Degree=i_data;
+
+            if(ui->svd_WindowSize->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写邻域点数"));
+                return;
+            }
+            i_data=ui->svd_WindowSize->text().toInt(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("邻域点数格式错误"));
+                return;
+            }
+            filters.svd_WindowSize=i_data;
+
+            if(ui->svd_SingularThreshold->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写判定距离"));
+                return;
+            }
+            f_data=ui->svd_SingularThreshold->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("判定距离格式错误"));
+                return;
+            }
+            filters.svd_SingularThreshold=f_data;
+        }
+        break;
+        case FILTER_GAUSSIAN:
+        {
+            if(ui->gaussian_SmoothingRadius->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写平滑半径"));
+                return;
+            }
+            f_data=ui->gaussian_SmoothingRadius->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("平滑半径格式错误"));
+                return;
+            }
+            filters.gaussian_SmoothingRadius=f_data;
+
+            if(ui->gaussian_SmoothingSigma->text().isEmpty())
+            {
+                ui->record->append(QString::fromLocal8Bit("请填写标准差"));
+                return;
+            }
+            f_data=ui->gaussian_SmoothingSigma->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("标准差格式错误"));
+                return;
+            }
+            filters.gaussian_SmoothingSigma=f_data;
         }
         break;
     }

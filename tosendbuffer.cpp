@@ -3492,6 +3492,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
 
         switch(mode)
         {
+        #if USE_PLC_FILTER==1
             case FILTER_MLS://中值滤波
             {
                 if(0!=Mypcl::Moving_Least_Squares(weld,interpolatweld,filters.msl_poly))
@@ -3507,6 +3508,31 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             case FILTER_SOR://曲线拟合
             {
                 if(0!=Mypcl::Statistical_Outlier_Removal(weld,interpolatweld,filters.sor_nearpoint_num,filters.sor_standard_deviation))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+            }
+            break;
+        #endif
+            case FILTER_SVD://SVD滤波
+            {
+                if(0!=Mypcl::Singular_Value_Decomposition(weld,interpolatweld,filters.svd_Degree,filters.svd_WindowSize,filters.svd_SingularThreshold))
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+            }
+            break;
+            case FILTER_GAUSSIAN://高斯滤波
+            {
+                if(0!=Mypcl::Gaussian(weld,interpolatweld,filters.gaussian_SmoothingRadius,filters.gaussian_SmoothingSigma))
                 {
                     main_record.lock();
                     return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");

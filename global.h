@@ -14,6 +14,7 @@
 #define OPEN_SHOW_ROBOTSOCKDATA     1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 #define OPEN_TIMESTAMP              1//使用时间戳同步功能
+//#define USE_PLC_FILTER            1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
 
 
 #if _MSC_VER
@@ -875,12 +876,23 @@ typedef enum TREND_MODE_ID  //摆幅方向
     TREND_MODE_Z_Y=2,     //Z轴走向,开口朝Y轴负方向
 }Trend_mode;
 
-#define FILTER_ID_TOTAL_NUM    2    //滤波模式
+#if USE_PLC_FILTER==1
+#define FILTER_ID_TOTAL_NUM    4    //滤波模式
 typedef enum FILTER_MODE_ID//扫描轨迹滤波模式
 {
     FILTER_MLS=0,         //MLS滤波
     FILTER_SOR=1,         //SOR滤波
+    FILTER_SVD=2,         //SVD滤波
+    FILTER_GAUSSIAN=3,    //GAUSSIAN滤波
 }Filter_mode;
+#else
+#define FILTER_ID_TOTAL_NUM    2    //滤波模式
+typedef enum FILTER_MODE_ID//扫描轨迹滤波模式
+{
+    FILTER_SVD=0,         //SVD滤波
+    FILTER_GAUSSIAN=1,    //GAUSSIAN滤波
+}Filter_mode;
+#endif
 
 #define TRACE_EDIT_ID_TOTAL_NUM    3    //轨迹生成模式总数
 typedef enum TRACE_EDIT_MODE_ID         //轨迹生成模式
@@ -928,10 +940,19 @@ public:
 class filterParam
 {
 public:
-    int msl_poly;                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
+#if USE_PLC_FILTER==1
+    int msl_poly;                   //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
 
-    int sor_nearpoint_num;                //每个点参考的邻域点数量
-    float sor_standard_deviation;       //标准差
+    int sor_nearpoint_num;          //每个点参考的邻域点数量
+    float sor_standard_deviation;   //标准差
+#endif
+
+    int svd_Degree;                 //主轴曲线拟合的阶数,0为直线,1为一项线性曲线拟合，2为二项线性曲线拟合
+    int svd_WindowSize;             //曲线拟合的统计点数
+    float svd_SingularThreshold;    //距离主轴距离阈值
+
+    float gaussian_SmoothingRadius;      //平滑半径
+    float gaussian_SmoothingSigma;       //标准差
 
     filterParam();
 };

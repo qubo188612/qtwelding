@@ -285,14 +285,24 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
         return false;
     }
 
-    int addnum_1=_2d_rand_1/rad;
-    int addnum=_2d_rand_2/rad;
+    int addnum_1;
+    int addnum;
+    if(_2d_rand_2<_2d_rand_1)   //逆时针转
+    {
+        addnum_1=(2*CV_PI-_2d_rand_1)/rad;
+        addnum=(2*CV_PI-_2d_rand_2)/rad;
+    }
+    else    //顺时针转
+    {
+        addnum_1=_2d_rand_1/rad;
+        addnum=_2d_rand_2/rad;
+    }
     if(addnum<4||addnum_1<4)
         return false;
     std::vector<Eigen::Vector3d> r_circlepoints_out;//r坐标系下的圆的插值点
     r_circlepoints_out.resize(addnum_1);
 
-    if(cross_temp2<0)
+    if(_2d_rand_2<_2d_rand_1)   //逆时针转
     {
         rad=-rad;
     }
@@ -331,8 +341,11 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
         head_interpolatPos[n].RZ=posR1[n][2];
     }
 
-    r_circlepoints_out.resize(addnum+2-addnum_1);
-    for(int n=addnum_1;n<addnum+1;n++)
+    if(addnum-2-addnum_1<0)
+        return false;
+
+    r_circlepoints_out.resize(addnum-addnum_1);
+    for(int n=addnum_1;n<addnum;n++)
     {
         double radstep=rad*n;
         Eigen::Vector3d point;
@@ -341,9 +354,8 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
         point.z()=0;
         r_circlepoints_out[n-addnum_1]=RT*point+TT;
     }
-    r_circlepoints_out[addnum+2-addnum_1-1]=RT*r_circlepoints[2]+TT;
-    std::vector<RobPos> tail_pos(addnum+2-addnum_1);
-    for(int n=0;n<addnum+2-addnum_1;n++)
+    std::vector<RobPos> tail_pos(addnum-addnum_1);
+    for(int n=0;n<addnum-addnum_1;n++)
     {
         tail_pos[n].X=r_circlepoints_out[n].x();
         tail_pos[n].Y=r_circlepoints_out[n].y();
@@ -359,12 +371,12 @@ bool CWeldTarject::pos_circle(CAL_POSTURE robot,RobPos pos_st,RobPos pos_center,
 
     Eigen::Vector3d stR2(pos_center.RX,pos_center.RY,pos_center.RZ);
     Eigen::Vector3d edR2(pos_ed.RX,pos_ed.RY,pos_ed.RZ);
-    std::vector<Eigen::Vector3d> posR2=Calibration::Attitudedifference(robot,stR2,edR2,tail_interpolatPos.size()+1);
+    std::vector<Eigen::Vector3d> posR2=Calibration::Attitudedifference(robot,stR2,edR2,tail_interpolatPos.size());
     for(int n=0;n<tail_interpolatPos.size();n++)
     {
-        tail_interpolatPos[n].RX=posR2[n+1][0];
-        tail_interpolatPos[n].RY=posR2[n+1][1];
-        tail_interpolatPos[n].RZ=posR2[n+1][2];
+        tail_interpolatPos[n].RX=posR2[n][0];
+        tail_interpolatPos[n].RY=posR2[n][1];
+        tail_interpolatPos[n].RZ=posR2[n][2];
     }
 
     head_interpolatPos.insert(head_interpolatPos.end(),tail_interpolatPos.begin(),tail_interpolatPos.end());

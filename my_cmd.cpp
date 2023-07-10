@@ -4012,6 +4012,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         //判断滤波参数是否合理
         switch(cmd_filter_mode)
         {
+        #if USE_PLC_FILTER==1
             case FILTER_MLS:
             {
                 if(f_datagroup.size()!=1)
@@ -4036,17 +4037,67 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 }
                 if(f_datagroup[0]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于等于0");
                     return 1;
                 }
                 if(f_datagroup[1]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于等于0");
                     return 1;
                 }
 
                 cmd_filters.sor_nearpoint_num=f_datagroup[0];                //每个点参考的邻域点数量
                 cmd_filters.sor_standard_deviation=f_datagroup[1];       //标准差
+            }
+            break;
+        #endif
+            case FILTER_SVD:
+            {
+                if(f_datagroup.size()!=3)
+                {
+                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有3个");
+                    return 1;
+                }
+                if(f_datagroup[0]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于等于0");
+                    return 1;
+                }
+                if(f_datagroup[1]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于等于0");
+                    return 1;
+                }
+                if(f_datagroup[2]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第3个参数)必须大于等于0");
+                    return 1;
+                }
+
+                cmd_filters.svd_Degree=f_datagroup[0];
+                cmd_filters.svd_WindowSize=f_datagroup[1];
+                cmd_filters.svd_SingularThreshold=f_datagroup[2];
+            }
+            break;
+            case FILTER_GAUSSIAN:
+            {
+                if(f_datagroup.size()!=2)
+                {
+                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有2个");
+                    return 1;
+                }
+                if(f_datagroup[0]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于等于0");
+                    return 1;
+                }
+                if(f_datagroup[1]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于等于0");
+                    return 1;
+                }
+                cmd_filters.gaussian_SmoothingRadius=f_datagroup[0];
+                cmd_filters.gaussian_SmoothingSigma=f_datagroup[1];
             }
             break;
             default:
@@ -4554,6 +4605,7 @@ QString my_cmd::rc_filters(filterParam filters,Filter_mode mode)
 
     switch(mode)
     {
+    #if USE_PLC_FILTER==1
         case FILTER_MLS:
         {
             msg=QString(CMD_FILTERS)+"["+
@@ -4565,6 +4617,22 @@ QString my_cmd::rc_filters(filterParam filters,Filter_mode mode)
             msg=QString(CMD_FILTERS)+"["+
                 QString::number(filters.sor_nearpoint_num)+","+
                 QString::number(filters.sor_standard_deviation,'f',3)+"]";
+        }
+        break;
+    #endif
+        case FILTER_SVD:
+        {
+            msg=QString(CMD_FILTERS)+"["+
+                QString::number(filters.svd_Degree)+","+
+                QString::number(filters.svd_WindowSize)+","+
+                QString::number(filters.svd_SingularThreshold,'f',ROBOT_POSE_DECIMAL_PLACE)+"]";
+        }
+        break;
+        case FILTER_GAUSSIAN:
+        {
+            msg=QString(CMD_FILTERS)+"["+
+                QString::number(filters.gaussian_SmoothingRadius,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                QString::number(filters.gaussian_SmoothingSigma,'f',3)+"]";
         }
         break;
     }

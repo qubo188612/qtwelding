@@ -91,10 +91,19 @@ wWAVEParam::wWAVEParam()
 
 filterParam::filterParam()
 {
+#if USE_PLC_FILTER==1
     msl_poly=1;                   //多项式最高阶,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合
 
     sor_nearpoint_num=50;                //每个点参考的邻域点数量
     sor_standard_deviation=1.0;       //标准差
+#endif
+
+    svd_Degree=1;                 //主轴曲线拟合的阶数,0为直线,1为一项线性曲线拟合，2为二项线性曲线拟合
+    svd_WindowSize=5;             //曲线拟合的统计点数
+    svd_SingularThreshold=2.0;    //距离主轴距离阈值
+
+    gaussian_SmoothingRadius=5.0;      //平滑半径
+    gaussian_SmoothingSigma=0.5;       //标准差
 }
 
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
@@ -177,11 +186,19 @@ QString Filter_mode_toQString(Filter_mode filter_mode)
     QString msg;
     switch(filter_mode)
     {
+    #if USE_PLC_FILTER==1
         case FILTER_MLS:
             msg=QString::fromLocal8Bit("MLS滤波");
         break;
         case FILTER_SOR:
             msg=QString::fromLocal8Bit("SOR滤波");
+        break;
+    #endif
+        case FILTER_SVD:
+            msg=QString::fromLocal8Bit("SVD滤波");
+        break;
+        case FILTER_GAUSSIAN:
+            msg=QString::fromLocal8Bit("GAUSSIAN滤波");
         break;
     }
     return msg;
