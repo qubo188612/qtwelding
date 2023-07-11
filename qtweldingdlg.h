@@ -27,6 +27,8 @@
 #include "editcraftdlg.h"
 #include "newcraftdlg.h"
 #include "checkscandatadlg.h"
+#include "sndatadlg.h"
+#include "infodlg.h"
 #include "setcraft0dlg.h"
 #include "setcraft1dlg.h"
 #include "setcraft2dlg.h"
@@ -61,6 +63,9 @@ public:
     ~qtweldingDlg();
 
     my_parameters *m_mcs;
+#ifdef USE_SN_DATA
+    QTimer *SN_timer;                    //序列号定时器线程
+#endif
 
     qtweldingThread *thread1;            //相机线程
     bool b_thread1;
@@ -95,6 +100,8 @@ public:
     editcraftDlg *editcraft;
     newcraftDlg *newcraft;
     checkscandataDlg *checkscandata;
+    sndataDlg *sndata;
+    infoDlg *info;
     setcraft0Dlg *setcraft0;
     setcraft1Dlg *setcraft1;
     setcraft2Dlg *setcraft2;
@@ -112,6 +119,7 @@ public:
 
 
 private slots:
+
     void init_show_ui_list();
 
     void init_sent_leaser();
@@ -246,6 +254,8 @@ private slots:
 
     void on_projectcheckdataBtn_clicked();
 
+    void on_infoBtn_clicked();
+
 private:
     Ui::qtweldingDlg *ui;
 
@@ -265,6 +275,9 @@ private:
     void UpdataUi();            //控件使能
 
     int task_setmaindlgtcp(int tcp);   //设置tcp
+#ifdef USE_SN_DATA
+    void init_SNtimeoutShow();
+#endif
 
     QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
 };

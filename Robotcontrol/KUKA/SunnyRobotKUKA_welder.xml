@@ -1,0 +1,82 @@
+<ETHERNETKRL>
+	<CONFIGURATION>
+		<EXTERNAL>
+			<!--配置下位机作为服务器-->
+			<TYPE>Server</TYPE>
+			<IP>192.168.0.1</IP>
+			<PORT>54610</PORT>
+		</EXTERNAL>
+		<INTERNAL>
+			<PROTOCOL>TCP</PROTOCOL>
+			<MESSAGES Logging="error" Display="disabled"/>
+			<ALIVE Set_Flag="118"/>
+		</INTERNAL>
+	</CONFIGURATION>
+	<RECEIVE>
+		<XML>
+			<!--机器人位姿数据-->
+			<ELEMENT Tag="SunnyUM/SX" Type="REAL"/><!--直线运动时，终点坐标-->
+			<ELEMENT Tag="SunnyUM/SY" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/SZ" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/SA" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/SB" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/SC" Type="REAL"/>
+
+			<ELEMENT Tag="SunnyUM/MX" Type="REAL"/> <!--机器人圆弧运动时，中点坐标-->
+			<ELEMENT Tag="SunnyUM/MY" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/MZ" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/MA" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/MB" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/MC" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/EX" Type="REAL"/> <!--机器人圆弧运动时，终点坐标-->
+			<ELEMENT Tag="SunnyUM/EY" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/EZ" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/EA" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/EB" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/EC" Type="REAL"/>
+
+			<ELEMENT Tag="SunnyUM/J1" Type="REAL"/> <!--关节运动时，关节坐标-->
+			<ELEMENT Tag="SunnyUM/J2" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/J3" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/J4" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/J5" Type="REAL"/>
+			<ELEMENT Tag="SunnyUM/J6" Type="REAL"/>
+
+			<!--机器人移动方式 1：直线运动，2：关节运动，3：圆弧运动 -->
+			<ELEMENT Tag="SunnyUM/MoveF" Type="INT"/>
+
+			<!--fifo size -->
+			<ELEMENT Tag="SunnyUM/FifoSize" Type="INT"/> 
+			
+			<ELEMENT Tag="SunnyUM" Set_Flag="98"/> <!--接收到数据后利用98标志触发89中断读取数据-->
+		</XML>
+	</RECEIVE>
+	<SEND>
+		<XML>
+ 			<ELEMENT Tag="SunnyRobot/RX" Type="REAL"/> <!-- 机器人位置x -->
+ 			<ELEMENT Tag="SunnyRobot/RY" Type="REAL"/> <!-- 机器人位置y -->
+ 			<ELEMENT Tag="SunnyRobot/RZ" Type="REAL"/> <!-- 机器人位置z -->
+ 			<ELEMENT Tag="SunnyRobot/RA" Type="REAL"/> <!-- 机器人位置a -->
+ 			<ELEMENT Tag="SunnyRobot/RB" Type="REAL"/> <!-- 机器人位置b -->
+ 			<ELEMENT Tag="SunnyRobot/RC" Type="REAL"/> <!-- 机器人位置c -->
+			<ELEMENT Tag="SunnyRobot/J1" Type="REAL"/> <!-- 机器人关节1位置 -->
+ 			<ELEMENT Tag="SunnyRobot/J2" Type="REAL"/> <!-- 机器人关节2位置 -->
+ 			<ELEMENT Tag="SunnyRobot/J3" Type="REAL"/> <!-- 机器人关节3位置 -->
+ 			<ELEMENT Tag="SunnyRobot/J4" Type="REAL"/> <!-- 机器人关节4位置 -->
+ 			<ELEMENT Tag="SunnyRobot/J5" Type="REAL"/> <!-- 机器人关节5位置 -->
+ 			<ELEMENT Tag="SunnyRobot/J6" Type="REAL"/> <!-- 机器人关节6位置 -->
+			<ELEMENT Tag="SunnyRobot/RT" Type="REAL"/> <!-- 机器人时间小时 -->
+ 			<ELEMENT Tag="SunnyRobot/RM" Type="REAL"/> <!-- 机器人时间分钟 -->
+ 			<ELEMENT Tag="SunnyRobot/RS" Type="REAL"/> <!-- 机器人时间秒 -->
+ 			<ELEMENT Tag="SunnyRobot/RMS" Type="REAL"/> <!-- 机器人时间微秒 -->
+			<ELEMENT Tag="SunnyRobot/RSPEED" Type="REAL"/> <!-- 机器人速度 -->
+ 			<ELEMENT Tag="SunnyRobot/Status" Type="INT"/> <!-- 机器人状态 -->
+ 			<ELEMENT Tag="SunnyRobot/Mode" Type="INT"/> <!-- 机器人模式 -->
+ 			
+ 			<ELEMENT Tag="SunnyRobot/WI" Type="REAL"/> <!-- 焊接电流 -->
+ 			<ELEMENT Tag="SunnyRobot/WV" Type="REAL"/> <!-- 焊接电压 -->
+			<ELEMENT Tag="SunnyRobot/WS" Type="REAL"/> <!-- 焊接速度 -->
+ 			<ELEMENT Tag="SunnyRobot/WM" Type="INT"/> <!-- 焊接状态 -->
+ 		</XML>
+	</SEND> 
+</ETHERNETKRL>

@@ -14,6 +14,7 @@
 #define OPEN_SHOW_ROBOTSOCKDATA     1//显示与机器人通信内容
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 #define OPEN_TIMESTAMP              1//使用时间戳同步功能
+#define USE_SN_DATA                 1//使用序列号
 //#define USE_PLC_FILTER            1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
 
 

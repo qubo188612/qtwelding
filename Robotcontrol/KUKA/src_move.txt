@@ -1,0 +1,172 @@
+&ACCESS RVP1
+&REL 83
+&PARAM SensorITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\Program
+DEF sunny_kuka()
+   DECL EKI_STATUS RET
+   
+   $FLAG[1]=FALSE
+   $FLAG[99]=FALSE
+   $FLAG[998]=FALSE
+   $TOOL=TOOL_DATA[8]
+   BAS (#INITMOV,0)
+ 
+;FOLD PTP P6 Vel=100 % PDAT4 Tool[8]:sunny Base[0];%{PE}%R 8.3.44,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:P6, 3:, 5:100, 7:PDAT4
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT4
+FDAT_ACT=FP6
+BAS(#PTP_PARAMS,100)
+PTP XP6 
+;ENDFOLD
+
+   INTERRUPT DECL 1 WHEN $FLAG[99]==TRUE DO GET_DATA()
+   INTERRUPT ON 1
+  
+   RET=EKI_Init("SunnyKukaRecv")
+   RET=EKI_Open("SunnyKukaRecv")
+  
+   MoveF=6174
+   TCP_NUM=8
+   interrupt_cnt=1
+   recv_flag=6174
+   move_cnt=1
+
+loop
+   if recv_flag == 1 then
+      ;$TOOL=TOOL_DATA[8]
+      
+     ; if move_cnt<interrupt_cnt then
+         ;XP1.X=pos_save_x[move_cnt]
+         ;XP1.Y=pos_save_y[move_cnt]
+         ;XP1.Z=pos_save_z[move_cnt]
+         ;XP1.A=pos_save_a[move_cnt]
+         ;XP1.B=pos_save_b[move_cnt]
+         ;XP1.C=pos_save_c[move_cnt]
+         XP1.X=set_x
+         XP1.Y=set_y
+         XP1.Z=set_z
+         XP1.A=set_a
+         XP1.B=set_b
+         XP1.C=set_c
+         
+         ;XP2.X=pos_save_x1[move_cnt]
+         ;XP2.Y=pos_save_y1[move_cnt]
+         ;XP2.Z=pos_save_z1[move_cnt]
+         ;XP2.A=pos_save_a1[move_cnt]
+         ;XP2.B=pos_save_b1[move_cnt]
+         ;XP2.C=pos_save_c1[move_cnt]
+     ; else
+         ;recv_flag=6174
+         ;MoveF=6174
+        ;move_cnt=1
+         
+        ; if interrupt_cnt>=5000 then
+            ;interrupt on 1
+            ;RET=EKI_Open("SunnyKukaRecv")
+         ;endif
+      ;endif
+      
+      recv_flag=2
+   endif
+   
+   if recv_flag == 2 then
+      if MoveF == 2 then   
+         recv_flag=1
+         $BWDSTART=FALSE
+         LDAT_ACT=LCPDAT1
+         FDAT_ACT=FP1
+         BAS(#CP_PARAMS,move_speed)
+         CIRC XP1, XP2
+      endif
+   
+      if MoveF == 0 THEN
+         recv_flag=1
+         $BWDSTART=FALSE
+         LDAT_ACT=LCPDAT1
+         FDAT_ACT=FP1
+         BAS(#CP_PARAMS,0.02)
+         LIN XP1 
+      ENDIF
+   
+      if MoveF == 1 then
+         ;$BWDSTART=FALSE
+         ;PPDAT1.ACC=100
+         ;PPDAT1.APO_DIST=0.0
+         ;PPDAT1.EXAX_IGN=0
+         ;PPDAT1.GEAR_JERK=50.000
+         ;PPDAT1.VEL=1
+         ;PDAT_ACT=PPDAT1
+         ;FP1.TOOL_NO=TCP_NUM
+         ;FP1.BASE_NO=0
+         ;FP1.POINT2[]=" "
+         ;FP1.TQ_STATE=FALSE
+         ;FDAT_ACT=FP1
+         ;BAS(#PTP_PARAMS,move_speed)
+         $BWDSTART=FALSE
+         PDAT_ACT=PPDAT1
+         FDAT_ACT=FP1
+         BAS(#PTP_PARAMS,50)
+
+         PTP XP1
+         MoveF=6174
+         recv_flag=0
+      ENDIF
+      move_cnt=move_cnt+1
+   ENDIF
+endloop
+   RET=EKI_Close("SunnyKukaRecv")
+   RET=EKI_Clear("SunnyKukaRecv")
+END
+
+DEF GET_DATA()
+   DECL EKI_STATUS RET
+   $FLAG[99]=FALSE
+   
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/X",set_x)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Y",set_y)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Z",set_z)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RX",set_a)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RY",set_b)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RZ",set_c)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/X1",set_xc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Y1",set_yc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Z1",set_zc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RX1",set_ac)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RY1",set_bc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RZ1",set_cc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVESPEED",move_speed)
+   RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/MOVEMODE",MoveF)
+   RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/TCP",TCP_NUM) 
+   ;RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/RUNSTATE",run_state)
+   RET=EKI_ClearBuffer("SunnyKukaRecv","ROBOTCONTROL")
+   
+   ;pos_save_x[interrupt_cnt]=set_x
+   ;pos_save_y[interrupt_cnt]=set_y
+   ;pos_save_z[interrupt_cnt]=set_z
+   ;pos_save_a[interrupt_cnt]=set_a
+   ;pos_save_b[interrupt_cnt]=set_b
+   ;pos_save_c[interrupt_cnt]=set_c
+   
+   if interrupt_cnt<5000 then
+      ;pos_save_x[interrupt_cnt]=set_x
+      ;pos_save_y[interrupt_cnt]=set_y
+      ;pos_save_z[interrupt_cnt]=set_z
+      ;pos_save_a[interrupt_cnt]=set_a
+      ;pos_save_b[interrupt_cnt]=set_b
+      ;pos_save_c[interrupt_cnt]=set_c
+      ;pos_save_x1[interrupt_cnt]=set_xc
+      ;pos_save_y1[interrupt_cnt]=set_yc
+      ;pos_save_z1[interrupt_cnt]=set_zc
+      ;pos_save_a1[interrupt_cnt]=set_ac
+      ;pos_save_b1[interrupt_cnt]=set_bc
+      ;pos_save_c1[interrupt_cnt]=set_cc
+      interrupt_cnt=interrupt_cnt + 1
+   else
+      ;缓存满，关闭中断
+      ;INTERRUPT off 1
+      ;RET=EKI_Close("SunnyKukaRecv")
+   endif
+   
+   recv_flag=1
+END

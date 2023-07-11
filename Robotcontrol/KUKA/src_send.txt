@@ -1,0 +1,35 @@
+&ACCESS RVP
+&REL 72
+&PARAM SensorITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\Program
+DEF sunny_kuka_send()
+
+  DECL EKI_STATUS RET
+  ;$FLAG[1]=FALSE
+  ;$FLAG[998]=FALSE
+  
+  ;$TOOL=TOOL_DATA[MAX_TOOL]
+  BAS(#INITMOV,1)
+
+RET=EKI_Init("SunnyKukaSend")
+RET=EKI_Open("SunnyKukaSend")
+
+loop
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/X",$POS_ACT.X)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/Y",$POS_ACT.Y)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/Z",$POS_ACT.Z)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/RX",$POS_ACT.A)
+ 	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/RY",$POS_ACT.B)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/RZ",$POS_ACT.C)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/SPEED",$VEL_ACT)
+	RET=EKI_Send("SunnyKukaSend","ROBOTINFO")
+   
+	WAIT SEC 0.01
+	
+endloop
+   
+RET=EKI_Close("SunnyKukaSend")
+RET=EKI_Clear("SunnyKukaSend")
+
+END

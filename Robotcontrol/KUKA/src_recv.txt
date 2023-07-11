@@ -1,0 +1,98 @@
+&ACCESS RVP
+&REL 76
+&PARAM SensorITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\Program
+DEF sunny_kuka_recv()
+
+  DECL EKI_STATUS RET
+  $FLAG[1]=FALSE
+  $FLAG[998]=FALSE
+  $TOOL=TOOL_DATA[1]
+  BAS (#INITMOV,0)
+
+  INTERRUPT DECL 89 WHEN $FLAG[99]==TRUE DO GET_DATA()
+  INTERRUPT ON 89
+
+  RET=EKI_Init("SunnyKukaRecv")
+  RET=EKI_Open("SunnyKukaRecv")
+
+loop
+   
+   if recv_flag == 1 then
+      recv_flag=2
+      XP1.X=set_x
+      XP1.Y=set_y
+      XP1.Z=set_z
+      XP1.A=set_a
+      XP1.B=set_b
+      XP1.C=set_c
+      
+      XP2.X=set_xc
+      XP2.Y=set_yc
+      XP2.Z=set_zc
+      XP2.A=set_ac
+      XP2.B=set_bc
+      XP2.C=set_cc
+   endif
+   
+   if recv_flag == 2 then
+      recv_flag=0
+      
+      if MoveF == 3 then   
+         recv_flag=0
+         $BWDSTART=FALSE
+         LDAT_ACT=LCPDAT1
+         FDAT_ACT=FP1
+         BAS(#CP_PARAMS,2)
+         CIRC XP1, XP2
+      endif
+   
+      if MoveF == 2  THEN
+         recv_flag=0
+         $BWDSTART=FALSE
+         LDAT_ACT=LCPDAT1
+         FDAT_ACT=FP1
+         BAS(#CP_PARAMS,2)
+         LIN XP1 
+         MoveF=6174
+      ENDIF
+   
+      if MoveF == 1 then
+         recv_flag=0
+         $BWDSTART=FALSE
+         PDAT_ACT=PPDAT2
+         FDAT_ACT=FP1
+         BAS(#PTP_PARAMS,100)
+         PTP XP1 
+         MoveF=6174
+      ENDIF
+   ENDIF
+   
+endloop
+   
+   RET=EKI_Close("SunnyKukaRecv")
+   RET=EKI_Clear("SunnyKukaRecv")
+END
+
+DEF GET_DATA()
+  DECL EKI_STATUS RET
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/X",set_x)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Y",set_y)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Z",set_z)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RX",set_a)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RY",set_b)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RZ",set_c)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/X1",set_xc)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Y1",set_yc)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Z1",set_zc)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RX1",set_ac)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RY1",set_bc)
+  RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RZ1",set_cc)
+  RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/MOVEMODE",MoveF)
+  RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/TCP",TCP_NUM)
+
+  interrupt_cnt=interrupt_cnt+1
+  $FLAG[99]=FALSE
+  recv_flag=1
+END

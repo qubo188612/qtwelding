@@ -1836,6 +1836,9 @@ void setprojectDlg::on_cmdlist_itemClicked(QListWidgetItem *item)//选择值令
 
 void setprojectDlg::on_SaveAsBtn_clicked()//另存为
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     QString project_name;
     edittext->init_dlg_show(QString::fromLocal8Bit("另存为工程名称:"));
     edittext->setWindowTitle(QString::fromLocal8Bit("工程另存为"));
@@ -1876,12 +1879,18 @@ void setprojectDlg::on_SaveAsBtn_clicked()//另存为
 
 void setprojectDlg::on_OKBtn_clicked()//保存指令
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     m_mcs->project->SaveProject((char*)m_mcs->project->project_path.toStdString().c_str());
     ui->record->append(QString::fromLocal8Bit("已经保存当前操作"));
 }
 
 void setprojectDlg::on_tracefilepathBtn_clicked()//修改路径
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
 #if _MSC_VER
     QTextCodec *code = QTextCodec::codecForName("GBK");

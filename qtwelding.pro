@@ -16,9 +16,11 @@ SOURCES += \
         CConnectionForSshClient.cpp \
         E2proomData.cpp \
         FileOut.cpp \
+        MyCheckIPinfo.cpp \
         MyPlcFunction.cpp \
         PictureBox.cpp \
         ResultData.cpp \
+        SN_Data.cpp \
         TimeFunction.cpp \
         XTcp.cpp \
         arrvepointtestdlg.cpp \
@@ -35,6 +37,7 @@ SOURCES += \
         edittextdlg.cpp \
         fitlineside.cpp \
         global.cpp \
+        infodlg.cpp \
         ipaddress.cpp \
         keyaoutdlg.cpp \
         keycamdlg.cpp \
@@ -91,6 +94,7 @@ SOURCES += \
         setmovecdlg.cpp \
         setprojectdlg.cpp \
         showtasknumdlg.cpp \
+        sndatadlg.cpp \
         soptocameratcpip.cpp \
         soptopcamera.cpp \
         sshpassworddlg.cpp \
@@ -115,6 +119,7 @@ FORMS += \
     editcraftdlg.ui \
     editprojectdlg.ui \
     edittextdlg.ui \
+    infodlg.ui \
     keyaoutdlg.ui \
     keycamdlg.ui \
     keycoorddlg.ui \
@@ -162,6 +167,7 @@ FORMS += \
     setmovecdlg.ui \
     setprojectdlg.ui \
     showtasknumdlg.ui \
+    sndatadlg.ui \
     sshpassworddlg.ui \
     taskcleardlg.ui \
     traceedit0dlg.ui \
@@ -173,9 +179,11 @@ HEADERS += \
     CConnectionForSshClient.h \
     E2proomData.h \
     FileOut.h \
+    MyCheckIPinfo.h \
     MyPlcFunction.h \
     PictureBox.h \
     ResultData.h \
+    SN_Data.h \
     TimeFunction.h \
     XTcp.h \
     arrvepointtestdlg.h \
@@ -192,6 +200,7 @@ HEADERS += \
     edittextdlg.h \
     fitlineside.h \
     global.h \
+    infodlg.h \
     ipaddress.h \
     keyaoutdlg.h \
     keycamdlg.h \
@@ -247,6 +256,7 @@ HEADERS += \
     setmovecdlg.h \
     setprojectdlg.h \
     showtasknumdlg.h \
+    sndatadlg.h \
     soptocameratcpip.h \
     soptopcamera.h \
     sshpassworddlg.h \

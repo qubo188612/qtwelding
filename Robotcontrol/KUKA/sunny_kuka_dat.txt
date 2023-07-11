@@ -1,0 +1,40 @@
+&ACCESS RVP
+&REL 67
+&PARAM SensorITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\Program\sunny
+DEFDAT  SUNNY_ETHERNET PUBLIC
+DECL REAL set_x=308.539825
+DECL REAL set_y=308.539825
+DECL REAL set_z=308.539825
+DECL REAL set_a=308.539825
+DECL REAL set_b=308.539825
+DECL REAL set_c=308.539825
+Decl real set_j1=0;
+Decl real set_j2=0;
+Decl real set_j3=0;
+Decl real set_j4=0;
+Decl real set_j5=0;
+Decl real set_j6=0;
+decl real set_mx=0;
+decl real set_my=0;
+decl real set_mz=0;
+decl real set_ma=0;
+decl real set_mb=0;
+decl real set_mc=0;
+decl real set_ex=0;
+decl real set_ey=0;
+decl real set_ez=0;
+decl real set_ea=0;
+decl real set_eb=0;
+decl real set_ec=0;
+
+DECL INT MoveF=6174
+DECL REAL socket_delay=0.01000000
+DECL INT fifo_size=1298
+
+DECL INT interrupt_cnt=158937
+DECL INT recv_flag=1000 ; 
+DECL FRAME _f={X 0.0,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+ENDDAT
+

@@ -1,0 +1,55 @@
+<ETHERNETKRL>
+	<CONFIGURATION>
+		<EXTERNAL>
+			<!--配置下位机作为服务器-->
+			<TYPE>Client</TYPE>
+			<!--<IP>192.168.1.12</IP>
+			<PORT>54610</PORT>-->
+		</EXTERNAL>
+		<INTERNAL>
+			<ENVIRONMENT>Program</ENVIRONMENT>
+ 			<BUFFERING Mode="FIFO" Limit="512"/>
+ 			<BUFFSIZE Limit="16384"/>
+ 			<TIMEOUT Connect="60000"/>
+			<ALIVE Set_Out="600" Ping="601"/>
+ 			<IP>192.168.1.123</IP>
+ 			<PORT>54610</PORT>
+ 			<PROTOCOL>TCP</PROTOCOL>
+ 			<MESSAGES Logging="error" Display="disabled"/>
+		</INTERNAL>
+	</CONFIGURATION>
+	<RECEIVE>
+		<XML>
+
+		</XML>
+	</RECEIVE>
+	<SEND>
+		<XML>
+ 			<ELEMENT Tag="ROBOTINFO/POS/X" Type="REAL"/> <!-- 机器人位置x -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/Y" Type="REAL"/> <!-- 机器人位置y -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/Z" Type="REAL"/> <!-- 机器人位置z -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/RX" Type="REAL"/> <!-- 机器人位置a -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/RY" Type="REAL"/> <!-- 机器人位置b -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/RZ" Type="REAL"/> <!-- 机器人位置c -->
+			<ELEMENT Tag="ROBOTINFO/POS/OUT1" Type="INT"/> <!-- 外部轴1 -->
+			<ELEMENT Tag="ROBOTINFO/POS/OUT2" Type="INT"/> <!-- 外部轴2 -->
+			<ELEMENT Tag="ROBOTINFO/POS/OUT3" Type="INT"/> <!-- 外部轴3 -->
+
+			<ELEMENT Tag="ROBOTINFO/POS/RT" Type="REAL"/> <!-- 机器人时间小时 -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/RM" Type="REAL"/> <!-- 机器人时间分钟 -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/RS" Type="REAL"/> <!-- 机器人时间秒 -->
+ 			<ELEMENT Tag="ROBOTINFO/POS/RMS" Type="REAL"/> <!-- 机器人时间微秒 -->
+
+			<ELEMENT Tag="ROBOTINFO/SPEED" Type="REAL"/> <!-- 机器人速度 -->
+ 			<ELEMENT Tag="ROBOTINFO/STATE" Type="INT"/> <!-- 机器人状态 -->
+			<ELEMENT Tag="ROBOTINFO/IO/IN1" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN2" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN3" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN4" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN5" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN6" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN7" Type="INT"/> <!-- 机器人IO-->
+			<ELEMENT Tag="ROBOTINFO/IO/IN8" Type="INT"/> <!-- 机器人IO-->
+ 		</XML>
+	</SEND> 
+</ETHERNETKRL>

@@ -13,6 +13,7 @@
 #include "craft.h"
 #include "synchronous.h"
 #include "robotcontrol.h"
+#include "SN_Data.h"
 
 
 class Robotcontrol;
@@ -52,6 +53,8 @@ public:
     Synchronous *synchronous;    //手眼转换计算
 
     Robotcontrol *robotcontrol;     //自带机器人协议
+
+    SN_Data sn_data;    //序列号信息
 
 protected:
     my_parameters();

@@ -1,0 +1,93 @@
+&ACCESS RVP
+&REL 67
+&PARAM SensorITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\Program\sunny
+DEF sunny_ethernet( )
+
+  DECL EKI_STATUS RET
+  $FLAG[1]=FALSE
+  $FLAG[998]=FALSE
+
+
+     
+  BAS (#INITMOV,0)
+
+  INTERRUPT DECL 89 WHEN $FLAG[98]==TRUE DO GET_DATA()
+  INTERRUPT ON 89
+
+  RET=EKI_Init("SunnyRobotKUKA")
+  RET=EKI_Open("SunnyRobotKUKA")
+
+loop
+   ;WAIT FOR $FLAG[118] 
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RX", $POS_ACT.X)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RY", $POS_ACT.Y)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RZ", $POS_ACT.Z)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RA", $POS_ACT.A)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RB", $POS_ACT.B)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RC", $POS_ACT.C)
+   
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/J1", $AXIS_ACT.A1)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/J2", $AXIS_ACT.A2)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/J3", $AXIS_ACT.A3)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/J4", $AXIS_ACT.A4)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/J5", $AXIS_ACT.A5)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/J6", $AXIS_ACT.A6)
+   
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/RSPEED", 6174.6)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/Mode", 7)
+   RET=EKI_SetReal("SunnyRobotKUKA","SunnyRobot/Status", 8)
+   
+   ;sunny_move_robot()
+  
+   RET = EKI_Send("SunnyRobotKUKA","SunnyRobot")
+   WAIT SEC socket_delay
+endloop
+   
+   RET=EKI_Close("SunnyRobotKUKA")
+   RET=EKI_Clear("SunnyRobotKUKA")
+END
+
+DEF GET_DATA()
+  DECL EKI_STATUS RET
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/SX",set_x)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/SY",set_y)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/SZ",set_z)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/SA",set_a)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/SB",set_b)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/SC",set_c)
+  
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/J1",set_j1)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/J2",set_j2)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/J3",set_j3)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/J4",set_j4)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/J5",set_j5)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/J6",set_j6)
+  
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/MX",set_mx)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/MY",set_my)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/MZ",set_mz)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/MA",set_ma)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/MB",set_mb)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/MC",set_mc)
+  
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/EX",set_ex)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/EY",set_ey)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/EZ",set_ez)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/EA",set_ea)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/EB",set_eb)
+  RET=EKI_GetReal("SunnyRobotKUKA","SunnyUM/EC",set_ec)
+  
+  RET=EKI_GetInt("SunnyRobotKUKA","SunnyUM/MX",MoveF)
+  RET=EKI_GetInt("SunnyRobotKUKA","SunnyUM/FifoSize",fifo_size)
+  if fifo_size<20 then
+      socket_delay= 1
+  else
+      socket_delay=0.01
+  endif
+
+  interrupt_cnt=interrupt_cnt+1
+  $FLAG[98]=FALSE
+END
+

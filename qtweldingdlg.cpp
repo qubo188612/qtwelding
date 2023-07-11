@@ -65,6 +65,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     m_mcs->mainDlg_robmovestate=MAINDLG_STATIC;
 
+    sndata=new sndataDlg(m_mcs);
+    info=new infoDlg(m_mcs);
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
     robotset=new robotsetDlg(m_mcs);
@@ -139,7 +141,34 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->movespeed->setValidator(adoubleValidator_speed);
     ui->movespeed->setText(QString::number(m_mcs->e2proomdata.maindlg_movespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+#ifdef USE_SN_DATA
+    //检测序列号
+    if(0!=m_mcs->sn_data.checkSN())
+    {
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
+                                                                      QString::fromLocal8Bit("硬件信息出错，程序将退出"),
+                                                                      QMessageBox::Yes,
+                                                                      QMessageBox::Yes
+                                                                      );
+        exit(1);
+    }
+    //查看软件剩余时间
+    if(m_mcs->sn_data.nLeftHours==0)//剩余时间无
+    {
+        sndata->init_dlg_show(QString::fromLocal8Bit("剩余时间0,请输入序列号激活:"));
+        sndata->setWindowTitle(QString::fromLocal8Bit("软件激活"));
+        int rc=sndata->exec();
+        sndata->close_dlg_show();
+        if(rc!=0)//确定
+        {
 
+        }
+        else
+        {
+            exit(1);
+        }
+    }
+#endif
 
     /************************************************/
 
@@ -162,6 +191,11 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 //  thread4 = new qtplcThread(this);
 //  connect(thread4, SIGNAL(Send_set_plctask()), this, SLOT(init_set_plctask()));
 
+#ifdef USE_SN_DATA
+    SN_timer = new QTimer();
+    connect(SN_timer,&QTimer::timeout,this,&qtweldingDlg::init_SNtimeoutShow);
+#endif
+
     ConnectCamer();//连接相机
     ConnectRobot();//连接机器人
     ConnectPLC();//连接PLC
@@ -177,6 +211,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
 //  b_thread4=true;
 //  thread4->start();
+
+    SN_timer->start(60000);//60秒进一次终端
 
     for(int n=0;n<ROBOTTCPNUM;n++)
     {
@@ -247,6 +283,8 @@ qtweldingDlg::~qtweldingDlg()
     delete thread2;
     delete thread3;
 //  delete thread4;
+    delete sndata;
+    delete info;
     delete qtmysunny;
     delete demarcate;
     delete robotset;
@@ -356,6 +394,9 @@ void qtweldingDlg::UpdataUi()
 
 void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的工程文件"), "./DATA/", "JSON(*.json)");
 #if _MSC_VER
     QTextCodec *code = QTextCodec::codecForName("GBK");
@@ -382,6 +423,9 @@ void qtweldingDlg::on_importprojectBtn_clicked()//导入工程
 
 void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     if(m_mcs->process->b_processrun==false)
     {
         if(m_mcs->rob->b_connect==false)
@@ -417,6 +461,9 @@ void qtweldingDlg::on_runprojectBtn_clicked()//运行工程
 
 void qtweldingDlg::on_projectskiprunBtn_clicked()//从第N行开始运行工程
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     if(m_mcs->process->b_processrun==false)
     {
         bool rc;
@@ -483,6 +530,9 @@ void qtweldingDlg::on_projectcheckdataBtn_clicked()
 
 void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     if(m_mcs->process->b_processpaused==false)
     {
         m_mcs->process->paused_process();
@@ -498,6 +548,9 @@ void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程
 
 void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     int rc;
     editproject->init_dlg_show();
     editproject->setWindowTitle(QString::fromLocal8Bit("工程编辑"));
@@ -574,6 +627,9 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
 
 void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
         ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
@@ -703,6 +759,9 @@ void qtweldingDlg::on_editweldprocessBtn_clicked()//焊接工艺设置
 
 void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     thread1->Stop();
     thread1->quit();
     thread1->wait();
@@ -719,6 +778,9 @@ void qtweldingDlg::on_setlaserheadBtn_clicked()//激光头设置
 
 void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     thread2->Stop();
     thread2->quit();
     thread2->wait();
@@ -735,6 +797,9 @@ void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
 
 void qtweldingDlg::on_setweldBtn_clicked()//焊机设置
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     thread2->Stop();
     thread2->quit();
     thread2->wait();
@@ -750,6 +815,9 @@ void qtweldingDlg::on_setweldBtn_clicked()//焊机设置
 
 void qtweldingDlg::on_setplcBtn_clicked()//PLC设置
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     DisconnectPLC();
     plcset->init_dlg_show();
     plcset->setWindowTitle(QString::fromLocal8Bit("PLC设置"));
@@ -760,6 +828,9 @@ void qtweldingDlg::on_setplcBtn_clicked()//PLC设置
 
 void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
 {
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
     if(m_mcs->resultdata.link_result_state==false)
     {
         ui->record->append(QString::fromLocal8Bit("激光头未连接成功"));
@@ -804,6 +875,17 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         m_mcs->resultdata.ctx_result_dosomeing=DO_WRITE_TASK;
         send_group_leaser.unlock();
     }
+}
+
+void qtweldingDlg::on_infoBtn_clicked() //软件信息
+{
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
+    info->init_dlg_show();
+    info->setWindowTitle(QString::fromLocal8Bit("软件信息"));
+    info->exec();
+    info->close_dlg_show();
 }
 
 void qtweldingDlg::on_weld_windBtn_pressed()    //送丝按下
@@ -2118,6 +2200,28 @@ void qtweldingDlg::init_show_record_list(QString msg)
     b_init_show_record_list=true;
 }
 
+#ifdef USE_SN_DATA
+void qtweldingDlg::init_SNtimeoutShow()//每分钟进一次中断
+{
+    if(m_mcs->sn_data.nLeftHours!=SN_TIME_SN)
+    {
+        if(m_mcs->sn_data.nLeftHours>0)
+        {
+            m_mcs->sn_data.nLeftHours--;
+        }
+    /*
+        static int times=0;
+        times++;
+        if(times==30)   //每30分钟自动存一次
+        {
+            times=0;
+            m_mcs->sn_data.save();
+        }
+    */
+    }
+}
+#endif
+
 int qtweldingDlg::task_setmaindlgtcp(int tcp)
 {
     send_group_robot.lock();
@@ -2921,6 +3025,9 @@ void qtplcThread::Stop()
 }
 
 */
+
+
+
 
 
 

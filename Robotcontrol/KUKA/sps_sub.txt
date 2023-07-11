@@ -1,0 +1,198 @@
+&ACCESS RVP
+&COMMENT PLC on control
+DEF  SPS ( )
+  ;FOLD DECLARATIONS
+  ;FOLD BASISTECH DECL
+  ;Automatik extern
+  DECL STATE_T STAT
+  DECL MODUS_T MODE
+  ;ENDFOLD (BASISTECH DECL)
+  ;FOLD USER DECL
+  ; Please insert user defined declarations
+
+  ;ENDFOLD (USER DECL)
+  ;ENDFOLD (DECLARATIONS)
+  ;FOLD INI
+  ;FOLD AUTOEXT INIT
+  INTERRUPT DECL 91 WHEN $PRO_STATE1==#P_FREE DO RESET_OUT ()
+  INTERRUPT ON 91
+  $LOOP_MSG[]="                                                            "
+  MODE=#SYNC
+  $H_POS=$H_POS
+  ;Automatik extern
+  IF $MODE_OP==#EX THEN
+    CWRITE($CMD,STAT,MODE,"RUN /R1/CELL()")
+  ENDIF
+  ;ENDFOLD (AUTOEXT INIT)
+  ;FOLD TOUCHSENSE INIT
+    TS_SubmitInit ( )
+  ;ENDFOLD (TOUCHSENSE INIT)
+  ;FOLD BACKUPMANAGER PLC INIT
+  BM_ENABLED = FALSE
+  BM_OUTPUTVALUE = 0
+  ;ENDFOLD (BACKUPMANAGER PLC INIT)
+  ;FOLD TQM_INIT
+    TorqueDefinitions()
+  ;ENDFOLD (TQM_INIT)
+;FOLD ATB_PLC Init
+ATB_PLC_Init()
+;ENDFOLD (ATB_PLC Init)
+;FOLD ATA_PLC Init
+ATA_SetMasterIdent()
+;ENDFOLD (ATA_PLC Init)
+  ;FOLD USER INIT
+  ; Please insert user defined initialization commands
+
+  ;ENDFOLD (USER INIT)
+  ;sunny
+  ;sunny_recv_init()
+  sunny_send_init()
+  
+  ;ENDFOLD (INI)
+   
+  LOOP
+    WAIT FOR NOT($POWER_FAIL)
+    TORQUE_MONITORING()
+    ;FOLD BACKUPMANAGER PLC
+    IF BM_ENABLED THEN
+      BM_OUTPUTSIGNAL = BM_OUTPUTVALUE
+    ENDIF
+    ;ENDFOLD (BACKUPMANAGER PLC)
+;FOLD ARS PLC LOOP
+ARS_PLC_LOOP()
+;ENDFOLD ;(ARS PLC LOOP)
+;FOLD ATB PLC Loop
+ATB_PLC_Loop()
+;ENDFOLD (ATB PLC Loop)
+;FOLD ATA PLC Loop
+ATA_PLC_Loop()
+ATA_PrepStateWatch()
+ATA_VelTrans_Loop()
+;ENDFOLD (ATA PLC Loop)
+    ;FOLD TOUCHSENSE LOOP
+      TS_SubmitLoop ()
+    ;ENDFOLD (TOUCHSENSE LOOP)
+    ;FOLD USER PLC
+    ;Make your modifications here
+      ;sunny_send()
+    ;ENDFOLD (USER PLC)
+    ;sunny
+    sunny_send()
+    
+  ENDLOOP
+  ;FOLD ;%{H}
+  ;FOLD
+END
+  ;ENDFOLD
+
+DEF  RESET_OUT()
+  INT N
+  MsgLoop(" ")
+  IF REFLECT_PROG_NR == 1 THEN
+    FOR N = 0 TO PGNO_LENGTH - 1
+      $OUT[PGNO_FBIT_REFL + N] = FALSE
+    ENDFOR
+  ENDIF
+  IF (PGNO_REQ>0) THEN
+    $OUT[PGNO_REQ]=FALSE
+  ELSE
+    IF (PGNO_REQ<0) THEN
+      $OUT[-PGNO_REQ]=TRUE
+    ENDIF
+  ENDIF
+END
+
+;FOLD USER SUBROUTINE
+; Integrate your user defined subroutines
+DEF sunny_send_init()
+   DECL EKI_STATUS RET
+
+   RET=EKI_Init("SunnyKukaSend")
+   RET=EKI_Open("SunnyKukaSend")
+   
+   ;RET=EKI_Init("SunnyKukaRecv")
+   ;RET=EKI_Open("SunnyKukaRecv")
+   
+   ;INTERRUPT DECL 1 WHEN $FLAG[99]==TRUE DO sunny_get_data()
+   ;INTERRUPT ON 1
+   
+end
+
+
+DEF sunny_send()
+   DECL EKI_STATUS RET
+   
+   RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/X",$POS_ACT.X)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/Y",$POS_ACT.Y)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/Z",$POS_ACT.Z)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/RX",$POS_ACT.A)
+ 	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/RY",$POS_ACT.B)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/POS/RZ",$POS_ACT.C)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/SPEED",$VEL_ACT)
+	RET=EKI_SetReal("SunnyKukaSend","ROBOTINFO/STATE",0)
+	RET=EKI_Send("SunnyKukaSend","ROBOTINFO")
+	
+   RET={Buff 0,Read 0, Msg_no 0, Connected false}
+   EKI_CHECK(RET,#Quit,"SunnyKukaSend")
+   if RET.Connected == false then
+      RET=EKI_Init("SunnyKukaSend")
+      RET=EKI_OPEN("SunnyKukaSend")
+   endif
+	
+	;WAIT SEC 0.03
+end
+DEF sunny_get_data()
+   DECL EKI_STATUS RET
+   $FLAG[99]=FALSE
+   
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/X",set_x)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Y",set_y)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Z",set_z)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RX",set_a)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RY",set_b)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RZ",set_c)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/X1",set_xc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Y1",set_yc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/Z1",set_zc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RX1",set_ac)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RY1",set_bc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVEPOSE/RZ1",set_cc)
+   RET=EKI_GetReal("SunnyKukaRecv","ROBOTCONTROL/MOVESPEED",move_speed)
+   RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/MOVEMODE",MoveF)
+   RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/TCP",TCP_NUM) 
+   ;RET=EKI_GetInt("SunnyKukaRecv","ROBOTCONTROL/RUNSTATE",run_state)
+   RET=EKI_ClearBuffer("SunnyKukaRecv","ROBOTCONTROL")
+   
+   ;pos_save_x[interrupt_cnt]=set_x
+   ;pos_save_y[interrupt_cnt]=set_y
+   ;pos_save_z[interrupt_cnt]=set_z
+   ;pos_save_a[interrupt_cnt]=set_a
+   ;pos_save_b[interrupt_cnt]=set_b
+   ;pos_save_c[interrupt_cnt]=set_c
+   
+   if interrupt_cnt<5000 then
+      pos_save_x[interrupt_cnt]=set_x
+      pos_save_y[interrupt_cnt]=set_y
+      pos_save_z[interrupt_cnt]=set_z
+      pos_save_a[interrupt_cnt]=set_a
+      pos_save_b[interrupt_cnt]=set_b
+      pos_save_c[interrupt_cnt]=set_c
+      pos_save_x1[interrupt_cnt]=set_xc
+      pos_save_y1[interrupt_cnt]=set_yc
+      pos_save_z1[interrupt_cnt]=set_zc
+      pos_save_a1[interrupt_cnt]=set_ac
+      pos_save_b1[interrupt_cnt]=set_bc
+      pos_save_c1[interrupt_cnt]=set_cc
+      interrupt_cnt=interrupt_cnt + 1
+   else
+      ;缓存满，关闭中断
+      ;INTERRUPT off 1
+      ;RET=EKI_Close("SunnyKukaRecv")
+   endif
+   
+   recv_flag=1
+END
+
+
+;ENDFOLD (USER SUBROUTINE)
+;ENDFOLD
