@@ -166,7 +166,8 @@ Int8 SN_Data::read()
         u16_rand_4=0;
         nLeftHours=0;
         save();
-        if(0 > fo.ReadFile(SN_SYSPATH_MOTO2,buff,SN2_SAVEBUFF))
+        QFile file(SN_SYSPATH_MOTO2);
+        if(file.exists())
         {
             QFile::remove(SN_SYSPATH_MOTO2);
         }
@@ -226,7 +227,8 @@ Int8 SN_Data::read()
         u16_rand_4=0;
         nLeftHours=0;
         save();
-        if(0 > fo.ReadFile(SN_SYSPATH_MOTO2,buff,SN2_SAVEBUFF))
+        QFile file(SN_SYSPATH_MOTO2);
+        if(file.exists())
         {
             QFile::remove(SN_SYSPATH_MOTO2);
         }

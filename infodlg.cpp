@@ -50,7 +50,7 @@ void infoDlg::on_SN_DataBtn_clicked()//修改有效期
     int day=m_mcs->sn_data.nLeftHours/(60*24);
     int hours=(m_mcs->sn_data.nLeftHours-day*24*60)/60;
     int minute=m_mcs->sn_data.nLeftHours-day*24*60-hours*60;
-    msg=QString::fromLocal8Bit("剩余使用时间")+
+    msg=QString::fromLocal8Bit("剩余使用时长")+
             QString::number(day)+QString::fromLocal8Bit("天")+
             QString::number(hours)+QString::fromLocal8Bit("时")+
             QString::number(minute)+QString::fromLocal8Bit("分")+

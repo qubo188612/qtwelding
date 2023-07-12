@@ -155,7 +155,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     //查看软件剩余时间
     if(m_mcs->sn_data.nLeftHours==0)//剩余时间无
     {
-        sndata->init_dlg_show(QString::fromLocal8Bit("剩余时间0,请输入序列号激活:"));
+        sndata->init_dlg_show(QString::fromLocal8Bit("剩余使用时长0,请输入序列号激活:"));
         sndata->setWindowTitle(QString::fromLocal8Bit("软件激活"));
         int rc=sndata->exec();
         sndata->close_dlg_show();

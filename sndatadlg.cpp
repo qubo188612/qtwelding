@@ -47,7 +47,7 @@ void sndataDlg::on_pushButton_clicked()
             int day=m_mcs->sn_data.nLeftHours/(60*24);
             int hours=(m_mcs->sn_data.nLeftHours-day*24*60)/60;
             int minute=m_mcs->sn_data.nLeftHours-day*24*60-hours*60;
-            msg=QString::fromLocal8Bit("序列号验证正确,剩余使用时间")+
+            msg=QString::fromLocal8Bit("序列号验证正确,剩余使用时长")+
                     QString::number(day)+QString::fromLocal8Bit("天")+
                     QString::number(hours)+QString::fromLocal8Bit("时")+
                     QString::number(minute)+QString::fromLocal8Bit("分");
