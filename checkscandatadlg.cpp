@@ -13,6 +13,58 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui->tabWidget->setTabText(2,QString::fromLocal8Bit("跟踪轨迹"));
     ui->tabWidget->setTabText(3,QString::fromLocal8Bit("工艺轨迹"));
     ui->tabWidget->setTabText(4,QString::fromLocal8Bit("变换矩阵"));
+
+    ui->tab1pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
+    ui->tab1pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
+    ui->tab1pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
+    ui->tab1pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
+    ui->tab1pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
+    ui->tab1pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab1pushButton_1->setIconSize(ui->tab1pushButton_1->size());
+    ui->tab1pushButton_2->setIconSize(ui->tab1pushButton_2->size());
+    ui->tab1pushButton_3->setIconSize(ui->tab1pushButton_3->size());
+    ui->tab1pushButton_4->setIconSize(ui->tab1pushButton_4->size());
+    ui->tab1pushButton_5->setIconSize(ui->tab1pushButton_5->size());
+    ui->tab1pushButton_6->setIconSize(ui->tab1pushButton_6->size());
+
+    ui->tab2pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
+    ui->tab2pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
+    ui->tab2pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
+    ui->tab2pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
+    ui->tab2pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
+    ui->tab2pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab2pushButton_1->setIconSize(ui->tab2pushButton_1->size());
+    ui->tab2pushButton_2->setIconSize(ui->tab2pushButton_2->size());
+    ui->tab2pushButton_3->setIconSize(ui->tab2pushButton_3->size());
+    ui->tab2pushButton_4->setIconSize(ui->tab2pushButton_4->size());
+    ui->tab2pushButton_5->setIconSize(ui->tab2pushButton_5->size());
+    ui->tab2pushButton_6->setIconSize(ui->tab2pushButton_6->size());
+
+    ui->tab3pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
+    ui->tab3pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
+    ui->tab3pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
+    ui->tab3pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
+    ui->tab3pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
+    ui->tab3pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab3pushButton_1->setIconSize(ui->tab3pushButton_1->size());
+    ui->tab3pushButton_2->setIconSize(ui->tab3pushButton_2->size());
+    ui->tab3pushButton_3->setIconSize(ui->tab3pushButton_3->size());
+    ui->tab3pushButton_4->setIconSize(ui->tab3pushButton_4->size());
+    ui->tab3pushButton_5->setIconSize(ui->tab3pushButton_5->size());
+    ui->tab3pushButton_6->setIconSize(ui->tab3pushButton_6->size());
+
+    ui->tab4pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
+    ui->tab4pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
+    ui->tab4pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
+    ui->tab4pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
+    ui->tab4pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
+    ui->tab4pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab4pushButton_1->setIconSize(ui->tab4pushButton_1->size());
+    ui->tab4pushButton_2->setIconSize(ui->tab4pushButton_2->size());
+    ui->tab4pushButton_3->setIconSize(ui->tab4pushButton_3->size());
+    ui->tab4pushButton_4->setIconSize(ui->tab4pushButton_4->size());
+    ui->tab4pushButton_5->setIconSize(ui->tab4pushButton_5->size());
+    ui->tab4pushButton_6->setIconSize(ui->tab4pushButton_6->size());
 }
 
 checkscandataDlg::~checkscandataDlg()
@@ -100,12 +152,147 @@ void checkscandataDlg::init_dlg_show()
     ui->tab4widget->SetRenderWindow(tab4viewer->getRenderWindow());
     tab4viewer->setupInteractor(ui->tab4widget->GetInteractor(), ui->tab4widget->GetRenderWindow());
     tab4viewer->addCoordinateSystem();  //添加坐标系
-
 }
 
 void checkscandataDlg::close_dlg_show()
 {
 
+}
+
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr checkscandataDlg::print_allpoint(double centerx,double centery,double centerz)
+{
+    uint32_t R=0,G=255,B=0;
+    uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
+
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr rgbclould;
+    rgbclould.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    rgbclould->clear();
+
+    pcl::PointXYZRGB point;
+
+    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    {
+        if(m_mcs->project->projecr_robpos_trace[n].nEn==true)
+        {
+            point.rgb = *reinterpret_cast<float*>(&rgb);
+            point.x=m_mcs->project->projecr_robpos_trace[n].robotpos.X-centerx;
+            point.y=m_mcs->project->projecr_robpos_trace[n].robotpos.Y-centery;
+            point.z=m_mcs->project->projecr_robpos_trace[n].robotpos.Z-centerz;
+            rgbclould->points.push_back(point);
+        }
+    }
+
+    for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+    {
+        std::vector<Scan_trace_line> lines;
+        lines=m_mcs->project->project_scan_trace[n].point;
+        std::vector<RobPos>cv_cloud;
+        m_mcs->synchronous->Scantraceline_to_Weldtrace(lines,cv_cloud);
+
+        if(cv_cloud.size()>0)
+        {
+            for(int n=0;n<cv_cloud.size();n++)
+            {
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-centerx;
+                point.y=cv_cloud[n].Y-centery;
+                point.z=cv_cloud[n].Z-centerz;
+                rgbclould->points.push_back(point);
+            }
+        }
+    }
+
+    for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+    {
+        std::vector<RobPos> cv_cloud;
+        cv_cloud=m_mcs->project->project_weld_trace[n].point;
+        if(cv_cloud.size()>0)
+        {
+            for(int n=0;n<cv_cloud.size();n++)
+            {
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-centerx;
+                point.y=cv_cloud[n].Y-centery;
+                point.z=cv_cloud[n].Z-centerz;
+                rgbclould->points.push_back(point);
+            }
+        }
+    }
+
+    for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
+    {
+        std::vector<Weld_trace_onec> trace;
+        trace=m_mcs->project->project_interweld_trace[n].trace;
+        std::vector<RobPos> cv_cloud;
+        for(int n=0;n<trace.size();n++)
+        {
+            for(int m=0;m<trace[n].point.size();m++)
+            {
+                cv_cloud.push_back(trace[n].point[m]);
+            }
+        }
+        if(cv_cloud.size()>0)
+        {
+            for(int n=0;n<cv_cloud.size();n++)
+            {
+                pcl::PointXYZRGB point;
+                point.rgb = *reinterpret_cast<float*>(&rgb);
+                point.x=cv_cloud[n].X-centerx;
+                point.y=cv_cloud[n].Y-centery;
+                point.z=cv_cloud[n].Z-centerz;
+                rgbclould->points.push_back(point);
+            }
+        }
+    }
+
+    rgbclould->width=rgbclould->points.size();
+    rgbclould->height=1;
+
+    return rgbclould;
+}
+
+void checkscandataDlg::tab1updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
+{
+    vtkCamera *camera = ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  camera->SetFocalPoint(focalPoint);
+    camera->SetPosition(position);
+    camera->SetViewUp(viewUp);
+    // 刷新渲染窗口
+    ui->tab1widget->update();
+    ui->tab1widget->show();
+}
+
+void checkscandataDlg::tab2updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
+{
+    vtkCamera *camera = ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  camera->SetFocalPoint(focalPoint);
+    camera->SetPosition(position);
+    camera->SetViewUp(viewUp);
+    // 刷新渲染窗口
+    ui->tab2widget->update();
+    ui->tab2widget->show();
+}
+
+void checkscandataDlg::tab3updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
+{
+    vtkCamera *camera = ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  camera->SetFocalPoint(focalPoint);
+    camera->SetPosition(position);
+    camera->SetViewUp(viewUp);
+    // 刷新渲染窗口
+    ui->tab3widget->update();
+    ui->tab3widget->show();
+}
+
+void checkscandataDlg::tab4updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
+{
+    vtkCamera *camera = ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  camera->SetFocalPoint(focalPoint);
+    camera->SetPosition(position);
+    camera->SetViewUp(viewUp);
+    // 刷新渲染窗口
+    ui->tab4widget->update();
+    ui->tab4widget->show();
 }
 
 //点位选择
@@ -193,14 +380,13 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
     rgbclould.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
     rgbclould->clear();
 
-
     if(cv_cloud.size()>0)
     {
         for(int n=0;n<cv_cloud.size();n++)
         {
             if(b_cv_num==true&&n==cv_num)
             {
-                uint32_t R=0,G=255,B=0;
+                uint32_t R=255,G=0,B=0;
                 uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
                 pcl::PointXYZRGB point;
                 point.rgb = *reinterpret_cast<float*>(&rgb);
@@ -211,7 +397,7 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
             }
             else
             {
-                uint32_t R=255,G=0,B=0;
+                uint32_t R=0,G=255,B=0;
                 uint32_t rgb = (static_cast<uint32_t>(R) << 16 | static_cast<uint32_t>(G) << 8 | static_cast<uint32_t>(B));
                 pcl::PointXYZRGB point;
                 point.rgb = *reinterpret_cast<float*>(&rgb);
@@ -227,8 +413,17 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
 
     tab1viewer->removeAllPointClouds();
     tab1viewer->removeAllShapes();
+    if(ui->checkBox->isChecked())
+    {
+        if(cv_cloud.size()>0)
+        {
+            pcl::PointCloud<pcl::PointXYZRGB>::Ptr allcloud=print_allpoint(cv_cloud[0].X,cv_cloud[0].Y,cv_cloud[0].Z);
+            *rgbclould=*allcloud+*rgbclould;
+        }
+    }
     tab1viewer->addPointCloud(rgbclould);
     ui->tab1widget->update();
+    ui->tab1widget->show();
 }
 
 //扫描轨迹选择
@@ -277,8 +472,17 @@ void checkscandataDlg::on_tab2listWidget_itemClicked(QListWidgetItem *item)
 
         tab2viewer->removeAllPointClouds();
         tab2viewer->removeAllShapes();
+        if(ui->checkBox->isChecked())
+        {
+            if(cv_cloud.size()>0)
+            {
+                pcl::PointCloud<pcl::PointXYZRGB>::Ptr allcloud=print_allpoint(cv_cloud[0].X,cv_cloud[0].Y,cv_cloud[0].Z);
+                *rgbclould=*allcloud+*rgbclould;
+            }
+        }
         tab2viewer->addPointCloud(rgbclould);
         ui->tab2widget->update();
+        ui->tab2widget->show();
     }
 }
 
@@ -326,8 +530,17 @@ void checkscandataDlg::on_tab3listWidget_itemClicked(QListWidgetItem *item)
 
         tab3viewer->removeAllPointClouds();
         tab3viewer->removeAllShapes();
+        if(ui->checkBox->isChecked())
+        {
+            if(cv_cloud.size()>0)
+            {
+                pcl::PointCloud<pcl::PointXYZRGB>::Ptr allcloud=print_allpoint(cv_cloud[0].X,cv_cloud[0].Y,cv_cloud[0].Z);
+                *rgbclould=*allcloud+*rgbclould;
+            }
+        }
         tab3viewer->addPointCloud(rgbclould);
         ui->tab3widget->update();
+        ui->tab3widget->show();
     }
 }
 
@@ -383,8 +596,17 @@ void checkscandataDlg::on_tab4listWidget_itemClicked(QListWidgetItem *item)
 
         tab4viewer->removeAllPointClouds();
         tab4viewer->removeAllShapes();
+        if(ui->checkBox->isChecked())
+        {
+            if(cv_cloud.size()>0)
+            {
+                pcl::PointCloud<pcl::PointXYZRGB>::Ptr allcloud=print_allpoint(cv_cloud[0].X,cv_cloud[0].Y,cv_cloud[0].Z);
+                *rgbclould=*allcloud+*rgbclould;
+            }
+        }
         tab4viewer->addPointCloud(rgbclould);
         ui->tab4widget->update();
+        ui->tab4widget->show();
     }
 }
 
@@ -460,6 +682,363 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
 }
 
 
+void checkscandataDlg::on_tab1pushButton_1_clicked()//俯视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]+cam_height};
+    double viewUp[3] = {0.0, 1.0, 0.0};
+    tab1updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab1pushButton_2_clicked()//前视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]-cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab1updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab1pushButton_3_clicked()//左视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]-cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab1updateCameraView(center, position, viewUp);
+}
 
 
+void checkscandataDlg::on_tab1pushButton_4_clicked()//后视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0]-bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]+cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab1updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab1pushButton_5_clicked()//右视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]+cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab1updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab1pushButton_6_clicked()//仰视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[5]-bounds[4], bounds[2]-bounds[3]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]-cam_height};
+    double viewUp[3] = {0.0, -1.0, 0.0};
+    tab1updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab2pushButton_1_clicked()//俯视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]+cam_height};
+    double viewUp[3] = {0.0, 1.0, 0.0};
+    tab2updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab2pushButton_2_clicked()//前视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]-cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab2updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab2pushButton_3_clicked()//左视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]-cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab2updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab2pushButton_4_clicked()//后视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0]-bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]+cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab2updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab2pushButton_5_clicked()//右视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]+cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab2updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab2pushButton_6_clicked()//仰视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[5]-bounds[4], bounds[2]-bounds[3]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]-cam_height};
+    double viewUp[3] = {0.0, -1.0, 0.0};
+    tab2updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab3pushButton_1_clicked()//俯视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]+cam_height};
+    double viewUp[3] = {0.0, 1.0, 0.0};
+    tab3updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab3pushButton_2_clicked()//前视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]-cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab3updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab3pushButton_3_clicked()//左视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]-cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab3updateCameraView(center, position, viewUp);
+}
+
+void checkscandataDlg::on_tab3pushButton_4_clicked()//后视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0]-bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]+cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab3updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab3pushButton_5_clicked()//右视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]+cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab3updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab3pushButton_6_clicked()//仰视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[5]-bounds[4], bounds[2]-bounds[3]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]-cam_height};
+    double viewUp[3] = {0.0, -1.0, 0.0};
+    tab3updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab4pushButton_1_clicked()//俯视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]+cam_height};
+    double viewUp[3] = {0.0, 1.0, 0.0};
+    tab4updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab4pushButton_2_clicked()//前视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0], center[1]-cam_distance, center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab4updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab4pushButton_3_clicked()//左视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]-cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab4updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab4pushButton_4_clicked()//右视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]+cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab4updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab4pushButton_5_clicked()//右视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1], bounds[3]-bounds[2], bounds[5]-bounds[4]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double position[3] = {center[0]+cam_distance, center[1], center[2]};
+    double viewUp[3] = {0.0, 0.0, 1.0};
+    tab4updateCameraView(center, position, viewUp);
+}
+
+
+void checkscandataDlg::on_tab4pushButton_6_clicked()//仰视图
+{
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    double center[3];
+    polydata->GetCenter(center);
+    double bounds[6];
+    polydata->GetBounds(bounds);
+    double max_range = std::max({bounds[1]-bounds[0], bounds[5]-bounds[4], bounds[2]-bounds[3]});
+    double cam_distance = max_range / tan(45.0*vtkMath::Pi()/360.0);
+    double cam_height = cam_distance * tan(vtkMath::Pi()/4.0);
+    double position[3] = {center[0], center[1], center[2]-cam_height};
+    double viewUp[3] = {0.0, -1.0, 0.0};
+    tab4updateCameraView(center, position, viewUp);
+}
 

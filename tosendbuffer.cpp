@@ -1782,7 +1782,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     main_record.unlock();
                     return 1;
                 }
-                if(interpolatweld.size()>=1)
+                if(interpolatweld.size()==1)
                 {
                     interpolatweld[0].X=interpolatweld[0].X+tempposturelist[0].Variable.X;
                     interpolatweld[0].Y=interpolatweld[0].Y+tempposturelist[0].Variable.Y;
@@ -1816,19 +1816,19 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     {
                         int N=1;
                         int lastN=0;
-                        std::vector<RobPos> tempinterpolatweld(tempposturelist.size());
+                        std::vector<RobPos> tempinterpolatweld(interpolatweld.size());
                         for(int t=1;t<tempposturelist.size()-1;t++)
                         {
                             Eigen::Vector3d pointcenter(tempposturelist[t].posture.X,tempposturelist[t].posture.Y,tempposturelist[t].posture.Z);
                             Eigen::Vector3d pointcentervector=pointcenter-PointST;
-                            double distance=Pointvector.dot(pointcentervector);
+                            double distance=pointcentervector.norm();
                             double specific=distance/Distance;//比例
                             double realdistance=Realdistance*specific;
                             for(;N<interpolatweld.size()-1;N++)
                             {
                                 Eigen::Vector3d realpointcenter(interpolatweld[N].X,interpolatweld[N].Y,interpolatweld[N].Z);
                                 Eigen::Vector3d realpointcentervector=realpointcenter-RealpointST;
-                                double temprealdistance=Realpointvector.dot(realpointcentervector);
+                                double temprealdistance=realpointcentervector.norm();
                                 if(temprealdistance>realdistance)//定位成功
                                 {
                                     Eigen::Vector3d st(interpolatweld[lastN].X+tempposturelist[t-1].Variable.X,interpolatweld[lastN].Y+tempposturelist[t-1].Variable.Y,interpolatweld[lastN].Z+tempposturelist[t-1].Variable.Z);//起点
@@ -1843,9 +1843,9 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                                         tempinterpolatweld[m].X=p.x();
                                         tempinterpolatweld[m].Y=p.y();
                                         tempinterpolatweld[m].Z=p.z();
-                                        tempinterpolatweld[m].RX=posR[m][0];
-                                        tempinterpolatweld[m].RY=posR[m][1];
-                                        tempinterpolatweld[m].RZ=posR[m][2];
+                                        tempinterpolatweld[m].RX=posR[m-lastN][0];
+                                        tempinterpolatweld[m].RY=posR[m-lastN][1];
+                                        tempinterpolatweld[m].RZ=posR[m-lastN][2];
                                     }
                                     lastN=N;
                                     break;
@@ -1865,9 +1865,9 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                             tempinterpolatweld[m].X=p.x();
                             tempinterpolatweld[m].Y=p.y();
                             tempinterpolatweld[m].Z=p.z();
-                            tempinterpolatweld[m].RX=posR[m][0];
-                            tempinterpolatweld[m].RY=posR[m][1];
-                            tempinterpolatweld[m].RZ=posR[m][2];
+                            tempinterpolatweld[m].RX=posR[m-lastN][0];
+                            tempinterpolatweld[m].RY=posR[m-lastN][1];
+                            tempinterpolatweld[m].RZ=posR[m-lastN][2];
                         }
                         interpolatweld=tempinterpolatweld;
                     }
@@ -2279,7 +2279,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             TimeFunction to;
             to.get_time_ms(&s_time);
             time=QString::fromStdString(s_time);
-            dir=dir+time+key+name_in;
+            dir=dir+time+key+name_out;
             savelog_trace(dir,m_mcs->project->project_interweld_trace[weld_trace_num_out].trace);
         }
 
@@ -2992,8 +2992,8 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         pos.RY=pose[1];
         pos.RZ=pose[2];
         pos.X=pos.X+add[0];
-        pos.Y=pos.Y+add[0];
-        pos.Z=pos.Z+add[0];
+        pos.Y=pos.Y+add[1];
+        pos.Z=pos.Z+add[2];
         m_mcs->project->projecr_robpos_trace[weld_nameout_num].robotpos=pos;
         m_mcs->project->projecr_robpos_trace[weld_nameout_num].nEn=true;
     }

@@ -351,3 +351,6 @@ LIBS += /home/qubo/modbus/libmodbus/install/lib/libmodbus.so
 
 
 }
+
+RESOURCES += \
+    rsc.qrc

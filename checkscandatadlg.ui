@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab_1">
     <attribute name="title">
@@ -59,9 +59,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>10</y>
        <width>181</width>
-       <height>371</height>
+       <height>381</height>
       </rect>
      </property>
     </widget>
@@ -303,10 +303,88 @@
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>20</y>
+       <y>10</y>
        <width>651</width>
-       <height>371</height>
+       <height>331</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab1pushButton_1">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab1pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab1pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab1pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab1pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab1pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -318,9 +396,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>10</y>
        <width>181</width>
-       <height>371</height>
+       <height>381</height>
       </rect>
      </property>
     </widget>
@@ -328,10 +406,88 @@
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>20</y>
+       <y>10</y>
        <width>651</width>
-       <height>371</height>
+       <height>331</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab2pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab2pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab2pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab2pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab2pushButton_1">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab2pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -343,9 +499,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>10</y>
        <width>181</width>
-       <height>371</height>
+       <height>381</height>
       </rect>
      </property>
     </widget>
@@ -353,10 +509,88 @@
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>20</y>
+       <y>10</y>
        <width>651</width>
-       <height>371</height>
+       <height>331</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab3pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab3pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab3pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab3pushButton_1">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab3pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab3pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -368,9 +602,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>10</y>
        <width>181</width>
-       <height>371</height>
+       <height>381</height>
       </rect>
      </property>
     </widget>
@@ -378,10 +612,88 @@
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>20</y>
+       <y>10</y>
        <width>651</width>
-       <height>371</height>
+       <height>331</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab4pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab4pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab4pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab4pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab4pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tab4pushButton_1">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>350</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -393,9 +705,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>10</y>
        <width>181</width>
-       <height>371</height>
+       <height>381</height>
       </rect>
      </property>
     </widget>
@@ -582,6 +894,19 @@
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>20</y>
+     <width>131</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>切换到全局显示</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>

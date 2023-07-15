@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>icons/上.png</file>
+        <file>icons/俯.png</file>
+        <file>icons/前.png</file>
+        <file>icons/右.png</file>
+        <file>icons/后.png</file>
+        <file>icons/左.png</file>
+    </qresource>
+</RCC>

@@ -7,6 +7,10 @@
 #include <pcl/common/common_headers.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/visualization/cloud_viewer.h>
+#include <vtkCamera.h>
+#include <vtkBoundingBox.h>
+#include <vtkRendererCollection.h>
+#include <vtkMath.h>
 
 namespace Ui {
 class checkscandataDlg;
@@ -42,8 +46,63 @@ private slots:
     void on_tab4listWidget_itemClicked(QListWidgetItem *item);
 
 
+    void on_tab1pushButton_1_clicked();
+
+    void on_tab1pushButton_2_clicked();
+
+    void on_tab1pushButton_3_clicked();
+
+    void on_tab1pushButton_4_clicked();
+
+    void on_tab1pushButton_5_clicked();
+
+    void on_tab1pushButton_6_clicked();
+
+    void on_tab2pushButton_1_clicked();
+
+    void on_tab2pushButton_2_clicked();
+
+    void on_tab2pushButton_3_clicked();
+
+    void on_tab2pushButton_4_clicked();
+
+    void on_tab2pushButton_5_clicked();
+
+    void on_tab2pushButton_6_clicked();
+
+    void on_tab3pushButton_1_clicked();
+
+    void on_tab3pushButton_2_clicked();
+
+    void on_tab3pushButton_3_clicked();
+
+    void on_tab3pushButton_4_clicked();
+
+    void on_tab3pushButton_5_clicked();
+
+    void on_tab3pushButton_6_clicked();
+
+    void on_tab4pushButton_1_clicked();
+
+    void on_tab4pushButton_2_clicked();
+
+    void on_tab4pushButton_3_clicked();
+
+    void on_tab4pushButton_4_clicked();
+
+    void on_tab4pushButton_5_clicked();
+
+    void on_tab4pushButton_6_clicked();
+
 private:
     Ui::checkscandataDlg *ui;
+
+    void tab1updateCameraView(double focalPoint[3], double position[3], double viewUp[3]);
+    void tab2updateCameraView(double focalPoint[3], double position[3], double viewUp[3]);
+    void tab3updateCameraView(double focalPoint[3], double position[3], double viewUp[3]);
+    void tab4updateCameraView(double focalPoint[3], double position[3], double viewUp[3]);
+
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr print_allpoint(double centerx,double centery,double centerz);
 };
 
 #endif // CHECKSCANDATADLG_H
