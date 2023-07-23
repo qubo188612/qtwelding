@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>561</width>
-    <height>261</height>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>20</x>
      <y>10</y>
      <width>181</width>
-     <height>231</height>
+     <height>261</height>
     </rect>
    </property>
    <property name="title">
@@ -29,7 +29,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
+      <y>120</y>
       <width>161</width>
       <height>61</height>
      </rect>
@@ -42,7 +42,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
+      <y>190</y>
       <width>161</width>
       <height>61</height>
      </rect>
@@ -81,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
+      <y>90</y>
       <width>41</width>
       <height>17</height>
      </rect>
@@ -104,7 +104,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>60</y>
+      <y>90</y>
       <width>111</width>
       <height>25</height>
      </rect>
@@ -119,6 +119,29 @@
       <string>交流</string>
      </property>
     </item>
+   </widget>
+   <widget class="QLineEdit" name="weldercurrent_v">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>60</y>
+      <width>113</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>41</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>电压:</string>
+    </property>
    </widget>
   </widget>
   <widget class="QLabel" name="label">
@@ -140,7 +163,7 @@
      <x>210</x>
      <y>30</y>
      <width>331</width>
-     <height>211</height>
+     <height>241</height>
     </rect>
    </property>
   </widget>

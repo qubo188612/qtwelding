@@ -354,9 +354,10 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
 {
     bool rc;
     float eled=ui->weldercurrent->text().toFloat(&rc);
+    float elev=ui->weldercurrent_v->text().toFloat(&rc);
     Alternatingcurrent elem=(Alternatingcurrent)ui->weldermodelcombo->currentIndex();
     my_cmd cmd;
-    QString msg=cmd.cmd_elec(eled,elem,1);
+    QString msg=cmd.cmd_elec(eled,elev,elem,1);
     if(ui->weldercurrent->text().isEmpty())
     {
         ui->record->append(QString::fromLocal8Bit("请填写电流值"));
@@ -365,6 +366,16 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
     if(rc==false)
     {
         ui->record->append(QString::fromLocal8Bit("电流值格式出错"));
+        return;
+    }
+    if(ui->weldercurrent_v->text().isEmpty())
+    {
+        ui->record->append(QString::fromLocal8Bit("请填写电压值"));
+        return;
+    }
+    if(rc==false)
+    {
+        ui->record->append(QString::fromLocal8Bit("电压值格式出错"));
         return;
     }
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)

@@ -539,6 +539,8 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 QString name=cmd.cmd_coord_name;//获取到的矩阵名字
                 QString s_pointx=cmd.cmd_coord_pointx;
                 QString s_pointo=cmd.cmd_coord_pointo;
+                QString s_cpointx=cmd.cmd_coord_cpointx;
+                QString s_cpointo=cmd.cmd_coord_cpointo;
                 bool b_find=0;
                 for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
                 {
@@ -597,11 +599,59 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         errmsg.push_back(return_msg);
                         break;
                     }
+                    b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                    {
+                        if(s_cpointx==m_mcs->project->projecr_robpos_trace[t].name)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)//没找到s_cpointx这个名字的扫描轨道
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_cpointx+QString::fromLocal8Bit("的坐标点");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                    {
+                        if(s_cpointo==m_mcs->project->projecr_robpos_trace[t].name)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)//没找到s_cpointo这个名字的扫描轨道
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_cpointo+QString::fromLocal8Bit("的坐标点");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
                     if(s_pointx==s_pointo)
                     {
                         err=1;
                         main_record.lock();
                         return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+CMD_POINTX+QString::fromLocal8Bit("的参数项与")+CMD_POINTO+QString::fromLocal8Bit("的参数项相同");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    if(s_cpointx==s_cpointo)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+CMD_CPOINTX+QString::fromLocal8Bit("的参数项与")+CMD_CPOINTO+QString::fromLocal8Bit("的参数项相同");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -2622,10 +2672,14 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
     {
         QString s_pointx=cmd.cmd_coord_pointx;//实际零位矩阵零点的X方向基准点
         QString s_pointo=cmd.cmd_coord_pointo;//实际零位矩阵零点基准点
+        QString s_cpointx=cmd.cmd_coord_cpointx;
+        QString s_cpointo=cmd.cmd_coord_cpointo;
         QString name=cmd.cmd_coord_name;//获取到的矩阵名字
         int coord_trace_num;//要储存的矩阵数据下标
         int pointx_trace_num;//实际零位矩阵零点的X方向基准点所在的点下标
         int pointo_trace_num;//实际零位矩阵零点的O方向基准点所在的点下标
+        int cpointx_trace_num;//基准零位矩阵零点的X方向基准点所在的点下标
+        int cpointo_trace_num;//基准零位矩阵零点的O方向基准点所在的点下标
         for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
         {
             if(name==m_mcs->project->projecr_coord_matrix4d[n].name)
@@ -2668,12 +2722,50 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             main_record.unlock();
             return 1;
         }
+        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        {
+            if(s_cpointx==m_mcs->project->projecr_robpos_trace[n].name)
+            {
+                cpointx_trace_num=n;//找到要储存的s_cpointx点下标
+                break;
+            }
+        }
+        if(m_mcs->project->projecr_robpos_trace[cpointx_trace_num].nEn!=true)
+        {
+            //点无效
+            main_record.lock();
+            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_cpointx+QString::fromLocal8Bit("点没有获取到坐标值");
+            m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+            return 1;
+        }
+        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        {
+            if(s_cpointo==m_mcs->project->projecr_robpos_trace[n].name)
+            {
+                cpointo_trace_num=n;//找到要储存的s_cpointo点下标
+                break;
+            }
+        }
+        if(m_mcs->project->projecr_robpos_trace[cpointo_trace_num].nEn!=true)
+        {
+            //点无效
+            main_record.lock();
+            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_cpointo+QString::fromLocal8Bit("点没有获取到坐标值");
+            m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+            return 1;
+        }
         /*************/
         //开始计算零点变化矩阵
         Eigen::Vector3d org;
         Eigen::Vector3d org_x,org_y;
+        Eigen::Vector3d corg;
+        Eigen::Vector3d corg_x,corg_y;
         Eigen::Matrix3d R;          //旋转矩阵
         Eigen::Vector3d T;          //平移矩阵(零点坐标)
+        Eigen::Matrix3d R1;          //旋转矩阵
+        Eigen::Vector3d T1;          //平移矩阵(零点坐标)
         org.x()=m_mcs->project->projecr_robpos_trace[pointo_trace_num].robotpos.X;
         org.y()=m_mcs->project->projecr_robpos_trace[pointo_trace_num].robotpos.Y;
         org.z()=m_mcs->project->projecr_robpos_trace[pointo_trace_num].robotpos.Z;
@@ -2683,9 +2775,26 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         org_y.x()=org_x.x();
         org_y.y()=org_x.y()+100;
         org_y.z()=org_x.z();
+
+        corg.x()=m_mcs->project->projecr_robpos_trace[cpointo_trace_num].robotpos.X;
+        corg.y()=m_mcs->project->projecr_robpos_trace[cpointo_trace_num].robotpos.Y;
+        corg.z()=m_mcs->project->projecr_robpos_trace[cpointo_trace_num].robotpos.Z;
+        corg_x.x()=m_mcs->project->projecr_robpos_trace[cpointx_trace_num].robotpos.X;
+        corg_x.y()=m_mcs->project->projecr_robpos_trace[cpointx_trace_num].robotpos.Y;
+        corg_x.z()=m_mcs->project->projecr_robpos_trace[cpointx_trace_num].robotpos.Z;
+        corg_y.x()=corg_x.x();
+        corg_y.y()=corg_x.y()+100;
+        corg_y.z()=corg_x.z();
+
+        CCoordChange::_1coord2RT(corg,corg_x,corg_y,&R1,&T1);
         CCoordChange::coord2RT(org,org_x,org_y,&R,&T);
+
+        m_mcs->project->projecr_coord_matrix4d[coord_trace_num].R1=R1;
+        m_mcs->project->projecr_coord_matrix4d[coord_trace_num].T1=T1;
+
         m_mcs->project->projecr_coord_matrix4d[coord_trace_num].R=R;
         m_mcs->project->projecr_coord_matrix4d[coord_trace_num].T=T;
+
         m_mcs->project->projecr_coord_matrix4d[coord_trace_num].nEn=true;
     }
     else if(key==CMD_SAMPLE_KEY)//采样命令
@@ -3625,6 +3734,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             Robmovemodel movemod=cmd.cmd_move_movemod;//获取到的移动模式
             QString change=cmd.cmd_move_change;
             int matrix4d_trace_num;
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
             if(!change.isEmpty())//需要变换矩阵
@@ -3647,6 +3758,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     line=n;
                     return 1;
                 }
+                R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
                 R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
                 T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
             }
@@ -3662,7 +3775,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos.X;
                         tempin.y()=pos.Y;
                         tempin.z()=pos.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
@@ -3681,21 +3795,24 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos1.X;
                         tempin.y()=pos1.Y;
                         tempin.z()=pos1.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
@@ -3794,6 +3911,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int point3_trace_num;//找到点位下标
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             if(!change.isEmpty())//需要变换矩阵
             {
                 for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
@@ -3816,6 +3935,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
                 T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
             }
             switch(movemod)
             {
@@ -3847,7 +3968,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos.X;
                         tempin.y()=pos.Y;
                         tempin.z()=pos.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
@@ -3920,21 +4042,24 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos1.X;
                         tempin.y()=pos1.Y;
                         tempin.z()=pos1.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
@@ -4032,7 +4157,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             Weldworkmodel_ID work=(Weldworkmodel_ID)cmd.cmd_elec_work_d;//获取到焊机启停
             Alternatingcurrent elem=cmd.cmd_elec_elem;  //获取到焊机交变电流模式
             float eled=cmd.cmd_elec_eled; //获取到焊机电流
-            cmd_elec(eled,elem,work);
+            float elev=cmd.cmd_elec_elev; //获取到焊机电压
+            cmd_elec(eled,elev,elem,work);
             usleep(ROB_WORK_DELAY);//确保焊机设置完成
         }
         else if(key==CMD_IO_KEY)//IO指令
@@ -4170,6 +4296,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int matrix4d_trace_num;//要变换矩阵下标
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             if(!change.isEmpty())//需要变换矩阵
             {
                 for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
@@ -4192,6 +4320,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
                 T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
             }
             for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
             {
@@ -4216,7 +4346,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos.X;
                         tempin.y()=pos.Y;
                         tempin.z()=pos.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
@@ -4231,21 +4362,24 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos1.X;
                         tempin.y()=pos1.Y;
                         tempin.z()=pos1.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
@@ -4391,7 +4525,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         int times=nside+1;
                         int ns=(times-1)/2+1;
 
-                        if((times|0)==0)//偶数
+                        if((times%2)==0)//偶数
                         {
                             //计算pos;
                             V.x()=ns*cmd.cmd_search_sidemove[0];
@@ -4489,6 +4623,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int matrix4d_trace_num;//要变换矩阵下标
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             if(!change.isEmpty())//需要变换矩阵
             {
                 for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
@@ -4511,6 +4647,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
                 T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
             }
             for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
             {
@@ -4535,7 +4673,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos.X;
                         tempin.y()=pos.Y;
                         tempin.z()=pos.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
@@ -4550,21 +4689,24 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos1.X;
                         tempin.y()=pos1.Y;
                         tempin.z()=pos1.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
@@ -4856,6 +4998,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int matrix4d_trace_num;
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             if(!change.isEmpty())//需要变换矩阵
             {
                 for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
@@ -4878,6 +5022,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
                 T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
             }
 
             for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
@@ -4900,7 +5046,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos.X;
                         tempin.y()=pos.Y;
                         tempin.z()=pos.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
@@ -4919,21 +5066,24 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos1.X;
                         tempin.y()=pos1.Y;
                         tempin.z()=pos1.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
@@ -5042,6 +5192,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int point3_trace_num;//找到寻位点下标
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             if(!change.isEmpty())//需要变换矩阵
             {
                 for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
@@ -5064,6 +5216,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
                 T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
             }
 
             for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
@@ -5104,7 +5258,8 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos.X;
                         tempin.y()=pos.Y;
                         tempin.z()=pos.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
@@ -5177,21 +5332,24 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         tempin.x()=pos1.X;
                         tempin.y()=pos1.Y;
                         tempin.z()=pos1.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
-                        tempout=CCoordChange::point2point(tempin,R,T);
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
@@ -5697,16 +5855,18 @@ void toSendbuffer::cmd_elec(Weldworkmodel work)
     send_group_robot.unlock();
 }
 
-void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel work)
+void toSendbuffer::cmd_elec(float eled,float elev,Alternatingcurrent elem,Weldworkmodel work)
 {
     send_group_robot.lock();
     sent_info_robot sendrob;
     sendrob.addr=ROB_WELD_CURRENT_FH_REG_ADD;
     sendrob.ctx=m_mcs->rob->ctx_posget;
-    sendrob.data.resize(3);
+    sendrob.data.resize(5);
     sendrob.data[0]=*((u_int16_t*)&eled);
     sendrob.data[1]=*((u_int16_t*)&eled+1);
     sendrob.data[2]=elem;
+    sendrob.data[3]=*((u_int16_t*)&elev);
+    sendrob.data[4]=*((u_int16_t*)&elev+1);
     m_mcs->rob->b_send_group_robot=false;
     m_mcs->rob->send_group_robot.push_back(sendrob);
     u16data_elec_work=work;
@@ -5718,6 +5878,7 @@ void toSendbuffer::cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel wor
     m_mcs->rob->weld_state=(Weldworkmodel)work;
     m_mcs->rob->weld_eled=eled;
     m_mcs->rob->weld_elem=elem;
+    m_mcs->rob->weld_elev=elev;
     send_group_robot.unlock();
 }
 

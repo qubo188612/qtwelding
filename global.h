@@ -728,8 +728,10 @@ class Coord_Matrix4d_result     //零点定位矩阵
 {
 public:
     Coord_Matrix4d_result();
-    Eigen::Matrix3d R;          //旋转矩阵
-    Eigen::Vector3d T;          //平移矩阵(零点坐标)
+    Eigen::Vector3d T1;         //平移矩阵(零点坐标)(机器人坐标系平移到工件零点)
+    Eigen::Matrix3d R1;         //旋转矩阵(工件旋转)
+    Eigen::Vector3d T;          //平移矩阵(零点坐标)(机器人坐标系平移到工件零点)
+    Eigen::Matrix3d R;          //旋转矩阵(工件旋转)
     QString name;               //矩阵名字
     bool nEn;                   //矩阵是否有效
 };

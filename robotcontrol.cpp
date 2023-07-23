@@ -1739,6 +1739,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                                 uint16_t u16data_elec_work=_p->mb_mapping->tab_registers[ROB_MOVEFIER_REG_ADD];//加起弧判断
                                 float eled=*(float*)&_p->mb_mapping->tab_registers[ROB_WELD_CURRENT_FH_REG_ADD];//电流
                                 Alternatingcurrent elem=(Alternatingcurrent)_p->mb_mapping->tab_registers[ROB_WELD_CURRENTMOD_REG_ADD];//交变电流模式
+                                float elev=*(float*)&_p->mb_mapping->tab_registers[ROB_WELD_VOLTAGE_FH_REG_ADD];//电压
                                 static uint16_t old_u16data_elec_work=65535;
 
                                 if(old_u16data_elec_work!=u16data_elec_work)
@@ -1812,10 +1813,30 @@ void RobotcontrolThread1::run() //接到上位机命令
                                                         break;
                                                         case FIRE:         //起弧
                                                         {
+                                                            /*******/
+                                                            //计算模拟量
+                                                            float a1,a2;
+                                                            float Vmax=50,Vmin=10,Amin=60,Amax=500;
+                                                            float a1max=9.6,a1min=1.8,a2max=9.6,a2min=1;
+                                                            float f1=(Vmax-Vmin)/(a1max-a1min);
+                                                            float f2=(Amax-Amin)/(a2max-a2min);
+                                                            a1=(elev-Vmin)/f1+a1min;
+                                                            a2=(eled-Amin)/f2+a2min;
+                                                            if(a1<a1min)
+                                                                a1=a1min;
+                                                            if(a1>a1max)
+                                                                a1=a1max;
+                                                            if(a2<a2min)
+                                                                a2=a2min;
+                                                            if(a2>a2max)
+                                                                a2=a2max;
                                                             QString msg="Sync()";
                                                             std::string str=msg.toStdString();
                                                             _p->send_buf_group.push_back(str);
-                                                            msg="AO(2,"+QString::number(eled,'f',3)+")";
+                                                            msg="AO(1,"+QString::number(a1,'f',3)+")";
+                                                            str=msg.toStdString();
+                                                            _p->send_buf_group.push_back(str);
+                                                            msg="AO(2,"+QString::number(a2,'f',3)+")";
                                                             str=msg.toStdString();
                                                             _p->send_buf_group.push_back(str);
                                                             msg="DOGroup(6,0,7,1,8,0)";
@@ -3482,12 +3503,12 @@ void RobotrcvThread::run()//获取机器人数据
                                     case MOVEL:
                                     case MOVEJ:
                                     {
-                                        if(fabs(d_robX-moveinfo.robpos.X)>0.1
-                                         ||fabs(d_robY-moveinfo.robpos.Y)>0.1
-                                         ||fabs(d_robZ-moveinfo.robpos.Z)>0.1
-                                         ||fabs(d_robRX-moveinfo.robpos.RX)>0.1
-                                         ||fabs(d_robRY-moveinfo.robpos.RY)>0.1
-                                         ||fabs(d_robRZ-moveinfo.robpos.RZ)>0.1)
+                                        if(fabs(d_robX-moveinfo.robpos.X)>1.5
+                                         ||fabs(d_robY-moveinfo.robpos.Y)>1.5
+                                         ||fabs(d_robZ-moveinfo.robpos.Z)>1.5
+                                         ||fabs(d_robRX-moveinfo.robpos.RX)>0.5
+                                         ||fabs(d_robRY-moveinfo.robpos.RY)>0.5
+                                         ||fabs(d_robRZ-moveinfo.robpos.RZ)>0.5)
                                         {
                                             state=1;
                                         }
@@ -3495,12 +3516,12 @@ void RobotrcvThread::run()//获取机器人数据
                                     break;
                                     case MOVEC:
                                     {
-                                        if(fabs(d_robX-moveinfo.robpos.X1)>0.1
-                                         ||fabs(d_robY-moveinfo.robpos.Y1)>0.1
-                                         ||fabs(d_robZ-moveinfo.robpos.Z1)>0.1
-                                         ||fabs(d_robRX-moveinfo.robpos.RX1)>0.1
-                                         ||fabs(d_robRY-moveinfo.robpos.RY1)>0.1
-                                         ||fabs(d_robRZ-moveinfo.robpos.RZ1)>0.1)
+                                        if(fabs(d_robX-moveinfo.robpos.X1)>1.5
+                                         ||fabs(d_robY-moveinfo.robpos.Y1)>1.5
+                                         ||fabs(d_robZ-moveinfo.robpos.Z1)>1.5
+                                         ||fabs(d_robRX-moveinfo.robpos.RX1)>0.5
+                                         ||fabs(d_robRY-moveinfo.robpos.RY1)>0.5
+                                         ||fabs(d_robRZ-moveinfo.robpos.RZ1)>0.5)
                                         {
                                             state=1;
                                         }

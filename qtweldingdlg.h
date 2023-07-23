@@ -256,6 +256,8 @@ private slots:
 
     void on_infoBtn_clicked();
 
+    void on_weld_elev_editingFinished();
+
 private:
     Ui::qtweldingDlg *ui;
 

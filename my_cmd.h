@@ -13,17 +13,17 @@
 //延时指令，举例 DELAY: TIME[1000]
 //激光指令，举例 CAM: TASK[102] WORK[1]
 //激光指令，举例 CAM: WORK[0]
-//焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEM[0]
+//焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEV[1.3] ELEM[0]
 //焊机指令，举例 WELD: WORK[0]
 //采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[扫描第一条line]
 //跟踪指令，举例 TRACE: CREAT[跟踪第一条line] SPEED[25] CRAFT[/home/qubo/caf.json] NAME[焊接轨迹1]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
 //IO口输出指令，举例 IO: OUT[1,0,0,1,0,1,0,1]
-//IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1]
+//IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1
 //写PLC指令，举例 PLC: WRITEPLC[20] DATA16[2]
 //等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
 //寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] NAME[寻位的点point1]
-//工件坐标系定位，举例 COORD: POINTX[寻位的点point1] POINTO[寻位的点point3] NAME[零位矩阵]
+//工件坐标系定位，举例 COORD: POINTX[寻位的点point1] POINTO[寻位的点point3] CPOINTX[基准点point1],CPOINTO[基准点point2],NAME[零位矩阵]
 //扫描的焊缝坐标值，举例 GETPOS: TIME[1000] POINTNAME[寻位的点point1] ADD[1,2,3]
 //点位移动指令，举例 SMOV: SPEED[25] SMOVL[寻位的点point1] TCP[1] CHANGE[矩阵1]
 //点位采集指令，举例 SSCAN: SMOVL[寻位的点point1] SPEED[25] TCP[0] NAME[扫描第一条line]
@@ -44,6 +44,7 @@
 //三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SAMPLESPEED[25] SPEED[25] TIME[16] NAME[跟踪第一条line]
 //生成点位附近继续焊接的轨迹指令，举例 TRACECONTINUE: TRACE[第一条] POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[焊接轨迹]
 //滤波指令，举例 FILTER: CREAT[跟踪第一条line] MODE[1] NAME[滤波后轨迹1] FILTERS[1,2,3,4,5,6,7,8]
+//程序跳转指令，举例 GOTO :LINE[13]
 
 
 //key项
@@ -77,6 +78,7 @@
 #define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"       //生成一个TCP数值的点坐标命令集合KEY
 #define CMD_TRACECONTINUE_KEY           "TRACECONTINUE:"    //生成点位附近继续焊接的轨迹命令集合KEY
 #define CMD_FILTER_KEY                  "FILTER:"           //扫描轨迹滤波命令集合KEY
+#define CMD_GOTO                        "GOTO:"             //程序跳转
 
 
 //参数项
@@ -94,6 +96,7 @@
 #define CMD_WORK                            "WORK"                //是否启动      0:停止 1:启动
 #define CMD_ELED                            "ELED"                //电流         单位A
 #define CMD_ELEM                            "ELEM"                //交变电        0:直流 1:交流
+#define CMD_ELEV                            "ELEV"                //电压         单位V
 #define CMD_NAME                            "NAME"                //命名
 #define CMD_SCAN                            "SCAN"                //扫描轨迹参数
 #define CMD_MODE                            "MODE"                //模式参数
@@ -108,6 +111,8 @@
 #define CMD_SIDESPEED                       "SIDESPEED"           //寻位寻找两侧的空闲移动速度
 #define CMD_POINTX                          "POINTX"              //实际零位矩阵零点的X方向基准点
 #define CMD_POINTO                          "POINTO"              //实际零位矩阵零点基准点
+#define CMD_CPOINTX                         "CPOINTX"             //基准零位矩阵零点的X方向基准点
+#define CMD_CPOINTO                         "CPOINTO"             //基准零位矩阵零点基准点
 #define CMD_CREAT                           "CREAT"               //跟踪轨迹参数
 #define CMD_TRACEADD                        "TRACEADD"            //跟踪轨迹相加参数
 #define CMD_WAVE                            "WAVE"                //摆焊参数
@@ -137,7 +142,7 @@ public:
     QString cmd_delay(int time);//延时命令
     QString cmd_cam(int task,int work);//相机启停命令不
     QString cmd_cam_work(int work);//相机启停命令
-    QString cmd_elec(float eled,Alternatingcurrent elem,int work);//焊机启停命令不
+    QString cmd_elec(float eled,float elev,Alternatingcurrent elem,int work);//焊机启停命令不
     QString cmd_elec_work(int work);//焊机启停命令
     QString cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//采集命令
     QString cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//圆采集命令
@@ -153,7 +158,7 @@ public:
     QString cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change="");//圆寻位命令
     QString cmd_searchend(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
     QString cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//寻位末尾命令
-    QString cmd_coord(QString s_pointX,QString s_pointO,QString name);//生成定位变化矩阵
+    QString cmd_coord(QString s_pointX,QString s_pointO,QString s_cpointX,QString s_cpointO,QString name);//生成定位变化矩阵
     QString cmd_getpos(int time,QString name,std::vector<float> add);//获取扫描的焊缝坐标值命令
     QString cmd_sample(QString name_in,float speed,int time,QString name_out);//采样轨迹点命令
     QString cmd_tracing(QString name,int tcp,int time);//跟踪焊接轨迹工艺命令
@@ -193,6 +198,7 @@ public:
     int cmd_elec_work_d;//获取到焊机启停
     Alternatingcurrent cmd_elec_elem;  //获取到焊机交变电流模式
     float cmd_elec_eled; //获取到焊机电流
+    float cmd_elec_elev; //获取到焊机电压
 
     RobPos cmd_scan_pos;//获取到扫描终点坐标
     RobPos cmd_scan_pos1;//获取到圆扫描起点坐标
@@ -246,6 +252,8 @@ public:
 
     QString cmd_coord_pointx;//实际零位矩阵零点的X方向基准点
     QString cmd_coord_pointo;//实际零位矩阵零点的基准点
+    QString cmd_coord_cpointx;//基准零位矩阵零点的X方向基准点
+    QString cmd_coord_cpointo;//基准零位矩阵零点的基准点
     QString cmd_coord_name;//实际零位矩阵名字
 
     int cmd_getpos_time=0;//获取坐标时的等待时间
@@ -348,6 +356,7 @@ protected:
     QString rc_task(int task);
     QString rc_work(int work);
     QString rc_eled(float eled);
+    QString rc_elev(float elev);
     QString rc_elem(Alternatingcurrent elem);
     QString rc_name(QString name);
     QString rc_mode(int mode);
@@ -363,6 +372,8 @@ protected:
     QString rc_sidespeed(float speed);
     QString rc_pointX(QString s_pointX);
     QString rc_pointO(QString s_pointO);
+    QString rc_cpointX(QString s_cpointX);
+    QString rc_cpointO(QString s_cpointO);
     QString rc_creat(QString names);
     QString rc_traceadd(QString name1,QString name2);
     QString rc_wave(wWAVEParam cmd_wave_info);

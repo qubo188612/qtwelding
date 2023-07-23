@@ -67,9 +67,54 @@ bool CCoordChange::coord2RT(Eigen::Vector3d org,Eigen::Vector3d x,Eigen::Vector3
     return true;
 }
 
+bool CCoordChange::_1coord2RT(Eigen::Vector3d org,Eigen::Vector3d x,Eigen::Vector3d y,Eigen::Matrix3d *R_out,Eigen::Vector3d *T_out)
+{
+    Eigen::Matrix3d R;		//旋转缩放矩阵
+    Eigen::Vector3d T;		//平移变量
+
+    Eigen::Vector3d x1,y1,z1;
+    Eigen::Vector3d x2(1,0,0);
+    Eigen::Vector3d y2(0,1,0);
+    Eigen::Vector3d z2(0,0,1);
+    Eigen::Vector3d lo = org;
+    Eigen::Vector3d la = x;
+    Eigen::Vector3d lb = y;
+    x1 = la - lo;
+    z1 = x1.cross(lb-lo);
+    y1 = z1.cross(x1);
+    std::array<Eigen::Vector3d,3> coord2 = {x1,y1,z1};
+    std::array<Eigen::Vector3d,3> coord1 = {x2,y2,z2};
+
+    Eigen::Matrix3d roate = ComputeDCM3(coord2,coord1);
+    for (int i = 0 ; i < 3; i++)
+    {
+        for (int j = 0 ; j < 3; j++)
+        {
+            R(i,j) = roate(i,j);
+        }
+    }
+
+
+    T(0) = -org.x();
+    T(1) = -org.y();
+    T(2) = -org.z();
+
+    *R_out=R;
+    *T_out=T;
+
+    return true;
+}
+
 Eigen::Vector3d CCoordChange::point2point(Eigen::Vector3d p,Eigen::Matrix3d R,Eigen::Vector3d T)
 {
     Eigen::Vector3d temp;
     temp = R*p+T;
+    return temp;
+}
+
+Eigen::Vector3d CCoordChange::_1point2point(Eigen::Vector3d p,Eigen::Matrix3d R,Eigen::Vector3d T)
+{
+    Eigen::Vector3d temp;
+    temp = R*(p+T);
     return temp;
 }

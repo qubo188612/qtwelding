@@ -82,13 +82,15 @@
 #define E2POOM_DEMDLG_RADIO_MOD_MAX         1
 #define E2POOM_DEMDLG_RADIO_MOD_USE         0
 
-#define E2POOM_MAINDLG_SAVEBUFF             24
+#define E2POOM_MAINDLG_SAVEBUFF             28
 #define E2POOM_MAINDLG_SYSPATH_MOTO         "./SAVE/E2P_MAINDLG.bsd"
 #define E2POOM_MAINDLG_SAVEDATA_MIN         0
 #define E2POOM_MAINDLG_SAVEDATA_MAX         1
 #define E2POOM_MAINDLG_SAVEDATA_USE         0
 #define E2POOM_MAINDLG_WELDELED_MIN         0
 #define E2POOM_MAINDLG_WELDELED_USE         0
+#define E2POOM_MAINDLG_WELDELEV_MIN         0
+#define E2POOM_MAINDLG_WELDELEV_USE         0
 #define E2POOM_MAINDLG_WELDELEM_MIN         0
 #define E2POOM_MAINDLG_WELDELEM_MAX         1
 #define E2POOM_MAINDLG_WELDELEM_USE         0
@@ -211,6 +213,7 @@ public:
     //主页面
     Int32 maindlg_SaveDatacheckBox;             //0:不保存轨道处理数据，1:保存轨道处理数据
     float maindlg_Weldeled;                     //点焊电流
+    float maindlg_Weldelev;                     //点焊电压
     Alternatingcurrent_ID maindlg_Weldelem;     //点焊工艺
     float maindlg_movespeed;                    //移动速度
     Int32 maindlg_movetcp;                      //TCP
@@ -228,6 +231,8 @@ public:
     float maindlg_Weldelem_min;
     Int32 maindlg_Weldelem_max;
     Int32 maindlg_Weldelem_use;
+    Int32 maindlg_Weldelev_min;
+    Int32 maindlg_Weldelev_use;
     float maindlg_movespeed_min;
     float maindlg_movespeed_max;
     float maindlg_movespeed_use;

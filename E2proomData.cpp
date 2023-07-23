@@ -77,6 +77,8 @@ E2proomData::E2proomData()
     maindlg_SaveDatacheckBox_use=E2POOM_MAINDLG_SAVEDATA_USE;
     maindlg_Weldeled_min=E2POOM_MAINDLG_WELDELED_MIN;
     maindlg_Weldeled_use=E2POOM_MAINDLG_WELDELED_USE;
+    maindlg_Weldelev_min=E2POOM_MAINDLG_WELDELEV_MIN;
+    maindlg_Weldelev_use=E2POOM_MAINDLG_WELDELEV_USE;
     maindlg_Weldelem_min=E2POOM_MAINDLG_WELDELEM_MIN;
     maindlg_Weldelem_max=E2POOM_MAINDLG_WELDELEM_MAX;
     maindlg_Weldelem_use=E2POOM_MAINDLG_WELDELEM_USE;
@@ -140,6 +142,8 @@ void E2proomData::check_para()
         maindlg_SaveDatacheckBox=maindlg_SaveDatacheckBox_use;
     if(maindlg_Weldeled<maindlg_Weldeled_min)
         maindlg_Weldeled=maindlg_Weldeled_use;
+    if(maindlg_Weldelev<maindlg_Weldelev_min)
+        maindlg_Weldelev=maindlg_Weldelev_use;
     if(maindlg_Weldelem<maindlg_Weldelem_min||maindlg_Weldelem>maindlg_Weldelem_max)
         maindlg_Weldelem=(Alternatingcurrent_ID)maindlg_Weldelem_use;
     if(maindlg_movespeed<maindlg_movespeed_min||maindlg_movespeed>maindlg_movespeed_max)
@@ -571,6 +575,8 @@ void E2proomData::read_maindlg_para()
       f32_p = (float*)i32_p;
       maindlg_Weldeled=*f32_p;
       f32_p++;
+      maindlg_Weldelev=*f32_p;
+      f32_p++;
       i32_p = (Int32*)f32_p;
       maindlg_Weldelem=(Alternatingcurrent_ID)*i32_p;
       i32_p++;
@@ -609,6 +615,8 @@ void E2proomData::write_maindlg_para()
     f32_p = (float*)i32_p;
     *f32_p=maindlg_Weldeled;
     f32_p++;
+    *f32_p=maindlg_Weldelev;
+    f32_p++;
     i32_p = (Int32*)f32_p;
     *i32_p=maindlg_Weldelem;
     i32_p++;
@@ -634,6 +642,7 @@ void E2proomData::init_maindlg_para()
 {
     maindlg_SaveDatacheckBox=maindlg_SaveDatacheckBox_use;
     maindlg_Weldeled=maindlg_Weldeled_use;
+    maindlg_Weldelev=maindlg_Weldelev_use;
     maindlg_Weldelem=(Alternatingcurrent_ID)maindlg_Weldelem_use;
     maindlg_movespeed=maindlg_movespeed_use;
     maindlg_movetcp=maindlg_movetcp_use;

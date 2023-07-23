@@ -19,10 +19,14 @@ void keycoordDlg::init_dlg_show()
     ui->record->clear();
     ui->comboBox_pointo->clear();
     ui->comboBox_pointx->clear();
+    ui->comboBox_cpointo->clear();
+    ui->comboBox_cpointx->clear();
     for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
     {
         ui->comboBox_pointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
         ui->comboBox_pointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_cpointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_cpointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
     }
     cmd_list_in.clear();
 }
@@ -34,10 +38,14 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
     cmd_list_in=cmdlist;
     ui->comboBox_pointo->clear();
     ui->comboBox_pointx->clear();
+    ui->comboBox_cpointo->clear();
+    ui->comboBox_cpointx->clear();
     for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
     {
         ui->comboBox_pointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
         ui->comboBox_pointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_cpointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_cpointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
     }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -46,9 +54,13 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
         {
             QString s_pointx=cmd.cmd_coord_pointx;
             QString s_pointo=cmd.cmd_coord_pointo;
+            QString s_cpointx=cmd.cmd_coord_cpointx;
+            QString s_cpointo=cmd.cmd_coord_cpointo;
             QString name=cmd.cmd_coord_name;
             int pointx_trace_num;//搜索到的s_pointx序号
             int pointo_trace_num;//搜索到的s_pointo序号
+            int cpointx_trace_num;//搜索到的s_cpointx序号
+            int cpointo_trace_num;//搜索到的s_cpointo序号
             //这里添加移动命令
             for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
             {
@@ -70,9 +82,33 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
                     break;
                 }
             }
-            if(pointo_trace_num>=0&&pointx_trace_num<ui->comboBox_pointo->count())
+            if(pointo_trace_num>=0&&pointo_trace_num<ui->comboBox_pointo->count())
             {
                 ui->comboBox_pointo->setCurrentIndex(pointo_trace_num);
+            }
+            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            {
+                if(s_cpointx==m_mcs->project->projecr_robpos_trace[n].name)
+                {
+                    cpointx_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+            if(cpointx_trace_num>=0&&cpointx_trace_num<ui->comboBox_cpointx->count())
+            {
+                ui->comboBox_cpointx->setCurrentIndex(cpointx_trace_num);
+            }
+            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            {
+                if(s_cpointo==m_mcs->project->projecr_robpos_trace[n].name)
+                {
+                    cpointo_trace_num=n;//找到要储存的焊接轨道下标
+                    break;
+                }
+            }
+            if(cpointo_trace_num>=0&&cpointo_trace_num<ui->comboBox_pointo->count())
+            {
+                ui->comboBox_pointo->setCurrentIndex(cpointo_trace_num);
             }
             ui->name->setText(name);
         }
@@ -106,6 +142,10 @@ void keycoordDlg::on_pushButton_clicked()
     QString name_pointo=ui->comboBox_pointo->currentText();
     int route_pointx=ui->comboBox_pointx->currentIndex();
     QString name_pointx=ui->comboBox_pointx->currentText();
+    int route_cpointo=ui->comboBox_cpointo->currentIndex();
+    QString name_cpointo=ui->comboBox_cpointo->currentText();
+    int route_cpointx=ui->comboBox_cpointx->currentIndex();
+    QString name_cpointx=ui->comboBox_cpointx->currentText();
     QString name=ui->name->text();
     my_cmd cmd;
     QString msg;
@@ -119,9 +159,24 @@ void keycoordDlg::on_pushButton_clicked()
         ui->record->append(QString::fromLocal8Bit("请选择一个坐标系X方向点"));
         return;
     }
+    if(route_cpointo<0||route_cpointo>ui->comboBox_cpointo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个基准坐标系零点"));
+        return;
+    }
+    if(route_cpointx<0||route_cpointx>ui->comboBox_cpointx->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个基准坐标系X方向点"));
+        return;
+    }
     if(name_pointo==name_pointx)
     {
         ui->record->append(QString::fromLocal8Bit("坐标系零点和坐标系X方向点不能为同一个点"));
+        return;
+    }
+    if(name_cpointo==name_cpointx)
+    {
+        ui->record->append(QString::fromLocal8Bit("基准坐标系零点和基准坐标系X方向点不能为同一个点"));
         return;
     }
     if(ui->name->text().isEmpty())
@@ -142,7 +197,7 @@ void keycoordDlg::on_pushButton_clicked()
             }
         }
     }
-    msg=cmd.cmd_coord(name_pointx,name_pointo,name);
+    msg=cmd.cmd_coord(name_pointx,name_pointo,name_cpointx,name_cpointo,name);
     cmd_msg=msg;
     done(1);
 }

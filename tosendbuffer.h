@@ -34,7 +34,7 @@ public:
     void cmd_moveC(RobPos pos1,RobPos pos2,Robmovemodel movemodel,float speed,int tcp);//曲线移动命令
     void cmd_delay(int time);//延时命令
     void cmd_cam(int task,int work);//相机启动停止命令
-    void cmd_elec(float eled,Alternatingcurrent elem,Weldworkmodel work);//焊机电流和模式设置以及启停命令
+    void cmd_elec(float eled,float elev,Alternatingcurrent elem,Weldworkmodel work);//焊机电流和模式设置以及启停命令
     void cmd_elec(Weldworkmodel work);//焊机启停命令
     void cmd_ioout(std::vector<int> io);//IO输出命令
     void cmd_aout(std::vector<float> a);//A模拟量输出命令

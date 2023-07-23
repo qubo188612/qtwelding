@@ -136,6 +136,7 @@ public:
     WELD_MODEL weld_model;    //焊机型号
     QString weld_model_toQString(WELD_MODEL weld_model);  //焊机型号字符串输出
     float weld_eled;    //焊接电流
+    float weld_elev;  //焊接电压
     Alternatingcurrent weld_elem;   //焊接工艺
     QString weldwork_elem_toQString(Alternatingcurrent weld_elem);//焊接工艺字符串输出
     Weldworkmodel weld_state;   //焊接状态
