@@ -44,7 +44,8 @@
 //三点生成圆弧焊接轨迹指令，举例 CREATC: POINTS[点位1，点位2，点位3] SAMPLESPEED[25] SPEED[25] TIME[16] NAME[跟踪第一条line]
 //生成点位附近继续焊接的轨迹指令，举例 TRACECONTINUE: TRACE[第一条] POS[1.3,32.7,45,66,7,89,3,0,0,0] NAME[焊接轨迹]
 //滤波指令，举例 FILTER: CREAT[跟踪第一条line] MODE[1] NAME[滤波后轨迹1] FILTERS[1,2,3,4,5,6,7,8]
-//程序跳转指令，举例 GOTO :LINE[13]
+//程序跳转指令，举例 GOTO: LINE[13]
+//程序结束指令，举例 STOP:
 
 
 //key项
@@ -78,7 +79,8 @@
 #define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"       //生成一个TCP数值的点坐标命令集合KEY
 #define CMD_TRACECONTINUE_KEY           "TRACECONTINUE:"    //生成点位附近继续焊接的轨迹命令集合KEY
 #define CMD_FILTER_KEY                  "FILTER:"           //扫描轨迹滤波命令集合KEY
-#define CMD_GOTO                        "GOTO:"             //程序跳转
+#define CMD_GOTO_KEY                    "GOTO:"             //程序跳转
+#define CMD_STOP_KEY                    "STOP:"              //程序运行结束指令
 
 
 //参数项
@@ -127,6 +129,7 @@
 #define CMD_POS                             "POS"                 //机器人坐标
 #define CMD_FILTERS                         "FILTERS"             //滤波项参数
 #define CMD_SAMPLESPEED                     "SAMPLESPEED"         //连接工艺轨迹时的连接处采样速度
+#define CMD_LINE                            "LINE"                //行参数
 
 
 /************************/
@@ -175,6 +178,8 @@ public:
     QString cmd_gettcppos2(RobPos pos,QString name);//生成tcp数值的点坐标值命令
     QString cmd_tracecontinue(QString name_in,RobPos pos,QString name_out);//生成点位附近继续焊接的轨迹指令
     QString cmd_filter(QString name_in,Filter_mode mode,filterParam filters,QString name_out);//扫描轨迹滤波指令
+    QString cmd_goto(int line);//前往第几行执行
+    QString cmd_stop();//程序结束指令
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -343,6 +348,10 @@ public:
     filterParam cmd_filters;//获取到的滤波参数
     QString cmd_filter_nameout;//生成的滤波轨迹名字
 
+    int cmd_goto_line;//获取到的跳转行数
+
+    int cmd_run_work;//停止程序
+
 
 protected:
     QString rc_tcp(int tcp);
@@ -389,6 +398,7 @@ protected:
     QString rc_pos(RobPos pos);
     QString rc_filters(filterParam filters,Filter_mode mode);
     QString rc_samplespeed(float speed);
+    QString rc_line(int line);
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

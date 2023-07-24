@@ -51,6 +51,7 @@ SOURCES += \
         keygetposdlg.cpp \
         keygettcppos2dlg.cpp \
         keygettcpposdlg.cpp \
+        keygotodlg.cpp \
         keygowelddlg.cpp \
         keyiodlg.cpp \
         keymovdlg.cpp \
@@ -132,6 +133,7 @@ FORMS += \
     keygetposdlg.ui \
     keygettcppos2dlg.ui \
     keygettcpposdlg.ui \
+    keygotodlg.ui \
     keygowelddlg.ui \
     keyiodlg.ui \
     keymovdlg.ui \
@@ -214,6 +216,7 @@ HEADERS += \
     keygetposdlg.h \
     keygettcppos2dlg.h \
     keygettcpposdlg.h \
+    keygotodlg.h \
     keygowelddlg.h \
     keyiodlg.h \
     keymovdlg.h \

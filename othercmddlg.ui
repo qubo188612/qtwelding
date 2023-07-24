@@ -113,6 +113,11 @@
    </item>
    <item>
     <property name="text">
+     <string>GOTO: 跳转指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>GOWELD: 前往起弧点指令</string>
     </property>
    </item>
@@ -164,6 +169,11 @@
    <item>
     <property name="text">
      <string>SMOV: 点位移动指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>STOP: 停止程序指令</string>
     </property>
    </item>
    <item>

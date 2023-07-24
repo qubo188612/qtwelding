@@ -1473,6 +1473,29 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     }
                 }
             }
+            else if(key==CMD_GOTO_KEY)
+            {
+                int goto_line=cmd.cmd_goto_line;
+                if(goto_line==n)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+QString::fromLocal8Bit("无法跳转到本身所在行");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+                else if(goto_line>=beforeline)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+QString::fromLocal8Bit("跳转行数超过总行数");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    break;
+                }
+            }
         }
     }
 
@@ -1728,6 +1751,19 @@ int toSendbuffer::cmdlist_skip(int stline)
                 main_record.unlock();
                 return 1;
             }
+        }
+        else if(key==CMD_GOTO_KEY)
+        {
+            int goto_line=cmd.cmd_goto_line;
+            n=goto_line;
+        }
+        else if(key==CMD_STOP_KEY)//流程停止了
+        {
+            main_record.lock();
+            return_msg=QString::fromLocal8Bit("代码中停止进程");
+            m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+            return 1;
         }
         //其他指令正常计算
         else
@@ -3667,7 +3703,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             dir=dir+time+key+nameout;
             savelog_creat(dir,m_mcs->project->project_weld_trace[weld_trace_num].point);
         }
-    }
+    }  
     return 0;
 }
 
@@ -5602,6 +5638,20 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             /*********************/
             //掉电保存
             savetemp_pos(m_mcs->project->projecr_robpos_trace[robpos_trace_num]);
+        }
+        else if(key==CMD_GOTO_KEY)
+        {
+            int goto_line=cmd.cmd_goto_line;
+            n=goto_line;
+        }
+        else if(key==CMD_STOP_KEY)//流程停止了
+        {
+            main_record.lock();
+            return_msg=QString::fromLocal8Bit("代码中停止进程");
+            m_mcs->main_record.push_back(return_msg);
+            main_record.unlock();
+            line=n;
+            return 1;
         }
         else//计算类
         {

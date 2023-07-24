@@ -518,6 +518,21 @@ QString my_cmd::cmd_filter(QString name_in,Filter_mode mode,filterParam filters,
     return msg;
 }
 
+QString my_cmd::cmd_goto(int line)
+{
+    QString msg;
+    msg=QString(CMD_GOTO_KEY)+" "+
+        rc_line(line);
+    return msg;
+}
+
+QString my_cmd::cmd_stop()
+{
+    QString msg;
+    msg=QString(CMD_STOP_KEY);
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -1011,7 +1026,6 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 return 1;
             }
         }
-
     }
     else if(key==CMD_WELD_KEY)
     {
@@ -4176,6 +4190,59 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             break;
         }
     }
+    else if(key==CMD_GOTO_KEY)
+    {
+        int pn=0;
+        bool b_LINE=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_LINE)
+                {
+                    if(b_LINE==false)
+                    {
+                        b_LINE=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_goto_line,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_goto_line<0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_LINE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_LINE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
+    else if(key==CMD_STOP_KEY)
+    {
+        //不需要处理
+    }
     else
     {
         return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
@@ -4736,6 +4803,13 @@ QString my_cmd::rc_samplespeed(float speed)
 {
     QString msg;
     msg=QString(CMD_SAMPLESPEED)+"["+QString::number(speed,'f',3)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_line(int line)
+{
+    QString msg;
+    msg=QString(CMD_LINE)+"["+QString::number(line)+"]";
     return msg;
 }
 
