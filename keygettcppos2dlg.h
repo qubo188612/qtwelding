@@ -34,10 +34,13 @@ private slots:
 
     void on_gettcppos2Btn_clicked();
 
+    void on_updata_posBtn_clicked();
+
 private:
     Ui::keygettcppos2Dlg *ui;
 
     bool b_inster;
+    RobPos inster_pos;//当前到位
 };
 
 #endif // KEYGETTCPPOS2DLG_H

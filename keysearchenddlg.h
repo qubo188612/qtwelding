@@ -40,11 +40,14 @@ private slots:
 
     void on_arriveBtn_released();
 
+    void on_updata_posBtn_clicked();
+
 private:
     Ui::keysearchendDlg *ui;
 
     QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
     bool b_inster;//是否替换
+    RobPos inster_pos;//当前到位
 };
 
 #endif // KEYSEARCHENDDLG_H

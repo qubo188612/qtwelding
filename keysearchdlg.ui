@@ -371,6 +371,19 @@
      <string>长按到点</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="updata_posBtn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>更新到当前点位</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

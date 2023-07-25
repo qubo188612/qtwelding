@@ -34,10 +34,13 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_updata_posBtn_clicked();
+
 private:
     Ui::keytracecontinueDlg *ui;
 
     bool b_inster;
+    RobPos inster_pos;//当前到位
 };
 
 #endif // KEYTRACECONTINUEDLG_H

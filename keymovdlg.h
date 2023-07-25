@@ -40,8 +40,13 @@ private slots:
 
     void on_movechangecheckBox_stateChanged(int arg1);
 
+    void on_updata_posBtn_clicked();
+
 private:
     Ui::keymovDlg *ui;
+
+    bool b_inster;//是否替换
+    RobPos inster_pos;//当前到位
 
     QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
 };

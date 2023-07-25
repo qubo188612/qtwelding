@@ -91,6 +91,7 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
             if(movemod==MOVEJ||movemod==MOVEL)
             {
                 RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
+                inster_pos=pos;
                 QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                 QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
@@ -139,11 +140,13 @@ void keysearchDlg::setbutton(int name)
     {
         b_inster=false;
         ui->searchaddBtn->setText(QString::fromLocal8Bit("插入寻位指令"));
+        ui->updata_posBtn->hide();
     }
     else
     {
         b_inster=true;
         ui->searchaddBtn->setText(QString::fromLocal8Bit("替换寻位指令"));
+        ui->updata_posBtn->show();
     }
 }
 
@@ -158,52 +161,60 @@ void keysearchDlg::on_searchaddBtn_clicked()
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
     {
-        send_group_robot.lock();
-        sent_info_robot sendrob;
-        sendrob.addr=ROB_TCP_NUM_REG_ADD;
-        sendrob.ctx=m_mcs->rob->ctx_posget;
-        sendrob.data.resize(1);
-        sendrob.data[0]=tcp;
-        m_mcs->rob->b_send_group_robot=false;
-        m_mcs->rob->send_group_robot.push_back(sendrob);
-        m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
-        send_group_robot.unlock();
-        usleep(ROB_WORK_DELAY);
-        int num=0;
-        while(m_mcs->rob->b_send_group_robot==false)
+        RobPos robpos;
+        if(b_inster==false)
         {
-            if(num>10)
+            send_group_robot.lock();
+            sent_info_robot sendrob;
+            sendrob.addr=ROB_TCP_NUM_REG_ADD;
+            sendrob.ctx=m_mcs->rob->ctx_posget;
+            sendrob.data.resize(1);
+            sendrob.data[0]=tcp;
+            m_mcs->rob->b_send_group_robot=false;
+            m_mcs->rob->send_group_robot.push_back(sendrob);
+            m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+            send_group_robot.unlock();
+            usleep(ROB_WORK_DELAY);
+            int num=0;
+            while(m_mcs->rob->b_send_group_robot==false)
             {
-                break;
+                if(num>10)
+                {
+                    break;
+                }
+                usleep(ROB_WORK_DELAY_STEP);
+                num++;
             }
-            usleep(ROB_WORK_DELAY_STEP);
-            num++;
-        }
-        if(m_mcs->rob->b_send_group_robot==false)
-        {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
-            return;
-        }
-        usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
-        num=0;
-        m_mcs->rob->TCPpos.nEn=false;
-        while (m_mcs->rob->TCPpos.nEn==false)
-        {
-            if(num>10)
+            if(m_mcs->rob->b_send_group_robot==false)
             {
-                break;
+                ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+                return;
             }
-            usleep(ROB_WORK_DELAY_STEP);
-            num++;
+            usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
+            num=0;
+            m_mcs->rob->TCPpos.nEn=false;
+            while (m_mcs->rob->TCPpos.nEn==false)
+            {
+                if(num>10)
+                {
+                    break;
+                }
+                usleep(ROB_WORK_DELAY_STEP);
+                num++;
+            }
+            if(m_mcs->rob->TCPpos.nEn==false)
+            {
+                ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+                return;
+            }
+            robpos=m_mcs->rob->TCPpos;
         }
-        if(m_mcs->rob->TCPpos.nEn==false)
+        else
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
-            return;
+            robpos=inster_pos;
         }
         bool rc;
         float speed;
-        RobPos robpos=m_mcs->rob->TCPpos;
         Robmovemodel movemodel=(Robmovemodel)ui->searchmovemodecombo->currentIndex();
         std::vector<float> sidemove(3);
         float sidespeed;
@@ -368,7 +379,8 @@ void keysearchDlg::on_arriveBtn_pressed()
     if(movemod==MOVEJ||movemod==MOVEL)
     {
         int tcp=ui->searchtcpcombo->currentIndex();
-        RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
+    //  RobPos pos=cmd.cmd_search_pos;//获取到移动坐标
+        RobPos pos=inster_pos;
         movemod=MOVEJ;//用关节移动方式到位
         m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     }
@@ -402,6 +414,88 @@ void keysearchDlg::on_searchchangecheckBox_stateChanged(int arg1)
     else
     {
         ui->searchchangecombo->setDisabled(false);
+    }
+}
+
+//更新到当前位置点
+void keysearchDlg::on_updata_posBtn_clicked()
+{
+    int tcp=ui->searchtcpcombo->currentIndex();
+    if(tcp<0||tcp>ui->searchtcpcombo->count()-1)
+    {
+        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        return;
+    }
+    if(m_mcs->rob->b_link_ctx_posget==true)
+    {
+        send_group_robot.lock();
+        sent_info_robot sendrob;
+        sendrob.addr=ROB_TCP_NUM_REG_ADD;
+        sendrob.ctx=m_mcs->rob->ctx_posget;
+        sendrob.data.resize(1);
+        sendrob.data[0]=tcp;
+        m_mcs->rob->b_send_group_robot=false;
+        m_mcs->rob->send_group_robot.push_back(sendrob);
+        m_mcs->rob->ctx_robot_dosomeing=DO_WRITE_TASK;
+        send_group_robot.unlock();
+        usleep(ROB_WORK_DELAY);
+        int num=0;
+        while(m_mcs->rob->b_send_group_robot==false)
+        {
+            if(num>10)
+            {
+                break;
+            }
+            usleep(ROB_WORK_DELAY_STEP);
+            num++;
+        }
+        if(m_mcs->rob->b_send_group_robot==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            return;
+        }
+        usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
+        num=0;
+        m_mcs->rob->TCPpos.nEn=false;
+        while (m_mcs->rob->TCPpos.nEn==false)
+        {
+            if(num>10)
+            {
+                break;
+            }
+            usleep(ROB_WORK_DELAY_STEP);
+            num++;
+        }
+        if(m_mcs->rob->TCPpos.nEn==false)
+        {
+            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            return;
+        }
+        Robmovemodel movemodel=(Robmovemodel)ui->searchmovemodecombo->currentIndex();
+        if(movemodel==MOVEJ||movemodel==MOVEL)
+        {
+            RobPos pos=m_mcs->rob->TCPpos;
+            inster_pos=pos;
+            QString msg="("+QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                            QString::number(pos.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                            QString::number(pos.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+                            QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                            QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                            QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                            QString::number(pos.out_1)+","+
+                            QString::number(pos.out_2)+","+
+                            QString::number(pos.out_3)+")";
+            ui->arrive_pos->setText(msg);
+        }
+        else
+        {
+            ui->record->append(QString::fromLocal8Bit("只有MOVEJ和MOVEL的点可以直接更新到当前点"));
+            return;
+        }
+    }
+    else
+    {
+        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
     }
 }
 
