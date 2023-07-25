@@ -165,12 +165,12 @@
    </property>
    <item>
     <property name="text">
-     <string>内旋 RX-RY-RZ (如:安川/ABB/UR)</string>
+     <string>内旋 RX-RY-RZ (如:发那科/安川/ABB/UR)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>外旋 RZ-RY-RX (如:库卡/OTC)</string>
+     <string>内旋 RZ-RY-RX (如:库卡/OTC)</string>
     </property>
    </item>
    <item>
@@ -180,12 +180,52 @@
    </item>
    <item>
     <property name="text">
-     <string>RZ-RX-RZ</string>
+     <string>内旋 RZ-RX-RZ</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>RZ-RY-RZ(如:川崎)</string>
+     <string>内旋 RZ-RY-RZ(如:川崎)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RY-RZ-RX</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RZ-RX-RY</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RX-RZ-RY</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RY-RX-RZ</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RX-RY-RX</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RY-RZ-RY</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RX-RZ-RX</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>内旋 RY-RX-RY</string>
     </property>
    </item>
   </widget>

@@ -12,10 +12,18 @@
 typedef enum CAL_POSTURE_MODEL_ID          //机器人姿态角含义模式
 {
     CAL_ROBOT_YASKAWA=0,        //安川、ABB、川崎、UR、越彊姿态标准 内旋 RX-RY-RZ
-    CAL_ROBOT_KUKA=1,           //库卡姿态标准 外旋 RZ-RY-RX
+    CAL_ROBOT_KUKA=1,           //库卡姿态标准 内旋 RZ-RY-RX
     CAL_ROBOT_PANASONIC=2,      //松下姿态标准 内旋 RX-"RY"-RZ
-    CAL_ROBOT_RZRXRZ=3,         //RZ-RX-RZ
-    CAL_ROBOT_KAWASAKI=4,       //川崎姿态标准 RZ-RY-RZ
+    CAL_ROBOT_RZRXRZ=3,         //内旋RZ-RX-RZ
+    CAL_ROBOT_KAWASAKI=4,       //川崎姿态标准 内旋RZ-RY-RZ
+    CAL_ROBOT_RYRZRX=5,         //内旋RY-RZ-RX
+    CAL_ROBOT_RZRXRY=6,         //内旋RZ-RX-RY
+    CAL_ROBOT_RXRZRY=7,         //内旋RX-RZ-RY
+    CAL_ROBOT_RYRXRZ=8,         //内旋RY-RX-RZ
+    CAL_ROBOT_RXRYRX=9,         //内旋RX-RY-RX
+    CAL_ROBOT_RYRZRY=10,        //内旋RY-RZ-RY
+    CAL_ROBOT_RXRZRX=11,        //内旋RX-RZ-RX
+    CAL_ROBOT_RYRXRY=12,        //内旋RY-RX-RY
 }CAL_POSTURE;
 
 class Calibration       //机器人手眼标定
@@ -24,7 +32,7 @@ public:
     Calibration();
     ~Calibration();
     //眼在手外的标定,计算旋转和标定矩阵
-    static bool hand_out_yes_point2RT(std::vector<Eigen::Vector3d> &p1,     //输入眼坐标
+    static bool hand_out_yes_point2RT(std::vector<Eigen::Vector3d> &p1,    //输入眼坐标
                                       std::vector<Eigen::Vector3d> &p2,    //输入手坐标
                                       Eigen::Matrix3d &R,                  //输出旋转矩阵
                                       Eigen::Vector3d &T,                  //输出平移举证
@@ -80,12 +88,28 @@ protected:
    static Eigen::Matrix3d Kuka_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Panasonic_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d RzRxRz_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RyRzRx_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RzRxRy_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RxRzRy_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RyRxRz_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RxRyRx_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RyRzRy_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RxRzRx_Euler2RotMatrixXYZ(std::array<double,3> pst);
+   static Eigen::Matrix3d RyRxRy_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Kawasaki_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<double,3> pst);
    static std::array<double, 3> Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Kuka_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Panasonic_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> RzRxRz_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RyRzRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RzRxRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RxRzRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RyRxRz_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RxRyRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RyRzRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RxRzRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RyRxRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Kawasaki_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::Matrix3d rot_matrix);
    static bool computeMatrix(CAL_POSTURE robot,RobPos robpos,std::vector<TCP_Leaserpos> data_group,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot);

@@ -682,7 +682,318 @@ Eigen::Matrix3d Calibration::Kawasaki_Euler2RotMatrixXYZ(std::array<double,3> ps
 Eigen::Matrix3d Calibration::Panasonic_Euler2RotMatrixXYZ(std::array<double,3> pst)
 {
     return Euler2RotMatrixZ(pst[0])*Euler2RotMatrixY(90 - pst[1])*Euler2RotMatrixX(pst[2]);
+}
 
+Eigen::Matrix3d Calibration::RyRzRx_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d Y,Z,X,rot;
+    Y(0,0)=cos(rx*CAL_RADIAN);
+    Y(0,1)=0;
+    Y(0,2)=sin(rx*CAL_RADIAN);
+    Y(1,0)=0;
+    Y(1,1)=1;
+    Y(1,2)=0;
+    Y(2,0)=-sin(rx*CAL_RADIAN);
+    Y(2,1)=0;
+    Y(2,2)=cos(rx*CAL_RADIAN);
+
+    Z(0,0)=cos(ry*CAL_RADIAN);
+    Z(0,1)=-sin(ry*CAL_RADIAN);
+    Z(0,2)=0;
+    Z(1,0)=sin(ry*CAL_RADIAN);
+    Z(1,1)=cos(ry*CAL_RADIAN);
+    Z(1,2)=0;
+    Z(2,0)=0;
+    Z(2,1)=0;
+    Z(2,2)=1;
+
+    X(0,0)=1;
+    X(0,1)=0;
+    X(0,2)=0;
+    X(1,0)=0;
+    X(1,1)=cos(rz*CAL_RADIAN);
+    X(1,2)=-sin(rz*CAL_RADIAN);
+    X(2,0)=0;
+    X(2,1)=sin(rz*CAL_RADIAN);
+    X(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=Y*Z*X;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RzRxRy_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d Z,X,Y,rot;
+
+    Z(0,0)=cos(rx*CAL_RADIAN);
+    Z(0,1)=-sin(rx*CAL_RADIAN);
+    Z(0,2)=0;
+    Z(1,0)=sin(rx*CAL_RADIAN);
+    Z(1,1)=cos(rx*CAL_RADIAN);
+    Z(1,2)=0;
+    Z(2,0)=0;
+    Z(2,1)=0;
+    Z(2,2)=1;
+
+    X(0,0)=1;
+    X(0,1)=0;
+    X(0,2)=0;
+    X(1,0)=0;
+    X(1,1)=cos(ry*CAL_RADIAN);
+    X(1,2)=-sin(ry*CAL_RADIAN);
+    X(2,0)=0;
+    X(2,1)=sin(ry*CAL_RADIAN);
+    X(2,2)=cos(ry*CAL_RADIAN);
+
+    Y(0,0)=cos(rz*CAL_RADIAN);
+    Y(0,1)=0;
+    Y(0,2)=sin(rz*CAL_RADIAN);
+    Y(1,0)=0;
+    Y(1,1)=1;
+    Y(1,2)=0;
+    Y(2,0)=-sin(rz*CAL_RADIAN);
+    Y(2,1)=0;
+    Y(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=Z*X*Y;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RxRzRy_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d X,Z,Y,rot;
+
+    X(0,0)=1;
+    X(0,1)=0;
+    X(0,2)=0;
+    X(1,0)=0;
+    X(1,1)=cos(rx*CAL_RADIAN);
+    X(1,2)=-sin(rx*CAL_RADIAN);
+    X(2,0)=0;
+    X(2,1)=sin(rx*CAL_RADIAN);
+    X(2,2)=cos(rx*CAL_RADIAN);
+
+    Z(0,0)=cos(ry*CAL_RADIAN);
+    Z(0,1)=-sin(ry*CAL_RADIAN);
+    Z(0,2)=0;
+    Z(1,0)=sin(ry*CAL_RADIAN);
+    Z(1,1)=cos(ry*CAL_RADIAN);
+    Z(1,2)=0;
+    Z(2,0)=0;
+    Z(2,1)=0;
+    Z(2,2)=1;
+
+    Y(0,0)=cos(rz*CAL_RADIAN);
+    Y(0,1)=0;
+    Y(0,2)=sin(rz*CAL_RADIAN);
+    Y(1,0)=0;
+    Y(1,1)=1;
+    Y(1,2)=0;
+    Y(2,0)=-sin(rz*CAL_RADIAN);
+    Y(2,1)=0;
+    Y(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=X*Z*Y;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RyRxRz_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d Y,X,Z,rot;
+
+    Y(0,0)=cos(rx*CAL_RADIAN);
+    Y(0,1)=0;
+    Y(0,2)=sin(rx*CAL_RADIAN);
+    Y(1,0)=0;
+    Y(1,1)=1;
+    Y(1,2)=0;
+    Y(2,0)=-sin(rx*CAL_RADIAN);
+    Y(2,1)=0;
+    Y(2,2)=cos(rx*CAL_RADIAN);
+
+    X(0,0)=1;
+    X(0,1)=0;
+    X(0,2)=0;
+    X(1,0)=0;
+    X(1,1)=cos(ry*CAL_RADIAN);
+    X(1,2)=-sin(ry*CAL_RADIAN);
+    X(2,0)=0;
+    X(2,1)=sin(ry*CAL_RADIAN);
+    X(2,2)=cos(ry*CAL_RADIAN);
+
+    Z(0,0)=cos(rz*CAL_RADIAN);
+    Z(0,1)=-sin(rz*CAL_RADIAN);
+    Z(0,2)=0;
+    Z(1,0)=sin(rz*CAL_RADIAN);
+    Z(1,1)=cos(rz*CAL_RADIAN);
+    Z(1,2)=0;
+    Z(2,0)=0;
+    Z(2,1)=0;
+    Z(2,2)=1;
+
+    rot=Y*X*Z;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RxRyRx_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d X1,Y,X2,rot;
+
+    X1(0,0)=1;
+    X1(0,1)=0;
+    X1(0,2)=0;
+    X1(1,0)=0;
+    X1(1,1)=cos(rx*CAL_RADIAN);
+    X1(1,2)=-sin(rx*CAL_RADIAN);
+    X1(2,0)=0;
+    X1(2,1)=sin(rx*CAL_RADIAN);
+    X1(2,2)=cos(rx*CAL_RADIAN);
+
+    Y(0,0)=cos(ry*CAL_RADIAN);
+    Y(0,1)=0;
+    Y(0,2)=sin(ry*CAL_RADIAN);
+    Y(1,0)=0;
+    Y(1,1)=1;
+    Y(1,2)=0;
+    Y(2,0)=-sin(ry*CAL_RADIAN);
+    Y(2,1)=0;
+    Y(2,2)=cos(ry*CAL_RADIAN);
+
+    X2(0,0)=1;
+    X2(0,1)=0;
+    X2(0,2)=0;
+    X2(1,0)=0;
+    X2(1,1)=cos(rz*CAL_RADIAN);
+    X2(1,2)=-sin(rz*CAL_RADIAN);
+    X2(2,0)=0;
+    X2(2,1)=sin(rz*CAL_RADIAN);
+    X2(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=X1*Y*X2;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RyRzRy_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d Y1,Y2,Z,rot;
+
+    Y1(0,0)=cos(rx*CAL_RADIAN);
+    Y1(0,1)=0;
+    Y1(0,2)=sin(rx*CAL_RADIAN);
+    Y1(1,0)=0;
+    Y1(1,1)=1;
+    Y1(1,2)=0;
+    Y1(2,0)=-sin(rx*CAL_RADIAN);
+    Y1(2,1)=0;
+    Y1(2,2)=cos(rx*CAL_RADIAN);
+
+    Z(0,0)=cos(ry*CAL_RADIAN);
+    Z(0,1)=-sin(ry*CAL_RADIAN);
+    Z(0,2)=0;
+    Z(1,0)=sin(ry*CAL_RADIAN);
+    Z(1,1)=cos(ry*CAL_RADIAN);
+    Z(1,2)=0;
+    Z(2,0)=0;
+    Z(2,1)=0;
+    Z(2,2)=1;
+
+    Y2(0,0)=cos(rz*CAL_RADIAN);
+    Y2(0,1)=0;
+    Y2(0,2)=sin(rz*CAL_RADIAN);
+    Y2(1,0)=0;
+    Y2(1,1)=1;
+    Y2(1,2)=0;
+    Y2(2,0)=-sin(rz*CAL_RADIAN);
+    Y2(2,1)=0;
+    Y2(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=Y1*Z*Y2;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RxRzRx_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d X1,Z,X2,rot;
+
+    X1(0,0)=1;
+    X1(0,1)=0;
+    X1(0,2)=0;
+    X1(1,0)=0;
+    X1(1,1)=cos(rx*CAL_RADIAN);
+    X1(1,2)=-sin(rx*CAL_RADIAN);
+    X1(2,0)=0;
+    X1(2,1)=sin(rx*CAL_RADIAN);
+    X1(2,2)=cos(rx*CAL_RADIAN);
+
+    Z(0,0)=cos(ry*CAL_RADIAN);
+    Z(0,1)=-sin(ry*CAL_RADIAN);
+    Z(0,2)=0;
+    Z(1,0)=sin(ry*CAL_RADIAN);
+    Z(1,1)=cos(ry*CAL_RADIAN);
+    Z(1,2)=0;
+    Z(2,0)=0;
+    Z(2,1)=0;
+    Z(2,2)=1;
+
+    X2(0,0)=1;
+    X2(0,1)=0;
+    X2(0,2)=0;
+    X2(1,0)=0;
+    X2(1,1)=cos(rz*CAL_RADIAN);
+    X2(1,2)=-sin(rz*CAL_RADIAN);
+    X2(2,0)=0;
+    X2(2,1)=sin(rz*CAL_RADIAN);
+    X2(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=X1*Z*X2;
+    return rot;
+}
+
+Eigen::Matrix3d Calibration::RyRxRy_Euler2RotMatrixXYZ(std::array<double,3> pst)
+{
+    double rx = pst[0],ry = pst[1],rz = pst[2];
+    Eigen::Matrix3d Y1,X,Y2,rot;
+
+    Y1(0,0)=cos(rx*CAL_RADIAN);
+    Y1(0,1)=0;
+    Y1(0,2)=sin(rx*CAL_RADIAN);
+    Y1(1,0)=0;
+    Y1(1,1)=1;
+    Y1(1,2)=0;
+    Y1(2,0)=-sin(rx*CAL_RADIAN);
+    Y1(2,1)=0;
+    Y1(2,2)=cos(rx*CAL_RADIAN);
+
+    X(0,0)=1;
+    X(0,1)=0;
+    X(0,2)=0;
+    X(1,0)=0;
+    X(1,1)=cos(ry*CAL_RADIAN);
+    X(1,2)=-sin(ry*CAL_RADIAN);
+    X(2,0)=0;
+    X(2,1)=sin(ry*CAL_RADIAN);
+    X(2,2)=cos(ry*CAL_RADIAN);
+
+
+    Y2(0,0)=cos(rz*CAL_RADIAN);
+    Y2(0,1)=0;
+    Y2(0,2)=sin(rz*CAL_RADIAN);
+    Y2(1,0)=0;
+    Y2(1,1)=1;
+    Y2(1,2)=0;
+    Y2(2,0)=-sin(rz*CAL_RADIAN);
+    Y2(2,1)=0;
+    Y2(2,2)=cos(rz*CAL_RADIAN);
+
+    rot=Y1*X*Y2;
+    return rot;
 }
 
 Eigen::Matrix3d Calibration::Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<double,3> pst)
@@ -704,6 +1015,30 @@ Eigen::Matrix3d Calibration::Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<dou
         break;
     case CAL_ROBOT_KAWASAKI:
         posture_matrix = Kawasaki_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RYRZRX:
+        posture_matrix = RyRzRx_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RZRXRY:
+        posture_matrix = RzRxRy_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RXRZRY:
+        posture_matrix = RxRzRy_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RYRXRZ:
+        posture_matrix = RyRxRz_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RXRYRX:
+        posture_matrix = RxRyRx_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RYRZRY:
+        posture_matrix = RyRzRy_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RXRZRX:
+        posture_matrix = RxRzRx_Euler2RotMatrixXYZ(pst);
+        break;
+    case CAL_ROBOT_RYRXRY:
+        posture_matrix = RyRxRy_Euler2RotMatrixXYZ(pst);
         break;
     }
     return posture_matrix;
@@ -751,11 +1086,10 @@ std::array<double, 3> Calibration::Kuka_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_m
 
 std::array<double, 3> Calibration::Panasonic_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
 {
-    double r11,r12,r13,r21,r23,r31,r32,r33;
+    double r11,r12,r13,r23,r31,r32,r33;
     r11 = rot_matrix(0,0);
     r12 = rot_matrix(0,1);
     r13 = rot_matrix(0,2);
-    r21 = rot_matrix(1,0);
     r23 = rot_matrix(1,2);
     r31 = rot_matrix(2,0);
     r32 = rot_matrix(2,1);
@@ -789,73 +1123,220 @@ std::array<double, 3> Calibration::RzRxRz_RotMatrixXYZ2Euler(Eigen::Matrix3d rot
 {
     double r13,r22,r23,r31,r32,r33;
     r13 = rot_matrix(0,2);
+    r22 = rot_matrix(1,1);
     r23 = rot_matrix(1,2);
-    r22 = rot_matrix(1,0);
-    r23 = rot_matrix(1,1);
     r31 = rot_matrix(2,0);
     r32 = rot_matrix(2,1);
     r33 = rot_matrix(2,2);
-    double o = atan2(r13,-r23);
-    double a;
-    double t = atan2(r31,r32);
-    if(sin(o)!=0)
+    double rz1 = atan2(r13,-r23);
+    double rx;
+    double rz2 = atan2(r31,r32);
+    if(sin(rz1)!=0)
     {
-        a=atan2(r13,sin(o)*r33);
+        rx=atan2(r13,sin(rz1)*r33);
     }
     else
     {
-        a=atan2(r22,r23);
+        rx=atan2(r22,r23);
     }
 
     std::array<double,3> temp;
-    temp[0]= o;
-    temp[1]= a;
-    temp[2]= t;
-    //return array<double, 3>{rz, ry, rx};
+    temp[0]= rz1;
+    temp[1]= rx;
+    temp[2]= rz2;
+
     return temp;
 }
 
 
 std::array<double, 3> Calibration::Kawasaki_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
 {
-    double r12,r13,r22,r23,r31,r32,r33;
-    r12 = rot_matrix(0,1);
+    double r13,r23,r31,r32,r33;
     r13 = rot_matrix(0,2);
     r23 = rot_matrix(1,2);
-    r22 = rot_matrix(1,0);
-    r23 = rot_matrix(1,1);
     r31 = rot_matrix(2,0);
     r32 = rot_matrix(2,1);
     r33 = rot_matrix(2,2);
     double o = atan2(r23,r13);
-    double a;
+    double a = atan2(sqrt(r31*r31+r32*r32),r33);
     double t = atan2(r32,-r31);
-    if(cos(t)!=0)
-    {
-        a=atan2(-r31,r33*cos(t));
-    }
-    else if(sin(o)!=0)
-    {
-        a=atan2(r22,r23*sin(o));
-    }
-    else if(cos(o)!=0)
-    {
-        a=atan2(r32*cos(o),-r12);
-    }
-    else if(sin(t)!=0)
-    {
-        a=atan2(r32,r33*sin(t));
-    }
-    else
-    {
-        a=acos(r33);
-    }
 
     std::array<double,3> temp;
     temp[0]= o;
     temp[1]= a;
     temp[2]= t;
-    //return array<double, 3>{rz, ry, rx};
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RyRzRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r21,r22,r23,r31;
+    r11 = rot_matrix(0,0);
+    r21 = rot_matrix(1,0);
+    r22 = rot_matrix(1,1);
+    r23 = rot_matrix(1,2);
+    r31 = rot_matrix(2,0);
+
+    double ry = atan2(-r31,r11);
+    double rz = atan2(r21,sqrt(r22*r22 + r23*r23));
+    double rx = atan2(-r23,r22);
+
+    std::array<double,3> temp;
+    temp[0]= ry;
+    temp[1]= rz;
+    temp[2]= rx;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RzRxRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r12,r22,r31,r32,r33;
+    r12 = rot_matrix(0,1);
+    r22 = rot_matrix(1,1);
+    r31 = rot_matrix(2,0);
+    r32 = rot_matrix(2,1);
+    r33 = rot_matrix(2,2);
+
+    double rz = atan2(-r12,r22);
+    double rx = atan2(r32,sqrt(r31*r31 + r33*r33));
+    double ry = atan2(r31,r33);
+
+    std::array<double,3> temp;
+    temp[0]= rz;
+    temp[1]= rx;
+    temp[2]= ry;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RxRzRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r12,r13,r22,r32;
+    r11 = rot_matrix(0,0);
+    r12 = rot_matrix(0,1);
+    r13 = rot_matrix(0,2);
+    r22 = rot_matrix(1,1);
+    r32 = rot_matrix(2,1);
+
+    double rx = atan2(r32,r22);
+    double rz = atan2(-r12,sqrt(r11*r11 + r13*r13));
+    double ry = atan2(r13,r11);
+
+    std::array<double,3> temp;
+    temp[0]= rx;
+    temp[1]= rz;
+    temp[2]= ry;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RyRxRz_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r13,r21,r22,r23,r33;
+    r13 = rot_matrix(0,2);
+    r21 = rot_matrix(1,0);
+    r22 = rot_matrix(1,1);
+    r23 = rot_matrix(1,2);
+    r33 = rot_matrix(2,2);
+
+    double ry = atan2(r13,r33);
+    double rx = atan2(-r23,sqrt(r21*r21 + r22*r22));
+    double rz = atan2(r21,r22);
+
+    std::array<double,3> temp;
+    temp[0]= rx;
+    temp[1]= rz;
+    temp[2]= ry;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RxRyRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r12,r13,r21,r31;
+    r11 = rot_matrix(0,0);
+    r12 = rot_matrix(0,1);
+    r13 = rot_matrix(0,2);
+    r21 = rot_matrix(1,0);
+    r31 = rot_matrix(2,0);
+
+    double rx1 = atan2(r21,-r31);
+    double ry = atan2(sqrt(r13*r13+r12*r12),r11);
+    double rx2 = atan2(r12,r13);
+
+    std::array<double,3> temp;
+    temp[0]= rx1;
+    temp[1]= ry;
+    temp[2]= rx2;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RyRzRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r12,r21,r22,r23,r32;
+    r12 = rot_matrix(0,1);
+    r21 = rot_matrix(1,0);
+    r22 = rot_matrix(1,1);
+    r23 = rot_matrix(1,2);
+    r32 = rot_matrix(2,1);
+
+    double ry1 = atan2(r32,-r12);
+    double rz = atan2(sqrt(r21*r21+r23*r23),r22);
+    double ry2 = atan2(r23,r21);
+
+
+    std::array<double,3> temp;
+    temp[0]= ry1;
+    temp[1]= rz;
+    temp[2]= ry2;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RxRzRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r11,r12,r13,r21,r31;
+    r11 = rot_matrix(0,0);
+    r12 = rot_matrix(0,1);
+    r13 = rot_matrix(0,2);
+    r21 = rot_matrix(1,0);
+    r31 = rot_matrix(2,0);
+
+    double rx1 = atan2(r31,r21);
+    double rz = atan2(sqrt(r12*r12+r13*r13),r11);
+    double rx2 = atan2(r13,-r12);
+
+
+    std::array<double,3> temp;
+    temp[0]= rx1;
+    temp[1]= rz;
+    temp[2]= rx2;
+
+    return temp;
+}
+
+std::array<double, 3> Calibration::RyRxRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix)
+{
+    double r12,r21,r22,r23,r32;
+    r12 = rot_matrix(0,1);
+    r21 = rot_matrix(1,0);
+    r22 = rot_matrix(1,1);
+    r23 = rot_matrix(1,2);
+    r32 = rot_matrix(2,1);
+
+    double ry1 = atan2(r12,r32);
+    double rx = atan2(sqrt(r21*r21+r32*r32),r22);
+    double ry2 = atan2(r21,-r23);
+
+
+    std::array<double,3> temp;
+    temp[0]= ry1;
+    temp[1]= rx;
+    temp[2]= ry2;
+
     return temp;
 }
 
@@ -879,6 +1360,30 @@ std::array<double, 3> Calibration::RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::M
         break;
     case CAL_ROBOT_KAWASAKI:
         temp = Kawasaki_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RYRZRX:
+        temp = RyRzRx_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RZRXRY:
+        temp = RzRxRy_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RXRZRY:
+        temp = RxRzRy_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RYRXRZ:
+        temp = RyRxRz_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RXRYRX:
+        temp = RxRyRx_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RYRZRY:
+        temp = RyRzRy_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RXRZRX:
+        temp = RxRzRx_RotMatrixXYZ2Euler(rot_matrix);
+        break;
+    case CAL_ROBOT_RYRXRY:
+        temp = RyRxRy_RotMatrixXYZ2Euler(rot_matrix);
         break;
     }
     return temp;
