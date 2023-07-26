@@ -9,6 +9,7 @@ keyscanDlg::keyscanDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
     setmovec=new setmovecDlg(m_mcs);
 

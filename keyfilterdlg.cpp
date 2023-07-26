@@ -7,6 +7,7 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
 #if !defined USE_PLC_FILTER
     ui->tabWidget->removeTab(0);

@@ -7,6 +7,7 @@ keywaveDlg::keywaveDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
     for(int n=0;n<TREND_ID_TOTAL_NUM;n++)
     {
         QString msg=Trend_mode_toQString((Trend_mode)n);

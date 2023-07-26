@@ -6,6 +6,9 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui(new Ui::checkscandataDlg)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
+                  |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
+
     m_mcs=mcs;
 
     ui->tabWidget->setTabText(0,QString::fromLocal8Bit("点位"));
