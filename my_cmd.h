@@ -46,7 +46,8 @@
 //滤波指令，举例 FILTER: CREAT[跟踪第一条line] MODE[1] NAME[滤波后轨迹1] FILTERS[1,2,3,4,5,6,7,8]
 //程序跳转指令，举例 GOTO: LINE[13]
 //程序结束指令，举例 STOP:
-//跟踪轨迹相加，举例 CREATADD: CREATS[轨迹1,轨迹2,轨迹3] NAME[跟踪轨迹]
+//跟踪轨迹相加指令，举例 CREATADD: CREATS[轨迹1,轨迹2,轨迹3] NAME[跟踪轨迹]
+//点加跟踪轨迹指令, 举例 CREATADDP: MODE[0] POINT[点位1] CREAT[轨迹1] NAME[跟踪轨迹]
 
 
 //key项
@@ -83,6 +84,7 @@
 #define CMD_GOTO_KEY                    "GOTO:"             //程序跳转命令集合KEY
 #define CMD_STOP_KEY                    "STOP:"             //程序运行结束命令集合KEY
 #define CMD_CREATADD_KEY                "CREATADD:"         //跟踪轨迹相加命令集合KEY
+#define CMD_CREATADDP_KEY               "CREATADDP:"        //点位与跟踪轨迹相加命令集合KEY
 
 
 //参数项
@@ -183,6 +185,7 @@ public:
     QString cmd_goto(int line);//前往第几行执行
     QString cmd_stop();//程序结束指令
     QString cmd_creatadd(std::vector<QString> names,QString name_out);//跟踪轨迹相加
+    QString cmd_creataddp(QString weldname,QString pointname,Creataddp_edit_mode mode,QString name_out);//点位和轨迹相加
 
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
@@ -354,6 +357,11 @@ public:
 
     std::vector<QString> cmd_creatadd_names;//获取到的跟踪轨迹名字
     QString cmd_creatadd_nameout;//生成的跟踪轨迹名字
+
+    QString cmd_creataddp_pointname;//点位名字
+    QString cmd_creataddp_weldname;//跟踪轨迹名字
+    Creataddp_edit_mode cmd_creataddp_mode;//相加模式
+    QString cmd_creataddp_nameout;//生成的跟踪轨迹名字
 
     int cmd_goto_line;//获取到的跳转行数
 

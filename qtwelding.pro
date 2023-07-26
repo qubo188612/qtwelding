@@ -43,6 +43,7 @@ SOURCES += \
         keycamdlg.cpp \
         keycoorddlg.cpp \
         keycreatadddlg.cpp \
+        keycreataddpdlg.cpp \
         keycreatcdlg.cpp \
         keycreatdlg.cpp \
         keycreatfdlg.cpp \
@@ -126,6 +127,7 @@ FORMS += \
     keycamdlg.ui \
     keycoorddlg.ui \
     keycreatadddlg.ui \
+    keycreataddpdlg.ui \
     keycreatcdlg.ui \
     keycreatdlg.ui \
     keycreatfdlg.ui \
@@ -210,6 +212,7 @@ HEADERS += \
     keycamdlg.h \
     keycoorddlg.h \
     keycreatadddlg.h \
+    keycreataddpdlg.h \
     keycreatcdlg.h \
     keycreatdlg.h \
     keycreatfdlg.h \

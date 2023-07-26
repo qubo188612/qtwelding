@@ -181,6 +181,21 @@ QString Plotpos_edit_mode_toQString(Plotpos_edit_mode plotpos_edit_mode)
     return msg;
 }
 
+QString Creataddp_edit_mode_toQString(Creataddp_edit_mode creataddp_edit_mode)
+{
+    QString msg;
+    switch(creataddp_edit_mode)
+    {
+        case CREATADDP_EDIT_MODE_HEAD:
+            msg=QString::fromLocal8Bit("点位放在轨迹头部");
+        break;
+        case CREATADDP_EDIT_MODE_TAIL:
+            msg=QString::fromLocal8Bit("点位放在轨迹尾部");
+        break;
+    }
+    return msg;
+}
+
 QString Filter_mode_toQString(Filter_mode filter_mode)
 {
     QString msg;

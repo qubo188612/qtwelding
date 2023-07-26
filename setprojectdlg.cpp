@@ -67,6 +67,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keyfilter=new keyfilterDlg(mcs);
     keygoto=new keygotoDlg(mcs);
     keycreatadd=new keycreataddDlg(mcs);
+    keycreataddp=new keycreataddpDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs); 
@@ -112,6 +113,7 @@ setprojectDlg::~setprojectDlg()
     delete keyfilter;
     delete keygoto;
     delete keycreatadd;
+    delete keycreataddp;
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
@@ -1861,6 +1863,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_CREATADDP_KEY)
+            {
+                keycreataddp->init_dlg_show(cmdlist);
+                keycreataddp->setWindowTitle(othercmd->cmdname);
+                keycreataddp->setbutton(1);
+                int rc=keycreataddp->exec();
+                keycreataddp->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keycreataddp->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
         }
         else if(rc==-1)
         {
@@ -3177,6 +3209,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             if(rc!=0)//确定
             {
                 QString msg=keycreatadd->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入相加生成轨迹指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消相加生成轨迹指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_CREATADDP_KEY)
+        {
+            keycreataddp->init_dlg_show();
+            keycreataddp->setWindowTitle(othercmd->cmdname);
+            keycreataddp->setbutton(0);
+            int rc=keycreataddp->exec();
+            keycreataddp->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keycreataddp->cmd_msg;
                 if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                 {
                     m_mcs->project->project_cmdlist.push_back(msg);

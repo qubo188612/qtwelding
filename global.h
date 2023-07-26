@@ -912,6 +912,13 @@ typedef enum PLOTPOS_EDIT_MODE_ID        //点生成模式
     PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE=1,      //两点直线与三点交点模式
 }Plotpos_edit_mode;
 
+#define CREATADDP_EDIT_ID_TOTAL_NUM    2    //点位与轨迹相加模式总数
+typedef enum CREATADDP_EDIT_MODE_ID         //点位与轨迹相加模式
+{
+    CREATADDP_EDIT_MODE_HEAD=0,     //插入在轨迹头部
+    CREATADDP_EDIT_MODE_TAIL=1,     //插入在轨迹尾部
+}Creataddp_edit_mode;
+
 //摆焊参数
 class wWAVEParam
 {
@@ -967,6 +974,8 @@ QString Trend_mode_toQString(Trend_mode trend_mode);
 QString Trace_edit_mode_toQString(Trace_edit_mode trace_edit_mode);
 
 QString Plotpos_edit_mode_toQString(Plotpos_edit_mode plotpos_edit_mode);
+
+QString Creataddp_edit_mode_toQString(Creataddp_edit_mode creataddp_edit_mode);
 
 QString Filter_mode_toQString(Filter_mode filter_mode);
 
