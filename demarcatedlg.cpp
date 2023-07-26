@@ -12,6 +12,8 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
     ui(new Ui::demarcateDlg)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
+                  |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
     m_mcs=mcs;  
 
