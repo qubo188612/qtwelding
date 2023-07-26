@@ -73,6 +73,11 @@
    </item>
    <item>
     <property name="text">
+     <string>CREATADD: 跟踪轨迹相加指令</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>CREATC: 三点坐标生成圆弧跟踪轨迹指令</string>
     </property>
    </item>

@@ -46,6 +46,7 @@
 //滤波指令，举例 FILTER: CREAT[跟踪第一条line] MODE[1] NAME[滤波后轨迹1] FILTERS[1,2,3,4,5,6,7,8]
 //程序跳转指令，举例 GOTO: LINE[13]
 //程序结束指令，举例 STOP:
+//跟踪轨迹相加，举例 CREATADD: CREATS[轨迹1,轨迹2,轨迹3] NAME[跟踪轨迹]
 
 
 //key项
@@ -79,8 +80,9 @@
 #define CMD_GETTCPPOS2_KEY              "GETTCPPOS2:"       //生成一个TCP数值的点坐标命令集合KEY
 #define CMD_TRACECONTINUE_KEY           "TRACECONTINUE:"    //生成点位附近继续焊接的轨迹命令集合KEY
 #define CMD_FILTER_KEY                  "FILTER:"           //扫描轨迹滤波命令集合KEY
-#define CMD_GOTO_KEY                    "GOTO:"             //程序跳转
-#define CMD_STOP_KEY                    "STOP:"              //程序运行结束指令
+#define CMD_GOTO_KEY                    "GOTO:"             //程序跳转命令集合KEY
+#define CMD_STOP_KEY                    "STOP:"             //程序运行结束命令集合KEY
+#define CMD_CREATADD_KEY                "CREATADD:"         //跟踪轨迹相加命令集合KEY
 
 
 //参数项
@@ -180,6 +182,8 @@ public:
     QString cmd_filter(QString name_in,Filter_mode mode,filterParam filters,QString name_out);//扫描轨迹滤波指令
     QString cmd_goto(int line);//前往第几行执行
     QString cmd_stop();//程序结束指令
+    QString cmd_creatadd(std::vector<QString> names,QString name_out);//跟踪轨迹相加
+
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -347,6 +351,9 @@ public:
     Filter_mode cmd_filter_mode;//获取到的扫描滤波模式
     filterParam cmd_filters;//获取到的滤波参数
     QString cmd_filter_nameout;//生成的滤波轨迹名字
+
+    std::vector<QString> cmd_creatadd_names;//获取到的跟踪轨迹名字
+    QString cmd_creatadd_nameout;//生成的跟踪轨迹名字
 
     int cmd_goto_line;//获取到的跳转行数
 

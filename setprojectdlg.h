@@ -43,6 +43,7 @@
 #include "keytracecontinuedlg.h"
 #include "keyfilterdlg.h"
 #include "keygotodlg.h"
+#include "keycreatadddlg.h"
 #include "arrvepointtestdlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
@@ -97,6 +98,7 @@ public:
     keytracecontinueDlg *keytracecontinue;
     keyfilterDlg *keyfilter;
     keygotoDlg *keygoto;
+    keycreataddDlg *keycreatadd;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

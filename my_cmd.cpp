@@ -533,6 +533,24 @@ QString my_cmd::cmd_stop()
     return msg;
 }
 
+QString my_cmd::cmd_creatadd(std::vector<QString> names,QString name_out)
+{
+    QString msg;
+    QString data;
+    for(int i=0;i<names.size();i++)
+    {
+        data=data+names[i];
+        if(i<names.size()-1)
+        {
+            data=data+",";
+        }
+    }
+    msg=QString(CMD_CREATADD_KEY)+" "+
+        rc_creats(names)+" "+
+        rc_name(name_out);;
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -3663,7 +3681,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         {
                             return 1;
                         }
-                        if(false==b_nosame_vector_QString(cmd_plotpos_creatname))
+                        if(false==b_nosame_vector_QString(cmd_plotpos_pointsname))
                         {
                             return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
                             return 1;
@@ -4236,6 +4254,78 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         if(b_LINE==false)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_LINE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
+    else if(key==CMD_CREATADD_KEY)
+    {
+        int pn=0;
+        bool b_NAME=false;
+        bool b_CREATS=false;
+
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_creatadd_nameout,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CREATS)
+                {
+                    if(b_CREATS==false)
+                    {
+                        b_CREATS=true;
+                        if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_creatadd_names,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(false==b_nosame_vector_QString(cmd_creatadd_names))
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=QString::fromLocal8Bit("只能有一个'")+CMD_CREATS+QString::fromLocal8Bit("'项或'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_CREATS==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREATS+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }
