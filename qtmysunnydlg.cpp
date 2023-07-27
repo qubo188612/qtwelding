@@ -20,7 +20,8 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 //  setAttribute(Qt::WA_Mapped);    //属性函数避免界面不刷新
     ui->setupUi(this);
     m_mcs=mcs;
-    setFixedSize(this->width(), this->height());//禁止拉伸
+    setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
+                  |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
     aIntValidator = new QIntValidator;
 
@@ -40,13 +41,15 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     ui->alg108_threshold->setValidator(aIntValidator);
 
-//  ui->label_3->hide();
-//  ui->label_4->hide();
-//  ui->label_43->hide();
-//  ui->comboBox->hide();
-//  ui->robotport->hide();
+
+    ui->label_3->hide();
+    ui->label_4->hide();
+    ui->label_43->hide();
+    ui->comboBox->hide();
+    ui->robotport->hide();
     ui->robot_ip->hide();
-//  ui->robotsetBtn->hide();
+    ui->robotsetBtn->hide();
+
 
     drow_height=CAMBUILD_IMAGE_HEIGHT;
     drow_width=CAMBUILD_IMAGE_WIDTH;
@@ -3271,18 +3274,18 @@ void qtmysunnyDlg::UpdataRobot(u_int16_t robotmod)
         {
             b_robot_serves=false;
             ui->label_4->setText(QString::fromLocal8Bit("机器人端口:"));
-            ui->label_43->show();
-            ui->robot_ip->hide();
-            ui->robotport->show();
+         // ui->label_43->show();
+         // ui->robot_ip->hide();
+         // ui->robotport->show();
         }
         break;
         case 10:    //机器人做服务器
         {
             b_robot_serves=true;
             ui->label_4->setText(QString::fromLocal8Bit("机器人IP:"));
-            ui->label_43->hide();
-            ui->robot_ip->show();
-            ui->robotport->hide();
+         // ui->label_43->hide();
+         // ui->robot_ip->show();
+         // ui->robotport->hide();
         }
         break;
     }

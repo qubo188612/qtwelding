@@ -82,12 +82,12 @@ void keyscanDlg::init_dlg_show(QString cmdlist)
                     ui->scanchangecombo->setCurrentIndex(change_trace_num);
                 }
                 ui->scanchangecheckBox->setCheckState(Qt::Checked);
-                ui->scanchangecombo->setDisabled(true);
+                ui->scanchangecombo->setDisabled(false);
             }
             else
             {
                 ui->scanchangecheckBox->setCheckState(Qt::Unchecked);
-                ui->scanchangecombo->setDisabled(false);
+                ui->scanchangecombo->setDisabled(true);
             }
             if(movemod==MOVEJ||movemod==MOVEL)
             {

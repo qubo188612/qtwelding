@@ -81,12 +81,12 @@ void keymovDlg::init_dlg_show(QString cmdlist)
                     ui->movechangecombo->setCurrentIndex(change_trace_num);
                 }
                 ui->movechangecheckBox->setCheckState(Qt::Checked);
-                ui->movechangecombo->setDisabled(true);
+                ui->movechangecombo->setDisabled(false);
             }
             else
             {
                 ui->movechangecheckBox->setCheckState(Qt::Unchecked);
-                ui->movechangecombo->setDisabled(false);
+                ui->movechangecombo->setDisabled(true);
             }
             if(movemod==MOVEJ||movemod==MOVEL)
             {

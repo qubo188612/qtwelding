@@ -81,12 +81,12 @@ void keysearchDlg::init_dlg_show(QString cmdlist)
                     ui->searchchangecombo->setCurrentIndex(change_trace_num);
                 }
                 ui->searchchangecheckBox->setCheckState(Qt::Checked);
-                ui->searchchangecombo->setDisabled(true);
+                ui->searchchangecombo->setDisabled(false);
             }
             else
             {
                 ui->searchchangecheckBox->setCheckState(Qt::Unchecked);
-                ui->searchchangecombo->setDisabled(false);
+                ui->searchchangecombo->setDisabled(true);
             }
             if(movemod==MOVEJ||movemod==MOVEL)
             {

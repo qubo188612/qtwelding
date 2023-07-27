@@ -101,12 +101,12 @@ void keysmovDlg::init_dlg_show(QString cmdlist)
                     ui->smovechangecombo->setCurrentIndex(change_trace_num);
                 }
                 ui->smovechangecheckBox->setCheckState(Qt::Checked);
-                ui->smovechangecombo->setDisabled(true);
+                ui->smovechangecombo->setDisabled(false);
             }
             else
             {
                 ui->smovechangecheckBox->setCheckState(Qt::Unchecked);
-                ui->smovechangecombo->setDisabled(false);
+                ui->smovechangecombo->setDisabled(true);
             }
             if(tcp>=0&&tcp<ROBOTTCPNUM)
             {

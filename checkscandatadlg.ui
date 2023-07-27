@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>891</width>
-    <height>563</height>
+    <height>565</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
       <attribute name="title">
        <string>Tab 1</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
+      <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0" rowspan="2">
@@ -62,64 +62,7 @@
          <item row="1" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QPushButton" name="tab1pushButton_5">
-             <property name="minimumSize">
-              <size>
-               <width>51</width>
-               <height>41</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>51</width>
-               <height>41</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="tab1pushButton_3">
-             <property name="minimumSize">
-              <size>
-               <width>51</width>
-               <height>41</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>51</width>
-               <height>41</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="tab1pushButton_6">
-             <property name="minimumSize">
-              <size>
-               <width>51</width>
-               <height>41</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>51</width>
-               <height>41</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="tab1pushButton_4">
+            <widget class="QPushButton" name="tab1pushButton_1">
              <property name="minimumSize">
               <size>
                <width>51</width>
@@ -157,7 +100,64 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="tab1pushButton_1">
+            <widget class="QPushButton" name="tab1pushButton_3">
+             <property name="minimumSize">
+              <size>
+               <width>51</width>
+               <height>41</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>51</width>
+               <height>41</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tab1pushButton_4">
+             <property name="minimumSize">
+              <size>
+               <width>51</width>
+               <height>41</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>51</width>
+               <height>41</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tab1pushButton_5">
+             <property name="minimumSize">
+              <size>
+               <width>51</width>
+               <height>41</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>51</width>
+               <height>41</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tab1pushButton_6">
              <property name="minimumSize">
               <size>
                <width>51</width>
@@ -192,7 +192,7 @@
            <property name="maximumSize">
             <size>
              <width>81</width>
-             <height>21</height>
+             <height>17</height>
             </size>
            </property>
            <property name="text">
@@ -441,7 +441,7 @@
       <attribute name="title">
        <string>Tab 2</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_9">
+      <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0" rowspan="2">
@@ -603,7 +603,7 @@
            <property name="maximumSize">
             <size>
              <width>81</width>
-             <height>21</height>
+             <height>17</height>
             </size>
            </property>
            <property name="text">
@@ -852,7 +852,7 @@
       <attribute name="title">
        <string>页</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_12">
+      <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_10">
          <item row="0" column="0" rowspan="2">
@@ -1014,7 +1014,7 @@
            <property name="maximumSize">
             <size>
              <width>81</width>
-             <height>21</height>
+             <height>17</height>
             </size>
            </property>
            <property name="text">
@@ -1263,7 +1263,7 @@
       <attribute name="title">
        <string>页</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_15">
+      <layout class="QGridLayout" name="gridLayout_8">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_13">
          <item row="0" column="0" rowspan="2">
@@ -1425,7 +1425,7 @@
            <property name="maximumSize">
             <size>
              <width>81</width>
-             <height>21</height>
+             <height>17</height>
             </size>
            </property>
            <property name="text">
@@ -1674,8 +1674,8 @@
       <attribute name="title">
        <string>页</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_9">
+       <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_28">
          <item row="0" column="0">
           <widget class="QListWidget" name="tab5listWidget">
@@ -1881,7 +1881,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_11">
          <item>
           <widget class="QLabel" name="label_63">
@@ -1894,7 +1894,7 @@
            <property name="maximumSize">
             <size>
              <width>81</width>
-             <height>21</height>
+             <height>17</height>
             </size>
            </property>
            <property name="text">
@@ -1911,7 +1911,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="2" column="0">
         <layout class="QGridLayout" name="gridLayout_18">
          <item row="0" column="0">
           <widget class="QLabel" name="label_54">
