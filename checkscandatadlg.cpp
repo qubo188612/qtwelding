@@ -102,6 +102,18 @@ void checkscandataDlg::init_dlg_show()
     ui->tab5t0_label->clear();
     ui->tab5t1_label->clear();
     ui->tab5t2_label->clear();
+    ui->tab5a11_label_3->clear();
+    ui->tab5a12_label_3->clear();
+    ui->tab5a13_label_3->clear();
+    ui->tab5a21_label_3->clear();
+    ui->tab5a22_label_3->clear();
+    ui->tab5a23_label_3->clear();
+    ui->tab5a31_label_3->clear();
+    ui->tab5a32_label_3->clear();
+    ui->tab5a33_label_3->clear();
+    ui->tab5t0_label_3->clear();
+    ui->tab5t1_label_3->clear();
+    ui->tab5t2_label_3->clear();
 
     for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
     {
@@ -635,6 +647,18 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
         ui->tab5t0_label->clear();
         ui->tab5t1_label->clear();
         ui->tab5t2_label->clear();
+        ui->tab5a11_label_3->clear();
+        ui->tab5a12_label_3->clear();
+        ui->tab5a13_label_3->clear();
+        ui->tab5a21_label_3->clear();
+        ui->tab5a22_label_3->clear();
+        ui->tab5a23_label_3->clear();
+        ui->tab5a31_label_3->clear();
+        ui->tab5a32_label_3->clear();
+        ui->tab5a33_label_3->clear();
+        ui->tab5t0_label_3->clear();
+        ui->tab5t1_label_3->clear();
+        ui->tab5t2_label_3->clear();
     }
     else
     {
@@ -664,6 +688,18 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
             ui->tab5t0_label->clear();
             ui->tab5t1_label->clear();
             ui->tab5t2_label->clear();
+            ui->tab5a11_label_3->clear();
+            ui->tab5a12_label_3->clear();
+            ui->tab5a13_label_3->clear();
+            ui->tab5a21_label_3->clear();
+            ui->tab5a22_label_3->clear();
+            ui->tab5a23_label_3->clear();
+            ui->tab5a31_label_3->clear();
+            ui->tab5a32_label_3->clear();
+            ui->tab5a33_label_3->clear();
+            ui->tab5t0_label_3->clear();
+            ui->tab5t1_label_3->clear();
+            ui->tab5t2_label_3->clear();
         }
         else
         {
@@ -680,6 +716,18 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
             ui->tab5t0_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T(0),'f',3));
             ui->tab5t1_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T(1),'f',3));
             ui->tab5t2_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T(2),'f',3));
+            ui->tab5a11_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(0,0),'f',3));
+            ui->tab5a12_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(0,1),'f',3));
+            ui->tab5a13_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(0,2),'f',3));
+            ui->tab5a21_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(1,0),'f',3));
+            ui->tab5a22_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(1,1),'f',3));
+            ui->tab5a23_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(1,2),'f',3));
+            ui->tab5a31_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(2,0),'f',3));
+            ui->tab5a32_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(2,1),'f',3));
+            ui->tab5a33_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(2,2),'f',3));
+            ui->tab5t0_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T1(0),'f',3));
+            ui->tab5t1_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T1(1),'f',3));
+            ui->tab5t2_label_3->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T1(2),'f',3));
         }
     }
 }

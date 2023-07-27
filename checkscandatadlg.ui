@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>891</width>
-    <height>561</height>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
+  <layout class="QGridLayout" name="gridLayout_29">
    <item row="0" column="0">
     <widget class="QCheckBox" name="checkBox">
      <property name="text">
@@ -21,10 +21,10 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <attribute name="title">
@@ -1674,9 +1674,9 @@
       <attribute name="title">
        <string>页</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_19">
-       <item row="0" column="0">
-        <layout class="QGridLayout" name="gridLayout_17">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_28">
          <item row="0" column="0">
           <widget class="QListWidget" name="tab5listWidget">
            <property name="minimumSize">
@@ -1694,18 +1694,11 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <layout class="QGridLayout" name="gridLayout_16">
-           <item row="0" column="0" colspan="3">
+          <layout class="QGridLayout" name="gridLayout_27">
+           <item row="0" column="0">
             <widget class="QLabel" name="label_13">
              <property name="text">
               <string>变换矩阵:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="3">
-            <widget class="QLabel" name="tab5state">
-             <property name="text">
-              <string/>
              </property>
             </widget>
            </item>
@@ -1725,6 +1718,27 @@
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="tab5a13_label">
+             <property name="text">
+              <string>a13</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QLabel" name="tab5a11_label_3">
+             <property name="text">
+              <string>a11</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4">
+            <widget class="QLabel" name="tab5a12_label_3">
+             <property name="text">
+              <string>a12</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="5">
+            <widget class="QLabel" name="tab5a13_label_3">
              <property name="text">
               <string>a13</string>
              </property>
@@ -1751,6 +1765,27 @@
              </property>
             </widget>
            </item>
+           <item row="3" column="3">
+            <widget class="QLabel" name="tab5a21_label_3">
+             <property name="text">
+              <string>a21</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="4">
+            <widget class="QLabel" name="tab5a22_label_3">
+             <property name="text">
+              <string>a22</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="5">
+            <widget class="QLabel" name="tab5a23_label_3">
+             <property name="text">
+              <string>a23</string>
+             </property>
+            </widget>
+           </item>
            <item row="4" column="0">
             <widget class="QLabel" name="tab5a31_label">
              <property name="text">
@@ -1772,8 +1807,36 @@
              </property>
             </widget>
            </item>
+           <item row="4" column="3">
+            <widget class="QLabel" name="tab5a31_label_3">
+             <property name="text">
+              <string>a31</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="4">
+            <widget class="QLabel" name="tab5a32_label_3">
+             <property name="text">
+              <string>a32</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="5">
+            <widget class="QLabel" name="tab5a33_label_3">
+             <property name="text">
+              <string>a33</string>
+             </property>
+            </widget>
+           </item>
            <item row="5" column="0">
             <widget class="QLabel" name="tab5t0_label">
+             <property name="text">
+              <string>t1</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="3">
+            <widget class="QLabel" name="tab5t0_label_3">
              <property name="text">
               <string>t1</string>
              </property>
@@ -1786,6 +1849,13 @@
              </property>
             </widget>
            </item>
+           <item row="6" column="3">
+            <widget class="QLabel" name="tab5t1_label_3">
+             <property name="text">
+              <string>t2</string>
+             </property>
+            </widget>
+           </item>
            <item row="7" column="0">
             <widget class="QLabel" name="tab5t2_label">
              <property name="text">
@@ -1793,18 +1863,32 @@
              </property>
             </widget>
            </item>
+           <item row="7" column="3">
+            <widget class="QLabel" name="tab5t2_label_3">
+             <property name="text">
+              <string>t3</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="6">
+            <widget class="QLabel" name="tab5state">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
         </layout>
        </item>
-       <item row="1" column="0">
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_11">
          <item>
           <widget class="QLabel" name="label_63">
            <property name="minimumSize">
             <size>
              <width>81</width>
-             <height>21</height>
+             <height>23</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -1827,7 +1911,7 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
+       <item>
         <layout class="QGridLayout" name="gridLayout_18">
          <item row="0" column="0">
           <widget class="QLabel" name="label_54">
