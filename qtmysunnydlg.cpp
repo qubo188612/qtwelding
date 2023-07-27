@@ -18,9 +18,9 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     }
 #endif
 //  setAttribute(Qt::WA_Mapped);    //属性函数避免界面不刷新
-    m_mcs=mcs;
-
     ui->setupUi(this);
+    m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
     aIntValidator = new QIntValidator;
 

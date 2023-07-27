@@ -10,6 +10,8 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
+                  |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
     for(int n=0;n<ROBOTTCPNUM;n++)
     {

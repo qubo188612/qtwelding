@@ -7,6 +7,7 @@ traceedit2Dlg::traceedit2Dlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 }
 
 traceedit2Dlg::~traceedit2Dlg()

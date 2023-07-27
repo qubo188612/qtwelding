@@ -6,6 +6,7 @@ edittextDlg::edittextDlg(QWidget *parent) :
     ui(new Ui::edittextDlg)
 {
     ui->setupUi(this);
+    setFixedSize(this->width(), this->height());//禁止拉伸
 }
 
 edittextDlg::~edittextDlg()

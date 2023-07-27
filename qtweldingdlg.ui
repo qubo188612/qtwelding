@@ -1613,7 +1613,7 @@
        <property name="maximumSize">
         <size>
          <width>262</width>
-         <height>400</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -1918,7 +1918,7 @@
        <property name="maximumSize">
         <size>
          <width>1062</width>
-         <height>420</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -2475,7 +2475,7 @@
        <property name="maximumSize">
         <size>
          <width>962</width>
-         <height>400</height>
+         <height>16777215</height>
         </size>
        </property>
       </widget>

@@ -6,6 +6,8 @@ setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
     ui(new Ui::setcraft0Dlg)
 {
     ui->setupUi(this);
+    m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
     adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
@@ -16,8 +18,6 @@ setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
     ui->lineEdit_RX->setValidator(adoubleValidator_posture);
     ui->lineEdit_RY->setValidator(adoubleValidator_posture);
     ui->lineEdit_RZ->setValidator(adoubleValidator_posture);
-
-    m_mcs=mcs;
 }
 
 setcraft0Dlg::~setcraft0Dlg()

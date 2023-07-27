@@ -6,222 +6,248 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>401</width>
     <height>421</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>30</y>
-     <width>111</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>全部指令:</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="OK_Btn">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>340</y>
-     <width>151</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>确定</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="listWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>361</width>
-     <height>271</height>
-    </rect>
-   </property>
-   <property name="sortingEnabled">
-    <bool>false</bool>
-   </property>
-   <item>
-    <property name="text">
-     <string>AOUT: 模拟量输出指令</string>
-    </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>17</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>17</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>全部指令:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="3">
+      <widget class="QListWidget" name="listWidget">
+       <property name="sortingEnabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>AOUT: 模拟量输出指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CAM: 激光器指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>COORD: 工件坐标系定位指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CREAT: 生成跟踪轨迹指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CREATADD: 跟踪轨迹相加指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CREATADDP:点位与跟踪轨迹相加指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CREATC: 三点坐标生成圆弧跟踪轨迹指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CREATF: 导入轨迹文件生成轨迹指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CREATP: 点坐标生成跟踪轨迹指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DELAY: 延时指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FILTER: 扫描轨迹滤波指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GETPOS: 生成扫描的点坐标值指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GETTCPPOS: 生成一个TCP的点坐标值指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GETTCPPOS2: 生成一个TCP数值的点坐标指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GOTO: 跳转指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GOWELD: 前往起弧点指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>IO: IO口指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>MOV: 机器人移动指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>PLC: PLC控制指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>PLOTPOS: 计算生成点坐标指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SAMPLE: 轨迹点采样指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SCAN: 采集激光数据指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SEARCH: 起点寻位指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SEARCHEND: 终点寻位指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SETPOSE: 点坐标设姿态指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SMOV: 点位移动指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>STOP: 停止程序指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SSCAN: 点位采集激光数据指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TRACE: 生成跟踪轨迹工艺指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TRACEADD: 生成跟踪轨迹工艺相加指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TRACECONTINUE: 生成点位附近继续焊接的轨迹指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TRACING: 跟踪轨迹工艺指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WAVE: 生成摆焊工艺指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WELD: 起弧指令</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="OK_Btn">
+       <property name="minimumSize">
+        <size>
+         <width>151</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>151</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>确定</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item>
-    <property name="text">
-     <string>CAM: 激光器指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>COORD: 工件坐标系定位指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CREAT: 生成跟踪轨迹指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CREATADD: 跟踪轨迹相加指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CREATADDP:点位与跟踪轨迹相加指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CREATC: 三点坐标生成圆弧跟踪轨迹指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CREATF: 导入轨迹文件生成轨迹指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CREATP: 点坐标生成跟踪轨迹指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>DELAY: 延时指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>FILTER: 扫描轨迹滤波指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>GETPOS: 生成扫描的点坐标值指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>GETTCPPOS: 生成一个TCP的点坐标值指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>GETTCPPOS2: 生成一个TCP数值的点坐标指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>GOTO: 跳转指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>GOWELD: 前往起弧点指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>IO: IO口指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>MOV: 机器人移动指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>PLC: PLC控制指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>PLOTPOS: 计算生成点坐标指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SAMPLE: 轨迹点采样指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SCAN: 采集激光数据指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SEARCH: 起点寻位指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SEARCHEND: 终点寻位指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SETPOSE: 点坐标设姿态指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SMOV: 点位移动指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>STOP: 停止程序指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>SSCAN: 点位采集激光数据指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>TRACE: 生成跟踪轨迹工艺指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>TRACEADD: 生成跟踪轨迹工艺相加指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>TRACECONTINUE: 生成点位附近继续焊接的轨迹指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>TRACING: 跟踪轨迹工艺指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>WAVE: 生成摆焊工艺指令</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>WELD: 起弧指令</string>
-    </property>
-   </item>
-  </widget>
+  </layout>
  </widget>
  <resources/>
  <connections/>

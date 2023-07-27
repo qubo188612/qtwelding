@@ -6,6 +6,7 @@ showtasknumdlg::showtasknumdlg(QWidget *parent) :
     ui(new Ui::showtasknumdlg)
 {
     ui->setupUi(this);
+    setFixedSize(this->width(), this->height());//禁止拉伸
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//禁止用户修改
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);//设为整行选中
 }

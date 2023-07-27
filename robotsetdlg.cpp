@@ -7,6 +7,7 @@ robotsetDlg::robotsetDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
     for(int n=0;n<ROBOTTALNUM;n++)  //机器人控制台数
     {

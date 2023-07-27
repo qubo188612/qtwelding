@@ -6,6 +6,8 @@ setmovecDlg::setmovecDlg(my_parameters *mcs,QWidget *parent) :
     ui(new Ui::setmovecDlg)
 {
     ui->setupUi(this);
+    m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
     adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
@@ -28,8 +30,6 @@ setmovecDlg::setmovecDlg(my_parameters *mcs,QWidget *parent) :
     ui->lineEdit_centerRX->setValidator(adoubleValidator_posture);
     ui->lineEdit_centerRY->setValidator(adoubleValidator_posture);
     ui->lineEdit_centerRZ->setValidator(adoubleValidator_posture);
-
-    m_mcs=mcs;
 }
 
 setmovecDlg::~setmovecDlg()

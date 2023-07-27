@@ -7,6 +7,7 @@ weldsetDlg::weldsetDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+    setFixedSize(this->width(), this->height());//禁止拉伸
 
     for(int n=0;n<WELD_MODEL_NUM;n++)
     {
