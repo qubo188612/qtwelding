@@ -11,10 +11,10 @@ public:
     CCoordChange();
     ~CCoordChange();
 
-    static bool coord2RT(Eigen::Vector3d org,Eigen::Vector3d x,Eigen::Vector3d y,Eigen::Matrix3d *R_out,Eigen::Vector3d *T_out);//输入坐标点 原点，X方向上的点，XOY面上的点
-    static bool _1coord2RT(Eigen::Vector3d org,Eigen::Vector3d x,Eigen::Vector3d y,Eigen::Matrix3d *R_out,Eigen::Vector3d *T_out);//输入坐标点 原点，X方向上的点，XOY面上的点
-    static Eigen::Vector3d point2point(Eigen::Vector3d p,Eigen::Matrix3d R,Eigen::Vector3d T);//将原来的点输出为调整坐标系后的点
-    static Eigen::Vector3d _1point2point(Eigen::Vector3d p,Eigen::Matrix3d R,Eigen::Vector3d T);//将原来的点输出为调整坐标系后的点
+    static bool coord2RT(Eigen::Vector3d org,Eigen::Vector3d x,Eigen::Vector3d y,Eigen::Matrix3d *R_out,Eigen::Vector3d *T_out);//输入坐标点 原点，X方向上的点，XOY面上的点,求旋转平移矩阵(先旋转后平移)
+    static bool _1coord2RT(Eigen::Vector3d org,Eigen::Vector3d x,Eigen::Vector3d y,Eigen::Matrix3d *R_out,Eigen::Vector3d *T_out);//输入坐标点 原点，X方向上的点，XOY面上的点,求旋转平移矩阵(先平移后旋转)
+    static Eigen::Vector3d point2point(Eigen::Vector3d p,Eigen::Matrix3d R,Eigen::Vector3d T);//将原来的点输出为调整坐标系后的点(先旋转后平移)
+    static Eigen::Vector3d _1point2point(Eigen::Vector3d p,Eigen::Matrix3d R,Eigen::Vector3d T);//将原来的点输出为调整坐标系后的点(先平移后旋转)
 private:
     static Eigen::Matrix3d ComputeDCM3(std::array<Eigen::Vector3d, 3> &coord_1,std::array<Eigen::Vector3d, 3> &coord_2);
 };

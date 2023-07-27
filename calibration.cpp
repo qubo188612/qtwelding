@@ -313,6 +313,19 @@ Eigen::Vector3d Calibration::Attitudedifference_N(CAL_POSTURE robot,Eigen::Vecto
     return tempResult;
 }
 
+std::array<double,3> Calibration::Attitudeangleroation(CAL_POSTURE robot,Eigen::Matrix3d R,std::array<double,3> pose)
+{
+    std::array<double,3> poseout;
+    std::array<double,3> posture={pose[0],pose[1],pose[2]};
+    Eigen::Matrix3d posture_matrix=Calibration::Euler2RotMatrixXYZ(robot,posture);
+    Eigen::Matrix3d postureout_matrix=posture_matrix*R;
+    std::array<double,3> postureout=Calibration::RotMatrixXYZ2Euler(robot,postureout_matrix);
+    poseout[0]=postureout[0]*CAL_ANGLE;
+    poseout[1]=postureout[1]*CAL_ANGLE;
+    poseout[2]=postureout[2]*CAL_ANGLE;
+    return poseout;
+}
+
 cv::Point3f Calibration::ComputePosition(CAL_POSTURE robot,TCP_Leaserpos Pic,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot)
 {
     std::vector<cv::Point2d > org_uv;

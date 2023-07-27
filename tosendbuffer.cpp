@@ -4076,6 +4076,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
                     }
                     cmd_move(pos,movemod,speed,tcp);//移动
                 }
@@ -4096,6 +4105,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
@@ -4104,6 +4122,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
@@ -4112,6 +4139,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
                     }
                 #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
@@ -4269,6 +4305,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
                     }
                     cmd_move(pos,movemod,speed,tcp);//移动
                 }
@@ -4343,6 +4388,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
@@ -4351,6 +4405,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
@@ -4359,6 +4422,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
                     }
                 #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
@@ -4647,6 +4719,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
                     }
                 }
                 break;
@@ -4663,6 +4744,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
@@ -4671,6 +4761,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
@@ -4679,6 +4778,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
                     }
                 }
                 break;
@@ -4974,6 +5082,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
                     }
                 }
                 break;
@@ -4990,6 +5107,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
@@ -4998,6 +5124,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
@@ -5006,6 +5141,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
                     }
                 }
                 break;
@@ -5347,6 +5491,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
                     }
                     cmd_move(pos,movemod,speed,tcp);
                 }
@@ -5367,6 +5520,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
@@ -5375,6 +5537,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
@@ -5383,6 +5554,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
                     }
                 #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;
@@ -5559,6 +5739,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos.X=tempout.x();
                         pos.Y=tempout.y();
                         pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
                     }
                     cmd_move(pos,movemod,speed,tcp);
                 }
@@ -5633,6 +5822,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos1.X=tempout.x();
                         pos1.Y=tempout.y();
                         pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
                         tempin.x()=pos2.X;
                         tempin.y()=pos2.Y;
                         tempin.z()=pos2.Z;
@@ -5641,6 +5839,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos2.X=tempout.x();
                         pos2.Y=tempout.y();
                         pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
                         tempin.x()=pos3.X;
                         tempin.y()=pos3.Y;
                         tempin.z()=pos3.Z;
@@ -5649,6 +5856,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         pos3.X=tempout.x();
                         pos3.Y=tempout.y();
                         pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
                     }
                 #ifdef USE_MYMOVEC_CONTROL
                     CWeldTarject tarjectMath;

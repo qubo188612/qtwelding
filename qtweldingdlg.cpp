@@ -212,9 +212,9 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
 //  b_thread4=true;
 //  thread4->start();
-
+#ifdef USE_SN_DATA
     SN_timer->start(60000);//60秒进一次终端
-
+#endif
     for(int n=0;n<ROBOTTCPNUM;n++)
     {
         QString msg="TCP: "+QString::number(n);

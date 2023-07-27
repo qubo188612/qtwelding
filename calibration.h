@@ -75,6 +75,10 @@ public:
                                                 int differenceNum,          //插值个数
                                                 int N);                     //第N个值,N取值为0到differenceNum-1
 
+   //姿态角旋转
+   static std::array<double,3> Attitudeangleroation(CAL_POSTURE robot,           //输入姿态标准
+                                                    Eigen::Matrix3d R,           //输入旋转矩阵
+                                                    std::array<double,3> pose);  //输入姿态
 protected:
 
    static cv::Mat OLS_Plane_V(std::vector<Eigen::Vector3d> points);
@@ -97,7 +101,7 @@ protected:
    static Eigen::Matrix3d RxRzRx_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d RyRxRy_Euler2RotMatrixXYZ(std::array<double,3> pst);
    static Eigen::Matrix3d Kawasaki_Euler2RotMatrixXYZ(std::array<double,3> pst);
-   static Eigen::Matrix3d Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<double,3> pst);
+   static Eigen::Matrix3d Euler2RotMatrixXYZ(CAL_POSTURE robot,std::array<double,3> pst);//姿态转化为旋转矩阵
    static std::array<double, 3> Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Kuka_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Panasonic_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
@@ -111,7 +115,7 @@ protected:
    static std::array<double, 3> RxRzRx_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> RyRxRy_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
    static std::array<double, 3> Kawasaki_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);
-   static std::array<double, 3> RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::Matrix3d rot_matrix);
+   static std::array<double, 3> RotMatrixXYZ2Euler(CAL_POSTURE robot,Eigen::Matrix3d rot_matrix); //旋转矩阵转换为姿态
    static bool computeMatrix(CAL_POSTURE robot,RobPos robpos,std::vector<TCP_Leaserpos> data_group,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot);
    static cv::Point3f ComputePosition(CAL_POSTURE robot,TCP_Leaserpos Pic,cv::Mat &matrix_camera2plane,cv::Mat &matrix_plane2robot);
    static cv::Mat ComputePos(cv::Mat Robot_Position,cv::Mat Pic_Position,Eigen::Matrix3d RPY_Rotation,cv::Mat &matrix_plane2robot);
