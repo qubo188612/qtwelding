@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>501</width>
-    <height>433</height>
+    <height>511</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>137</y>
+     <y>207</y>
      <width>67</width>
      <height>17</height>
     </rect>
@@ -30,7 +30,7 @@
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>160</y>
+     <y>230</y>
      <width>291</width>
      <height>261</height>
     </rect>
@@ -40,7 +40,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>138</y>
+     <y>208</y>
      <width>181</width>
      <height>281</height>
     </rect>
@@ -198,7 +198,7 @@
      <x>10</x>
      <y>10</y>
      <width>481</width>
-     <height>121</height>
+     <height>191</height>
     </rect>
    </property>
    <property name="title">
@@ -241,6 +241,32 @@
     </property>
     <property name="text">
      <string>更新到当前点位</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="updata_posBtn_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>更新到变换前点位</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="arriveBtn_2">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>120</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>长按到变换后点</string>
     </property>
    </widget>
   </widget>

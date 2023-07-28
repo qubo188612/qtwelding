@@ -40,11 +40,20 @@ private slots:
 
     void on_scanchangecheckBox_stateChanged(int arg1);
 
+    void on_updata_posBtn_clicked();
+
+    void on_updata_posBtn_2_clicked();
+
+    void on_arriveBtn_2_pressed();
+
+    void on_arriveBtn_2_released();
+
 private:
     Ui::keyscanDlg *ui;
 
     QDoubleValidator *adoubleValidator_speed;    //机器人速度小数
     bool b_inster;//是否替换
+    RobPos inster_pos;//当前到位
 };
 
 #endif // KEYSCANDLG_H

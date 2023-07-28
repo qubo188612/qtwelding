@@ -318,7 +318,7 @@ std::array<double,3> Calibration::Attitudeangleroation(CAL_POSTURE robot,Eigen::
     std::array<double,3> poseout;
     std::array<double,3> posture={pose[0],pose[1],pose[2]};
     Eigen::Matrix3d posture_matrix=Calibration::Euler2RotMatrixXYZ(robot,posture);
-    Eigen::Matrix3d postureout_matrix=posture_matrix*R;
+    Eigen::Matrix3d postureout_matrix=R*posture_matrix;
     std::array<double,3> postureout=Calibration::RotMatrixXYZ2Euler(robot,postureout_matrix);
     poseout[0]=postureout[0]*CAL_ANGLE;
     poseout[1]=postureout[1]*CAL_ANGLE;

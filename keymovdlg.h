@@ -42,6 +42,12 @@ private slots:
 
     void on_updata_posBtn_clicked();
 
+    void on_updata_posBtn_2_clicked();
+
+    void on_arriveBtn_2_pressed();
+
+    void on_arriveBtn_2_released();
+
 private:
     Ui::keymovDlg *ui;
 
