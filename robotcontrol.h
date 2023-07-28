@@ -153,8 +153,6 @@ public:
     void clear_movepoint_buffer();          //清空这个时间段内接收到的全部移动点
 /*******************************************/
 
-
-
     std::array<double, 3> Yaskawa_RotMatrixXYZ2Euler(Eigen::Matrix3d rot_matrix);   //四元素转换为内旋 RX-RY-RZ
     Eigen::Matrix3d Yaskawa_Euler2RotMatrixXYZ(std::array<double,3> pst);   //内旋 RX-RY-RZ旋转矩阵转换为四元素
 

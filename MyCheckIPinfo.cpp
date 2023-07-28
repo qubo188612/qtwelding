@@ -15,6 +15,7 @@ QString MyCheckIPinfo::getAllAdapterInfo()
     QList<QNetworkInterface> nets = QNetworkInterface::allInterfaces();// 获取所有网络接口列表
     int nCnt = nets.count();
     QString strMacAddr = "";
+    bool b_find=false;
     for(int i = 0; i < nCnt; i ++)
     {
         // 如果此网络接口被激活并且正在运行并且不是回环地址，则就是我们需要找的Mac地址
@@ -29,9 +30,14 @@ QString MyCheckIPinfo::getAllAdapterInfo()
                    nets[i].addressEntries().at(j).ip().protocol() == QAbstractSocket::IPv4Protocol)
                 {
                     strMacAddr = nets[i].hardwareAddress();
+                    b_find=true;
                     break;
                 }
             }
+        }
+        if(b_find==true)
+        {
+            break;
         }
     }
     return strMacAddr;

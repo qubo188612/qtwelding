@@ -831,13 +831,24 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                 case MOVEL:
                 case MOVEP:
                 {
+                    //转换成旋转矩阵
+                    std::array<double,3> pst;
+                    pst[0]=f_movRX;
+                    pst[1]=f_movRY;
+                    pst[2]=f_movRZ;
+                    Eigen::Matrix3d posture=_p->Yaskawa_Euler2RotMatrixXYZ(pst);
+                    //旋转矩阵转旋转向量
+                    Eigen::AngleAxisd rotation_vector;
+                    rotation_vector.fromRotationMatrix(posture);
+                    double noml=rotation_vector.angle();
+
                     mutexsend_buf_group.lock();
                     QString msg="movel(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(rotation_vector.axis().transpose().x()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector.axis().transpose().y()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector.axis().transpose().z()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
                                         QString::number(f_speed/1000.0)+")\r\n";
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
@@ -846,13 +857,24 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                 break;
                 case MOVEJ:
                 {
+                    //转换成旋转矩阵
+                    std::array<double,3> pst;
+                    pst[0]=f_movRX;
+                    pst[1]=f_movRY;
+                    pst[2]=f_movRZ;
+                    Eigen::Matrix3d posture=_p->Yaskawa_Euler2RotMatrixXYZ(pst);
+                    //旋转矩阵转旋转向量
+                    Eigen::AngleAxisd rotation_vector;
+                    rotation_vector.fromRotationMatrix(posture);
+                    double noml=rotation_vector.angle();
+
                     mutexsend_buf_group.lock();
                     QString msg="movej(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(rotation_vector.axis().transpose().x()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector.axis().transpose().y()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector.axis().transpose().z()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
                                         QString::number(f_speed/1000.0)+")\r\n";
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
@@ -861,19 +883,39 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                 break;
                 case MOVEC:
                 {
+                    std::array<double,3> pst;
+                    pst[0]=f_movRX;
+                    pst[1]=f_movRY;
+                    pst[2]=f_movRZ;
+                    Eigen::Matrix3d posture=_p->Yaskawa_Euler2RotMatrixXYZ(pst);
+                    //旋转矩阵转旋转向量
+                    Eigen::AngleAxisd rotation_vector;
+                    rotation_vector.fromRotationMatrix(posture);
+                    double noml=rotation_vector.angle();
+
+                    std::array<double,3> pst1;
+                    pst1[0]=f_movRX1;
+                    pst1[1]=f_movRY1;
+                    pst1[2]=f_movRZ1;
+                    Eigen::Matrix3d posture1=_p->Yaskawa_Euler2RotMatrixXYZ(pst1);
+                    //旋转矩阵转旋转向量
+                    Eigen::AngleAxisd rotation_vector1;
+                    rotation_vector1.fromRotationMatrix(posture1);
+                    double noml1=rotation_vector1.angle();
+
                     mutexsend_buf_group.lock();
                     QString msg="movec(p["+QString::number(f_movX/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],p["+
+                                        QString::number(rotation_vector.axis().transpose().x()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector.axis().transpose().y()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector.axis().transpose().z()*noml,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],p["+
                                         QString::number(f_movX1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movY1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
                                         QString::number(f_movZ1/1000.0,'f',ROBOT_POSE_DECIMAL_PLACE+3)+","+
-                                        QString::number(f_movRX1*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRY1*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
-                                        QString::number(f_movRZ1*CAL_RADIAN,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
+                                        QString::number(rotation_vector1.axis().transpose().x()*noml1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector1.axis().transpose().y()*noml1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+                                        QString::number(rotation_vector1.axis().transpose().z()*noml1,'f',ROBOT_POSTURE_DECIMAL_PLACE)+"],v="+
                                         QString::number(f_speed/1000.0)+")\r\n";
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
@@ -3564,12 +3606,21 @@ void RobotrcvThread::run()//获取机器人数据
                         uint64_t d_speed=ntohll(*(uint64_t*)(&_p->rcv_buf[940]));
                         uint8_t state=*(double*)&d_speed;
 
+                        //旋转向量转换成旋转矩阵
+                        Eigen::Vector3d rvec(*(double*)&d_robRX,*(double*)&d_robRY,*(double*)&d_robRZ);
+                        double n_norm=rvec.norm();
+                        Eigen::AngleAxisd rotation_vector(n_norm,rvec/n_norm);
+                        Eigen::Matrix3d rotm;
+                        rotm=rotation_vector.toRotationMatrix();
+                        //旋转矩阵转换为内旋RXRYRZ姿态角
+                        std::array<double, 3> s=_p->Yaskawa_RotMatrixXYZ2Euler(rotm);
+
                         float f_robX=(*(double*)&d_robX)*1000;
                         float f_robY=(*(double*)&d_robY)*1000;
                         float f_robZ=(*(double*)&d_robZ)*1000;
-                        float f_robRX=*(double*)&d_robRX*CAL_ANGLE; //UR是弧度单位
-                        float f_robRY=*(double*)&d_robRY*CAL_ANGLE;
-                        float f_robRZ=*(double*)&d_robRZ*CAL_ANGLE;
+                        float f_robRX=s[0]*CAL_ANGLE;
+                        float f_robRY=s[1]*CAL_ANGLE;
+                        float f_robRZ=s[2]*CAL_ANGLE;
                         float f_speed=*(double*)&d_speed;
 
                         _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&f_robX))[0];
