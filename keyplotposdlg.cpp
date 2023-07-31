@@ -11,6 +11,7 @@ keyplotposDlg::keyplotposDlg(my_parameters *mcs,QWidget *parent) :
 
     plotedit0=new plotedit0Dlg(mcs);
     plotedit1=new plotedit1Dlg(mcs);
+    plotedit2=new plotedit2Dlg(mcs);
 
     for(int n=0;n<PLOTPOS_EDIT_ID_TOTAL_NUM;n++)
     {
@@ -23,6 +24,7 @@ keyplotposDlg::~keyplotposDlg()
 {
     delete plotedit0;
     delete plotedit1;
+    delete plotedit2;
     delete ui;
 }
 
@@ -131,11 +133,11 @@ void keyplotposDlg::on_plotposBtn_clicked()
                 {
                     my_cmd cmd;
                     std::vector<QString> scanname(3);
-
+                    std::vector<QString> nullname;
                     scanname[0]=plotedit0->name0;
                     scanname[1]=plotedit0->name1;
                     scanname[2]=plotedit0->name2;
-                    QString msg=cmd.cmd_plotpos(plotpos_edit_mode,scanname,name);
+                    QString msg=cmd.cmd_plotpos(plotpos_edit_mode,scanname,nullname,name);
                     ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
                     cmd_msg=msg;
                     done(1);
@@ -146,7 +148,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
             {
                 if(m_mcs->project->projecr_robpos_trace.size()<=0)
                 {
-                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的跟踪轨迹"));
+                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的点坐标"));
                     return;
                 }
                 if(b_inster==false)
@@ -164,13 +166,53 @@ void keyplotposDlg::on_plotposBtn_clicked()
                 {
                     my_cmd cmd;
                     std::vector<QString> pointsname(5);
-
+                    std::vector<QString> nullname;
                     pointsname[0]=plotedit1->name0;
                     pointsname[1]=plotedit1->name1;
                     pointsname[2]=plotedit1->name2;
                     pointsname[3]=plotedit1->name3;
                     pointsname[4]=plotedit1->name4;
-                    QString msg=cmd.cmd_plotpos(plotpos_edit_mode,pointsname,name);
+                    QString msg=cmd.cmd_plotpos(plotpos_edit_mode,nullname,pointsname,name);
+                    ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
+                    cmd_msg=msg;
+                    done(1);
+                }
+            }
+            break;
+            case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE://直线与三点交点模式
+            {
+                if(m_mcs->project->projecr_robpos_trace.size()<=0)
+                {
+                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的点坐标"));
+                    return;
+                }
+                if(m_mcs->project->project_weld_trace.size()<=0)
+                {
+                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的跟踪轨迹"));
+                    return;
+                }
+                if(b_inster==false)
+                {
+                    plotedit2->init_dlg_show();
+                }
+                else
+                {
+                    plotedit2->init_dlg_show(cmd_list_in);
+                }
+                plotedit2->setWindowTitle(QString::fromLocal8Bit("计算点坐标(直线与三点交点模式)"));
+                int rc=plotedit2->exec();
+                plotedit2->close_dlg_show();
+                if(rc!=0)//确定保存生成轨迹
+                {
+                    my_cmd cmd;
+                    std::vector<QString> scanname(1);
+                    std::vector<QString> pointsname(3);
+
+                    scanname[0]=plotedit2->name0;
+                    pointsname[0]=plotedit2->name1;
+                    pointsname[1]=plotedit2->name2;
+                    pointsname[2]=plotedit2->name3;
+                    QString msg=cmd.cmd_plotpos(plotpos_edit_mode,scanname,pointsname,name);
                     ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
                     cmd_msg=msg;
                     done(1);

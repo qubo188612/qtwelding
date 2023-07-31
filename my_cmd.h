@@ -177,7 +177,7 @@ public:
     QString cmd_setpose(QString name_in,std::vector<float> pose,std::vector<float> add,QString name_out);//重设点位的姿态
     QString cmd_gettcppos(QString name,std::vector<float> add);//获取tcp的点坐标值命令
     QString cmd_creatf(QString filename,QString name);//利用文件生成轨迹
-    QString cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,QString posname);//生成点的方法命令
+    QString cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,std::vector<QString> pointname,QString posname);//生成点的方法命令
     QString cmd_creatc(std::vector<QString> pointsname,float speed,int time,QString name);//利用点位生成圆弧
     QString cmd_gettcppos2(RobPos pos,QString name);//生成tcp数值的点坐标值命令
     QString cmd_tracecontinue(QString name_in,RobPos pos,QString name_out);//生成点位附近继续焊接的轨迹指令
@@ -409,7 +409,7 @@ protected:
     QString rc_pose(std::vector<float> pose);
     QString rc_file(QString filename);
     QString rc_creats(std::vector<QString> names);
-    QString rc_plot(Plotpos_edit_mode mode,std::vector<QString> names);
+    QString rc_plot(Plotpos_edit_mode mode,std::vector<QString> weldnames,std::vector<QString> pointnames);
     QString rc_pos(RobPos pos);
     QString rc_filters(filterParam filters,Filter_mode mode);
     QString rc_samplespeed(float speed);

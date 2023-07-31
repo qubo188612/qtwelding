@@ -81,6 +81,7 @@ SOURCES += \
         plcsetdlg.cpp \
         plotedit0dlg.cpp \
         plotedit1dlg.cpp \
+        plotedit2dlg.cpp \
         process.cpp \
         process1_scanbeforetrace.cpp \
         project.cpp \
@@ -162,6 +163,7 @@ FORMS += \
     plcsetdlg.ui \
     plotedit0dlg.ui \
     plotedit1dlg.ui \
+    plotedit2dlg.ui \
     pshowdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
@@ -249,6 +251,7 @@ HEADERS += \
     plcsetdlg.h \
     plotedit0dlg.h \
     plotedit1dlg.h \
+    plotedit2dlg.h \
     process.h \
     process1_scanbeforetrace.h \
     project.h \

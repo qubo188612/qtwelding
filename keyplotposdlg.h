@@ -6,6 +6,7 @@
 #include "my_cmd.h"
 #include "plotedit0dlg.h"
 #include "plotedit1dlg.h"
+#include "plotedit2dlg.h"
 
 namespace Ui {
 class keyplotposDlg;
@@ -25,6 +26,7 @@ public:
 
     plotedit0Dlg *plotedit0;
     plotedit1Dlg *plotedit1;
+    plotedit2Dlg *plotedit2;
 
     void init_dlg_show();
     void init_dlg_show(QString cmdlist);

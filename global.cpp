@@ -177,6 +177,9 @@ QString Plotpos_edit_mode_toQString(Plotpos_edit_mode plotpos_edit_mode)
         case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
             msg=QString::fromLocal8Bit("两点直线与三点交点模式");
         break;
+        case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE:
+            msg=QString::fromLocal8Bit("直线与三点交点模式");
+        break;
     }
     return msg;
 }

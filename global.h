@@ -906,11 +906,12 @@ typedef enum TRACE_EDIT_MODE_ID         //轨迹生成模式
     TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE=2,     //两端点三直线交点模式
 }Trace_edit_mode;
 
-#define PLOTPOS_EDIT_ID_TOTAL_NUM    2    //点生成模式总数
+#define PLOTPOS_EDIT_ID_TOTAL_NUM    3    //点生成模式总数
 typedef enum PLOTPOS_EDIT_MODE_ID        //点生成模式
 {
     PLOTPOS_EDIT_MODE_THREE_TO_ONE=0,           //三直线交点模式
     PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE=1,      //两点直线与三点交点模式
+    PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE=2,//直线与三点交点模式
 }Plotpos_edit_mode;
 
 #define CREATADDP_EDIT_ID_TOTAL_NUM    2    //点位与轨迹相加模式总数

@@ -1241,7 +1241,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             }
                         }
                         break;
-                        case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
+                        case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE://两点直线与三点交点模式
                         {
                             if(pointsnames.size()!=5)
                             {
@@ -1288,6 +1288,99 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 Point_robpos_result point;
                                 point.name=name;
                                 m_mcs->project->projecr_robpos_trace.push_back(point);
+                            }
+                        }
+                        break;
+                        case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE://直线与三点交点模式
+                        {
+                            if(creatsnames.size()!=1)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
+                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE)+
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_CREATS)+QString::fromLocal8Bit("项的参数只能有1个");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            if(pointsnames.size()!=3)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
+                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE)+
+                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_POINTS)+QString::fromLocal8Bit("项的参数只能有3个");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            bool b_find=false;
+                            int m=0;
+                            for(m=0;m<creatsnames.size();m++)
+                            {
+                                b_find=false;
+                                for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                                {
+                                    if(creatsnames[m]==m_mcs->project->project_weld_trace[t].name)
+                                    {
+                                        b_find=true;
+                                        break;
+                                    }
+                                }
+                                if(b_find==false)//没找到这个名字的扫描轨道
+                                {
+                                    break;
+                                }
+                            }
+                            if(b_find==false)
+                            {
+                                err=1;
+                                main_record.lock();
+                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsnames[m]+QString::fromLocal8Bit("的跟踪轨道");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                errmsg.push_back(return_msg);
+                                break;
+                            }
+                            else
+                            {
+                                bool b_find=false;
+                                int m=0;
+                                for(m=0;m<pointsnames.size();m++)
+                                {
+                                    b_find=false;
+                                    for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+                                    {
+                                        if(pointsnames[m]==m_mcs->project->projecr_robpos_trace[t].name)
+                                        {
+                                            b_find=true;
+                                            break;
+                                        }
+                                    }
+                                    if(b_find==false)//没找到这个名字的点坐标
+                                    {
+                                        break;
+                                    }
+                                }
+                                if(b_find==false)
+                                {
+                                    err=1;
+                                    main_record.lock();
+                                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsnames[m]+QString::fromLocal8Bit("的点坐标");
+                                    m_mcs->main_record.push_back(return_msg);
+                                    main_record.unlock();
+                                    errmsg.push_back(return_msg);
+                                    break;
+                                }
+                                else
+                                {
+                                    Point_robpos_result point;
+                                    point.name=name;
+                                    m_mcs->project->projecr_robpos_trace.push_back(point);
+                                }
                             }
                         }
                         break;
@@ -3385,7 +3478,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     sing_linepoint(2)=weld_trace2[n].Z;
                     SidePoints.push_back(sing_linepoint);
                 }
-                if(linePoints.size()<=2&&SidePoints.size()<=4)
+                if(linePoints.size()<=4&&SidePoints.size()<=4)
                 {
                     main_record.lock();
                     return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标数据太少");
@@ -3556,6 +3649,131 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 else//距离平面越来越近，说明交点放在尾部
                 {
                     Endpoint=weld_trace0[weld_trace0.size()-1];
+                    Endpoint.X=endpoint.x();
+                    Endpoint.Y=endpoint.y();
+                    Endpoint.Z=endpoint.z();
+                }
+            }
+            break;
+            case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE://直线与三点平面交点模式
+            {
+                int point_trace_num_0,point_trace_num_1,point_trace_num_2;//搜索到的扫描轨道序号
+                int scan_trace_num;
+                for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+                {
+                    if(creatname[0]==m_mcs->project->project_weld_trace[n].name)
+                    {
+                        scan_trace_num=n;
+                        break;
+                    }
+                }
+                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                {
+                    if(pointsname[0]==m_mcs->project->projecr_robpos_trace[n].name)
+                    {
+                        point_trace_num_0=n;
+                        break;
+                    }
+                }
+                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                {
+                    if(pointsname[1]==m_mcs->project->projecr_robpos_trace[n].name)
+                    {
+                        point_trace_num_1=n;
+                        break;
+                    }
+                }
+                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                {
+                    if(pointsname[2]==m_mcs->project->projecr_robpos_trace[n].name)
+                    {
+                        point_trace_num_2=n;
+                        break;
+                    }
+                }
+
+                if(m_mcs->project->projecr_robpos_trace[point_trace_num_0].nEn==false)
+                {
+                    //点无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[0]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+                if(m_mcs->project->projecr_robpos_trace[point_trace_num_1].nEn==false)
+                {
+                    //点无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[1]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+                if(m_mcs->project->projecr_robpos_trace[point_trace_num_2].nEn==false)
+                {
+                    //点无效
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[2]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+
+                //这里添加轨迹拟合
+                std::vector<RobPos> weld_trace;
+                weld_trace=m_mcs->project->project_weld_trace[scan_trace_num].point;
+
+                std::vector<Eigen::VectorXd> linePoints,SidePoints;
+                for(int n=0;n<weld_trace.size();n++)
+                {
+                    Eigen::Vector3d sing_linepoint;
+                    sing_linepoint(0)=weld_trace[n].X;
+                    sing_linepoint(1)=weld_trace[n].Y;
+                    sing_linepoint(2)=weld_trace[n].Z;
+                    linePoints.push_back(sing_linepoint);
+                }
+                Eigen::Vector3d sing_linepoint;
+                sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos.X;
+                sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos.Y;
+                sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_0].robotpos.Z;
+                SidePoints.push_back(sing_linepoint);
+                sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos.X;
+                sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos.Y;
+                sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_1].robotpos.Z;
+                SidePoints.push_back(sing_linepoint);
+                sing_linepoint(0)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.X;
+                sing_linepoint(1)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Y;
+                sing_linepoint(2)=m_mcs->project->projecr_robpos_trace[point_trace_num_2].robotpos.Z;
+                SidePoints.push_back(sing_linepoint);
+
+                if(linePoints.size()<=4)
+                {
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标数据太少");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+                FitlineSide fitlineside;
+                Eigen::Vector3d endpoint=fitlineside.computePointOfLineAndSurface(linePoints,SidePoints);//交点
+
+                float f_headdis=(weld_trace[0].X-endpoint.x())*(weld_trace[0].X-endpoint.x())+
+                                (weld_trace[0].Y-endpoint.y())*(weld_trace[0].Y-endpoint.y())+
+                                (weld_trace[0].Z-endpoint.z())*(weld_trace[0].Z-endpoint.z());
+                float f_tiledis=(weld_trace[weld_trace.size()-1].X-endpoint.x())*(weld_trace[weld_trace.size()-1].X-endpoint.x())+
+                                (weld_trace[weld_trace.size()-1].Y-endpoint.y())*(weld_trace[weld_trace.size()-1].Y-endpoint.y())+
+                                (weld_trace[weld_trace.size()-1].Z-endpoint.z())*(weld_trace[weld_trace.size()-1].Z-endpoint.z());
+                if(f_tiledis>f_headdis)//距离平面越来越远,说明交点放在头部
+                {
+                    Endpoint=weld_trace[0];
+                    Endpoint.X=endpoint.x();
+                    Endpoint.Y=endpoint.y();
+                    Endpoint.Z=endpoint.z();
+                }
+                else//距离平面越来越近，说明交点放在尾部
+                {
+                    Endpoint=weld_trace[weld_trace.size()-1];
                     Endpoint.X=endpoint.x();
                     Endpoint.Y=endpoint.y();
                     Endpoint.Z=endpoint.z();

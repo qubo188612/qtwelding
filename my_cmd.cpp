@@ -467,12 +467,12 @@ QString my_cmd::cmd_creatf(QString filename,QString name)
     return msg;
 }
 
-QString my_cmd::cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,QString posname)
+QString my_cmd::cmd_plotpos(Plotpos_edit_mode mode,std::vector<QString> weldname,std::vector<QString> pointname,QString posname)
 {
     QString msg;
     msg=QString(CMD_PLOTPOS_KEY)+" "+
         rc_mode(mode)+" "+
-        rc_plot(mode,weldname)+" "+
+        rc_plot(mode,weldname,pointname)+" "+
         rc_name(posname);
     return msg;
 }
@@ -3607,6 +3607,8 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_NAME=false;
         bool b_MODE=false;
         bool b_PARAM=false;
+        bool b_POINTS=false;
+        bool b_CREATS=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -3655,9 +3657,10 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 }
                 else if(paramname==CMD_CREATS)
                 {
-                    if(b_PARAM==false)
+                    if(b_CREATS==false)
                     {
                         b_PARAM=true;
+                        b_CREATS=true;
                         if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_plotpos_creatname,return_msg))
                         {
                             return 1;
@@ -3670,15 +3673,16 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个'")+CMD_CREATS+QString::fromLocal8Bit("'项或'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
                         return 1;
                     }
                 }
                 else if(paramname==CMD_POINTS)
                 {
-                    if(b_PARAM==false)
+                    if(b_POINTS==false)
                     {
                         b_PARAM=true;
+                        b_POINTS=true;
                         if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_plotpos_pointsname,return_msg))
                         {
                             return 1;
@@ -3691,7 +3695,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个'")+CMD_CREATS+QString::fromLocal8Bit("'项或'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4922,24 +4926,30 @@ QString my_cmd::rc_creats(std::vector<QString> names)
     return msg;
 }
 
-QString my_cmd::rc_plot(Plotpos_edit_mode mode,std::vector<QString> names)
+QString my_cmd::rc_plot(Plotpos_edit_mode mode,std::vector<QString> weldnames,std::vector<QString> pointnames)
 {
     QString msg;
     switch(mode)
     {
         case PLOTPOS_EDIT_MODE_THREE_TO_ONE:
         {
-            msg=rc_creats(names);
+            msg=rc_creats(weldnames);
         }
         break;
         case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
         {
-            msg=rc_points(names);
+            msg=rc_points(pointnames);
+        }
+        break;
+        case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE:
+        {
+            msg=rc_creats(weldnames)+" "+
+                rc_points(pointnames);
         }
         break;
         default:
         {
-            msg=rc_creats(names);
+            msg=rc_creats(weldnames);
         }
         break;
     }
