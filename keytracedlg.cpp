@@ -9,6 +9,9 @@ keytraceDlg::keytraceDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+    ui->tracechangecheckBox->setCheckState(Qt::Unchecked);
+    ui->tracechangecombo->setDisabled(true);
+
     adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->tracespeed->setValidator(adoubleValidator_speed);
 
@@ -27,6 +30,11 @@ void keytraceDlg::init_dlg_show()
     {
         ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
+    ui->tracechangecombo->clear();
+    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    {
+        ui->tracechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+    }
     cmd_list_in.clear();
     ui->record->clear();
 }
@@ -41,6 +49,11 @@ void keytraceDlg::init_dlg_show(QString cmdlist)
     {
         ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
+    ui->tracechangecombo->clear();
+    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    {
+        ui->tracechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+    }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
     {
@@ -49,11 +62,35 @@ void keytraceDlg::init_dlg_show(QString cmdlist)
             QString name_in=cmd.cmd_trace_name_in;//获取到跟踪轨迹序号
             QString name_out=cmd.cmd_trace_name_out;//获取到跟踪轨迹工艺名字
             float speed=cmd.cmd_trace_speed;//获取到的跟踪速度
+            QString change=cmd.cmd_trace_change;//获取到的变换矩阵
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
             ui->tracefilepath->setText(craftfilepath);
             ui->tracespeed->setText(QString::number(speed,'f',ROBOT_SPEED_DECIMAL_PLACE));
             int weld_trace_num;//搜索到的焊接轨道序号
             //这里添加移动命令
+            int change_trace_num;//找到要变换矩阵下标
+            if(!change.isEmpty())
+            {
+                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    {
+                        change_trace_num=n;//找到要储存的焊接轨道下标
+                        break;
+                    }
+                }
+                if(change_trace_num>=0&&change_trace_num<ui->tracechangecombo->count())
+                {
+                    ui->tracechangecombo->setCurrentIndex(change_trace_num);
+                }
+                ui->tracechangecheckBox->setCheckState(Qt::Checked);
+                ui->tracechangecombo->setDisabled(false);
+            }
+            else
+            {
+                ui->tracechangecheckBox->setCheckState(Qt::Unchecked);
+                ui->tracechangecombo->setDisabled(true);
+            }
             for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
             {
                 if(name_in==m_mcs->project->project_weld_trace[n].name)
@@ -166,12 +203,27 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
             return;
         }
     }
-    QString msg=cmd.cmd_trace(name_in,speed,filepath,name_out);
+    QString change;
+    if(ui->tracechangecheckBox->isChecked()==true)
+    {
+        change=ui->tracechangecombo->currentText();
+    }
+    QString msg=cmd.cmd_trace(name_in,speed,filepath,name_out,change);
     ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
     cmd_msg=msg;
     done(1);
 }
 
-
-
+//变换矩阵有效
+void keytraceDlg::on_tracechangecheckBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+    {
+        ui->tracechangecombo->setDisabled(true);
+    }
+    else
+    {
+        ui->tracechangecombo->setDisabled(false);
+    }
+}
 

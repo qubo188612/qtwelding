@@ -34,6 +34,8 @@ private slots:
 
     void on_tracecmdaddBtn_clicked();
 
+    void on_tracechangecheckBox_stateChanged(int arg1);
+
 private:
     Ui::keytraceDlg *ui;
 

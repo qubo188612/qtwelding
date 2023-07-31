@@ -278,7 +278,7 @@ QString my_cmd::cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel 
     return msg;
 }
 
-QString my_cmd::cmd_trace(QString name_in,float speed,QString craftfilepath,QString name_out)
+QString my_cmd::cmd_trace(QString name_in,float speed,QString craftfilepath,QString name_out,QString change)
 {
     QString msg;
     QString msg1;
@@ -288,6 +288,10 @@ QString my_cmd::cmd_trace(QString name_in,float speed,QString craftfilepath,QStr
             rc_speed(speed)+" "+
             rc_craft(craftfilepath)+" "+
             rc_name(name_out);
+    if(!change.isEmpty())
+    {
+        msg=msg+" "+rc_change(change);
+    }
     return msg;
 }
 
@@ -1543,6 +1547,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_SPEED=false;
         bool b_NAME=false;
         bool b_CRAFT=false;
+        bool b_CHANGE=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -1624,6 +1629,22 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         return 1;
                     }
                 }
+                else if(paramname==CMD_CHANGE)
+                {
+                    if(b_CHANGE==false)
+                    {
+                        b_CHANGE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace_change,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
                 else
                 {
                     return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
@@ -1650,6 +1671,10 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         {
             return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CRAFT+QString::fromLocal8Bit("'项参数");
             return 1;
+        }
+        if(b_CHANGE==false)
+        {
+            cmd_trace_change.clear();
         }
     }
     else if(key==CMD_CREAT_KEY)

@@ -745,8 +745,29 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
             {
                 QString name_in=cmd.cmd_trace_name_in;//获取到跟踪轨迹序号
                 QString name_out=cmd.cmd_trace_name_out;//获取到生成的跟踪轨迹序号
+                QString change=cmd.cmd_trace_change;//获取变换矩阵名字
                 bool b_find=0;
-
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->projecr_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->projecr_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
                 b_find=false;
                 for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
                 {
@@ -2012,6 +2033,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
     {
         QString name_in=cmd.cmd_trace_name_in;//获取到跟踪轨迹序号
         QString name_out=cmd.cmd_trace_name_out;//获取到生成的跟踪轨迹序号
+        QString change=cmd.cmd_trace_change;//获取变换矩阵名字
         float speed=cmd.cmd_trace_speed;//获取到的跟踪速度
         QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
         int weld_trace_num_in;//搜索到的焊接轨道序号
@@ -2571,6 +2593,50 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             }
             break;
         }
+
+        if(!change.isEmpty())//需要变换矩阵
+        {
+            int matrix4d_trace_num;
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Matrix3d R1;          //旋转矩阵
+            for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+            {
+                if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                {
+                    matrix4d_trace_num=n;//找到变换矩阵下标
+                    break;
+                }
+            }
+            if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+            {
+                //矩阵无效
+                main_record.lock();
+                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                return 1;
+            }
+            R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
+            R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                /************/
+                //姿态自适应变化
+                for(int n=0;n<interpolatweld.size();n++)
+                {
+                    RobPos pos=interpolatweld[n];//获取到移动坐标
+                    std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                    std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                    std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                    pos.RX=posture_out[0];
+                    pos.RY=posture_out[1];
+                    pos.RZ=posture_out[2];
+                    interpolatweld[n]=pos;
+                }
+                /************/
+            }
+        }
+
         Weld_trace_onec trace_onec;
         trace_onec.Sample=Sample;
         trace_onec.point=interpolatweld;
