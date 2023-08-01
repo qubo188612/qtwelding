@@ -118,7 +118,11 @@ void taskcleardlg::delete_task_num()
 void taskcleardlg::get_task_list()
 {
     QJsonObject json;
-    json.insert("ls","task");
+    QJsonArray task;
+    task.append("task");
+    json.insert("ls",task);
     QString msg=QString(QJsonDocument(json).toJson());
-    m_mcs->resultdata.client->write(msg.toUtf8());
+    QByteArray arry=msg.toUtf8();
+    arry.push_back('\0');
+    m_mcs->resultdata.client->write(arry);
 }
