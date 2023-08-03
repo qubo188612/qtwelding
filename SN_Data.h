@@ -3,6 +3,7 @@
 
 #include "tistdtypes.h"
 #include <time.h>
+#include <QFile>
 #include "FileOut.h"
 #include "MyCheckIPinfo.h"
 

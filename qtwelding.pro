@@ -7,7 +7,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 QT       += core gui network
 QT       += xml
-
+QT       += openglwidgets
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -337,17 +337,17 @@ INCLUDEPATH += /home/qubo/QSsh/src/libs/qssh \
 LIBS += /home/qubo/QSsh/build/lib/lib*
 
 #VTK库添加
-INCLUDEPATH +=/usr/local/include/vtk-7.1 \
+INCLUDEPATH +=/usr/local/include/vtk-9.2 \
 
 LIBS += /usr/local/lib/libvtk*
 
 #Boost
-INCLUDEPATH += /usr/include/boost
+INCLUDEPATH += /usr/include/boost \
 
 LIBS += /usr/lib/x86_64-linux-gnu/libboost_*.so
 
 #PCL库添加
-INCLUDEPATH +=/usr/local/include/pcl-1.12 \
+INCLUDEPATH +=/usr/local/include/pcl-1.13 \
 
 LIBS += /usr/local/lib/libpcl_*
 
@@ -357,9 +357,9 @@ INCLUDEPATH +=/home/qubo/myRos2test/install/tutorial_interfaces/include \
 LIBS += /home/qubo/myRos2test/install/tutorial_interfaces/lib/libtutorial_interfaces*.so
 
 #modbustcp库的添加
-INCLUDEPATH += /home/qubo/modbus/libmodbus/install/include \
+INCLUDEPATH += /usr/include \
 
-LIBS += /home/qubo/modbus/libmodbus/install/lib/libmodbus.so
+LIBS += /usr/lib/x86_64-linux-gnu/libmodbus.so
 
 
 }

@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab_1">
     <attribute name="title">
@@ -299,16 +299,6 @@
       <string>posRZ:</string>
      </property>
     </widget>
-    <widget class="QVTKWidget" name="tab1widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>10</y>
-       <width>1281</width>
-       <height>531</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="tab1pushButton_1">
      <property name="geometry">
       <rect>
@@ -387,6 +377,16 @@
       <string/>
      </property>
     </widget>
+    <widget class="QVTKOpenGLNativeWidget" name="tab1widget">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>10</y>
+       <width>1281</width>
+       <height>531</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -399,16 +399,6 @@
        <y>10</y>
        <width>181</width>
        <height>581</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QVTKWidget" name="tab2widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>10</y>
-       <width>1281</width>
-       <height>531</height>
       </rect>
      </property>
     </widget>
@@ -490,6 +480,16 @@
       <string/>
      </property>
     </widget>
+    <widget class="QVTKOpenGLNativeWidget" name="tab2widget">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>10</y>
+       <width>1281</width>
+       <height>531</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
@@ -502,16 +502,6 @@
        <y>10</y>
        <width>181</width>
        <height>581</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QVTKWidget" name="tab3widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>10</y>
-       <width>1281</width>
-       <height>531</height>
       </rect>
      </property>
     </widget>
@@ -593,6 +583,16 @@
       <string/>
      </property>
     </widget>
+    <widget class="QVTKOpenGLNativeWidget" name="tab3widget">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>10</y>
+       <width>1281</width>
+       <height>531</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">
@@ -605,16 +605,6 @@
        <y>10</y>
        <width>181</width>
        <height>581</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QVTKWidget" name="tab4widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>10</y>
-       <width>1281</width>
-       <height>531</height>
       </rect>
      </property>
     </widget>
@@ -694,6 +684,16 @@
      </property>
      <property name="text">
       <string/>
+     </property>
+    </widget>
+    <widget class="QVTKOpenGLNativeWidget" name="tab4widget">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>10</y>
+       <width>1281</width>
+       <height>531</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -1067,10 +1067,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QVTKWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">QVTKWidget.h</header>
-   <container>1</container>
+   <class>QVTKOpenGLNativeWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">QVTKOpenGLNativeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

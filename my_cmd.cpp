@@ -2974,7 +2974,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_SAMPLESPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+b_SAMPLESPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SAMPLESPEED+QString::fromLocal8Bit("'项参数");
             return 1;
         }
     }

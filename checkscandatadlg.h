@@ -11,6 +11,9 @@
 #include <vtkBoundingBox.h>
 #include <vtkRendererCollection.h>
 #include <vtkMath.h>
+#include <vtkSmartPointer.h>
+#include <vtkRenderer.h>
+#include <vtkGenericOpenGLRenderWindow.h>
 
 namespace Ui {
 class checkscandataDlg;

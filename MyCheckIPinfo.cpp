@@ -54,7 +54,7 @@ int MyCheckIPinfo::split_mac(QString qmac,std::vector<uchar> *cmac_out)
     for(int i=0;i<6;i++)
     {
         QByteArray array;
-        array.append(strList[i]);
+        array.append(strList[i].toUtf8());
         mac[i]=array.toUInt(Q_NULLPTR,16);
     }
     *cmac_out=mac;

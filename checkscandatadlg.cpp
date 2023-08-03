@@ -146,25 +146,61 @@ void checkscandataDlg::init_dlg_show()
     {
         QString name=m_mcs->project->projecr_coord_matrix4d[n].name;
         ui->tab5listWidget->addItem(name);
-    }  
+    }
+#if VTK_MAJOR_VERSION > 8
+    auto renderer1 = vtkSmartPointer<vtkRenderer>::New();
+    auto renderWindow1 = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+    renderWindow1->AddRenderer(renderer1);
+    tab1viewer.reset(new pcl::visualization::PCLVisualizer(renderer1,renderWindow1,"viewer", false));
+#else
     tab1viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
-    ui->tab1widget->SetRenderWindow(tab1viewer->getRenderWindow());
-    tab1viewer->setupInteractor(ui->tab1widget->GetInteractor(), ui->tab1widget->GetRenderWindow());
+#endif
+ // ui->tab1widget->SetRenderWindow(tab1viewer->getRenderWindow());
+    ui->tab1widget->setRenderWindow(tab1viewer->getRenderWindow());
+ // tab1viewer->setupInteractor(ui->tab1widget->GetInteractor(), ui->tab1widget->GetRenderWindow());
+    tab1viewer->setupInteractor(ui->tab1widget->interactor(), ui->tab1widget->renderWindow());
     tab1viewer->addCoordinateSystem();  //添加坐标系
 
+#if VTK_MAJOR_VERSION > 8
+    auto renderer2 = vtkSmartPointer<vtkRenderer>::New();
+    auto renderWindow2 = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+    renderWindow2->AddRenderer(renderer2);
+    tab2viewer.reset(new pcl::visualization::PCLVisualizer(renderer2,renderWindow2,"viewer", false));
+#else
     tab2viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
-    ui->tab2widget->SetRenderWindow(tab2viewer->getRenderWindow());
-    tab2viewer->setupInteractor(ui->tab2widget->GetInteractor(), ui->tab2widget->GetRenderWindow());
+#endif
+ // ui->tab2widget->SetRenderWindow(tab2viewer->getRenderWindow());
+    ui->tab2widget->setRenderWindow(tab2viewer->getRenderWindow());
+//  tab2viewer->setupInteractor(ui->tab2widget->GetInteractor(), ui->tab2widget->GetRenderWindow());
+    tab2viewer->setupInteractor(ui->tab2widget->interactor(), ui->tab2widget->renderWindow());
     tab2viewer->addCoordinateSystem();  //添加坐标系
 
+#if VTK_MAJOR_VERSION > 8
+    auto renderer3 = vtkSmartPointer<vtkRenderer>::New();
+    auto renderWindow3 = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+    renderWindow3->AddRenderer(renderer3);
+    tab3viewer.reset(new pcl::visualization::PCLVisualizer(renderer3,renderWindow3,"viewer", false));
+#else
     tab3viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
-    ui->tab3widget->SetRenderWindow(tab3viewer->getRenderWindow());
-    tab3viewer->setupInteractor(ui->tab3widget->GetInteractor(), ui->tab3widget->GetRenderWindow());
+#endif
+//  ui->tab3widget->SetRenderWindow(tab3viewer->getRenderWindow());
+    ui->tab3widget->setRenderWindow(tab3viewer->getRenderWindow());
+//  tab3viewer->setupInteractor(ui->tab3widget->GetInteractor(), ui->tab3widget->GetRenderWindow());
+    tab3viewer->setupInteractor(ui->tab3widget->interactor(), ui->tab3widget->renderWindow());
     tab3viewer->addCoordinateSystem();  //添加坐标系
 
+#if VTK_MAJOR_VERSION > 8
+    auto renderer4 = vtkSmartPointer<vtkRenderer>::New();
+    auto renderWindow4 = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+    renderWindow4->AddRenderer(renderer4);
+    tab4viewer.reset(new pcl::visualization::PCLVisualizer(renderer4,renderWindow4,"viewer", false));
+#else
     tab4viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
-    ui->tab4widget->SetRenderWindow(tab4viewer->getRenderWindow());
-    tab4viewer->setupInteractor(ui->tab4widget->GetInteractor(), ui->tab4widget->GetRenderWindow());
+#endif
+//  ui->tab4widget->SetRenderWindow(tab4viewer->getRenderWindow());
+    ui->tab4widget->setRenderWindow(tab4viewer->getRenderWindow());
+//  tab4viewer->setupInteractor(ui->tab4widget->GetInteractor(), ui->tab4widget->GetRenderWindow());
+    tab4viewer->setupInteractor(ui->tab4widget->interactor(), ui->tab4widget->renderWindow());
     tab4viewer->addCoordinateSystem();  //添加坐标系
 }
 
@@ -267,7 +303,8 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr checkscandataDlg::print_allpoint(double c
 
 void checkscandataDlg::tab1updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
 {
-    vtkCamera *camera = ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  vtkCamera *camera = ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+    vtkCamera *camera = ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
 //  camera->SetFocalPoint(focalPoint);
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
@@ -278,7 +315,8 @@ void checkscandataDlg::tab1updateCameraView(double focalPoint[3], double positio
 
 void checkscandataDlg::tab2updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
 {
-    vtkCamera *camera = ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  vtkCamera *camera = ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+    vtkCamera *camera = ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
 //  camera->SetFocalPoint(focalPoint);
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
@@ -289,7 +327,8 @@ void checkscandataDlg::tab2updateCameraView(double focalPoint[3], double positio
 
 void checkscandataDlg::tab3updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
 {
-    vtkCamera *camera = ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  vtkCamera *camera = ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+    vtkCamera *camera = ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
 //  camera->SetFocalPoint(focalPoint);
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
@@ -300,7 +339,8 @@ void checkscandataDlg::tab3updateCameraView(double focalPoint[3], double positio
 
 void checkscandataDlg::tab4updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
 {
-    vtkCamera *camera = ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+//  vtkCamera *camera = ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+    vtkCamera *camera = ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
 //  camera->SetFocalPoint(focalPoint);
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
@@ -734,7 +774,8 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
 
 void checkscandataDlg::on_tab1pushButton_1_clicked()//俯视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -749,7 +790,8 @@ void checkscandataDlg::on_tab1pushButton_1_clicked()//俯视图
 
 void checkscandataDlg::on_tab1pushButton_2_clicked()//前视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -763,7 +805,8 @@ void checkscandataDlg::on_tab1pushButton_2_clicked()//前视图
 
 void checkscandataDlg::on_tab1pushButton_3_clicked()//左视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -778,7 +821,8 @@ void checkscandataDlg::on_tab1pushButton_3_clicked()//左视图
 
 void checkscandataDlg::on_tab1pushButton_4_clicked()//后视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -793,7 +837,8 @@ void checkscandataDlg::on_tab1pushButton_4_clicked()//后视图
 
 void checkscandataDlg::on_tab1pushButton_5_clicked()//右视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -808,7 +853,8 @@ void checkscandataDlg::on_tab1pushButton_5_clicked()//右视图
 
 void checkscandataDlg::on_tab1pushButton_6_clicked()//仰视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab1widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -824,7 +870,8 @@ void checkscandataDlg::on_tab1pushButton_6_clicked()//仰视图
 
 void checkscandataDlg::on_tab2pushButton_1_clicked()//俯视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -840,7 +887,8 @@ void checkscandataDlg::on_tab2pushButton_1_clicked()//俯视图
 
 void checkscandataDlg::on_tab2pushButton_2_clicked()//前视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -854,7 +902,8 @@ void checkscandataDlg::on_tab2pushButton_2_clicked()//前视图
 
 void checkscandataDlg::on_tab2pushButton_3_clicked()//左视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -869,7 +918,8 @@ void checkscandataDlg::on_tab2pushButton_3_clicked()//左视图
 
 void checkscandataDlg::on_tab2pushButton_4_clicked()//后视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -883,7 +933,8 @@ void checkscandataDlg::on_tab2pushButton_4_clicked()//后视图
 
 void checkscandataDlg::on_tab2pushButton_5_clicked()//右视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -897,7 +948,8 @@ void checkscandataDlg::on_tab2pushButton_5_clicked()//右视图
 
 void checkscandataDlg::on_tab2pushButton_6_clicked()//仰视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab2widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -913,7 +965,8 @@ void checkscandataDlg::on_tab2pushButton_6_clicked()//仰视图
 
 void checkscandataDlg::on_tab3pushButton_1_clicked()//俯视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -928,7 +981,8 @@ void checkscandataDlg::on_tab3pushButton_1_clicked()//俯视图
 
 void checkscandataDlg::on_tab3pushButton_2_clicked()//前视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+//  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -943,7 +997,8 @@ void checkscandataDlg::on_tab3pushButton_2_clicked()//前视图
 
 void checkscandataDlg::on_tab3pushButton_3_clicked()//左视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -957,7 +1012,8 @@ void checkscandataDlg::on_tab3pushButton_3_clicked()//左视图
 
 void checkscandataDlg::on_tab3pushButton_4_clicked()//后视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -972,7 +1028,8 @@ void checkscandataDlg::on_tab3pushButton_4_clicked()//后视图
 
 void checkscandataDlg::on_tab3pushButton_5_clicked()//右视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -987,7 +1044,8 @@ void checkscandataDlg::on_tab3pushButton_5_clicked()//右视图
 
 void checkscandataDlg::on_tab3pushButton_6_clicked()//仰视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab3widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -1003,7 +1061,8 @@ void checkscandataDlg::on_tab3pushButton_6_clicked()//仰视图
 
 void checkscandataDlg::on_tab4pushButton_1_clicked()//俯视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -1019,7 +1078,8 @@ void checkscandataDlg::on_tab4pushButton_1_clicked()//俯视图
 
 void checkscandataDlg::on_tab4pushButton_2_clicked()//前视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -1034,7 +1094,8 @@ void checkscandataDlg::on_tab4pushButton_2_clicked()//前视图
 
 void checkscandataDlg::on_tab4pushButton_3_clicked()//左视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -1049,7 +1110,8 @@ void checkscandataDlg::on_tab4pushButton_3_clicked()//左视图
 
 void checkscandataDlg::on_tab4pushButton_4_clicked()//右视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -1064,7 +1126,8 @@ void checkscandataDlg::on_tab4pushButton_4_clicked()//右视图
 
 void checkscandataDlg::on_tab4pushButton_5_clicked()//右视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
@@ -1079,7 +1142,8 @@ void checkscandataDlg::on_tab4pushButton_5_clicked()//右视图
 
 void checkscandataDlg::on_tab4pushButton_6_clicked()//仰视图
 {
-    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    //  vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
+    vtkPolyData* polydata = vtkPolyData::SafeDownCast(ui->tab4widget->renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors()->GetLastActor()->GetMapper()->GetInput());
     double center[3];
     polydata->GetCenter(center);
     double bounds[6];
