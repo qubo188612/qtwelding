@@ -332,9 +332,10 @@ LIBS += /opt/ros/galactic/lib/x86_64-linux-gnu/lib*.so
 INCLUDEPATH += /usr/include/eigen3
 
 #QSsh库的添加
-INCLUDEPATH += /home/qubo/QSsh/src/libs/qssh \
 
-LIBS += /home/qubo/QSsh/build/lib/lib*
+INCLUDEPATH += /home/qubo/Qt/6.2.4/gcc_64/include/QSsh
+
+unix:!macx: LIBS += -L /home/qubo/Qt/6.2.4/gcc_64/lib/ -lQSsh
 
 #VTK库添加
 INCLUDEPATH +=/usr/local/include/vtk-9.2 \
@@ -366,3 +367,4 @@ LIBS += /usr/lib/x86_64-linux-gnu/libmodbus.so
 
 RESOURCES += \
     rsc.qrc
+

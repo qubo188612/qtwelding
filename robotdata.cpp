@@ -317,7 +317,7 @@ int RobotData::decoed_json(QByteArray allData)
         {
             cal_posture_model=(CAL_POSTURE)it.value().toInt();
         }
-        else if(keyString=="weld_model")//机器人型号
+        else if(keyString=="weld_model")//焊机型号
         {
             weld_model=(WELD_MODEL)it.value().toInt();
         }

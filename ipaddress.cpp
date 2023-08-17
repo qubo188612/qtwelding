@@ -144,7 +144,7 @@ int IPaddress::decoed_json(QByteArray allData)
                 {
                     robot_ip[0].plc_ip.ip=it_obj.value().toString();
                 }
-                else if(keyString=="robot_plc_ip_port")//PLC端口
+                else if(keyString=="robot_plc_port")//PLC端口
                 {
                     robot_ip[0].plc_ip.port=it_obj.value().toInt();
                 }
