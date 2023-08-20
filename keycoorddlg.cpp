@@ -22,12 +22,12 @@ void keycoordDlg::init_dlg_show()
     ui->comboBox_pointx->clear();
     ui->comboBox_cpointo->clear();
     ui->comboBox_cpointx->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_pointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->comboBox_pointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->comboBox_cpointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->comboBox_cpointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_pointo->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->comboBox_pointx->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->comboBox_cpointo->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->comboBox_cpointx->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     cmd_list_in.clear();
 }
@@ -41,12 +41,12 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
     ui->comboBox_pointx->clear();
     ui->comboBox_cpointo->clear();
     ui->comboBox_cpointx->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_pointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->comboBox_pointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->comboBox_cpointo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->comboBox_cpointx->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_pointo->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->comboBox_pointx->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->comboBox_cpointo->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->comboBox_cpointx->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -63,9 +63,9 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
             int cpointx_trace_num;//搜索到的s_cpointx序号
             int cpointo_trace_num;//搜索到的s_cpointo序号
             //这里添加移动命令
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(s_pointx==m_mcs->project->projecr_robpos_trace[n].name)
+                if(s_pointx==m_mcs->project->project_robpos_trace[n].name)
                 {
                     pointx_trace_num=n;//找到要储存的焊接轨道下标
                     break;
@@ -75,9 +75,9 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
             {
                 ui->comboBox_pointx->setCurrentIndex(pointx_trace_num);
             }
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(s_pointo==m_mcs->project->projecr_robpos_trace[n].name)
+                if(s_pointo==m_mcs->project->project_robpos_trace[n].name)
                 {
                     pointo_trace_num=n;//找到要储存的焊接轨道下标
                     break;
@@ -87,9 +87,9 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
             {
                 ui->comboBox_pointo->setCurrentIndex(pointo_trace_num);
             }
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(s_cpointx==m_mcs->project->projecr_robpos_trace[n].name)
+                if(s_cpointx==m_mcs->project->project_robpos_trace[n].name)
                 {
                     cpointx_trace_num=n;//找到要储存的焊接轨道下标
                     break;
@@ -99,9 +99,9 @@ void keycoordDlg::init_dlg_show(QString cmdlist)
             {
                 ui->comboBox_cpointx->setCurrentIndex(cpointx_trace_num);
             }
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(s_cpointo==m_mcs->project->projecr_robpos_trace[n].name)
+                if(s_cpointo==m_mcs->project->project_robpos_trace[n].name)
                 {
                     cpointo_trace_num=n;//找到要储存的焊接轨道下标
                     break;
@@ -189,9 +189,9 @@ void keycoordDlg::on_pushButton_clicked()
     {
         std::vector<QString> err_msg;
         m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg);
-        for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+        for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
         {
-            if(name==m_mcs->project->projecr_coord_matrix4d[n].name)
+            if(name==m_mcs->project->project_coord_matrix4d[n].name)
             {
                 ui->record->append(QString::fromLocal8Bit("生成的定位矩阵名称与已有的矩阵重名"));
                 return;

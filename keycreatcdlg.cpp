@@ -22,19 +22,19 @@ keycreatcDlg::~keycreatcDlg()
 void keycreatcDlg::init_dlg_show()
 {
     ui->pos1comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos1comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos1comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->pos2comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos2comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos2comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->pos3comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos3comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos3comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->record->clear();
 }
@@ -44,19 +44,19 @@ void keycreatcDlg::init_dlg_show(QString cmdlist)
     QString msg,key;
     my_cmd cmd;
     ui->pos1comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos1comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos1comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->pos2comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos2comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos2comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->pos3comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos3comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos3comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -70,9 +70,9 @@ void keycreatcDlg::init_dlg_show(QString cmdlist)
             std::vector<int> point_trace_num(pointsname.size());
             for(int m=0;m<pointsname.size();m++)
             {
-                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                 {
-                    if(pointsname[m]==m_mcs->project->projecr_robpos_trace[n].name)
+                    if(pointsname[m]==m_mcs->project->project_robpos_trace[n].name)
                     {
                         point_trace_num[m]=n;//找到要储存的点位下标
                         break;
@@ -176,9 +176,9 @@ void keycreatcDlg::on_creatcBtn_clicked()
     }
     if(b_inster==false)
     {
-        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
         {
-            if(name==m_mcs->project->projecr_robpos_trace[n].name)
+            if(name==m_mcs->project->project_robpos_trace[n].name)
             {
                 ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
                 return;

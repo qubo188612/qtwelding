@@ -28,8 +28,9 @@ setcraft0Dlg::~setcraft0Dlg()
     delete ui;
 }
 
-void setcraft0Dlg::init_dlg_show()
+void setcraft0Dlg::init_dlg_show(bool b_file)
 {
+    this->b_file=b_file;
     if(m_mcs->craft->posturelist.size()==1)
     {
         ui->lineEdit_X->setText(QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -91,8 +92,15 @@ void setcraft0Dlg::on_pushButton_2_clicked()//确定并保存
     m_mcs->craft->posturelist[0].Variable.Z=ui->lineEdit_Z->text().toFloat();
     m_mcs->craft->posturelist[0].posture.RX=ui->lineEdit_RX->text().toFloat();
     m_mcs->craft->posturelist[0].posture.RY=ui->lineEdit_RY->text().toFloat();
-    m_mcs->craft->posturelist[0].posture.RZ=ui->lineEdit_RZ->text().toFloat(); 
-    m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    m_mcs->craft->posturelist[0].posture.RZ=ui->lineEdit_RZ->text().toFloat();
+    if(b_file==true)
+        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    else
+    {
+        my_cmd cmd;
+        std::vector<float> param;
+        cmd_msg=cmd.cmd_crafts(CRAFT_ID_FIXED_POSTURE,m_mcs->craft->posturelist,param,m_mcs->craft->craft_name);
+    }
     done(1);
 }
 

@@ -44,8 +44,9 @@ setcraft1Dlg::~setcraft1Dlg()
     delete ui;
 }
 
-void setcraft1Dlg::init_dlg_show()
+void setcraft1Dlg::init_dlg_show(bool b_file)
 {
+    this->b_file=b_file;
     if(m_mcs->craft->posturelist.size()>=2)
     {
         ui->lineEdit_stX->setText(QString::number(m_mcs->craft->posturelist[0].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -340,7 +341,14 @@ void setcraft1Dlg::on_pushButtonOK_clicked()//确定并保存
         ui->record->append(msg);
         return;
     }
-    m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    if(b_file==true)
+        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    else
+    {
+        my_cmd cmd;
+        std::vector<float> param;
+        cmd_msg=cmd.cmd_crafts(CRAFT_ID_STARTENDCHANGE_POSTURE,m_mcs->craft->posturelist,param,m_mcs->craft->craft_name);
+    }
     done(1);
 }
 

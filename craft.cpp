@@ -284,22 +284,31 @@ int Craft::decoed_json(QByteArray allData)
     }
     /*********************/
     //判断数据合理性,补充其他数据
+    if(0!=posturelistcheck(craft_id,posturelist))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int Craft::posturelistcheck(Craft_ID craft_id,std::vector<ChangeRobPosVariable> posturelist)
+{
     switch(craft_id)
     {
         case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
         {
-            if(posturelist.size()!=1)    //固定姿态要只有一个姿态
-            {
-                return 1;
-            }
+                if(posturelist.size()!=1)    //固定姿态要只有一个姿态
+                {
+                    return 1;
+                }
         }
         break;
         case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
         {
-            if(posturelist.size()<2)    //起终点变姿态至少要有起终点
-            {
-                return 1;
-            }
+                if(posturelist.size()<2)    //起终点变姿态至少要有起终点
+                {
+                    return 1;
+                }
         }
         break;
         case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
@@ -308,13 +317,12 @@ int Craft::decoed_json(QByteArray allData)
         break;
         case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
         {
-            if(posturelist.size()!=3)    //分别是平坡姿态，上坡姿态，下坡姿态
-            {
-                return 1;
-            }
+                if(posturelist.size()!=3)    //分别是平坡姿态，上坡姿态，下坡姿态
+                {
+                    return 1;
+                }
         }
         break;
     }
-
     return 0;
 }

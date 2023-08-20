@@ -29,9 +29,9 @@ void keycreataddpDlg::init_dlg_show()
         ui->traceaddpweldcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
     ui->traceaddpointcombo->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->traceaddpointcombo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->traceaddpointcombo->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->record->clear();
 }
@@ -58,9 +58,9 @@ void keycreataddpDlg::init_dlg_show(QString cmdlist)
                 ui->traceaddpweldcombo->addItem(m_mcs->project->project_weld_trace[n].name);
             }
             ui->traceaddpointcombo->clear();
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                ui->traceaddpointcombo->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+                ui->traceaddpointcombo->addItem(m_mcs->project->project_robpos_trace[n].name);
             }
 
             for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
@@ -75,9 +75,9 @@ void keycreataddpDlg::init_dlg_show(QString cmdlist)
             {
                 ui->traceaddpweldcombo->setCurrentIndex(weld_trace_creatnum);
             }
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(pointname==m_mcs->project->projecr_robpos_trace[n].name)
+                if(pointname==m_mcs->project->project_robpos_trace[n].name)
                 {
                     point_trace_creatnum=n;//找到要储存的焊接轨道下标
                     break;

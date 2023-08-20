@@ -18,29 +18,29 @@ plotedit1Dlg::~plotedit1Dlg()
 void plotedit1Dlg::init_dlg_show()
 {
     ui->comboBox_0->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_0->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_0->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_1->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_1->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_1->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_2->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_2->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_2->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_3->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_3->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_3->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_4->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_4->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_4->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
 }
 
@@ -50,29 +50,29 @@ void plotedit1Dlg::init_dlg_show(QString cmdlist)
     my_cmd cmd;
     int rc;
     ui->comboBox_0->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_0->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_0->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_1->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_1->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_1->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_2->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_2->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_2->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_3->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_3->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_3->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->comboBox_4->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->comboBox_4->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->comboBox_4->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -85,7 +85,7 @@ void plotedit1Dlg::init_dlg_show(QString cmdlist)
             {
                 case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:  //三直线交点模式
                 {
-                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                     {
                         if(pointsname[0]==ui->comboBox_0->itemText(n))
                         {
@@ -93,7 +93,7 @@ void plotedit1Dlg::init_dlg_show(QString cmdlist)
                             break;
                         }
                     }
-                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                     {
                         if(pointsname[1]==ui->comboBox_1->itemText(n))
                         {
@@ -101,7 +101,7 @@ void plotedit1Dlg::init_dlg_show(QString cmdlist)
                             break;
                         }
                     }
-                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                     {
                         if(pointsname[2]==ui->comboBox_2->itemText(n))
                         {
@@ -109,7 +109,7 @@ void plotedit1Dlg::init_dlg_show(QString cmdlist)
                             break;
                         }
                     }
-                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                     {
                         if(pointsname[3]==ui->comboBox_3->itemText(n))
                         {
@@ -117,7 +117,7 @@ void plotedit1Dlg::init_dlg_show(QString cmdlist)
                             break;
                         }
                     }
-                    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                     {
                         if(pointsname[4]==ui->comboBox_4->itemText(n))
                         {

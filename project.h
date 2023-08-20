@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QByteArray>
 #include "global.h"
+#include "craft.h"
 #if _MSC_VER
 #include <QDir>
 #else
@@ -47,15 +48,17 @@ public:
 
     int LoadProjectPath(char* filename);    //读取最后一次项目路径，以便下次打开
 
-    std::vector<Point_robpos_result> projecr_robpos_trace;  //点轨迹
+    std::vector<Point_robpos_result> project_robpos_trace;  //点轨迹
 
-    std::vector<Coord_Matrix4d_result> projecr_coord_matrix4d;  //零点定位矩阵
+    std::vector<Coord_Matrix4d_result> project_coord_matrix4d;  //零点定位矩阵
 
     std::vector<Scan_trace_result> project_scan_trace;  //扫描轨迹
 
     std::vector<Weld_trace_result> project_weld_trace;  //跟踪轨迹
 
     std::vector<Weld_tracing_result> project_interweld_trace; //焊接跟踪工艺轨迹
+
+    std::vector<Weld_crafts_result> project_crafts_trace; //创建跟踪工艺
 
 protected:
     Project();

@@ -114,9 +114,9 @@ void checkscandataDlg::init_dlg_show()
     ui->tab5t1_label_2->clear();
     ui->tab5t2_label_2->clear();
 
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        QString name=m_mcs->project->projecr_robpos_trace[n].name;
+        QString name=m_mcs->project->project_robpos_trace[n].name;
         ui->tab1listWidget->addItem(name);
     }
 
@@ -142,9 +142,9 @@ void checkscandataDlg::init_dlg_show()
     }
 
     ui->tab5listWidget->clear();
-    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
     {
-        QString name=m_mcs->project->projecr_coord_matrix4d[n].name;
+        QString name=m_mcs->project->project_coord_matrix4d[n].name;
         ui->tab5listWidget->addItem(name);
     }
 #if VTK_MAJOR_VERSION > 8
@@ -220,14 +220,14 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr checkscandataDlg::print_allpoint(double c
 
     pcl::PointXYZRGB point;
 
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        if(m_mcs->project->projecr_robpos_trace[n].nEn==true)
+        if(m_mcs->project->project_robpos_trace[n].nEn==true)
         {
             point.rgb = *reinterpret_cast<float*>(&rgb);
-            point.x=m_mcs->project->projecr_robpos_trace[n].robotpos.X-centerx;
-            point.y=m_mcs->project->projecr_robpos_trace[n].robotpos.Y-centery;
-            point.z=m_mcs->project->projecr_robpos_trace[n].robotpos.Z-centerz;
+            point.x=m_mcs->project->project_robpos_trace[n].robotpos.X-centerx;
+            point.y=m_mcs->project->project_robpos_trace[n].robotpos.Y-centery;
+            point.z=m_mcs->project->project_robpos_trace[n].robotpos.Z-centerz;
             rgbclould->points.push_back(point);
         }
     }
@@ -376,15 +376,15 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
     {
         int pointnum=0;
         QString msg;
-        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
         {
-            if(name==m_mcs->project->projecr_robpos_trace[n].name)
+            if(name==m_mcs->project->project_robpos_trace[n].name)
             {
                 pointnum=n;
                 break;
             }
         }
-        if(m_mcs->project->projecr_robpos_trace[pointnum].nEn==false)
+        if(m_mcs->project->project_robpos_trace[pointnum].nEn==false)
         {
             msg=QString::fromLocal8Bit("点位数据无效");
             ui->tab1pointstate->setText(msg);
@@ -400,7 +400,7 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
         }
         else
         {
-            RobPos robotpos=m_mcs->project->projecr_robpos_trace[pointnum].robotpos;
+            RobPos robotpos=m_mcs->project->project_robpos_trace[pointnum].robotpos;
             ui->tab1pointstate->clear();
             ui->tab1realposX->setText(QString::number(robotpos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
             ui->tab1realposY->setText(QString::number(robotpos.Y,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -414,17 +414,17 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
         }
 
         int tempcv_num=0;
-        cv_cloud.reserve(m_mcs->project->projecr_robpos_trace.size());
-        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        cv_cloud.reserve(m_mcs->project->project_robpos_trace.size());
+        for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
         {
-            if(m_mcs->project->projecr_robpos_trace[n].nEn==true)
+            if(m_mcs->project->project_robpos_trace[n].nEn==true)
             {
                 if(n==pointnum)
                 {
                     cv_num=tempcv_num;
                     b_cv_num=true;
                 }
-                cv_cloud.push_back(m_mcs->project->projecr_robpos_trace[n].robotpos);
+                cv_cloud.push_back(m_mcs->project->project_robpos_trace[n].robotpos);
                 tempcv_num++;
             }
         }
@@ -703,15 +703,15 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
     {
         int matrix4dnum;
         QString msg;
-        for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+        for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
         {
-            if(name==m_mcs->project->projecr_coord_matrix4d[n].name)
+            if(name==m_mcs->project->project_coord_matrix4d[n].name)
             {
                 matrix4dnum=n;
                 break;
             }
         }
-        if(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].nEn==false)
+        if(m_mcs->project->project_coord_matrix4d[matrix4dnum].nEn==false)
         {
             msg=QString::fromLocal8Bit("变化矩阵数据无效");
             ui->tab5state->setText(msg);
@@ -743,30 +743,30 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
         else
         {
             ui->tab5state->clear();
-            ui->tab5a11_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(0,0),'f',3));
-            ui->tab5a12_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(0,1),'f',3));
-            ui->tab5a13_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(0,2),'f',3));
-            ui->tab5a21_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(1,0),'f',3));
-            ui->tab5a22_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(1,1),'f',3));
-            ui->tab5a23_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(1,2),'f',3));
-            ui->tab5a31_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(2,0),'f',3));
-            ui->tab5a32_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(2,1),'f',3));
-            ui->tab5a33_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R(2,2),'f',3));
-            ui->tab5t0_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T(0),'f',3));
-            ui->tab5t1_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T(1),'f',3));
-            ui->tab5t2_label->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T(2),'f',3));
-            ui->tab5a11_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(0,0),'f',3));
-            ui->tab5a12_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(0,1),'f',3));
-            ui->tab5a13_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(0,2),'f',3));
-            ui->tab5a21_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(1,0),'f',3));
-            ui->tab5a22_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(1,1),'f',3));
-            ui->tab5a23_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(1,2),'f',3));
-            ui->tab5a31_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(2,0),'f',3));
-            ui->tab5a32_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(2,1),'f',3));
-            ui->tab5a33_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].R1(2,2),'f',3));
-            ui->tab5t0_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T1(0),'f',3));
-            ui->tab5t1_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T1(1),'f',3));
-            ui->tab5t2_label_2->setText(QString::number(m_mcs->project->projecr_coord_matrix4d[matrix4dnum].T1(2),'f',3));
+            ui->tab5a11_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(0,0),'f',3));
+            ui->tab5a12_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(0,1),'f',3));
+            ui->tab5a13_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(0,2),'f',3));
+            ui->tab5a21_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(1,0),'f',3));
+            ui->tab5a22_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(1,1),'f',3));
+            ui->tab5a23_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(1,2),'f',3));
+            ui->tab5a31_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(2,0),'f',3));
+            ui->tab5a32_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(2,1),'f',3));
+            ui->tab5a33_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R(2,2),'f',3));
+            ui->tab5t0_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].T(0),'f',3));
+            ui->tab5t1_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].T(1),'f',3));
+            ui->tab5t2_label->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].T(2),'f',3));
+            ui->tab5a11_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(0,0),'f',3));
+            ui->tab5a12_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(0,1),'f',3));
+            ui->tab5a13_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(0,2),'f',3));
+            ui->tab5a21_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(1,0),'f',3));
+            ui->tab5a22_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(1,1),'f',3));
+            ui->tab5a23_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(1,2),'f',3));
+            ui->tab5a31_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(2,0),'f',3));
+            ui->tab5a32_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(2,1),'f',3));
+            ui->tab5a33_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].R1(2,2),'f',3));
+            ui->tab5t0_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].T1(0),'f',3));
+            ui->tab5t1_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].T1(1),'f',3));
+            ui->tab5t2_label_2->setText(QString::number(m_mcs->project->project_coord_matrix4d[matrix4dnum].T1(2),'f',3));
         }
     }
 }

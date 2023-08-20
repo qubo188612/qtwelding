@@ -778,7 +778,6 @@ public:
     QString name; //跟踪工艺轨迹名字
 };
 
-
 //姿态类补偿类
 class ChangeRobPosVariable
 {

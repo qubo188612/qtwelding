@@ -647,9 +647,9 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
         int matrix4d_trace_num;
         bool b_find=false;
         m_mcs->process->check_data_process();
-        for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+        for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
         {
-            if(changename==m_mcs->project->projecr_coord_matrix4d[n].name)
+            if(changename==m_mcs->project->project_coord_matrix4d[n].name)
             {
                 matrix4d_trace_num=n;
                 b_find=true;
@@ -661,7 +661,7 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
             ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
             return;
         }
-        else if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn==false)
+        else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
         {
             ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
             return;
@@ -672,10 +672,10 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
             Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
-            R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
-            T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
-            R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
-            T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+            T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+            R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+            T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
             Eigen::Vector3d tempin,tempout;
             tempin.x()=pos.X;
             tempin.y()=pos.Y;
@@ -806,9 +806,9 @@ void setmovecDlg::on_arriveBtn_center_2_pressed()
         int matrix4d_trace_num;
         bool b_find=false;
         m_mcs->process->check_data_process();
-        for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+        for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
         {
-            if(changename==m_mcs->project->projecr_coord_matrix4d[n].name)
+            if(changename==m_mcs->project->project_coord_matrix4d[n].name)
             {
                 matrix4d_trace_num=n;
                 b_find=true;
@@ -820,7 +820,7 @@ void setmovecDlg::on_arriveBtn_center_2_pressed()
             ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
             return;
         }
-        else if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn==false)
+        else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
         {
             ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
             return;
@@ -831,10 +831,10 @@ void setmovecDlg::on_arriveBtn_center_2_pressed()
             Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
-            R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
-            T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
-            R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
-            T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+            T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+            R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+            T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
             Eigen::Vector3d tempin,tempout;
             tempin.x()=pos.X;
             tempin.y()=pos.Y;
@@ -968,9 +968,9 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
         int matrix4d_trace_num;
         bool b_find=false;
         m_mcs->process->check_data_process();
-        for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+        for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
         {
-            if(changename==m_mcs->project->projecr_coord_matrix4d[n].name)
+            if(changename==m_mcs->project->project_coord_matrix4d[n].name)
             {
                 matrix4d_trace_num=n;
                 b_find=true;
@@ -982,7 +982,7 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
             ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
             return;
         }
-        else if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn==false)
+        else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
         {
             ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
             return;
@@ -993,10 +993,10 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
             Eigen::Vector3d T1;          //平移矩阵(零点坐标)
             Eigen::Matrix3d R;          //旋转矩阵
             Eigen::Vector3d T;          //平移矩阵(零点坐标)
-            R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
-            T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
-            R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
-            T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+            R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+            T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+            R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+            T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
             Eigen::Vector3d tempin,tempout;
             tempin.x()=pos.X;
             tempin.y()=pos.Y;
@@ -1061,9 +1061,9 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
                 int matrix4d_trace_num;
                 bool b_find=false;
                 m_mcs->process->check_data_process();
-                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
                 {
-                    if(changename==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    if(changename==m_mcs->project->project_coord_matrix4d[n].name)
                     {
                         matrix4d_trace_num=n;
                         b_find=true;
@@ -1075,7 +1075,7 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
                     ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
                     return;
                 }
-                else if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn==false)
+                else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
                     ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
                     return;
@@ -1086,10 +1086,10 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
                     Eigen::Vector3d T1;          //平移矩阵(零点坐标)
                     Eigen::Matrix3d R;           //旋转矩阵
                     Eigen::Vector3d T;           //平移矩阵(零点坐标)
-                    R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
-                    T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
-                    R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
-                    T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                    R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+                    T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+                    R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+                    T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
 
                     Eigen::Vector3d tempin,tempout;
                     Eigen::Matrix3d nR1=R1.inverse(),nR=R.inverse();
@@ -1160,9 +1160,9 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
                 int matrix4d_trace_num;
                 bool b_find=false;
                 m_mcs->process->check_data_process();
-                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
                 {
-                    if(changename==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    if(changename==m_mcs->project->project_coord_matrix4d[n].name)
                     {
                         matrix4d_trace_num=n;
                         b_find=true;
@@ -1174,7 +1174,7 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
                     ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
                     return;
                 }
-                else if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn==false)
+                else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
                     ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
                     return;
@@ -1185,10 +1185,10 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
                     Eigen::Vector3d T1;          //平移矩阵(零点坐标)
                     Eigen::Matrix3d R;           //旋转矩阵
                     Eigen::Vector3d T;           //平移矩阵(零点坐标)
-                    R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
-                    T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
-                    R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
-                    T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                    R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+                    T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+                    R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+                    T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
 
                     Eigen::Vector3d tempin,tempout;
                     Eigen::Matrix3d nR1=R1.inverse(),nR=R.inverse();
@@ -1259,9 +1259,9 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
                 int matrix4d_trace_num;
                 bool b_find=false;
                 m_mcs->process->check_data_process();
-                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
                 {
-                    if(changename==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    if(changename==m_mcs->project->project_coord_matrix4d[n].name)
                     {
                         matrix4d_trace_num=n;
                         b_find=true;
@@ -1273,7 +1273,7 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
                     ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
                     return;
                 }
-                else if(m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].nEn==false)
+                else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
                     ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
                     return;
@@ -1284,10 +1284,10 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
                     Eigen::Vector3d T1;          //平移矩阵(零点坐标)
                     Eigen::Matrix3d R;           //旋转矩阵
                     Eigen::Vector3d T;           //平移矩阵(零点坐标)
-                    R1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R1;
-                    T1=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T1;
-                    R=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].R;
-                    T=m_mcs->project->projecr_coord_matrix4d[matrix4d_trace_num].T;
+                    R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+                    T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+                    R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+                    T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
 
                     Eigen::Vector3d tempin,tempout;
                     Eigen::Matrix3d nR1=R1.inverse(),nR=R.inverse();

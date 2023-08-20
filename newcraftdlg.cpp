@@ -15,15 +15,19 @@ newcraftDlg::newcraftDlg(my_parameters *mcs,QWidget *parent) :
         QString msg=QString::fromLocal8Bit("工艺")+QString::number(n)+": "+m_mcs->craft->craft_Id_toQString((Craft_ID)n);
         ui->craft_Id->addItem(msg);
     }
+
+    edittext=new edittextDlg();
 }
 
 newcraftDlg::~newcraftDlg()
 {
+    delete edittext;
     delete ui;
 }
 
-void newcraftDlg::init_dlg_show()
+void newcraftDlg::init_dlg_show(bool b_file)
 {
+    this->b_file=b_file;
     now_craft_Id=ui->craft_Id->count();
     ui->craft_Id->setCurrentRow(now_craft_Id);//设置当前选项无效，也不选中其他
 }
@@ -41,27 +45,48 @@ void newcraftDlg::on_pushButton_clicked()
     }
     else
     {
-        QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工艺路径"), "./CRAFT/.craft", "CRAFT(*.craft)");
-        if(fileName.size()>0)
+        if(this->b_file==true)
         {
-            m_mcs->craft->craft_id=(Craft_ID)now_craft_Id;
-            QString msg=fileName;
-            if(fileName.size()>=6)
+            QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工艺路径"), "./CRAFT/.craft", "CRAFT(*.craft)");
+            if(fileName.size()>0)
             {
-                QString tem1=".craft";
-                QString tem2=".CRAFT";
-                QString tem=fileName.mid(fileName.size()-6,6);
-                if(tem!=tem1&&tem!=tem2)//文件名末尾不是".craft"或".CRAFT"
+                m_mcs->craft->craft_id=(Craft_ID)now_craft_Id;
+                QString msg=fileName;
+                if(fileName.size()>=6)
                 {
-                    msg=msg+".craft";
+                    QString tem1=".craft";
+                    QString tem2=".CRAFT";
+                    QString tem=fileName.mid(fileName.size()-6,6);
+                    if(tem!=tem1&&tem!=tem2)//文件名末尾不是".craft"或".CRAFT"
+                    {
+                        msg=msg+".craft";
+                    }
                 }
+                m_mcs->craft->craft_path=msg;
+                done(1);
             }
-            m_mcs->craft->craft_path=msg;
-            done(1);
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新选择路径"));
+            }
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新选择路径"));
+            QString craftName;
+            edittext->init_dlg_show(QString::fromLocal8Bit("工艺名称:"));
+            edittext->setWindowTitle(QString::fromLocal8Bit("工艺名称"));
+            int rc=edittext->exec();
+            edittext->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                craftName=edittext->msg_edit;
+                m_mcs->craft->craft_name=craftName;
+                done(1);
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新命名"));
+            }
         }
     }
 }

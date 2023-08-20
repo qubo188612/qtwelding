@@ -42,8 +42,9 @@ setcraft3Dlg::~setcraft3Dlg()
     delete ui;
 }
 
-void setcraft3Dlg::init_dlg_show()
+void setcraft3Dlg::init_dlg_show(bool b_file)
 {
+    this->b_file=b_file;
     if(m_mcs->craft->posturelist.size()==3)
     {
         ui->lineEdit_offsetsX->setText(QString::number(m_mcs->craft->posturelist[0].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -229,7 +230,16 @@ void setcraft3Dlg::on_pushButtonOK_clicked()
     m_mcs->craft->posturelist[2].posture.RY=ui->lineEdit_downRY->text().toFloat();
     m_mcs->craft->posturelist[2].posture.RZ=ui->lineEdit_downRZ->text().toFloat();
     m_mcs->craft->posture_distance=ui->lineEdit_posture_distance->text().toFloat();
-    m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    if(b_file==true)
+        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+    else
+    {
+        my_cmd cmd;
+        std::vector<float> param(2);
+        param[0]=m_mcs->craft->posture_distance;
+        param[1]=(int)m_mcs->craft->weld_direction;
+        cmd_msg=cmd.cmd_crafts(CRAFT_ID_CORRUGATED_POSTURE,m_mcs->craft->posturelist,param,m_mcs->craft->craft_name);
+    }
     done(1);
 }
 

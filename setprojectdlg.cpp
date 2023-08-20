@@ -45,6 +45,7 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keymov=new keymovDlg(mcs);
     keyscan=new keyscanDlg(mcs);
     keytrace=new keytraceDlg(mcs);
+    keytrace2=new keytrace2Dlg(mcs);
     keyweld=new keyweldDlg(mcs);
     keysearch=new keysearchDlg(mcs);
     keycoord=new keycoordDlg(mcs);
@@ -72,7 +73,12 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     keycreataddp=new keycreataddpDlg(mcs);
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
-    traceedit2=new traceedit2Dlg(mcs); 
+    traceedit2=new traceedit2Dlg(mcs);
+    newcraft=new newcraftDlg(mcs);
+    setcraft0=new setcraft0Dlg(m_mcs);
+    setcraft1=new setcraft1Dlg(m_mcs);
+    setcraft2=new setcraft2Dlg(m_mcs);
+    setcraft3=new setcraft3Dlg(m_mcs);
 
     thread1=NULL;
 }
@@ -91,6 +97,7 @@ setprojectDlg::~setprojectDlg()
     delete keymov;
     delete keyscan;
     delete keytrace;
+    delete keytrace2;
     delete keyweld;
     delete keysearch;
     delete keycoord;
@@ -119,6 +126,11 @@ setprojectDlg::~setprojectDlg()
     delete traceedit0;
     delete traceedit1;
     delete traceedit2;
+    delete newcraft;
+    delete setcraft0;
+    delete setcraft1;
+    delete setcraft2;
+    delete setcraft3;
     delete adoubleValidator_speed;
     delete ui;
 }
@@ -1122,6 +1134,36 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_TRACE2_KEY)
+            {
+                keytrace2->init_dlg_show(cmdlist);
+                keytrace2->setWindowTitle(othercmd->cmdname);
+                keytrace2->setbutton(1);
+                int rc=keytrace2->exec();
+                keytrace2->close_dlg_show();
+                if(rc!=0)//确定
+                {
+                    QString msg=keytrace2->cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
             else if(key==CMD_CREAT_KEY)
             {
                 keycreat->init_dlg_show(cmdlist);
@@ -1895,6 +1937,79 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     return;
                 }
             }
+            else if(key==CMD_CRAFTS_KEY)
+            {
+                m_mcs->craft->craft_name=cmd.cmd_crafts_name;
+                m_mcs->craft->craft_id=cmd.cmd_crafts_craft_id;
+                m_mcs->craft->posturelist=cmd.cmd_crafts_posturelist;
+                QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
+                    +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
+                QString cmd_msg;
+                int rc;
+                switch(m_mcs->craft->craft_id)
+                {
+                    case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                    {
+                        setcraft0->init_dlg_show(false);
+                        setcraft0->setWindowTitle(msg);
+                        rc=setcraft0->exec();
+                        setcraft0->close_dlg_show();
+                        cmd_msg=setcraft0->cmd_msg;
+                    }
+                    break;
+                    case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
+                    {
+                        setcraft1->init_dlg_show(false);
+                        setcraft1->setWindowTitle(msg);
+                        rc=setcraft1->exec();
+                        setcraft1->close_dlg_show();
+                        cmd_msg=setcraft0->cmd_msg;
+                    }
+                    break;
+                    case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
+                    {
+                        setcraft2->init_dlg_show(false);
+                        setcraft2->setWindowTitle(msg);
+                        rc=setcraft2->exec();
+                        setcraft2->close_dlg_show();
+                        cmd_msg=setcraft0->cmd_msg;
+                    }
+                    break;
+                    case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                    {
+                        m_mcs->craft->posture_distance=cmd.cmd_crafts_params[0];
+                        m_mcs->craft->weld_direction=(Weld_direction)((int)cmd.cmd_crafts_params[1]);
+                        setcraft3->init_dlg_show(false);
+                        setcraft3->setWindowTitle(msg);
+                        rc=setcraft3->exec();
+                        setcraft3->close_dlg_show();
+                        cmd_msg=setcraft0->cmd_msg;
+                    }
+                    break;
+                }
+                if(rc!=0)//确定
+                {
+                    QString msg=cmd_msg;
+                    m_mcs->project->project_cmdlist[now_cmdline]=msg;
+                    if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
+                    {
+                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    }
+                    else
+                    {
+                        for(int n=0;n<err_msg.size();n++)
+                        {
+                            ui->record->append(err_msg[n]);
+                        }
+                    }
+                    updatacmdlistUi();
+                }
+                else
+                {
+                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    return;
+                }
+            }
         }
         else if(rc==-1)
         {
@@ -2521,6 +2636,34 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             if(rc!=0)//确定
             {
                 QString msg=keytrace->cmd_msg;
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹指令设置"));
+                return;
+            }
+        }
+        else if(key==CMD_TRACE2_KEY)
+        {
+            keytrace2->init_dlg_show();
+            keytrace2->setWindowTitle(othercmd->cmdname);
+            keytrace2->setbutton(0);
+            int rc=keytrace2->exec();
+            keytrace2->close_dlg_show();
+            if(rc!=0)//确定
+            {
+                QString msg=keytrace2->cmd_msg;
                 if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
                 {
                     m_mcs->project->project_cmdlist.push_back(msg);
@@ -3255,6 +3398,74 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             {
                 ui->record->append(QString::fromLocal8Bit("取消相加生成轨迹指令设置"));
                 return;
+            }
+        }
+        else if(key==CMD_CRAFTS_KEY)
+        {
+            bool rc;
+            newcraft->init_dlg_show(false);
+            newcraft->setWindowTitle(QString::fromLocal8Bit("新建工艺"));
+            rc=newcraft->exec();
+            newcraft->close_dlg_show();
+            if(rc!=0)//保存成功返回
+            {
+                QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
+                            +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
+                QString cmd_msg;
+                switch(m_mcs->craft->craft_id)
+                {
+                    case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                    {
+                        setcraft0->init_dlg_show(false);
+                        setcraft0->setWindowTitle(msg);
+                        setcraft0->exec();
+                        setcraft0->close_dlg_show();
+                        cmd_msg=setcraft0->cmd_msg;
+                    }
+                    break;
+                    case CRAFT_ID_STARTENDCHANGE_POSTURE://起终点变姿态
+                    {
+                        setcraft1->init_dlg_show(false);
+                        setcraft1->setWindowTitle(msg);
+                        setcraft1->exec();
+                        setcraft1->close_dlg_show();
+                        cmd_msg=setcraft1->cmd_msg;
+                    }
+                    break;
+                    case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
+                    {
+                        setcraft2->init_dlg_show(false);
+                        setcraft2->setWindowTitle(msg);
+                        setcraft2->exec();
+                        setcraft2->close_dlg_show();
+                        cmd_msg=setcraft2->cmd_msg;
+                    }
+                    break;
+                    case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                    {
+                        setcraft3->init_dlg_show(false);
+                        setcraft3->setWindowTitle(msg);
+                        setcraft3->exec();
+                        setcraft3->close_dlg_show();
+                        cmd_msg=setcraft3->cmd_msg;
+                    }
+                    break;
+                }
+                if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
+                {
+                    m_mcs->project->project_cmdlist.push_back(cmd_msg);
+                }
+                else
+                {
+                    m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,cmd_msg);
+                }
+                ui->record->append(QString::fromLocal8Bit("插入创建工艺指令成功"));
+                now_cmdline++;
+                updatacmdlistUi();
+            }
+            else
+            {
+                ui->record->append(QString::fromLocal8Bit("取消创建工艺指令设置"));
             }
         }
     }

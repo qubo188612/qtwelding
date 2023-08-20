@@ -5,6 +5,7 @@
 #include <QListWidgetItem>
 #include <QFileDialog>
 #include "my_parameters.h"
+#include "edittextdlg.h"
 
 namespace Ui {
 class newcraftDlg;
@@ -20,7 +21,9 @@ public:
 
     my_parameters *m_mcs;
 
-    void init_dlg_show();
+    edittextDlg *edittext;
+
+    void init_dlg_show(bool b_file=true);
     void close_dlg_show();
 private slots:
     void on_pushButton_clicked();
@@ -31,6 +34,8 @@ private:
     Ui::newcraftDlg *ui;
 
     int now_craft_Id; //当前指向的项目类型
+
+    bool b_file;//文件形式保存
 };
 
 #endif // NEWCRAFTDLG_H

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDoubleValidator>
 #include "my_parameters.h"
+#include "my_cmd.h"
 
 namespace Ui {
 class setcraft2Dlg;
@@ -18,8 +19,9 @@ public:
     ~setcraft2Dlg();
 
     my_parameters *m_mcs;
+    QString cmd_msg;
 
-    void init_dlg_show();
+    void init_dlg_show(bool b_file=true);
     void close_dlg_show();
 
 private slots:
@@ -27,6 +29,9 @@ private slots:
 
 private:
     Ui::setcraft2Dlg *ui;
+
+    bool b_file;
+
 
     QDoubleValidator *adoubleValidator_pose;    //机器人坐标小数
 };

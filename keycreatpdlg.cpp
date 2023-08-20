@@ -21,9 +21,9 @@ void keycreatpDlg::init_dlg_show()
     now_creatpline=-1;
     ui->creatplist->clear();
     ui->creatpcomboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->creatpcomboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->creatpcomboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     now_pointname.clear();
     if(ui->creatpcomboBox->count()>0)
@@ -48,9 +48,9 @@ void keycreatpDlg::init_dlg_show(QString cmdlist)
             now_creatpline=pointsname.size()-1;
             updatalistUi();
             ui->creatpcomboBox->clear();
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                ui->creatpcomboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+                ui->creatpcomboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
             }
             now_pointname.clear();
             if(ui->creatpcomboBox->count()>0)
@@ -168,9 +168,9 @@ void keycreatpDlg::on_creatpBtn_clicked()
         {
             QString pointname=pointsname[n];
             bool b_find=false;
-            for(int t=0;t<m_mcs->project->projecr_robpos_trace.size();t++)
+            for(int t=0;t<m_mcs->project->project_robpos_trace.size();t++)
             {
-                if(m_mcs->project->projecr_robpos_trace[t].name==pointname)
+                if(m_mcs->project->project_robpos_trace[t].name==pointname)
                 {
                     b_find=1;
                     break;

@@ -41,16 +41,16 @@ void keysmovDlg::init_dlg_show()
     ui->pos1comboBox->clear();
     ui->pos2comboBox->clear();
     ui->pos3comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos1comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->pos2comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->pos3comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos1comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->pos2comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->pos3comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->smovechangecombo->clear();
-    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
     {
-        ui->smovechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+        ui->smovechangecombo->addItem(m_mcs->project->project_coord_matrix4d[n].name);
     }
 }
 
@@ -61,11 +61,11 @@ void keysmovDlg::init_dlg_show(QString cmdlist)
     ui->pos1comboBox->clear();
     ui->pos2comboBox->clear();
     ui->pos3comboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->pos1comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->pos2comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
-        ui->pos3comboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->pos1comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->pos2comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
+        ui->pos3comboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -88,9 +88,9 @@ void keysmovDlg::init_dlg_show(QString cmdlist)
             //这里添加移动命令
             if(!change.isEmpty())
             {
-                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
                 {
-                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    if(change==m_mcs->project->project_coord_matrix4d[n].name)
                     {
                         change_trace_num=n;//找到要储存的变换矩阵下标
                         break;
@@ -119,9 +119,9 @@ void keysmovDlg::init_dlg_show(QString cmdlist)
             }
             if(movemod==MOVEJ||movemod==MOVEL)
             {
-                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                 {
-                    if(s_pos==m_mcs->project->projecr_robpos_trace[n].name)
+                    if(s_pos==m_mcs->project->project_robpos_trace[n].name)
                     {
                         point_trace_num=n;//找到要储存的点位下标
                         break;
@@ -139,25 +139,25 @@ void keysmovDlg::init_dlg_show(QString cmdlist)
             }
             else if(movemod==MOVEC)
             {
-                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                 {
-                    if(s_pos1==m_mcs->project->projecr_robpos_trace[n].name)
+                    if(s_pos1==m_mcs->project->project_robpos_trace[n].name)
                     {
                         point1_trace_num=n;//找到要储存的点位下标
                         break;
                     }
                 }
-                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                 {
-                    if(s_pos2==m_mcs->project->projecr_robpos_trace[n].name)
+                    if(s_pos2==m_mcs->project->project_robpos_trace[n].name)
                     {
                         point2_trace_num=n;//找到要储存的点位下标
                         break;
                     }
                 }
-                for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+                for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
                 {
-                    if(s_pos3==m_mcs->project->projecr_robpos_trace[n].name)
+                    if(s_pos3==m_mcs->project->project_robpos_trace[n].name)
                     {
                         point3_trace_num=n;//找到要储存的点位下标
                         break;

@@ -18,9 +18,9 @@ keysetposeDlg::~keysetposeDlg()
 void keysetposeDlg::init_dlg_show()
 {
     ui->setposecomboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->setposecomboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->setposecomboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     ui->record->clear();
 }
@@ -30,9 +30,9 @@ void keysetposeDlg::init_dlg_show(QString cmdlist)
     QString msg,key;
     my_cmd cmd;
     ui->setposecomboBox->clear();
-    for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+    for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
     {
-        ui->setposecomboBox->addItem(m_mcs->project->projecr_robpos_trace[n].name);
+        ui->setposecomboBox->addItem(m_mcs->project->project_robpos_trace[n].name);
     }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -44,9 +44,9 @@ void keysetposeDlg::init_dlg_show(QString cmdlist)
             std::vector<float> pose=cmd.cmd_setpose_pose;
             std::vector<float> add=cmd.cmd_setpose_add;
             int point_trace_num;
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(namein==m_mcs->project->projecr_robpos_trace[n].name)
+                if(namein==m_mcs->project->project_robpos_trace[n].name)
                 {
                     point_trace_num=n;//找到要储存的点位下标
                     break;
@@ -202,9 +202,9 @@ void keysetposeDlg::on_setposeBtn_clicked()
     }
     if(b_inster==false)
     {
-        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
         {
-            if(nameout==m_mcs->project->projecr_robpos_trace[n].name)
+            if(nameout==m_mcs->project->project_robpos_trace[n].name)
             {
                 ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
                 return;

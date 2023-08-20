@@ -28,6 +28,15 @@ typedef enum WELD_DIRECTION_ID  //焊缝走向
     WELD_DIRECTION_Y=1,     //大致Y走向
 }Weld_direction;
 
+class Weld_crafts_result  //生成工艺
+{
+public:
+    Craft_ID craft_id;      //工艺类型
+    std::vector<ChangeRobPosVariable> posturelist;        //焊接姿态
+    std::vector<float> params;//工艺参数
+    QString name; //生成工艺名字
+};
+
 #define POSTURE_DISTANCE_USE    10  //默认变姿态距离
 
 class Craft     //焊接工艺包
@@ -38,6 +47,8 @@ public:
     Craft_ID craft_id;      //工艺类型
 
     QString craft_path;       //最后一次工艺路径
+
+    QString craft_name;       //最后一次保存的工艺名
 
     /**********************/
     //其它工艺参数
@@ -60,6 +71,7 @@ public:
                            std::vector<ChangeRobPosVariable> &posturelistOut,         //输出整理后的姿态值
                            QString &returnmsg);                         //输出报警信息
 
+    int posturelistcheck(Craft_ID craft_id,std::vector<ChangeRobPosVariable> posturelist);//判断合理性
 
 protected:
 

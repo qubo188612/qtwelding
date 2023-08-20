@@ -66,6 +66,7 @@ SOURCES += \
         keysetposedlg.cpp \
         keysmovdlg.cpp \
         keysscandlg.cpp \
+        keytrace2dlg.cpp \
         keytraceadddlg.cpp \
         keytracecontinuedlg.cpp \
         keytracedlg.cpp \
@@ -151,6 +152,7 @@ FORMS += \
     keysetposedlg.ui \
     keysmovdlg.ui \
     keysscandlg.ui \
+    keytrace2dlg.ui \
     keytraceadddlg.ui \
     keytracecontinuedlg.ui \
     keytracedlg.ui \
@@ -237,6 +239,7 @@ HEADERS += \
     keysetposedlg.h \
     keysmovdlg.h \
     keysscandlg.h \
+    keytrace2dlg.h \
     keytraceadddlg.h \
     keytracecontinuedlg.h \
     keytracedlg.h \

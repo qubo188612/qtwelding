@@ -31,9 +31,9 @@ void keytraceDlg::init_dlg_show()
         ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
     ui->tracechangecombo->clear();
-    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
     {
-        ui->tracechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+        ui->tracechangecombo->addItem(m_mcs->project->project_coord_matrix4d[n].name);
     }
     cmd_list_in.clear();
     ui->record->clear();
@@ -50,9 +50,9 @@ void keytraceDlg::init_dlg_show(QString cmdlist)
         ui->tracetrackcombo->addItem(m_mcs->project->project_weld_trace[n].name);
     }
     ui->tracechangecombo->clear();
-    for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+    for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
     {
-        ui->tracechangecombo->addItem(m_mcs->project->projecr_coord_matrix4d[n].name);
+        ui->tracechangecombo->addItem(m_mcs->project->project_coord_matrix4d[n].name);
     }
     int rc=cmd.decodecmd(cmdlist,msg,key);
     if(rc==0)
@@ -71,9 +71,9 @@ void keytraceDlg::init_dlg_show(QString cmdlist)
             int change_trace_num;//找到要变换矩阵下标
             if(!change.isEmpty())
             {
-                for(int n=0;n<m_mcs->project->projecr_coord_matrix4d.size();n++)
+                for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
                 {
-                    if(change==m_mcs->project->projecr_coord_matrix4d[n].name)
+                    if(change==m_mcs->project->project_coord_matrix4d[n].name)
                     {
                         change_trace_num=n;//找到要储存的焊接轨道下标
                         break;

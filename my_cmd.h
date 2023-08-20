@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <global.h>
+#include <craft.h>
 
 
 /************************/
@@ -16,7 +17,9 @@
 //焊机指令，举例 WELD: WORK[1] ELED[1.23] ELEV[1.3] ELEM[0]
 //焊机指令，举例 WELD: WORK[0]
 //采集指令，举例 SCAN: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] NAME[扫描第一条line]
+//创建工艺指令，举例 CRAFTS: MODE[1] POINTADDS[点位1，点位2，点位3，点位4] DATA32FS[1.00,2] NAME[工艺1]
 //跟踪指令，举例 TRACE: CREAT[跟踪第一条line] SPEED[25] CRAFT[/home/qubo/caf.json] CHANGE[矩阵1] NAME[焊接轨迹1]
+//跟踪指令，举例 TRACE2: CREAT[跟踪第一条line] SPEED[25] CRAFTS[工艺1] CHANGE[矩阵1] NAME[焊接轨迹1]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
 //IO口输出指令，举例 IO: OUT[1,0,0,1,0,1,0,1]
 //IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1
@@ -58,7 +61,9 @@
 #define CMD_WELD_KEY                    "WELD:"             //焊机命令集合KEY
 #define CMD_SCAN_KEY                    "SCAN:"             //采集命令集合KEY
 #define CMD_SSCAN_KEY                   "SSCAN:"            //点位采集命令集合KEY
+#define CMD_CRAFTS_KEY                  "CRAFTS:"           //创建工艺命令集合KEY
 #define CMD_TRACE_KEY                   "TRACE:"            //生成跟踪轨迹工艺命令集合KEY
+#define CMD_TRACE2_KEY                  "TRACE2:"           //生成跟踪轨迹工艺命令集合KEY
 #define CMD_CREAT_KEY                   "CREAT:"            //生成轨迹命令KEY
 #define CMD_IO_KEY                      "IO:"               //IO命令集合KEY
 #define CMD_PLC_KEY                     "PLC:"              //PLC命令集合KEY
@@ -107,11 +112,13 @@
 #define CMD_SCAN                            "SCAN"                //扫描轨迹参数
 #define CMD_MODE                            "MODE"                //模式参数
 #define CMD_CRAFT                           "CRAFT"               //工艺文件路径
+#define CMD_CRAFTS                          "CRAFTS"              //工艺文件名字
 #define CMD_OUT                             "OUTIO"               //IO输出
 #define CMD_WAITIN                          "WAITINIO"            //等待IO输入
 #define CMD_WRITEPLC                        "WRITEPLC"            //写PLC寄存器
 #define CMD_WAITPLC                         "WAITPLC"             //等待PLC寄存器输入
 #define CMD_DATA16                          "DATA16"              //16位整形数字
+#define CMD_DATA32FS                        "DATA32FS"            //32位浮点形数组
 #define CMD_SIDE                            "SIDE"                //寻位寻找两侧的范围
 #define CMD_SIDEMOVE                        "SIDEMOVE"            //寻位寻找两侧的单位向量
 #define CMD_SIDESPEED                       "SIDESPEED"           //寻位寻找两侧的空闲移动速度
@@ -126,6 +133,7 @@
 #define CMD_AOUT                            "AOUT"                //模拟量输出
 #define CMD_ADD                             "ADD"                 //补偿
 #define CMD_POINTS                          "POINTS"              //点位参数
+#define CMD_POINTADDS                       "POINTADDS"           //带补偿的点位参数
 #define CMD_POINT                           "POINT"               //点坐标名字
 #define CMD_POSE                            "POSE"                //姿态名字
 #define CMD_FILE                            "FILE"                //轨迹文件名字
@@ -134,6 +142,7 @@
 #define CMD_FILTERS                         "FILTERS"             //滤波项参数
 #define CMD_SAMPLESPEED                     "SAMPLESPEED"         //连接工艺轨迹时的连接处采样速度
 #define CMD_LINE                            "LINE"                //行参数
+
 
 
 /************************/
@@ -156,6 +165,7 @@ public:
     QString cmd_sscan(QString s_pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//点位采集命令
     QString cmd_sscanC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change="");//点位圆采集命令
     QString cmd_trace(QString name_in,float speed,QString craftfilepath,QString name_out,QString change="");//生成跟踪工艺轨迹命令
+    QString cmd_trace2(QString name_in,float speed,QString crafts,QString name_out,QString change="");//生成跟踪工艺轨迹命令
     QString cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name);//生成跟踪轨迹
     QString cmd_ioout(std::vector<int> io);//输出IO信号
     QString cmd_iowaitin(std::vector<int> io);//等待输入IO信号
@@ -186,6 +196,7 @@ public:
     QString cmd_stop();//程序结束指令
     QString cmd_creatadd(std::vector<QString> names,QString name_out);//跟踪轨迹相加
     QString cmd_creataddp(QString weldname,QString pointname,Creataddp_edit_mode mode,QString name_out);//点位和轨迹相加
+    QString cmd_crafts(Craft_ID craft_id,std::vector<ChangeRobPosVariable> posturelist,std::vector<float> params,QString name);//创建焊接工艺指令
 
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
@@ -227,6 +238,12 @@ public:
     float cmd_trace_speed;//获取到的跟踪速度
     QString cmd_trace_change;//获取到的扫描变换矩阵名字
     QString cmd_trace_craftfilepath;//获取到的焊接工艺包路径
+
+    QString cmd_trace2_name_in;//获取到跟踪轨迹名字
+    QString cmd_trace2_name_out;//生成的焊接工艺轨迹名字
+    float cmd_trace2_speed;//获取到的跟踪速度
+    QString cmd_trace2_change;//获取到的扫描变换矩阵名字
+    QString cmd_trace2_crafts;//获取到的焊接工艺包路径
 
     QString cmd_creat_name;//获取到的生成的轨迹名字
     Trace_edit_mode cmd_creat_mode;//获取到的轨迹生成模式
@@ -364,6 +381,11 @@ public:
     Creataddp_edit_mode cmd_creataddp_mode;//相加模式
     QString cmd_creataddp_nameout;//生成的跟踪轨迹名字
 
+    Craft_ID cmd_crafts_craft_id;      //工艺类型
+    QString cmd_crafts_name;           //工艺名字
+    std::vector<ChangeRobPosVariable> cmd_crafts_posturelist;//工艺姿态
+    std::vector<float> cmd_crafts_params;   //工艺参数
+
     int cmd_goto_line;//获取到的跳转行数
 
     int cmd_run_work;//停止程序
@@ -387,11 +409,13 @@ protected:
     QString rc_mode(int mode);
     QString rc_scan(std::vector<QString> names);
     QString rc_craft(QString craftfilepath);
+    QString rc_crafts(QString crafts);
     QString rc_ioout(std::vector<int> io);
     QString rc_iowaitin(std::vector<int> io);
     QString rc_plcwait(int register_add);
     QString rc_plcwrite(int register_add);
     QString rc_16data(int16_t i16_data);
+    QString rc_f32datas(std::vector<float> f32_datas);
     QString rc_side(int side);
     QString rc_sidemove(std::vector<float> sidemove);
     QString rc_sidespeed(float speed);
@@ -415,6 +439,8 @@ protected:
     QString rc_filters(filterParam filters,Filter_mode mode);
     QString rc_samplespeed(float speed);
     QString rc_line(int line);
+    QString rc_pointadds(std::vector<ChangeRobPosVariable> posturelist);
+
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);
     int de_float(QString parakey,QString msg,int data_fpos,int data_bpos,float &floatdata,QString &return_msg);

@@ -97,9 +97,9 @@ void keyplotposDlg::on_plotposBtn_clicked()
         }
         if(b_inster==false)
         {
-            for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
             {
-                if(name==m_mcs->project->projecr_robpos_trace[n].name)
+                if(name==m_mcs->project->project_robpos_trace[n].name)
                 {
                     ui->record->append(QString::fromLocal8Bit("要生成的点坐标与已有的点坐标重名"));
                     return;
@@ -146,7 +146,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
             break;
             case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:   //两点直线与三点交点模式
             {
-                if(m_mcs->project->projecr_robpos_trace.size()<=0)
+                if(m_mcs->project->project_robpos_trace.size()<=0)
                 {
                     ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的点坐标"));
                     return;
@@ -181,7 +181,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
             break;
             case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE://直线与三点交点模式
             {
-                if(m_mcs->project->projecr_robpos_trace.size()<=0)
+                if(m_mcs->project->project_robpos_trace.size()<=0)
                 {
                     ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的点坐标"));
                     return;

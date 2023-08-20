@@ -106,9 +106,9 @@ void keygettcpposDlg::on_gettcpposBtn_clicked()
     }
     if(b_inster==false)
     {
-        for(int n=0;n<m_mcs->project->projecr_robpos_trace.size();n++)
+        for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
         {
-            if(name==m_mcs->project->projecr_robpos_trace[n].name)
+            if(name==m_mcs->project->project_robpos_trace[n].name)
             {
                 ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
                 return;

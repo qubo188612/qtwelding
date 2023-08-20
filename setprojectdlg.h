@@ -20,6 +20,7 @@
 #include "keymovdlg.h"
 #include "keyscandlg.h"
 #include "keytracedlg.h"
+#include "keytrace2dlg.h"
 #include "keywelddlg.h"
 #include "keysearchdlg.h"
 #include "keycoorddlg.h"
@@ -49,6 +50,11 @@
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
 #include "traceedit2dlg.h"
+#include "newcraftdlg.h"
+#include "setcraft0dlg.h"
+#include "setcraft1dlg.h"
+#include "setcraft2dlg.h"
+#include "setcraft3dlg.h"
 
 namespace Ui {
 class setprojectDlg;
@@ -76,6 +82,7 @@ public:
     keymovDlg *keymov;
     keyscanDlg *keyscan;
     keytraceDlg *keytrace;
+    keytrace2Dlg *keytrace2;
     keyweldDlg *keyweld;
     keysearchDlg *keysearch;
     keycoordDlg *keycoord;
@@ -105,6 +112,12 @@ public:
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;
     traceedit2Dlg *traceedit2;
+
+    newcraftDlg *newcraft;
+    setcraft0Dlg *setcraft0;
+    setcraft1Dlg *setcraft1;
+    setcraft2Dlg *setcraft2;
+    setcraft3Dlg *setcraft3;
 
     my_parameters *m_mcs;
 

@@ -281,13 +281,28 @@ QString my_cmd::cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel 
 QString my_cmd::cmd_trace(QString name_in,float speed,QString craftfilepath,QString name_out,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_TRACE_KEY)+" "+
             rc_creat(name_in)+" "+
             rc_speed(speed)+" "+
             rc_craft(craftfilepath)+" "+
             rc_name(name_out);
+    if(!change.isEmpty())
+    {
+        msg=msg+" "+rc_change(change);
+    }
+    return msg;
+}
+
+QString my_cmd::cmd_trace2(QString name_in,float speed,QString crafts,QString name_out,QString change)
+{
+    QString msg;
+
+    msg=QString(CMD_TRACE2_KEY)+" "+
+          rc_creat(name_in)+" "+
+          rc_speed(speed)+" "+
+          rc_crafts(crafts)+" "+
+          rc_name(name_out);
     if(!change.isEmpty())
     {
         msg=msg+" "+rc_change(change);
@@ -542,7 +557,7 @@ QString my_cmd::cmd_creatadd(std::vector<QString> names,QString name_out)
     QString msg;
     msg=QString(CMD_CREATADD_KEY)+" "+
         rc_creats(names)+" "+
-        rc_name(name_out);;
+        rc_name(name_out);
     return msg;
 }
 
@@ -553,7 +568,28 @@ QString my_cmd::cmd_creataddp(QString weldname,QString pointname,Creataddp_edit_
         rc_creat(weldname)+" "+
         rc_point(pointname)+" "+
         rc_mode(mode)+" "+
-        rc_name(name_out);;
+        rc_name(name_out);
+    return msg;
+}
+
+QString my_cmd::cmd_crafts(Craft_ID craft_id,std::vector<ChangeRobPosVariable> posturelist,std::vector<float> params,QString name)
+{
+    QString msg;
+    if(params.size()>0)
+    {
+        msg=QString(CMD_CRAFTS_KEY)+" "+
+              rc_mode(craft_id)+" "+
+              rc_pointadds(posturelist)+" "+
+              rc_f32datas(params)+" "+
+              rc_name(name);
+    }
+    else
+    {
+        msg=QString(CMD_CRAFTS_KEY)+" "+
+              rc_mode(craft_id)+" "+
+              rc_pointadds(posturelist)+" "+
+              rc_name(name);
+    }
     return msg;
 }
 
@@ -1675,6 +1711,143 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         if(b_CHANGE==false)
         {
             cmd_trace_change.clear();
+        }
+    }
+    else if(key==CMD_TRACE2_KEY)
+    {
+        int pn=0;
+        bool b_CREAT=false;
+        bool b_SPEED=false;
+        bool b_NAME=false;
+        bool b_CRAFTS=false;
+        bool b_CHANGE=false;
+
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_SPEED)
+                {
+                    if(b_SPEED==false)
+                    {
+                        b_SPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_trace2_speed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_trace2_speed<=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CREAT)
+                {
+                    if(b_CREAT==false)
+                    {
+                        b_CREAT=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace2_name_in,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace2_name_out,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CRAFTS)
+                {
+                    if(b_CRAFTS==false)
+                    {
+                        b_CRAFTS=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace2_crafts,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CHANGE)
+                {
+                    if(b_CHANGE==false)
+                    {
+                        b_CHANGE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_trace2_change,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_SPEED==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+                         return 1;
+        }
+        else if(b_CREAT==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+                         return 1;
+        }
+        else if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+                         return 1;
+        }
+        else if(b_CRAFTS==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CRAFTS+QString::fromLocal8Bit("'项参数");
+                         return 1;
+        }
+        if(b_CHANGE==false)
+        {
+            cmd_trace2_change.clear();
         }
     }
     else if(key==CMD_CREAT_KEY)
@@ -4473,6 +4646,180 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_CRAFTS_KEY)
+    {
+        int pn=0;
+        bool b_NAME=false;
+        bool b_MODE=false;
+        bool b_POINTADDS=false;
+        bool b_DATA32FS=false;
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_crafts_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_POINTADDS)
+                {
+                    if(b_POINTADDS==false)
+                    {
+                        b_POINTADDS=true;
+                        std::vector<float> f_datagroup;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,f_datagroup,return_msg))
+                        {
+                            return 1;
+                        }
+                        int jump=12;
+                        if(f_datagroup.size()%jump!=0)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数的个数不合理");
+                            return 1;
+                        }
+                        int num=f_datagroup.size()/jump;
+                        cmd_crafts_posturelist.resize(num);
+                        for(int n=0;n<num;n++)
+                        {
+                            cmd_crafts_posturelist[n].posture.X=f_datagroup[n*jump+0];
+                            cmd_crafts_posturelist[n].posture.Y=f_datagroup[n*jump+1];
+                            cmd_crafts_posturelist[n].posture.Z=f_datagroup[n*jump+2];
+                            cmd_crafts_posturelist[n].posture.RX=f_datagroup[n*jump+3];
+                            cmd_crafts_posturelist[n].posture.RY=f_datagroup[n*jump+4];
+                            cmd_crafts_posturelist[n].posture.RZ=f_datagroup[n*jump+5];
+                            cmd_crafts_posturelist[n].posture.out_1=f_datagroup[n*jump+6];
+                            cmd_crafts_posturelist[n].posture.out_2=f_datagroup[n*jump+7];
+                            cmd_crafts_posturelist[n].posture.out_3=f_datagroup[n*jump+8];
+                            cmd_crafts_posturelist[n].Variable.X=f_datagroup[n*jump+9];
+                            cmd_crafts_posturelist[n].Variable.Y=f_datagroup[n*jump+10];
+                            cmd_crafts_posturelist[n].Variable.Z=f_datagroup[n*jump+11];
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_DATA32FS)
+                {
+                    if(b_DATA32FS==false)
+                    {
+                        b_DATA32FS=true;
+                        if(0!=de_vector_float(paramname,param[n],data_fpos,data_bpos,cmd_crafts_params,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MODE)
+                {
+                    if(b_MODE==false)
+                    {
+                        b_MODE=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_crafts_craft_id=(Craft_ID)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_POINTADDS==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINTADDS+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_MODE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        Craft *craft=craft->Get();
+        if(0!=craft->posturelistcheck(cmd_crafts_craft_id,cmd_crafts_posturelist))
+        {
+            return_msg=QString::fromLocal8Bit("当'")+CMD_MODE+QString::fromLocal8Bit("'项参数等于")+
+                        QString::number(cmd_crafts_craft_id)+QString::fromLocal8Bit("时'")+CMD_POINTADDS+QString::fromLocal8Bit("'项参数不合理");
+            return 1;
+        }
+        switch(cmd_crafts_craft_id)
+        {
+            case CRAFT_ID_FIXED_POSTURE:    //固定焊接姿态
+            {
+
+            }
+            break;
+            case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+            {
+
+            }
+            break;
+            case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
+            {
+
+            }
+            break;
+            case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+            {
+                if(b_DATA32FS==false)
+                {
+                    return_msg=QString::fromLocal8Bit("当'")+CMD_MODE+QString::fromLocal8Bit("'项参数等于")+
+                                QString::number(cmd_crafts_craft_id)+QString::fromLocal8Bit("时,指令还需要设置'")+
+                                CMD_DATA32FS+QString::fromLocal8Bit("'项参数");
+                    return 1;
+                }
+                else if(cmd_crafts_params.size()!=2)
+                {
+                    return_msg=QString::fromLocal8Bit("当'")+CMD_MODE+QString::fromLocal8Bit("'项参数等于")+
+                                QString::number(cmd_crafts_craft_id)+QString::fromLocal8Bit("时'")+CMD_DATA32FS+QString::fromLocal8Bit("'项参数只能有2个");
+                    return 1;
+                }
+
+            }
+            break;
+        }
+    }
     else if(key==CMD_STOP_KEY)
     {
         //不需要处理
@@ -4700,6 +5047,13 @@ QString my_cmd::rc_craft(QString craftfilepath)
     return msg;
 }
 
+QString my_cmd::rc_crafts(QString crafts)
+{
+    QString msg;
+    msg=QString(CMD_CRAFTS)+"["+crafts+"]";
+    return msg;
+}
+
 QString my_cmd::rc_ioout(std::vector<int> io)
 {
     QString msg;
@@ -4750,6 +5104,51 @@ QString my_cmd::rc_16data(int16_t i16_data)
 {
     QString msg;
     msg=QString(CMD_DATA16)+"["+QString::number(i16_data)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_f32datas(std::vector<float> f32_datas)
+{
+    QString msg;
+    QString data;
+    for(int i=0;i<f32_datas.size();i++)
+    {
+        data=data+QString::number(f32_datas[i],'f',3);
+        if(i<f32_datas.size()-1)
+        {
+            data=data+",";
+        }
+    }
+    msg=QString(CMD_DATA32FS)+"["+data+"]";
+    return msg;
+}
+
+QString my_cmd::rc_pointadds(std::vector<ChangeRobPosVariable> posturelist)
+{
+    QString msg;
+    QString data;
+    for(int i=0;i<posturelist.size();i++)
+    {
+        QString temp;
+        temp=QString::number(posturelist[i].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].posture.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].posture.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].posture.out_1)+","+
+             QString::number(posturelist[i].posture.out_2)+","+
+             QString::number(posturelist[i].posture.out_3)+","+
+             QString::number(posturelist[i].Variable.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].Variable.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+             QString::number(posturelist[i].Variable.Z,'f',ROBOT_POSE_DECIMAL_PLACE);
+        data=data+temp;
+        if(i<posturelist.size()-1)
+        {
+            data=data+",";
+        }
+    }
+    msg=QString(CMD_POINTADDS)+"["+data+"]";
     return msg;
 }
 
