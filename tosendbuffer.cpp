@@ -1881,13 +1881,17 @@ int toSendbuffer::cmdlist_check()
         if(key==CMD_TRACE_KEY)//跟踪命令时查看是否能找到工艺路径
         {
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
-        #if _MSC_VER
+            /*
+        #if _MSC_VERL
             QTextCodec *code = QTextCodec::codecForName("GBK");
         #else
             QTextCodec *code = QTextCodec::codecForName("UTF-8");
         #endif
             std::string fname = code->fromUnicode(craftfilepath).data();
+
             int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            */
+            int rc=m_mcs->craft->LoadCraft((char*)(craftfilepath.toStdString().c_str()));
             if(rc!=0)
             {
                 err=1;
@@ -2194,6 +2198,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         }
         if(key==CMD_TRACE_KEY)
         {
+        /*
         #if _MSC_VER
             QTextCodec *code = QTextCodec::codecForName("GBK");
         #else
@@ -2201,6 +2206,8 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         #endif
             std::string fname = code->fromUnicode(craftfilepath).data();
             m_mcs->craft->LoadCraft((char*)fname.c_str());
+        */
+            m_mcs->craft->LoadCraft((char*)(craftfilepath.toStdString().c_str()));
         }
         else
         {

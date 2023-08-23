@@ -64,6 +64,21 @@ void demarcateDlg::init_dlg_show()
         ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
     }
 
+    if(m_mcs->resultdata.link_robotset_state==false)
+    {
+        QString server_ip=m_mcs->ip->camer_ip->ip;
+        QString server_port1=QString::number(PORT_ALSROBOTCAM_SET);
+        m_mcs->resultdata.ctx_robotset = modbus_new_tcp(server_ip.toUtf8(), server_port1.toInt());
+        if (modbus_connect(m_mcs->resultdata.ctx_robotset) == -1)
+        {
+            ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+            modbus_free(m_mcs->resultdata.ctx_robotset);
+            return;
+        }
+        m_mcs->resultdata.link_robotset_state=true;
+        ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+    }
+
     if(link_ftp_state==false)
     {
         QString server_ip=m_mcs->ip->camer_ip->ip;
@@ -107,6 +122,14 @@ void demarcateDlg::close_dlg_show()
         modbus_free(m_mcs->resultdata.ctx_param);
         m_mcs->resultdata.link_param_state=false;
         QString msg=QString::number(PORT_ALS_PARAMETER);
+        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+    }
+    if(m_mcs->resultdata.link_robotset_state==true)
+    {
+        modbus_close(m_mcs->resultdata.ctx_robotset);
+        modbus_free(m_mcs->resultdata.ctx_robotset);
+        m_mcs->resultdata.link_robotset_state=false;
+        QString msg=QString::number(PORT_ALSROBOTCAM_SET);
         ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
     }
     if(link_ftp_state==true)
@@ -454,6 +477,13 @@ void demarcateDlg::pulldemdl()
     {
         case HAND_IN_EYE://眼在手上
         {
+            uint16_t tab_reg[1];
+            tab_reg[0]=m_mcs->e2proomdata.demdlg_radio_mod;
+            int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_P_DATA_EYE_HAND_CALIBRATIONMODE_REG_ADD,1,tab_reg);
+            if(rc!=1)
+            {
+                ui->record->append(QString::fromLocal8Bit("标定模式导入失败"));
+            }
             QJsonObject jsent;
             QJsonObject json;
             QJsonArray jarry3,jarry4;
@@ -478,6 +508,13 @@ void demarcateDlg::pulldemdl()
         break;
         case HAND_OUT_EYE://眼在手外
         {
+            uint16_t tab_reg[1];
+            tab_reg[0]=m_mcs->e2proomdata.demdlg_radio_mod;
+            int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_P_DATA_EYE_HAND_CALIBRATIONMODE_REG_ADD,1,tab_reg);
+            if(rc!=1)
+            {
+                ui->record->append(QString::fromLocal8Bit("标定模式导入失败"));
+            }
             QJsonObject jsent;
             QJsonObject json;
             QJsonArray jarry1,jarry2;

@@ -129,15 +129,17 @@ void keytraceDlg::setbutton(int name)
 void keytraceDlg::on_tracefilepathBtn_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
+    /*
 #if _MSC_VER
     QTextCodec *code = QTextCodec::codecForName("GBK");
 #else
     QTextCodec *code = QTextCodec::codecForName("UTF-8");
 #endif
     std::string name = code->fromUnicode(fileName).data();
-    if(name.size()>0)
+    */
+    if(fileName.toStdString().size()>0)
     {
-        if(0!=m_mcs->craft->LoadCraft((char*)name.c_str()))
+        if(0!=m_mcs->craft->LoadCraft((char*)(fileName.toStdString().c_str())))
         {
             ui->record->append(QString::fromLocal8Bit("工艺文件读取失败"));
             return;
@@ -185,13 +187,15 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
     else
     {
         //这里判断工艺包是否格式正确
+    /*
     #if _MSC_VER
         QTextCodec *code = QTextCodec::codecForName("GBK");
     #else
         QTextCodec *code = QTextCodec::codecForName("UTF-8");
     #endif
         std::string fname = code->fromUnicode(filepath).data();
-        int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+    */
+        int rc=m_mcs->craft->LoadCraft((char*)(filepath.toStdString().c_str()));
         if(rc==1)
         {
             ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
