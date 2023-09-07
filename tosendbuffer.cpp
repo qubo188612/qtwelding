@@ -1853,6 +1853,163 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     m_mcs->project->project_crafts_trace.push_back(crafts);
                 }
             }
+            else if(key==CMD_SAVEPCD_KEY)
+            {
+                std::vector<QString> scanname=cmd.cmd_savepcd_scanname;//保存点云扫描轨迹
+                std::vector<QString> pointsname=cmd.cmd_savepcd_pointsname;//保存点云点轨迹
+                std::vector<QString> creatsname=cmd.cmd_savepcd_creatsname;//保存点云焊缝轨迹
+                std::vector<QString> tracesname=cmd.cmd_savepcd_tracesname;//保存点云工艺轨迹
+                bool b_find=false;
+                int m=0;
+
+                if(false==b_nosame_vector_QString(pointsname))
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的点名称里有重复");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+                for(m=0;m<pointsname.size();m++)
+                {
+                    b_find=false;
+                    for(int t=0;t<m_mcs->project->project_robpos_trace.size();t++)
+                    {
+                        if(pointsname[m]==m_mcs->project->project_robpos_trace[t].name)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)//没找到这个名字的点轨道
+                    {
+                        break;
+                    }
+                }
+                if(b_find==false)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsname[m]+QString::fromLocal8Bit("的点轨道");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+
+                if(false==b_nosame_vector_QString(scanname))
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的扫描规定名称里有重复");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+                for(m=0;m<scanname.size();m++)
+                {
+                    b_find=false;
+                    for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                    {
+                        if(scanname[m]==m_mcs->project->project_scan_trace[t].name)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)//没找到这个名字的扫描轨道
+                    {
+                        break;
+                    }
+                }
+                if(b_find==false)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scanname[m]+QString::fromLocal8Bit("的扫描轨道");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+
+                if(false==b_nosame_vector_QString(creatsname))
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的跟踪轨道名称里有重复");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+                for(m=0;m<creatsname.size();m++)
+                {
+                    b_find=false;
+                    for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                    {
+                        if(creatsname[m]==m_mcs->project->project_weld_trace[t].name)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)//没找到这个名字的扫描轨道
+                    {
+                        break;
+                    }
+                }
+                if(b_find==false)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsname[m]+QString::fromLocal8Bit("的跟踪轨道");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+
+                if(false==b_nosame_vector_QString(tracesname))
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的工艺轨道名称里有重复");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+                for(m=0;m<tracesname.size();m++)
+                {
+                    b_find=false;
+                    for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
+                    {
+                        if(tracesname[m]==m_mcs->project->project_interweld_trace[t].name)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)//没找到这个名字的工艺轨道
+                    {
+                        break;
+                    }
+                }
+                if(b_find==false)
+                {
+                    err=1;
+                    main_record.lock();
+                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+tracesname[m]+QString::fromLocal8Bit("的工艺轨道");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    errmsg.push_back(return_msg);
+                    break;
+                }
+            }
         }
     }
 
@@ -4445,6 +4602,141 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         m_mcs->project->project_crafts_trace[crafts_trace_num].craft_id=cmd.cmd_crafts_craft_id;
         m_mcs->project->project_crafts_trace[crafts_trace_num].posturelist=cmd.cmd_crafts_posturelist;
         m_mcs->project->project_crafts_trace[crafts_trace_num].params=cmd.cmd_crafts_params;
+    }
+    else if(key==CMD_SAVEPCD_KEY)
+    {
+        QString name=cmd.cmd_savepcd_name;//获取到的保存点云名字
+        Savepcd_edit_mode mode=cmd.cmd_savepcd_mode;//获取到的保存点云模式
+        std::vector<QString> scanname=cmd.cmd_savepcd_scanname;//保存点云扫描轨迹
+        std::vector<QString> pointsname=cmd.cmd_savepcd_pointsname;//保存点云点轨迹
+        std::vector<QString> creatsname=cmd.cmd_savepcd_creatsname;//保存点云焊缝轨迹
+        std::vector<QString> tracesname=cmd.cmd_savepcd_tracesname;//保存点云工艺轨迹
+
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr rgbclould;
+        rgbclould.reset(new pcl::PointCloud<pcl::PointXYZ>);
+        rgbclould->clear();
+
+        pcl::PointXYZ point;
+
+        for(int t=0;t<pointsname.size();t++)
+        {
+            QString name=pointsname[t];
+
+            for(int n=0;n<m_mcs->project->project_robpos_trace.size();n++)
+            {
+                if(m_mcs->project->project_robpos_trace[n].nEn==true&&m_mcs->project->project_robpos_trace[n].name==name)
+                {
+                    point.x=m_mcs->project->project_robpos_trace[n].robotpos.X;
+                    point.y=m_mcs->project->project_robpos_trace[n].robotpos.Y;
+                    point.z=m_mcs->project->project_robpos_trace[n].robotpos.Z;
+                    rgbclould->points.push_back(point);
+                }
+            }
+        }
+
+        for(int t=0;t<scanname.size();t++)
+        {
+            QString name=scanname[t];
+
+            for(int n=0;n<m_mcs->project->project_scan_trace.size();n++)
+            {
+                if(m_mcs->project->project_scan_trace[n].name==name)
+                {
+                    std::vector<Scan_trace_line> lines;
+                    lines=m_mcs->project->project_scan_trace[n].point;
+                    std::vector<RobPos>cv_cloud;
+                    m_mcs->synchronous->Scantraceline_to_Weldtrace(lines,cv_cloud);
+
+                    if(cv_cloud.size()>0)
+                    {
+                        for(int n=0;n<cv_cloud.size();n++)
+                        {
+                            point.x=cv_cloud[n].X;
+                            point.y=cv_cloud[n].Y;
+                            point.z=cv_cloud[n].Z;
+                            rgbclould->points.push_back(point);
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int t=0;t<creatsname.size();t++)
+        {
+            QString name=creatsname[t];
+
+            for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
+            {
+                if(m_mcs->project->project_weld_trace[n].name==name)
+                {
+                    std::vector<RobPos> cv_cloud;
+                    cv_cloud=m_mcs->project->project_weld_trace[n].point;
+                    if(cv_cloud.size()>0)
+                    {
+                        for(int n=0;n<cv_cloud.size();n++)
+                        {
+                            point.x=cv_cloud[n].X;
+                            point.y=cv_cloud[n].Y;
+                            point.z=cv_cloud[n].Z;
+                            rgbclould->points.push_back(point);
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int t=0;t<tracesname.size();t++)
+        {
+            QString name=tracesname[t];
+            for(int n=0;n<m_mcs->project->project_interweld_trace.size();n++)
+            {
+                if(m_mcs->project->project_interweld_trace[n].name==name)
+                {
+                    std::vector<Weld_trace_onec> trace;
+                    trace=m_mcs->project->project_interweld_trace[n].trace;
+                    std::vector<RobPos> cv_cloud;
+                    for(int n=0;n<trace.size();n++)
+                    {
+                        for(int m=0;m<trace[n].point.size();m++)
+                        {
+                            cv_cloud.push_back(trace[n].point[m]);
+                        }
+                    }
+                    if(cv_cloud.size()>0)
+                    {
+                        for(int n=0;n<cv_cloud.size();n++)
+                        {
+                            pcl::PointXYZ point;
+                            point.x=cv_cloud[n].X;
+                            point.y=cv_cloud[n].Y;
+                            point.z=cv_cloud[n].Z;
+                            rgbclould->points.push_back(point);
+                        }
+                    }
+                }
+            }
+        }
+
+        rgbclould->width=rgbclould->points.size();
+        rgbclould->height=1;
+
+        QString dir="./log/";
+        QString time;
+        std::string s_time;
+        TimeFunction to;
+        to.get_time_ms(&s_time);
+        time=QString::fromStdString(s_time);
+        switch(mode)
+        {
+        case SAVEPCD_EDIT_MODE_TIME:
+            dir=dir+name+time+".pcd";
+            break;
+        case SAVEPCD_EDIT_MODE_STATIC:
+            dir=dir+name+".pcd";
+            break;
+        }
+        pcl::io::savePCDFile(dir.toStdString(),*rgbclould);
     }
     return 0;
 }

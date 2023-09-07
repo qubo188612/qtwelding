@@ -48,7 +48,7 @@ void keyplotposDlg::init_dlg_show(QString cmdlist)
             QString name=cmd.cmd_plotpos_name;//获取到的点坐标名字
             Plotpos_edit_mode mode=cmd.cmd_plotpos_mode;//获取到的点坐标生成模式
             ui->plotposname->setText(name);
-            if(mode>=0&&mode<=ui->plotposmodecombo->count())
+            if(mode>=0&&mode<ui->plotposmodecombo->count())
             {
                 ui->plotposmodecombo->setCurrentIndex(mode);
             }

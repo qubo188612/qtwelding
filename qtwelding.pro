@@ -60,6 +60,7 @@ SOURCES += \
         keyplcdlg.cpp \
         keyplotposdlg.cpp \
         keysampledlg.cpp \
+        keysavepcddlg.cpp \
         keyscandlg.cpp \
         keysearchdlg.cpp \
         keysearchenddlg.cpp \
@@ -146,6 +147,7 @@ FORMS += \
     keyplcdlg.ui \
     keyplotposdlg.ui \
     keysampledlg.ui \
+    keysavepcddlg.ui \
     keyscandlg.ui \
     keysearchdlg.ui \
     keysearchenddlg.ui \
@@ -233,6 +235,7 @@ HEADERS += \
     keyplcdlg.h \
     keyplotposdlg.h \
     keysampledlg.h \
+    keysavepcddlg.h \
     keyscandlg.h \
     keysearchdlg.h \
     keysearchenddlg.h \

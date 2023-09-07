@@ -46,6 +46,7 @@
 #include "keygotodlg.h"
 #include "keycreatadddlg.h"
 #include "keycreataddpdlg.h"
+#include "keysavepcddlg.h"
 #include "arrvepointtestdlg.h"
 #include "traceedit0dlg.h"
 #include "traceedit1dlg.h"
@@ -108,6 +109,7 @@ public:
     keygotoDlg *keygoto;
     keycreataddDlg *keycreatadd;
     keycreataddpDlg *keycreataddp;
+    keysavepcdDlg *keysavepcd;
 
     traceedit0Dlg *traceedit0;
     traceedit1Dlg *traceedit1;

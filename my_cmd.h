@@ -51,6 +51,7 @@
 //程序结束指令，举例 STOP:
 //跟踪轨迹相加指令，举例 CREATADD: CREATS[轨迹1,轨迹2,轨迹3] NAME[跟踪轨迹]
 //点加跟踪轨迹指令, 举例 CREATADDP: MODE[0] POINT[点位1] CREAT[轨迹1] NAME[跟踪轨迹]
+//保存轨迹指令，举例 SAVEPCD: SCAN[扫描第一条line,第二条,第三] POINTS[点位1，点位2，点位3，点位4，点位5] CREATS[第一条,第二条,第三条] TRACES[第一条,第二条,第三条] MODE[0] NAME[保存]
 
 
 //key项
@@ -90,6 +91,7 @@
 #define CMD_STOP_KEY                    "STOP:"             //程序运行结束命令集合KEY
 #define CMD_CREATADD_KEY                "CREATADD:"         //跟踪轨迹相加命令集合KEY
 #define CMD_CREATADDP_KEY               "CREATADDP:"        //点位与跟踪轨迹相加命令集合KEY
+#define CMD_SAVEPCD_KEY                 "SAVEPCD:"          //保存轨迹命令集合KEY
 
 
 //参数项
@@ -130,6 +132,7 @@
 #define CMD_TRACEADD                        "TRACEADD"            //跟踪轨迹相加参数
 #define CMD_WAVE                            "WAVE"                //摆焊参数
 #define CMD_TRACE                           "TRACE"               //跟踪轨迹
+#define CMD_TRACES                          "TRACES"              //跟踪轨迹数组
 #define CMD_AOUT                            "AOUT"                //模拟量输出
 #define CMD_ADD                             "ADD"                 //补偿
 #define CMD_POINTS                          "POINTS"              //点位参数
@@ -197,6 +200,7 @@ public:
     QString cmd_creatadd(std::vector<QString> names,QString name_out);//跟踪轨迹相加
     QString cmd_creataddp(QString weldname,QString pointname,Creataddp_edit_mode mode,QString name_out);//点位和轨迹相加
     QString cmd_crafts(Craft_ID craft_id,std::vector<ChangeRobPosVariable> posturelist,std::vector<float> params,QString name);//创建焊接工艺指令
+    QString cmd_savepcd(std::vector<QString> scanname,std::vector<QString> pointsname,std::vector<QString> creatsname,std::vector<QString> tracesname,Savepcd_edit_mode mode,QString name);
 
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
@@ -386,6 +390,13 @@ public:
     std::vector<ChangeRobPosVariable> cmd_crafts_posturelist;//工艺姿态
     std::vector<float> cmd_crafts_params;   //工艺参数
 
+    std::vector<QString> cmd_savepcd_scanname;//保存点云扫描轨迹
+    std::vector<QString> cmd_savepcd_pointsname;//保存点云点轨迹
+    std::vector<QString> cmd_savepcd_creatsname;//保存点云焊缝轨迹
+    std::vector<QString> cmd_savepcd_tracesname;//保存点云工艺轨迹
+    Savepcd_edit_mode cmd_savepcd_mode;//保存文件名模式
+    QString cmd_savepcd_name;//保存文件名称
+
     int cmd_goto_line;//获取到的跳转行数
 
     int cmd_run_work;//停止程序
@@ -427,6 +438,7 @@ protected:
     QString rc_traceadd(QString name1,QString name2);
     QString rc_wave(wWAVEParam cmd_wave_info);
     QString rc_trace(QString name);
+    QString rc_traces(std::vector<QString> names);
     QString rc_aout(std::vector<float> a);
     QString rc_add(std::vector<float> add);
     QString rc_points(std::vector<QString> pointsname);

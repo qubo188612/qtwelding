@@ -637,7 +637,6 @@ void SN_Data::TransNum(Uint8 num[], Uint8 base1, Uint8 base2, Uint8 szResult[])
 
 Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_msg)
 {   
-    Uint16 nLeftTime;
 
     volatile Int16 nIndicator1, i, nIndicator2, nLen, j, nLen1;
     Uint8 strTemp[30], FirstP[15], MiddleP[20], SecondP[15], First4[20], Second4[20], strProductID[10],strSavedSerialNo[64];

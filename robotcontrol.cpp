@@ -966,7 +966,6 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
             switch(movemod)
             {
                 case MOVEL:
-                case MOVEP:
                 case MOVEJ:
                 {
                     mutexsend_buf_group.lock();
@@ -1029,6 +1028,82 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                     QString msg=doc.toString();
                     std::string str=msg.toStdString();
                     _p->send_buf_group.push_back(str);
+                    mutexsend_buf_group.unlock();
+                }
+                break;
+                case MOVEP:
+                {
+                    mutexsend_buf_group.lock();
+                    {
+                        QDomDocument doc;
+                        QDomText s_data;
+                        QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                        doc.appendChild(root_elem);
+                        QDomElement obj;
+                        obj=doc.createElement("MOVEGLOUP");
+                        QDomElement obj2;
+                        obj2=doc.createElement("POS");
+                        QDomElement objmin;
+                        objmin=doc.createElement("XPos");
+                        s_data=doc.createTextNode(QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("YPos");
+                        s_data=doc.createTextNode(QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("ZPos");
+                        s_data=doc.createTextNode(QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("ARot");
+                        s_data=doc.createTextNode(QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("BRot");
+                        s_data=doc.createTextNode(QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("CRot");
+                        s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
+                        objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
+                        obj.appendChild(obj2);
+                        root_elem.appendChild(obj);
+                        QString msg=doc.toString();
+                        std::string str=msg.toStdString();
+                        _p->send_buf_group.push_back(str);
+                    }
+                    {
+                        QDomDocument doc;
+                        QDomText s_data;
+                        QDomElement root_elem = doc.createElement("ROBOTCONTROL");
+                        doc.appendChild(root_elem);
+                        QDomElement obj;
+                        obj=doc.createElement("MOVEGLOUP");
+                        QDomElement obj2;
+                        obj2=doc.createElement("OUT");
+                        QDomElement objmin;
+                        objmin=doc.createElement("XPos");
+                        s_data=doc.createTextNode(QString::number(i_out1));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("YPos");
+                        s_data=doc.createTextNode(QString::number(i_out2));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("ZPos");
+                        s_data=doc.createTextNode(QString::number(i_out3));
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("ARot");
+                        s_data=doc.createTextNode("0");
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("BRot");
+                        s_data=doc.createTextNode("0");
+                        objmin.appendChild(s_data);
+                        objmin=doc.createElement("CRot");
+                        s_data=doc.createTextNode("0");
+                        objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
+                        obj.appendChild(obj2);
+                        root_elem.appendChild(obj);
+                        QString msg=doc.toString();
+                        std::string str=msg.toStdString();
+                        _p->send_buf_group.push_back(str);
+                    }
                     mutexsend_buf_group.unlock();
                 }
                 break;

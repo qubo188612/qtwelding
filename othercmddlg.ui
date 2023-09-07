@@ -152,6 +152,11 @@
        </item>
        <item>
         <property name="text">
+         <string>SAVEPCD: 保存点云文件指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>SCAN: 采集激光数据指令</string>
         </property>
        </item>

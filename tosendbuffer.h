@@ -11,6 +11,8 @@
 #include "ccoordchange.h"
 #include "qelapsedtimer.h"
 #include "MyPlcFunction.h"
+#include <pcl/common/common_headers.h>
+#include <pcl/io/pcd_io.h>
 
 #define SAVELOGFILE_SCANNAME_HEAD          "SCAN_"               //保存的扫描轨迹类型的文件前缀名称
 #define SAVELOGFILE_CREATNAME_HEAD         "CREAT_"              //保存的焊接轨迹类型(未添加姿态前)的文件前缀名称

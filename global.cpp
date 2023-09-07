@@ -221,3 +221,18 @@ QString Filter_mode_toQString(Filter_mode filter_mode)
     }
     return msg;
 }
+
+QString Savepcd_edit_mode_toQString(Savepcd_edit_mode savepcd_mode)
+{
+    QString msg;
+    switch(savepcd_mode)
+    {
+    case SAVEPCD_EDIT_MODE_TIME:
+        msg=QString::fromLocal8Bit("文件名用时间后缀");
+        break;
+    case SAVEPCD_EDIT_MODE_STATIC:
+        msg=QString::fromLocal8Bit("文件名无后缀(会替换调之前保存的文件)");
+        break;
+    }
+    return msg;
+}

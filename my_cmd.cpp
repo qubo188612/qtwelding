@@ -593,6 +593,31 @@ QString my_cmd::cmd_crafts(Craft_ID craft_id,std::vector<ChangeRobPosVariable> p
     return msg;
 }
 
+QString my_cmd::cmd_savepcd(std::vector<QString> scanname,std::vector<QString> pointsname,std::vector<QString> creatsname,std::vector<QString> tracesname,Savepcd_edit_mode mode,QString name)
+{
+    QString msg;
+    msg=QString(CMD_SAVEPCD_KEY)+" ";
+    if(scanname.size()>0)
+    {
+        msg=msg+rc_scan(scanname)+" ";
+    }
+    if(pointsname.size()>0)
+    {
+        msg=msg+rc_points(pointsname)+" ";
+    }
+    if(creatsname.size()>0)
+    {
+        msg=msg+rc_creats(creatsname)+" ";
+    }
+    if(tracesname.size()>0)
+    {
+        msg=msg+rc_traces(tracesname)+" ";
+    }
+    msg=msg+rc_mode(mode)+" "+
+            rc_name(name);
+    return msg;
+}
+
 int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
@@ -4820,6 +4845,163 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             break;
         }
     }
+    else if(key==CMD_SAVEPCD_KEY)
+    {
+        int pn=0;
+        bool b_NAME=false;
+        bool b_POINTS=false;
+        bool b_SCANS=false;
+        bool b_CREATS=false;
+        bool b_TRACES=false;
+        bool b_MODE=false;
+
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_NAME)
+                {
+                    if(b_NAME==false)
+                    {
+                        b_NAME=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_savepcd_name,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_POINTS)
+                {
+                    if(b_POINTS==false)
+                    {
+                        b_POINTS=true;
+                        if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_savepcd_pointsname,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_savepcd_pointsname.size()<1)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SCAN)
+                {
+                    if(b_SCANS==false)
+                    {
+                        b_SCANS=true;
+                        if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_savepcd_scanname,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_savepcd_scanname.size()<1)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CREATS)
+                {
+                    if(b_CREATS==false)
+                    {
+                        b_CREATS=true;
+                        if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_savepcd_creatsname,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_savepcd_creatsname.size()<1)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TRACES)
+                {
+                    if(b_TRACES==false)
+                    {
+                        b_TRACES=true;
+                        if(0!=de_vector_QString(paramname,param[n],data_fpos,data_bpos,cmd_savepcd_tracesname,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_savepcd_tracesname.size()<1)
+                        {
+                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MODE)
+                {
+                    if(b_MODE==false)
+                    {
+                        b_MODE=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_savepcd_mode=(Savepcd_edit_mode)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_NAME==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+        else if(b_MODE==false)
+        {
+            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return 1;
+        }
+    }
     else if(key==CMD_STOP_KEY)
     {
         //不需要处理
@@ -5227,6 +5409,22 @@ QString my_cmd::rc_trace(QString name)
 {
     QString msg;
     msg=QString(CMD_TRACE)+"["+name+"]";
+    return msg;
+}
+
+QString my_cmd::rc_traces(std::vector<QString> names)
+{
+    QString msg;
+    QString msg1;
+    for(int n=0;n<names.size();n++)
+    {
+        msg1=msg1+names[n];
+        if(n!=names.size()-1)
+        {
+          msg1=msg1+",";
+        }
+    }
+    msg=QString(CMD_TRACES)+"["+msg1+"]";
     return msg;
 }
 
