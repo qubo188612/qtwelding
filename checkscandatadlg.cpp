@@ -309,8 +309,9 @@ void checkscandataDlg::tab1updateCameraView(double focalPoint[3], double positio
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
     // 刷新渲染窗口
+    tab1viewer->getRenderWindow()->Render();
     ui->tab1widget->update();
-    ui->tab1widget->show();
+//  ui->tab1widget->show();
 }
 
 void checkscandataDlg::tab2updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
@@ -321,8 +322,9 @@ void checkscandataDlg::tab2updateCameraView(double focalPoint[3], double positio
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
     // 刷新渲染窗口
+    tab2viewer->getRenderWindow()->Render();
     ui->tab2widget->update();
-    ui->tab2widget->show();
+//  ui->tab2widget->show();
 }
 
 void checkscandataDlg::tab3updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
@@ -333,8 +335,9 @@ void checkscandataDlg::tab3updateCameraView(double focalPoint[3], double positio
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
     // 刷新渲染窗口
+    tab3viewer->getRenderWindow()->Render();
     ui->tab3widget->update();
-    ui->tab3widget->show();
+//  ui->tab3widget->show();
 }
 
 void checkscandataDlg::tab4updateCameraView(double focalPoint[3], double position[3], double viewUp[3])
@@ -345,8 +348,9 @@ void checkscandataDlg::tab4updateCameraView(double focalPoint[3], double positio
     camera->SetPosition(position);
     camera->SetViewUp(viewUp);
     // 刷新渲染窗口
+    tab4viewer->getRenderWindow()->Render();
     ui->tab4widget->update();
-    ui->tab4widget->show();
+//  ui->tab4widget->show();
 }
 
 //点位选择
@@ -476,8 +480,9 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
         }
     }
     tab1viewer->addPointCloud(rgbclould);
+    tab1viewer->getRenderWindow()->Render();
     ui->tab1widget->update();
-    ui->tab1widget->show();
+//  ui->tab1widget->show();
 }
 
 //扫描轨迹选择
@@ -535,8 +540,9 @@ void checkscandataDlg::on_tab2listWidget_itemClicked(QListWidgetItem *item)
             }
         }
         tab2viewer->addPointCloud(rgbclould);
+        tab2viewer->getRenderWindow()->Render();
         ui->tab2widget->update();
-        ui->tab2widget->show();
+    //  ui->tab2widget->show();
     }
 }
 
@@ -593,8 +599,9 @@ void checkscandataDlg::on_tab3listWidget_itemClicked(QListWidgetItem *item)
             }
         }
         tab3viewer->addPointCloud(rgbclould);
+        tab3viewer->getRenderWindow()->Render();
         ui->tab3widget->update();
-        ui->tab3widget->show();
+    //  ui->tab3widget->show();
     }
 }
 
@@ -659,8 +666,9 @@ void checkscandataDlg::on_tab4listWidget_itemClicked(QListWidgetItem *item)
             }
         }
         tab4viewer->addPointCloud(rgbclould);
+        tab4viewer->getRenderWindow()->Render();
         ui->tab4widget->update();
-        ui->tab4widget->show();
+    //  ui->tab4widget->show();
     }
 }
 
