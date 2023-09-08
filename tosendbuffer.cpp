@@ -1862,152 +1862,161 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 bool b_find=false;
                 int m=0;
 
-                if(false==b_nosame_vector_QString(pointsname))
+                if(pointsname.size()>0)
                 {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的点名称里有重复");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-                for(m=0;m<pointsname.size();m++)
-                {
-                    b_find=false;
-                    for(int t=0;t<m_mcs->project->project_robpos_trace.size();t++)
+                    if(false==b_nosame_vector_QString(pointsname))
                     {
-                        if(pointsname[m]==m_mcs->project->project_robpos_trace[t].name)
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的点名称里有重复");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    for(m=0;m<pointsname.size();m++)
+                    {
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->project_robpos_trace.size();t++)
                         {
-                            b_find=true;
+                            if(pointsname[m]==m_mcs->project->project_robpos_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到这个名字的点轨道
+                        {
                             break;
                         }
                     }
-                    if(b_find==false)//没找到这个名字的点轨道
+                    if(b_find==false)
                     {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsname[m]+QString::fromLocal8Bit("的点轨道");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
                         break;
                     }
                 }
-                if(b_find==false)
+                if(scanname.size()>0)
                 {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsname[m]+QString::fromLocal8Bit("的点轨道");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-
-                if(false==b_nosame_vector_QString(scanname))
-                {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的扫描规定名称里有重复");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-                for(m=0;m<scanname.size();m++)
-                {
-                    b_find=false;
-                    for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
+                    if(false==b_nosame_vector_QString(scanname))
                     {
-                        if(scanname[m]==m_mcs->project->project_scan_trace[t].name)
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的扫描规定名称里有重复");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    for(m=0;m<scanname.size();m++)
+                    {
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->project_scan_trace.size();t++)
                         {
-                            b_find=true;
+                            if(scanname[m]==m_mcs->project->project_scan_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到这个名字的扫描轨道
+                        {
                             break;
                         }
                     }
-                    if(b_find==false)//没找到这个名字的扫描轨道
+                    if(b_find==false)
                     {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scanname[m]+QString::fromLocal8Bit("的扫描轨道");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
                         break;
                     }
                 }
-                if(b_find==false)
+                if(creatsname.size()>0)
                 {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scanname[m]+QString::fromLocal8Bit("的扫描轨道");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-
-                if(false==b_nosame_vector_QString(creatsname))
-                {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的跟踪轨道名称里有重复");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-                for(m=0;m<creatsname.size();m++)
-                {
-                    b_find=false;
-                    for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
+                    if(false==b_nosame_vector_QString(creatsname))
                     {
-                        if(creatsname[m]==m_mcs->project->project_weld_trace[t].name)
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的跟踪轨道名称里有重复");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    for(m=0;m<creatsname.size();m++)
+                    {
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
                         {
-                            b_find=true;
+                            if(creatsname[m]==m_mcs->project->project_weld_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到这个名字的扫描轨道
+                        {
                             break;
                         }
                     }
-                    if(b_find==false)//没找到这个名字的扫描轨道
+                    if(b_find==false)
                     {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsname[m]+QString::fromLocal8Bit("的跟踪轨道");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
                         break;
                     }
                 }
-                if(b_find==false)
+                if(tracesname.size()>0)
                 {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsname[m]+QString::fromLocal8Bit("的跟踪轨道");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-
-                if(false==b_nosame_vector_QString(tracesname))
-                {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的工艺轨道名称里有重复");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-                for(m=0;m<tracesname.size();m++)
-                {
-                    b_find=false;
-                    for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
+                    if(false==b_nosame_vector_QString(tracesname))
                     {
-                        if(tracesname[m]==m_mcs->project->project_interweld_trace[t].name)
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的工艺轨道名称里有重复");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                        break;
+                    }
+                    for(m=0;m<tracesname.size();m++)
+                    {
+                        b_find=false;
+                        for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
                         {
-                            b_find=true;
+                            if(tracesname[m]==m_mcs->project->project_interweld_trace[t].name)
+                            {
+                                b_find=true;
+                                break;
+                            }
+                        }
+                        if(b_find==false)//没找到这个名字的工艺轨道
+                        {
                             break;
                         }
                     }
-                    if(b_find==false)//没找到这个名字的工艺轨道
+                    if(b_find==false)
                     {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+tracesname[m]+QString::fromLocal8Bit("的工艺轨道");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
                         break;
                     }
-                }
-                if(b_find==false)
-                {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+tracesname[m]+QString::fromLocal8Bit("的工艺轨道");
-                    m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
                 }
             }
         }
