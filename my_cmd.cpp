@@ -622,7 +622,7 @@ int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
     {
-        return_msg=QString::fromLocal8Bit("指令为空");
+        return_msg=QStringLiteral("指令为空");
         return 1;
     }
     int exegesis=msg.indexOf("#");//寻找注释
@@ -637,7 +637,7 @@ int my_cmd::getkey(QString msg,QString &return_msg,QString &return_key)
     QStringList list = msg.split(":");
     if(list.size()!=2)
     {
-        return_msg=QString::fromLocal8Bit("指令中只能出现一个':'");
+        return_msg=QStringLiteral("指令中只能出现一个':'");
         return 1;
     }
     QString key=list[0]+":";
@@ -649,7 +649,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
 {
     if(msg.isEmpty())
     {
-        return_msg=QString::fromLocal8Bit("指令为空");
+        return_msg=QStringLiteral("指令为空");
         return 1;
     }
     int exegesis=msg.indexOf("#");//寻找注释
@@ -664,7 +664,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
     QStringList list = msg.split(":");
     if(list.size()!=2)
     {
-        return_msg=QString::fromLocal8Bit("指令中只能出现一个':'");
+        return_msg=QStringLiteral("指令中只能出现一个':'");
         return 1;
     }
     QString key=list[0]+":";
@@ -698,13 +698,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_move_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -721,7 +721,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -738,7 +738,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -755,7 +755,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -770,13 +770,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_move_tcp<0||cmd_move_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=QString::fromLocal8Bit("TCP的值超出设置范围");
+                            return_msg=QStringLiteral("TCP的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -792,30 +792,30 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+QString::fromLocal8Bit("'或'")+CMD_MOVJ+QString::fromLocal8Bit("'或'")+CMD_MOVC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MOVL+QStringLiteral("'或'")+CMD_MOVJ+QStringLiteral("'或'")+CMD_MOVC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -854,13 +854,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_smove_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -877,7 +877,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个SMOV类型项");
+                        return_msg=QStringLiteral("只能有一个SMOV类型项");
                         return 1;
                     }
                 }
@@ -894,7 +894,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个SMOV类型项");
+                        return_msg=QStringLiteral("只能有一个SMOV类型项");
                         return 1;
                     }
                 }
@@ -910,7 +910,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(posgroup.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有3个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有3个");
                             return 1;
                         }
                         cmd_smove_pos1=posgroup[0];
@@ -920,7 +920,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个SMOV类型项");
+                        return_msg=QStringLiteral("只能有一个SMOV类型项");
                         return 1;
                     }
                 }
@@ -935,13 +935,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_smove_tcp<0||cmd_smove_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=QString::fromLocal8Bit("TCP的值超出设置范围");
+                            return_msg=QStringLiteral("TCP的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -957,30 +957,30 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SMOVL+QString::fromLocal8Bit("'或'")+CMD_SMOVJ+QString::fromLocal8Bit("'或'")+CMD_SMOVC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SMOVL+QStringLiteral("'或'")+CMD_SMOVJ+QStringLiteral("'或'")+CMD_SMOVC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -1015,26 +1015,26 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_delay_time<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_TIME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -1065,13 +1065,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_cam_work_d!=1&&cmd_cam_work_d!=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能为0或1");
+                            return_msg=paramname+QStringLiteral("项参数只能为0或1");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1087,27 +1087,27 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_WORK==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_WORK+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_WORK+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TASK==false)
         {
             if(cmd_cam_work_d==1)
             {
-                return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_TASK+QString::fromLocal8Bit("'项参数");
+                return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_TASK+QStringLiteral("'项参数");
                 return 1;
             }
         }
@@ -1141,13 +1141,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_elec_work_d!=1&&cmd_elec_work_d!=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能为0或1");
+                            return_msg=paramname+QStringLiteral("项参数只能为0或1");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1165,7 +1165,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1181,7 +1181,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1197,27 +1197,27 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_WORK==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_WORK+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_WORK+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_ELEM==false)
         {
             if(cmd_elec_work_d==1)
             {
-                return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_ELEM+QString::fromLocal8Bit("'项参数");
+                return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELEM+QStringLiteral("'项参数");
                 return 1;
             }
         }
@@ -1225,7 +1225,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         {
             if(cmd_elec_work_d==1)
             {
-                return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_ELED+QString::fromLocal8Bit("'项参数");
+                return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELED+QStringLiteral("'项参数");
                 return 1;
             }
         }
@@ -1233,7 +1233,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         {
             if(cmd_elec_work_d==1)
             {
-                return_msg=key+QString::fromLocal8Bit("指令在")+CMD_WORK+QString::fromLocal8Bit("值等于1时还需要设置'")+CMD_ELEV+QString::fromLocal8Bit("'项参数");
+                return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELEV+QStringLiteral("'项参数");
                 return 1;
             }
         }
@@ -1268,13 +1268,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_scan_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1291,7 +1291,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -1308,7 +1308,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -1325,7 +1325,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -1340,13 +1340,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_scan_tcp<0||cmd_scan_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=QString::fromLocal8Bit("TCP的值超出设置范围");
+                            return_msg=QStringLiteral("TCP的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1362,7 +1362,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1378,35 +1378,35 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+QString::fromLocal8Bit("'或'")+CMD_MOVJ+QString::fromLocal8Bit("'或'")+CMD_MOVC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MOVL+QStringLiteral("'或'")+CMD_MOVJ+QStringLiteral("'或'")+CMD_MOVC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -1445,13 +1445,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_sscan_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1468,7 +1468,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -1485,7 +1485,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -1501,7 +1501,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(posgroup.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有3个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有3个");
                             return 1;
                         }
                         cmd_sscan_pos1=posgroup[0];
@@ -1511,7 +1511,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -1526,13 +1526,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_sscan_tcp<0||cmd_sscan_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=QString::fromLocal8Bit("TCP的值超出设置范围");
+                            return_msg=QStringLiteral("TCP的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1548,7 +1548,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1564,35 +1564,35 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SMOVL+QString::fromLocal8Bit("'或'")+CMD_SMOVJ+QString::fromLocal8Bit("'或'")+CMD_SMOVC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SMOVL+QStringLiteral("'或'")+CMD_SMOVJ+QStringLiteral("'或'")+CMD_SMOVC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -1632,13 +1632,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_trace_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1654,7 +1654,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1670,7 +1670,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1686,7 +1686,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1702,35 +1702,35 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CREAT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREAT+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CRAFT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CRAFT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CRAFT+QStringLiteral("'项参数");
             return 1;
         }
         if(b_CHANGE==false)
@@ -1769,13 +1769,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_trace2_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1791,7 +1791,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1807,7 +1807,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1823,7 +1823,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1839,35 +1839,35 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
                          return 1;
         }
         else if(b_CREAT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREAT+QStringLiteral("'项参数");
                          return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
                          return 1;
         }
         else if(b_CRAFTS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CRAFTS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CRAFTS+QStringLiteral("'项参数");
                          return 1;
         }
         if(b_CHANGE==false)
@@ -1905,7 +1905,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1923,7 +1923,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -1938,36 +1938,36 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(false==b_nosame_vector_QString(cmd_creat_scanname))
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
+                            return_msg=paramname+QStringLiteral("项参数里不能有同名项");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MODE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SCAN==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SCAN+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SCAN+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -1997,14 +1997,14 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_io_output.size()!=ROBOTOUTPUTNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(ROBOTOUTPUTNUM)+QString::fromLocal8Bit("个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(ROBOTOUTPUTNUM)+QStringLiteral("个");
                             return 1;
                         }
                         cmd_io_workmod=OUT;
                     }
                     else
                     {
-                        return_msg=CMD_OUT+QString::fromLocal8Bit("项和")+CMD_WAITIN+QString::fromLocal8Bit("项只能有一个");
+                        return_msg=CMD_OUT+QStringLiteral("项和")+CMD_WAITIN+QStringLiteral("项只能有一个");
                         return 1;
                     }
                 }
@@ -2019,27 +2019,27 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_io_input.size()!=ROBOTINPUTNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(ROBOTINPUTNUM)+QString::fromLocal8Bit("个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(ROBOTINPUTNUM)+QStringLiteral("个");
                             return 1;
                         }
                         cmd_io_workmod=WAITIN;
                     }
                     else
                     {
-                        return_msg=CMD_OUT+QString::fromLocal8Bit("项和")+CMD_WAITIN+QString::fromLocal8Bit("项只能有一个");
+                        return_msg=CMD_OUT+QStringLiteral("项和")+CMD_WAITIN+QStringLiteral("项只能有一个");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_IO==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_OUT+QString::fromLocal8Bit("'或'")+CMD_WAITIN+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_OUT+QStringLiteral("'或'")+CMD_WAITIN+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -2073,7 +2073,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=CMD_WAITPLC+QString::fromLocal8Bit("项和")+CMD_WRITEPLC+QString::fromLocal8Bit("项只能有一个");
+                        return_msg=CMD_WAITPLC+QStringLiteral("项和")+CMD_WRITEPLC+QStringLiteral("项只能有一个");
                         return 1;
                     }
                 }
@@ -2090,7 +2090,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=CMD_WAITPLC+QString::fromLocal8Bit("项和")+CMD_WRITEPLC+QString::fromLocal8Bit("项只能有一个");
+                        return_msg=CMD_WAITPLC+QStringLiteral("项和")+CMD_WRITEPLC+QStringLiteral("项只能有一个");
                         return 1;
                     }
                 }
@@ -2106,25 +2106,25 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_register_add==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_WRITEPLC+QString::fromLocal8Bit("'或'")+CMD_WAITPLC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_WRITEPLC+QStringLiteral("'或'")+CMD_WAITPLC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_data==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_DATA16+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_DATA16+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -2161,13 +2161,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_search_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2184,7 +2184,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -2201,7 +2201,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -2218,7 +2218,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -2233,13 +2233,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_search_tcp<0||cmd_search_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return_msg=paramname+QStringLiteral("的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2255,7 +2255,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2271,7 +2271,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2286,13 +2286,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_search_side<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的值必须大于等于0");
+                            return_msg=paramname+QStringLiteral("的值必须大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2307,13 +2307,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_search_sidemove.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项只能有3个参数");
+                            return_msg=paramname+QStringLiteral("项只能有3个参数");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2329,50 +2329,50 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+QString::fromLocal8Bit("'或'")+CMD_MOVJ+QString::fromLocal8Bit("'或'")+CMD_MOVC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MOVL+QStringLiteral("'或'")+CMD_MOVJ+QStringLiteral("'或'")+CMD_MOVC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SIDE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SIDE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SIDE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SIDEMOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SIDEMOVE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SIDEMOVE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SIDESPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SIDESPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SIDESPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -2411,13 +2411,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_searchend_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2434,7 +2434,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -2451,7 +2451,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -2468,7 +2468,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个MOV类型项");
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
                         return 1;
                     }
                 }
@@ -2483,13 +2483,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_searchend_tcp<0||cmd_searchend_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return_msg=paramname+QStringLiteral("的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2505,7 +2505,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2521,36 +2521,36 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
 
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MOVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MOVL+QString::fromLocal8Bit("'或'")+CMD_MOVJ+QString::fromLocal8Bit("'或'")+CMD_MOVC+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MOVL+QStringLiteral("'或'")+CMD_MOVJ+QStringLiteral("'或'")+CMD_MOVC+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -2590,7 +2590,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2606,7 +2606,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2622,7 +2622,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2638,7 +2638,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2654,40 +2654,40 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_POINTX==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINTX+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINTX+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POINTO==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINTO+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINTO+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CPOINTX==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CPOINTX+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CPOINTX+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CPOINTO==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CPOINTO+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CPOINTO+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -2719,13 +2719,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_getpos_time<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2741,7 +2741,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2756,36 +2756,36 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_getpos_add.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(3)+QString::fromLocal8Bit("个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(3)+QStringLiteral("个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_TIME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_ADD==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_ADD+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_ADD+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -2819,7 +2819,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2834,13 +2834,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_sample_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2855,13 +2855,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_sample_time<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2877,40 +2877,40 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_CREAT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREAT+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TIME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(cmd_sample_name==cmd_sample_creatname)
         {
-            return_msg=key+"'"+CMD_NAME+QString::fromLocal8Bit("'项参数和'")+CMD_CREAT+QString::fromLocal8Bit("'项参数不能同名");
+            return_msg=key+"'"+CMD_NAME+QStringLiteral("'项参数和'")+CMD_CREAT+QStringLiteral("'项参数不能同名");
             return 1;
         }
     }
@@ -2942,13 +2942,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_tracing_tcp<0||cmd_tracing_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return_msg=paramname+QStringLiteral("的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2963,13 +2963,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_tracing_time<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -2985,30 +2985,30 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TIME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3043,7 +3043,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(namegroup.size()!=2)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有2个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有2个");
                             return 1;
                         }
                         cmd_traceadd_name1=namegroup[0];
@@ -3051,7 +3051,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3067,7 +3067,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3082,13 +3082,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_traceadd_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3103,13 +3103,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_traceadd_samplespeed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3124,31 +3124,31 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_traceadd_time<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_TRACEADD==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TRACEADD+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TRACEADD+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -3162,17 +3162,17 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         }
         else if(b_TIME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SAMPLESPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SAMPLESPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SAMPLESPEED+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3204,13 +3204,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_goweld_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3225,13 +3225,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_goweld_tcp<0||cmd_goweld_tcp>=ROBOTTCPNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的值超出设置范围");
+                            return_msg=paramname+QStringLiteral("的值超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3247,30 +3247,30 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TCP==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TCP+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3303,7 +3303,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3319,7 +3319,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3335,7 +3335,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(f_datagroup.size()!=20)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有20个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有20个");
                             return 1;
                         }
                         cmd_wave_info.period=f_datagroup[0];
@@ -3361,81 +3361,81 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
 
                         if(f_datagroup[0]<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的摆焊周期(第1个参数)必须大于0");
+                            return_msg=paramname+QStringLiteral("的摆焊周期(第1个参数)必须大于0");
                             return 1;
                         }
                         if(f_datagroup[1]<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的左摆焊幅度(第2个参数)必须大于0");
+                            return_msg=paramname+QStringLiteral("的左摆焊幅度(第2个参数)必须大于0");
                             return 1;
                         }
                         if(f_datagroup[2]<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的右摆焊幅度(第3个参数)必须大于0");
+                            return_msg=paramname+QStringLiteral("的右摆焊幅度(第3个参数)必须大于0");
                             return 1;
                         }
                         if(f_datagroup[5]<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的左摆停留时间(第6个参数)必须大于等于0");
+                            return_msg=paramname+QStringLiteral("的左摆停留时间(第6个参数)必须大于等于0");
                             return 1;
                         }
                         if(f_datagroup[6]<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的右摆停留时间(第7个参数)必须大于等于0");
+                            return_msg=paramname+QStringLiteral("的右摆停留时间(第7个参数)必须大于等于0");
                             return 1;
                         }
                         if((int)f_datagroup[9]<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的起摆位置(第9个参数)必须大于等于0");
+                            return_msg=paramname+QStringLiteral("的起摆位置(第9个参数)必须大于等于0");
                             return 1;
                         }
                         if((int)f_datagroup[10]<0||(int)f_datagroup[10]>1)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的起摆位置(第10个参数)超出设置范围");
+                            return_msg=paramname+QStringLiteral("的起摆位置(第10个参数)超出设置范围");
                             return 1;
                         }
                         if((int)f_datagroup[11]<0||(int)f_datagroup[11]>=PENDULUM_ID_TOTAL_NUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的摆焊模式(第12个参数)超出设置范围");
+                            return_msg=paramname+QStringLiteral("的摆焊模式(第12个参数)超出设置范围");
                             return 1;
                         }
                         if((int)f_datagroup[12]<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的采样时间(第13个参数)必须大于0");
+                            return_msg=paramname+QStringLiteral("的采样时间(第13个参数)必须大于0");
                             return 1;
                         }
                         if((int)f_datagroup[13]<0||(int)f_datagroup[13]>=TREND_ID_TOTAL_NUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("的摆幅方向(第14个参数)超出设置范围");
+                            return_msg=paramname+QStringLiteral("的摆幅方向(第14个参数)超出设置范围");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_TRACE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TRACE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TRACE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_WAVE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_WAVE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_WAVE+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3465,26 +3465,26 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_aout_output.size()!=ROBOTAOUTPUTNUM)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(ROBOTAOUTPUTNUM)+QString::fromLocal8Bit("个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(ROBOTAOUTPUTNUM)+QStringLiteral("个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_AOUT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_AOUT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_AOUT+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3517,7 +3517,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3532,31 +3532,31 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_creatp_pointsname.size()<1)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return_msg=paramname+QStringLiteral("项参数个数至少大于等于1个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POINTS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINTS+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3591,7 +3591,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3607,7 +3607,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3622,13 +3622,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_setpose_pose.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有3个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有3个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3643,47 +3643,47 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_setpose_add.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有3个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有3个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POINT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINT+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POSE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POSE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POSE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_ADD==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_ADD+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_ADD+QStringLiteral("'项参数");
             return 1;
         }
 
         if(cmd_setpose_namein==cmd_setpose_nameout)
         {
-            return_msg=key+"'"+CMD_NAME+QString::fromLocal8Bit("'项参数和'")+CMD_POINT+QString::fromLocal8Bit("'项参数不能同名");
+            return_msg=key+"'"+CMD_NAME+QStringLiteral("'项参数和'")+CMD_POINT+QStringLiteral("'项参数不能同名");
             return 1;
         }
     }
@@ -3715,7 +3715,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3730,31 +3730,31 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_gettcppos_add.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有")+QString::number(3)+QString::fromLocal8Bit("个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(3)+QStringLiteral("个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_ADD==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_ADD+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_ADD+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3786,7 +3786,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3802,25 +3802,25 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_FILE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_FILE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_FILE+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3856,7 +3856,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3874,7 +3874,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3890,13 +3890,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(false==b_nosame_vector_QString(cmd_plotpos_creatname))
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
+                            return_msg=paramname+QStringLiteral("项参数里不能有同名项");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3912,36 +3912,36 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(false==b_nosame_vector_QString(cmd_plotpos_pointsname))
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
+                            return_msg=paramname+QStringLiteral("项参数里不能有同名项");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MODE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_PARAM==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREATS+QString::fromLocal8Bit("'或'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREATS+QStringLiteral("'或'")+CMD_POINTS+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -3975,7 +3975,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -3990,18 +3990,18 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_creatc_pointsname.size()!=3)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数有且只有3个");
+                            return_msg=paramname+QStringLiteral("项参数有且只有3个");
                             return 1;
                         }
                         if(false==b_nosame_vector_QString(cmd_creatc_pointsname))
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
+                            return_msg=paramname+QStringLiteral("项参数里不能有同名项");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4016,13 +4016,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_creatc_speed<=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4037,41 +4037,41 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_creatc_time<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POINTS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINTS+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TIME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TIME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_SPEED==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_SPEED+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -4103,7 +4103,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4119,25 +4119,25 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POS+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -4170,7 +4170,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4186,7 +4186,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4202,30 +4202,30 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_TRACE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_TRACE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TRACE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POS+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -4260,7 +4260,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4276,7 +4276,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4294,7 +4294,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4310,35 +4310,35 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CREAT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREAT+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MODE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_FILTERS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_FILTERS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_FILTERS+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -4350,12 +4350,12 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             {
                 if(f_datagroup.size()!=1)
                 {
-                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有1个");
+                    return_msg=CMD_MODE+QStringLiteral("项参数为")+QString::number(cmd_filter_mode)+QStringLiteral("时,")+CMD_FILTERS+QStringLiteral("项参数有且只有1个");
                     return 1;
                 }
                 if(f_datagroup[0]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的拟合阶次(第1个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的拟合阶次(第1个参数)必须大于等于0");
                     return 1;
                 }
                 cmd_filters.msl_poly=f_datagroup[0];                 //拟合阶次,0为平滑，1为一项线性曲线拟合，2为二项线性曲线拟合    //设置上采样步长
@@ -4365,17 +4365,17 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             {
                 if(f_datagroup.size()!=2)
                 {
-                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有2个");
+                    return_msg=CMD_MODE+QStringLiteral("项参数为")+QString::number(cmd_filter_mode)+QStringLiteral("时,")+CMD_FILTERS+QStringLiteral("项参数有且只有2个");
                     return 1;
                 }
                 if(f_datagroup[0]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的邻域点数量(第1个参数)必须大于等于0");
                     return 1;
                 }
                 if(f_datagroup[1]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的标准差(第2个参数)必须大于等于0");
                     return 1;
                 }
 
@@ -4388,22 +4388,22 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             {
                 if(f_datagroup.size()!=3)
                 {
-                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有3个");
+                    return_msg=CMD_MODE+QStringLiteral("项参数为")+QString::number(cmd_filter_mode)+QStringLiteral("时,")+CMD_FILTERS+QStringLiteral("项参数有且只有3个");
                     return 1;
                 }
                 if(f_datagroup[0]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的邻域点数量(第1个参数)必须大于等于0");
                     return 1;
                 }
                 if(f_datagroup[1]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的标准差(第2个参数)必须大于等于0");
                     return 1;
                 }
                 if(f_datagroup[2]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第3个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的标准差(第3个参数)必须大于等于0");
                     return 1;
                 }
 
@@ -4416,17 +4416,17 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             {
                 if(f_datagroup.size()!=2)
                 {
-                    return_msg=CMD_MODE+QString::fromLocal8Bit("项参数为")+QString::number(cmd_filter_mode)+QString::fromLocal8Bit("时,")+CMD_FILTERS+QString::fromLocal8Bit("项参数有且只有2个");
+                    return_msg=CMD_MODE+QStringLiteral("项参数为")+QString::number(cmd_filter_mode)+QStringLiteral("时,")+CMD_FILTERS+QStringLiteral("项参数有且只有2个");
                     return 1;
                 }
                 if(f_datagroup[0]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的邻域点数量(第1个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的邻域点数量(第1个参数)必须大于等于0");
                     return 1;
                 }
                 if(f_datagroup[1]<0)
                 {
-                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QString::fromLocal8Bit("项参数的标准差(第2个参数)必须大于等于0");
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的标准差(第2个参数)必须大于等于0");
                     return 1;
                 }
                 cmd_filters.gaussian_SmoothingRadius=f_datagroup[0];
@@ -4463,26 +4463,26 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_goto_line<0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数只能大于等于0");
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_LINE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_LINE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_LINE+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -4515,7 +4515,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4530,31 +4530,31 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(false==b_nosame_vector_QString(cmd_creatadd_names))
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数里不能有同名项");
+                            return_msg=paramname+QStringLiteral("项参数里不能有同名项");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个'")+CMD_CREATS+QString::fromLocal8Bit("'项或'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+                        return_msg=QStringLiteral("只能有一个'")+CMD_CREATS+QStringLiteral("'项或'")+CMD_POINTS+QStringLiteral("'项参数");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CREATS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREATS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREATS+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -4589,7 +4589,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4605,7 +4605,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=QString::fromLocal8Bit("只能有一个'")+CMD_CREAT+QString::fromLocal8Bit("'项或'")+CMD_POINTS+QString::fromLocal8Bit("'项参数");
+                        return_msg=QStringLiteral("只能有一个'")+CMD_CREAT+QStringLiteral("'项或'")+CMD_POINTS+QStringLiteral("'项参数");
                         return 1;
                     }
                 }
@@ -4621,7 +4621,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4639,35 +4639,35 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_CREAT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_CREAT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREAT+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POINT==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINT+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINT+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MODE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -4701,7 +4701,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4718,7 +4718,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         int jump=12;
                         if(f_datagroup.size()%jump!=0)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数的个数不合理");
+                            return_msg=paramname+QStringLiteral("项参数的个数不合理");
                             return 1;
                         }
                         int num=f_datagroup.size()/jump;
@@ -4741,7 +4741,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4757,7 +4757,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4775,37 +4775,37 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_POINTADDS==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_POINTADDS+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_POINTADDS+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MODE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
             return 1;
         }
         Craft *craft=craft->Get();
         if(0!=craft->posturelistcheck(cmd_crafts_craft_id,cmd_crafts_posturelist))
         {
-            return_msg=QString::fromLocal8Bit("当'")+CMD_MODE+QString::fromLocal8Bit("'项参数等于")+
-                        QString::number(cmd_crafts_craft_id)+QString::fromLocal8Bit("时'")+CMD_POINTADDS+QString::fromLocal8Bit("'项参数不合理");
+            return_msg=QStringLiteral("当'")+CMD_MODE+QStringLiteral("'项参数等于")+
+                        QString::number(cmd_crafts_craft_id)+QStringLiteral("时'")+CMD_POINTADDS+QStringLiteral("'项参数不合理");
             return 1;
         }
         switch(cmd_crafts_craft_id)
@@ -4829,15 +4829,15 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             {
                 if(b_DATA32FS==false)
                 {
-                    return_msg=QString::fromLocal8Bit("当'")+CMD_MODE+QString::fromLocal8Bit("'项参数等于")+
-                                QString::number(cmd_crafts_craft_id)+QString::fromLocal8Bit("时,指令还需要设置'")+
-                                CMD_DATA32FS+QString::fromLocal8Bit("'项参数");
+                    return_msg=QStringLiteral("当'")+CMD_MODE+QStringLiteral("'项参数等于")+
+                                QString::number(cmd_crafts_craft_id)+QStringLiteral("时,指令还需要设置'")+
+                                CMD_DATA32FS+QStringLiteral("'项参数");
                     return 1;
                 }
                 else if(cmd_crafts_params.size()!=2)
                 {
-                    return_msg=QString::fromLocal8Bit("当'")+CMD_MODE+QString::fromLocal8Bit("'项参数等于")+
-                                QString::number(cmd_crafts_craft_id)+QString::fromLocal8Bit("时'")+CMD_DATA32FS+QString::fromLocal8Bit("'项参数只能有2个");
+                    return_msg=QStringLiteral("当'")+CMD_MODE+QStringLiteral("'项参数等于")+
+                                QString::number(cmd_crafts_craft_id)+QStringLiteral("时'")+CMD_DATA32FS+QStringLiteral("'项参数只能有2个");
                     return 1;
                 }
 
@@ -4878,7 +4878,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4893,13 +4893,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_savepcd_pointsname.size()<1)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return_msg=paramname+QStringLiteral("项参数个数至少大于等于1个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4914,13 +4914,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_savepcd_scanname.size()<1)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return_msg=paramname+QStringLiteral("项参数个数至少大于等于1个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4935,13 +4935,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_savepcd_creatsname.size()<1)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return_msg=paramname+QStringLiteral("项参数个数至少大于等于1个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4956,13 +4956,13 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         }
                         if(cmd_savepcd_tracesname.size()<1)
                         {
-                            return_msg=paramname+QString::fromLocal8Bit("项参数个数至少大于等于1个");
+                            return_msg=paramname+QStringLiteral("项参数个数至少大于等于1个");
                             return 1;
                         }
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
@@ -4980,25 +4980,25 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                     }
                     else
                     {
-                        return_msg=paramname+QString::fromLocal8Bit("项参数重复设置");
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
                         return 1;
                     }
                 }
                 else
                 {
-                    return_msg=key+QString::fromLocal8Bit("指令里没有这个'")+paramname+QString::fromLocal8Bit("'参数名称");
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
                     return 1;
                 }
             }
         }
         if(b_NAME==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_NAME+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
             return 1;
         }
         else if(b_MODE==false)
         {
-            return_msg=key+QString::fromLocal8Bit("指令还需要设置'")+CMD_MODE+QString::fromLocal8Bit("'项参数");
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
             return 1;
         }
     }
@@ -5008,7 +5008,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
     }
     else
     {
-        return_msg=QString::fromLocal8Bit("指令集中没有'")+key+QString::fromLocal8Bit("'类型的指令，请查看支持的指令表");
+        return_msg=QStringLiteral("指令集中没有'")+key+QStringLiteral("'类型的指令，请查看支持的指令表");
         return 1;
     }
     return_key=key;
@@ -5656,13 +5656,13 @@ int my_cmd::de_param(int param_n,QString msg,QString &paramname,int &data_fpos,i
     data_bpos = msg.indexOf("]");
     if(data_fpos<0||data_bpos<0||data_bpos<data_fpos||data_bpos!=msg.size()-1)
     {
-        return_msg=QString::fromLocal8Bit("第")+QString::number(param_n)+QString::fromLocal8Bit("项参数格式错误");
+        return_msg=QStringLiteral("第")+QString::number(param_n)+QStringLiteral("项参数格式错误");
         return 1;
     }
     paramname=msg.mid(0,data_fpos);
     if(paramname.size()==0)
     {
-        return_msg=QString::fromLocal8Bit("第")+QString::number(param_n)+QString::fromLocal8Bit("项参数没有参数名称");
+        return_msg=QStringLiteral("第")+QString::number(param_n)+QStringLiteral("项参数没有参数名称");
         return 1;
     }
     return 0;
@@ -5673,14 +5673,14 @@ int my_cmd::de_int(QString parakey,QString msg,int data_fpos,int data_bpos,int &
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     bool ok;
     intdata=paramdata.toInt(&ok);//获取到值
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项参数数据格式错误");
         return 1;
     }
     return 0;
@@ -5691,14 +5691,14 @@ int my_cmd::de_float(QString parakey,QString msg,int data_fpos,int data_bpos,flo
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     bool ok;
     floatdata=paramdata.toFloat(&ok);//获取到值
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项参数数据格式错误");
         return 1;
     }
     return 0;
@@ -5709,68 +5709,68 @@ int my_cmd::de_robpos(QString parakey,QString msg,int data_fpos,int data_bpos,Ro
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     QStringList posgroup = paramdata.split(",");
     if(posgroup.size()!=9)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据有且只有9个");
+        return_msg=parakey+QStringLiteral("项参数数据有且只有9个");
         return 1;
     }
     bool ok;
     pos.X=posgroup[0].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的X项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的X项参数数据格式错误");
         return 1;
     }
     pos.Y=posgroup[1].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Y项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Y项参数数据格式错误");
         return 1;
     }
     pos.Z=posgroup[2].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Z项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Z项参数数据格式错误");
         return 1;
     }
     pos.RX=posgroup[3].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RX项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RX项参数数据格式错误");
         return 1;
     }
     pos.RY=posgroup[4].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RY项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RY项参数数据格式错误");
         return 1;
     }
     pos.RZ=posgroup[5].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RZ项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RZ项参数数据格式错误");
         return 1;
     }
     pos.out_1=posgroup[6].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_1项参数数据格式错误");
         return 1;
     }
     pos.out_2=posgroup[7].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_2项参数数据格式错误");
         return 1;
     }
     pos.out_3=posgroup[8].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_3项参数数据格式错误");
         return 1;
     }
     return 0;
@@ -5781,178 +5781,178 @@ int my_cmd::de_robposP(QString parakey,QString msg,int data_fpos,int data_bpos,R
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     QStringList posgroup = paramdata.split(",");
     if(posgroup.size()!=27)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据有且只有18个");
+        return_msg=parakey+QStringLiteral("项参数数据有且只有18个");
         return 1;
     }
     bool ok;
     pos1.X=posgroup[0].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的X1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的X1项参数数据格式错误");
         return 1;
     }
     pos1.Y=posgroup[1].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Y1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Y1项参数数据格式错误");
         return 1;
     }
     pos1.Z=posgroup[2].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Z1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Z1项参数数据格式错误");
         return 1;
     }
     pos1.RX=posgroup[3].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RX1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RX1项参数数据格式错误");
         return 1;
     }
     pos1.RY=posgroup[4].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RY1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RY1项参数数据格式错误");
         return 1;
     }
     pos1.RZ=posgroup[5].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RZ1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RZ1项参数数据格式错误");
         return 1;
     }
     pos1.out_1=posgroup[6].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_1项参数数据格式错误");
         return 1;
     }
     pos1.out_2=posgroup[7].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_2项参数数据格式错误");
         return 1;
     }
     pos1.out_3=posgroup[8].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_3项参数数据格式错误");
         return 1;
     }
 
     pos2.X=posgroup[9].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的X2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的X2项参数数据格式错误");
         return 1;
     }
     pos2.Y=posgroup[10].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Y2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Y2项参数数据格式错误");
         return 1;
     }
     pos2.Z=posgroup[11].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Z2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Z2项参数数据格式错误");
         return 1;
     }
     pos2.RX=posgroup[12].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RX2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RX2项参数数据格式错误");
         return 1;
     }
     pos2.RY=posgroup[13].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RY2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RY2项参数数据格式错误");
         return 1;
     }
     pos2.RZ=posgroup[14].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RZ2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RZ2项参数数据格式错误");
         return 1;
     }
     pos2.out_1=posgroup[15].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_1项参数数据格式错误");
         return 1;
     }
     pos2.out_2=posgroup[16].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_2项参数数据格式错误");
         return 1;
     }
     pos2.out_3=posgroup[17].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_3项参数数据格式错误");
         return 1;
     }
 
     pos3.X=posgroup[18].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的X3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的X3项参数数据格式错误");
         return 1;
     }
     pos3.Y=posgroup[19].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Y3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Y3项参数数据格式错误");
         return 1;
     }
     pos3.Z=posgroup[20].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的Z3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的Z3项参数数据格式错误");
         return 1;
     }
     pos3.RX=posgroup[21].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RX3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RX3项参数数据格式错误");
         return 1;
     }
     pos3.RY=posgroup[22].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RY3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RY3项参数数据格式错误");
         return 1;
     }
     pos3.RZ=posgroup[23].toFloat(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的RZ3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的RZ3项参数数据格式错误");
         return 1;
     }
     pos3.out_1=posgroup[24].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_1项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_1项参数数据格式错误");
         return 1;
     }
     pos3.out_2=posgroup[25].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_2项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_2项参数数据格式错误");
         return 1;
     }
     pos3.out_3=posgroup[26].toInt(&ok);
     if(ok==false)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项的out_3项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项的out_3项参数数据格式错误");
         return 1;
     }
     return 0;
@@ -5963,18 +5963,18 @@ int my_cmd::de_QString(QString parakey,QString msg,int data_fpos,int data_bpos,Q
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     QStringdata=paramdata;//获取到值
     if(QStringdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据格式错误");
+        return_msg=parakey+QStringLiteral("项参数数据格式错误");
         return 1;
     }
     if(QStringdata.indexOf(",")!=-1)
     {
-        return_msg=parakey+QString::fromLocal8Bit("','符号是保留字符，不能用于自定义字符");
+        return_msg=parakey+QStringLiteral("','符号是保留字符，不能用于自定义字符");
         return 1;
     }
     return 0;
@@ -5986,7 +5986,7 @@ int my_cmd::de_vector_int(QString parakey,QString msg,int data_fpos,int data_bpo
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     QStringList posgroup = paramdata.split(",");
@@ -5996,7 +5996,7 @@ int my_cmd::de_vector_int(QString parakey,QString msg,int data_fpos,int data_bpo
         vector_intdata[n]=posgroup[n].toInt(&ok);
         if(ok==false)
         {
-            return_msg=parakey+QString::fromLocal8Bit("项的第")+QString::number(n+1)+QString::fromLocal8Bit("个参数数据格式错误");
+            return_msg=parakey+QStringLiteral("项的第")+QString::number(n+1)+QStringLiteral("个参数数据格式错误");
             return 1;
         }
     }
@@ -6009,7 +6009,7 @@ int my_cmd::de_vector_float(QString parakey,QString msg,int data_fpos,int data_b
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     QStringList posgroup = paramdata.split(",");
@@ -6019,7 +6019,7 @@ int my_cmd::de_vector_float(QString parakey,QString msg,int data_fpos,int data_b
         vector_floatdata[n]=posgroup[n].toFloat(&ok);
         if(ok==false)
         {
-            return_msg=parakey+QString::fromLocal8Bit("项的第")+QString::number(n+1)+QString::fromLocal8Bit("个参数数据格式错误");
+            return_msg=parakey+QStringLiteral("项的第")+QString::number(n+1)+QStringLiteral("个参数数据格式错误");
             return 1;
         }
     }
@@ -6031,7 +6031,7 @@ int my_cmd::de_vector_QString(QString parakey,QString msg,int data_fpos,int data
     QString paramdata=msg.mid(data_fpos+1,data_bpos-data_fpos-1);
     if(paramdata.size()==0)
     {
-        return_msg=parakey+QString::fromLocal8Bit("项参数数据为空");
+        return_msg=parakey+QStringLiteral("项参数数据为空");
         return 1;
     }
     QStringList posgroup = paramdata.split(",");

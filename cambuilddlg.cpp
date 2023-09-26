@@ -78,7 +78,7 @@ cambuilddlg::cambuilddlg(my_parameters *mcs,QWidget *parent) :
 
     connect(ui->confimbuildBtn,&QPushButton::clicked,[=](){
         m_mcs->cam->sop_cam[0].ros_set_homography_matrix(m_mcs->cam->sop_cam[0].ros_Params);
-        ui->record->append(QString::fromLocal8Bit("标定矩阵导入成功"));
+        ui->record->append(QStringLiteral("标定矩阵导入成功"));
     });
 }
 

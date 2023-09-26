@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QFileDialog>
-#include <QTextCodec>
 #include <QListWidgetItem>
 #include "my_parameters.h"
 

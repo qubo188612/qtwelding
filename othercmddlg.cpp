@@ -40,8 +40,8 @@ void othercmdDlg::on_OK_Btn_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个指令"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个指令"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );

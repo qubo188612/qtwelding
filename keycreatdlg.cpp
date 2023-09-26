@@ -67,12 +67,12 @@ void keycreatDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->traceeditBtn->setText(QString::fromLocal8Bit("插入生成跟踪轨迹指令"));
+        ui->traceeditBtn->setText(QStringLiteral("插入生成跟踪轨迹指令"));
     }
     else
     {
         b_inster=true;
-        ui->traceeditBtn->setText(QString::fromLocal8Bit("替换生成跟踪轨迹指令"));
+        ui->traceeditBtn->setText(QStringLiteral("替换生成跟踪轨迹指令"));
     }
 }
 
@@ -93,7 +93,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
         QString name=ui->tracename->text();
         if(name.size()==0)
         {
-            ui->record->append(QString::fromLocal8Bit("请输入要插入的轨迹名字"));
+            ui->record->append(QStringLiteral("请输入要插入的轨迹名字"));
             return;
         }
         if(b_inster==false)
@@ -102,7 +102,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
             {
                 if(name==m_mcs->project->project_weld_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("跟踪轨迹与已有的轨迹重名"));
+                    ui->record->append(QStringLiteral("跟踪轨迹与已有的轨迹重名"));
                     return;
                 }
             }
@@ -110,7 +110,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
         m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(now_cmdline+1,err_msg);
         if(m_mcs->project->project_scan_trace.size()<=0)
         {
-            ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的扫描轨迹"));
+            ui->record->append(QStringLiteral("当前指令位置没有可用的扫描轨迹"));
             return;
         }
         Trace_edit_mode trace_edit_mode=(Trace_edit_mode)ui->traceeditcombo->currentIndex();
@@ -126,7 +126,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
                 {
                     traceedit0->init_dlg_show(cmd_list_in);
                 }
-                traceedit0->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
+                traceedit0->setWindowTitle(QStringLiteral("生成跟踪轨迹(单扫对单轨模式)"));
                 int rc=traceedit0->exec();
                 traceedit0->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -136,7 +136,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
 
                     scanname[0]=traceedit0->name;
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
-                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                     cmd_msg=msg;
                     done(1);
                 }
@@ -152,7 +152,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
                 {
                     traceedit1->init_dlg_show(cmd_list_in);
                 }
-                traceedit1->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三直线交点模式)"));
+                traceedit1->setWindowTitle(QStringLiteral("生成跟踪轨迹(三直线交点模式)"));
                 int rc=traceedit1->exec();
                 traceedit1->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -164,7 +164,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
                     scanname[1]=traceedit1->name1;
                     scanname[2]=traceedit1->name2;
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
-                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                     cmd_msg=msg;
                     done(1);
                 }
@@ -180,7 +180,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
                 {
                     traceedit2->init_dlg_show(cmd_list_in);
                 }
-                traceedit2->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(两端点三直线交点模式)"));
+                traceedit2->setWindowTitle(QStringLiteral("生成跟踪轨迹(两端点三直线交点模式)"));
                 int rc=traceedit2->exec();
                 traceedit2->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -195,7 +195,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
                     scanname[4]=traceedit2->name4;
 
                     QString msg=cmd.cmd_creat(trace_edit_mode,scanname,name);
-                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                     cmd_msg=msg;
                     done(1);
                 }
@@ -205,7 +205,7 @@ void keycreatDlg::on_traceeditBtn_clicked()
     }
     else
     {
-        QString msg=QString::fromLocal8Bit("程序有错误，请先排除:");
+        QString msg=QStringLiteral("程序有错误，请先排除:");
         ui->record->append(msg);
         for(int i=0;i<err_msg.size();i++)
         {

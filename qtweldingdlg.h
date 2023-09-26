@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QDoubleValidator>
 #include <QFileDialog>
-#include <QTextCodec>
 #include <QMutex>
 #include "my_parameters.h"
 #include "qthread.h"

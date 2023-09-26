@@ -40,13 +40,13 @@ public:
 
     std::vector<QString> project_cmdlist;  //项目指令集合
 
-    int SaveProject(char* filename);    //保存项目
+    int SaveProject(QString filename);    //保存项目
 
-    int LoadProject(char* filename);    //读取项目
+    int LoadProject(QString filename);    //读取项目
 
-    int SaveProjectPath(char* filename);    //保存最后一次项目路径，以便下次打开
+    int SaveProjectPath(QString filename);    //保存最后一次项目路径，以便下次打开
 
-    int LoadProjectPath(char* filename);    //读取最后一次项目路径，以便下次打开
+    int LoadProjectPath(QString filename);    //读取最后一次项目路径，以便下次打开
 
     std::vector<Point_robpos_result> project_robpos_trace;  //点轨迹
 

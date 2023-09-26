@@ -74,8 +74,8 @@ void traceedit0Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个扫描轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个扫描轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );

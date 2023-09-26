@@ -110,11 +110,11 @@ void keywaveDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("插入生成摆焊轨迹指令"));
+        ui->pushButton->setText(QStringLiteral("插入生成摆焊轨迹指令"));
     }
     else
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("替换生成摆焊轨迹指令"));
+        ui->pushButton->setText(QStringLiteral("替换生成摆焊轨迹指令"));
     }
 }
 
@@ -145,32 +145,32 @@ void keywaveDlg::on_pushButton_clicked()
     route=ui->wavefilenamecombo->currentIndex();
     if(route<0||route>ui->wavefilenamecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹工艺"));
+        ui->record->append(QStringLiteral("请选择一个跟踪轨迹工艺"));
         return;
     }
     if(nameout.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成的摆焊轨迹工艺名字"));
+        ui->record->append(QStringLiteral("请填写生成的摆焊轨迹工艺名字"));
         return;
     }
     route=ui->wavependulum_modecombo->currentIndex();
     if(route<0||route>ui->wavependulum_modecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个摆焊模式"));
+        ui->record->append(QStringLiteral("请选择一个摆焊模式"));
         return;
     }
     cmd_wave_info.pendulum_mode=(Pendulum_mode)route;
     route=ui->wavetrend_modecombo->currentIndex();
     if(route<0||route>ui->wavetrend_modecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个摆焊走向"));
+        ui->record->append(QStringLiteral("请选择一个摆焊走向"));
         return;
     }
     cmd_wave_info.trend_mode=(Trend_mode)route;
     route=ui->waveordercombo->currentIndex();
     if(route<0||route>ui->waveordercombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个起摆模式"));
+        ui->record->append(QStringLiteral("请选择一个起摆模式"));
         return;
     }
     cmd_wave_info.order=route;
@@ -178,205 +178,205 @@ void keywaveDlg::on_pushButton_clicked()
 
     if(waveperiod.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写摆焊周期"));
+        ui->record->append(QStringLiteral("请填写摆焊周期"));
         return;
     }
     cmd_wave_info.period=waveperiod.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("摆焊周期内容格式错误"));
+        ui->record->append(QStringLiteral("摆焊周期内容格式错误"));
         return;
     }
 
     if(waveleftAmp.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写左摆幅"));
+        ui->record->append(QStringLiteral("请填写左摆幅"));
         return;
     }
     cmd_wave_info.leftAmp=waveleftAmp.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("左摆幅内容格式错误"));
+        ui->record->append(QStringLiteral("左摆幅内容格式错误"));
         return;
     }
 
     if(waverightAmp.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写右摆幅"));
+        ui->record->append(QStringLiteral("请填写右摆幅"));
         return;
     }
     cmd_wave_info.rightAmp=waverightAmp.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("右摆幅内容格式错误"));
+        ui->record->append(QStringLiteral("右摆幅内容格式错误"));
         return;
     }
 
     if(waveleftAmp_z.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写左摆幅上扬"));
+        ui->record->append(QStringLiteral("请填写左摆幅上扬"));
         return;
     }
     cmd_wave_info.leftAmp_z=waveleftAmp_z.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("左摆幅上扬内容格式错误"));
+        ui->record->append(QStringLiteral("左摆幅上扬内容格式错误"));
         return;
     }
 
     if(waverightAmp_z.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写右摆幅上扬"));
+        ui->record->append(QStringLiteral("请填写右摆幅上扬"));
         return;
     }
     cmd_wave_info.rightAmp_z=waverightAmp_z.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("右摆幅上扬内容格式错误"));
+        ui->record->append(QStringLiteral("右摆幅上扬内容格式错误"));
         return;
     }
 
     if(waveleftStopTime.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写左摆停留时间"));
+        ui->record->append(QStringLiteral("请填写左摆停留时间"));
         return;
     }
     cmd_wave_info.leftStopTime=waveleftStopTime.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("左摆停留时间内容格式错误"));
+        ui->record->append(QStringLiteral("左摆停留时间内容格式错误"));
         return;
     }
 
     if(waverightStopTime.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写右摆停留时间"));
+        ui->record->append(QStringLiteral("请填写右摆停留时间"));
         return;
     }
     cmd_wave_info.rightStopTime=waverightStopTime.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("右摆停留时间内容格式错误"));
+        ui->record->append(QStringLiteral("右摆停留时间内容格式错误"));
         return;
     }
 
     if(waveanglex.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写L摆夹角角度"));
+        ui->record->append(QStringLiteral("请填写L摆夹角角度"));
         return;
     }
     cmd_wave_info.anglex=waveanglex.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("L摆夹角角度内容格式错误"));
+        ui->record->append(QStringLiteral("L摆夹角角度内容格式错误"));
         return;
     }
 
     if(waveangley.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写L摆夹角法线角度"));
+        ui->record->append(QStringLiteral("请填写L摆夹角法线角度"));
         return;
     }
     cmd_wave_info.angley=waveangley.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("L摆夹角法线角度内容格式错误"));
+        ui->record->append(QStringLiteral("L摆夹角法线角度内容格式错误"));
         return;
     }
 
     if(waveStartPos.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起摆位置"));
+        ui->record->append(QStringLiteral("请填写起摆位置"));
         return;
     }
     cmd_wave_info.startPos=waveStartPos.toInt(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起摆位置内容格式错误"));
+        ui->record->append(QStringLiteral("起摆位置内容格式错误"));
         return;
     }
 
     if(wavetimeGap.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采样点时间间隔"));
+        ui->record->append(QStringLiteral("请填写采样点时间间隔"));
         return;
     }
     cmd_wave_info.timeGap=wavetimeGap.toInt(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采样点时间间隔内容格式错误"));
+        ui->record->append(QStringLiteral("采样点时间间隔内容格式错误"));
         return;
     }
 
     if(leftaddRX.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写单摆左摆姿态增量RX"));
+        ui->record->append(QStringLiteral("请填写单摆左摆姿态增量RX"));
         return;
     }
     cmd_wave_info.leftAddRX=leftaddRX.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("单摆左摆姿态增量RX内容格式错误"));
+        ui->record->append(QStringLiteral("单摆左摆姿态增量RX内容格式错误"));
         return;
     }
 
     if(leftaddRY.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写单摆左摆姿态增量RY"));
+        ui->record->append(QStringLiteral("请填写单摆左摆姿态增量RY"));
         return;
     }
     cmd_wave_info.leftAddRY=leftaddRY.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("单摆左摆姿态增量RY内容格式错误"));
+        ui->record->append(QStringLiteral("单摆左摆姿态增量RY内容格式错误"));
         return;
     }
 
     if(leftaddRZ.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写单摆左摆姿态增量RZ"));
+        ui->record->append(QStringLiteral("请填写单摆左摆姿态增量RZ"));
         return;
     }
     cmd_wave_info.leftAddRZ=leftaddRZ.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("单摆左摆姿态增量RZ内容格式错误"));
+        ui->record->append(QStringLiteral("单摆左摆姿态增量RZ内容格式错误"));
         return;
     }
 
     if(rightaddRX.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写单摆右摆姿态增量RX"));
+        ui->record->append(QStringLiteral("请填写单摆右摆姿态增量RX"));
         return;
     }
     cmd_wave_info.rightAddRX=rightaddRX.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("单摆右摆姿态增量RX内容格式错误"));
+        ui->record->append(QStringLiteral("单摆右摆姿态增量RX内容格式错误"));
         return;
     }
 
     if(rightaddRY.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写单摆右摆姿态增量RY"));
+        ui->record->append(QStringLiteral("请填写单摆右摆姿态增量RY"));
         return;
     }
     cmd_wave_info.rightAddRY=rightaddRY.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("单摆右摆姿态增量RY内容格式错误"));
+        ui->record->append(QStringLiteral("单摆右摆姿态增量RY内容格式错误"));
         return;
     }
 
     if(rightaddRZ.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写单摆右摆姿态增量RZ"));
+        ui->record->append(QStringLiteral("请填写单摆右摆姿态增量RZ"));
         return;
     }
     cmd_wave_info.rightAddRZ=rightaddRZ.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("单摆右摆姿态增量RZ内容格式错误"));
+        ui->record->append(QStringLiteral("单摆右摆姿态增量RZ内容格式错误"));
         return;
     }
 

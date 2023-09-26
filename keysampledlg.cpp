@@ -78,12 +78,12 @@ void keysampleDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->sampleBtn->setText(QString::fromLocal8Bit("插入采样指令"));
+        ui->sampleBtn->setText(QStringLiteral("插入采样指令"));
     }
     else
     {
         b_inster=true;
-        ui->sampleBtn->setText(QString::fromLocal8Bit("替换采样指令"));
+        ui->sampleBtn->setText(QStringLiteral("替换采样指令"));
     }
 }
 
@@ -97,33 +97,33 @@ void keysampleDlg::on_sampleBtn_clicked()
     QString name=ui->samplenamelineEdit->text();
     if(route<0||route>ui->samplecreatnamecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要采样的轨迹名字"));
+        ui->record->append(QStringLiteral("请选择要采样的轨迹名字"));
         return;
     }
     if(ui->samplespeedlineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采样速度"));
+        ui->record->append(QStringLiteral("请填写采样速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采样速度格式出错"));
+        ui->record->append(QStringLiteral("采样速度格式出错"));
         return;
     }
     int time=ui->sampletimelineEdit->text().toInt(&rc);
     if(ui->sampletimelineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采样间隔"));
+        ui->record->append(QStringLiteral("请填写采样间隔"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采样间隔格式出错"));
+        ui->record->append(QStringLiteral("采样间隔格式出错"));
         return;
     }
     if(ui->samplenamelineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成轨迹"));
+        ui->record->append(QStringLiteral("请填写生成轨迹"));
         return;
     }
     my_cmd cmd;
@@ -136,12 +136,12 @@ void keysampleDlg::on_sampleBtn_clicked()
         {
             if(name==m_mcs->project->project_weld_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("生成轨迹与已有的轨迹重名"));
                 return;
             }
         }
     }
-    ui->record->append(QString::fromLocal8Bit("插入采样指令成功"));
+    ui->record->append(QStringLiteral("插入采样指令成功"));
     cmd_msg=msg;
     done(1);
 }

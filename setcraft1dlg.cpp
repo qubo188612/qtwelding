@@ -130,7 +130,7 @@ void setcraft1Dlg::on_pushButton_get_stpos_clicked()//获取起点坐标姿态
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取起点坐标失败"));
+        ui->record->append(QStringLiteral("获取起点坐标失败"));
     }
     else
     {
@@ -140,7 +140,7 @@ void setcraft1Dlg::on_pushButton_get_stpos_clicked()//获取起点坐标姿态
         ui->lineEdit_stRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_stRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_stRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取起点坐标成功"));
+        ui->record->append(QStringLiteral("获取起点坐标成功"));
     }
 }
 
@@ -167,7 +167,7 @@ void setcraft1Dlg::on_pushButton_updata_stpos_clicked()//更新起点坐标姿�
         now_robpos++;
     }
     updataRoblistUi();
-    ui->record->append(QString::fromLocal8Bit("更新起点坐标成功"));
+    ui->record->append(QStringLiteral("更新起点坐标成功"));
 }
 
 
@@ -186,7 +186,7 @@ void setcraft1Dlg::on_pushButton_get_edpos_clicked()//获取终点坐标姿态
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取终点坐标失败"));
+        ui->record->append(QStringLiteral("获取终点坐标失败"));
     }
     else
     {
@@ -196,7 +196,7 @@ void setcraft1Dlg::on_pushButton_get_edpos_clicked()//获取终点坐标姿态
         ui->lineEdit_edRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取终点坐标成功"));
+        ui->record->append(QStringLiteral("获取终点坐标成功"));
     }
 }
 
@@ -205,7 +205,7 @@ void setcraft1Dlg::on_pushButton_updata_edpos_clicked()//更新终点坐标姿�
 {
     if(m_mcs->craft->posturelist.size()==0)
     {
-        ui->record->append(QString::fromLocal8Bit("请先添加起点坐标"));
+        ui->record->append(QStringLiteral("请先添加起点坐标"));
         return;
     }
     ChangeRobPosVariable robpos;
@@ -222,14 +222,14 @@ void setcraft1Dlg::on_pushButton_updata_edpos_clicked()//更新终点坐标姿�
     {
         m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1]=robpos;
         updataRoblistUi();
-        ui->record->append(QString::fromLocal8Bit("更新终点坐标成功"));
+        ui->record->append(QStringLiteral("更新终点坐标成功"));
     }
     else if(m_mcs->craft->posturelist.size()==1)
     {
         m_mcs->craft->posturelist.push_back(robpos);
         now_robpos=0;
         updataRoblistUi();
-        ui->record->append(QString::fromLocal8Bit("更新终点坐标成功"));
+        ui->record->append(QStringLiteral("更新终点坐标成功"));
     }
 }
 
@@ -249,7 +249,7 @@ void setcraft1Dlg::on_pushButton_get_centerpos_clicked()//获取中间点坐标�
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取中间点坐标失败"));
+        ui->record->append(QStringLiteral("获取中间点坐标失败"));
     }
     else
     {
@@ -259,7 +259,7 @@ void setcraft1Dlg::on_pushButton_get_centerpos_clicked()//获取中间点坐标�
         ui->lineEdit_centerRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取中间点坐标成功"));
+        ui->record->append(QStringLiteral("获取中间点坐标成功"));
     }
 }
 
@@ -268,12 +268,12 @@ void setcraft1Dlg::on_pushButton_updata_centerpos_clicked()//插入中间点坐�
 {
     if(m_mcs->craft->posturelist.size()<1)
     {
-        ui->record->append(QString::fromLocal8Bit("请先添加起点坐标"));
+        ui->record->append(QStringLiteral("请先添加起点坐标"));
         return;
     }
     else if(m_mcs->craft->posturelist.size()<2)
     {
-        ui->record->append(QString::fromLocal8Bit("请先添加终点坐标"));
+        ui->record->append(QStringLiteral("请先添加终点坐标"));
         return;
     }
     ChangeRobPosVariable robpos;
@@ -288,14 +288,14 @@ void setcraft1Dlg::on_pushButton_updata_centerpos_clicked()//插入中间点坐�
     robpos.Variable.Z=ui->lineEdit_Z->text().toFloat();
     if(now_robpos==m_mcs->craft->posturelist.size()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("不能在终点后方插入中间点坐标姿态"));
+        ui->record->append(QStringLiteral("不能在终点后方插入中间点坐标姿态"));
         return;
     }
     else
     {
         m_mcs->craft->posturelist.insert(m_mcs->craft->posturelist.begin()+now_robpos+1,robpos);
     }
-    ui->record->append(QString::fromLocal8Bit("插入中间点坐标成功"));
+    ui->record->append(QStringLiteral("插入中间点坐标成功"));
     now_robpos++;
     updataRoblistUi();
 }
@@ -306,22 +306,22 @@ void setcraft1Dlg::on_pushButton_del_clicked()//删除选中姿态
     if(now_robpos>0&&m_mcs->craft->posturelist.size()-1!=now_robpos&&m_mcs->craft->posturelist.size()>now_robpos)
     {
         m_mcs->craft->posturelist.erase(m_mcs->craft->posturelist.begin()+now_robpos);
-        ui->record->append(QString::fromLocal8Bit("删除中间点坐标成功"));
+        ui->record->append(QStringLiteral("删除中间点坐标成功"));
         if(now_robpos>=m_mcs->craft->posturelist.size())
             now_robpos=now_robpos-1;
         updataRoblistUi();
     }
     else if(now_robpos==0)
     {
-        ui->record->append(QString::fromLocal8Bit("起点姿态不能删除"));
+        ui->record->append(QStringLiteral("起点姿态不能删除"));
     }
     else if(m_mcs->craft->posturelist.size()-1==now_robpos)
     {
-        ui->record->append(QString::fromLocal8Bit("终点姿态不能删除"));
+        ui->record->append(QStringLiteral("终点姿态不能删除"));
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要删除的激光头点"));
+        ui->record->append(QStringLiteral("请先选中要删除的激光头点"));
     }
 }
 
@@ -332,7 +332,7 @@ void setcraft1Dlg::on_pushButtonOK_clicked()//确定并保存
     QString msg;
     if(m_mcs->craft->posturelist.size()<2)
     {
-        ui->record->append(QString::fromLocal8Bit("至少添加起点和终点姿态坐标"));
+        ui->record->append(QStringLiteral("至少添加起点和终点姿态坐标"));
         return;
     }
     //检查姿态位置是否合理
@@ -342,7 +342,7 @@ void setcraft1Dlg::on_pushButtonOK_clicked()//确定并保存
         return;
     }
     if(b_file==true)
-        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+        m_mcs->craft->SaveProject(m_mcs->craft->craft_path);
     else
     {
         my_cmd cmd;
@@ -360,7 +360,7 @@ void setcraft1Dlg::updataRoblistUi()
     {
         if(n==0)
         {
-            QString msg=QString::fromLocal8Bit("起点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[0].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString msg=QStringLiteral("起点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[0].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                 QString::number(m_mcs->craft->posturelist[0].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                 QString::number(m_mcs->craft->posturelist[0].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                 QString::number(m_mcs->craft->posturelist[0].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
@@ -373,7 +373,7 @@ void setcraft1Dlg::updataRoblistUi()
         }
         else if(n==m_mcs->craft->posturelist.size()-1)
         {
-            QString msg=QString::fromLocal8Bit("终点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString msg=QStringLiteral("终点坐标姿态: (")+QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                 QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                 QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                 QString::number(m_mcs->craft->posturelist[m_mcs->craft->posturelist.size()-1].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
@@ -386,7 +386,7 @@ void setcraft1Dlg::updataRoblistUi()
         }
         else
         {
-            QString msg=QString::fromLocal8Bit("中间姿态")+QString::number(n)+": ("+QString::number(m_mcs->craft->posturelist[n].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
+            QString msg=QStringLiteral("中间姿态")+QString::number(n)+": ("+QString::number(m_mcs->craft->posturelist[n].posture.X,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                                    QString::number(m_mcs->craft->posturelist[n].posture.Y,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                                    QString::number(m_mcs->craft->posturelist[n].posture.Z,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                                                                                    QString::number(m_mcs->craft->posturelist[n].posture.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+

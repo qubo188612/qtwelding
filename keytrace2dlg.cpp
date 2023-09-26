@@ -139,11 +139,11 @@ void keytrace2Dlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->trace2cmdaddBtn->setText(QString::fromLocal8Bit("插入跟踪轨迹指令"));
+        ui->trace2cmdaddBtn->setText(QStringLiteral("插入跟踪轨迹指令"));
     }
     else
     {
-        ui->trace2cmdaddBtn->setText(QString::fromLocal8Bit("替换跟踪轨迹指令"));
+        ui->trace2cmdaddBtn->setText(QStringLiteral("替换跟踪轨迹指令"));
     }
 }
 
@@ -157,29 +157,29 @@ void keytrace2Dlg::on_trace2cmdaddBtn_clicked()
     float speed=ui->trace2speed->text().toFloat(&rc);
     if(route<0||route>ui->trace2trackcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名字"));
+        ui->record->append(QStringLiteral("请选择要插入的轨迹名字"));
         return;
     }
     else if(ui->trace2speed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写跟踪速度"));
+        ui->record->append(QStringLiteral("请填写跟踪速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("跟踪速度格式出错"));
+        ui->record->append(QStringLiteral("跟踪速度格式出错"));
         return;
     }
     if(name_out.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成的跟踪轨迹工艺名字"));
+        ui->record->append(QStringLiteral("请填写生成的跟踪轨迹工艺名字"));
         return;
     }
     my_cmd cmd;
     route=ui->trace2filepathcombo->currentIndex();
     if(route<0||route>ui->trace2filepathcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的工艺包"));
+        ui->record->append(QStringLiteral("请选择要插入的工艺包"));
         return;
     }
     QString filepath=ui->trace2filepathcombo->currentText();//工艺包路径
@@ -190,7 +190,7 @@ void keytrace2Dlg::on_trace2cmdaddBtn_clicked()
         change=ui->trace2changecombo->currentText();
     }
     QString msg=cmd.cmd_trace2(name_in,speed,filepath,name_out,change);
-    ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+    ui->record->append(QStringLiteral("插入跟踪轨迹指令成功"));
     cmd_msg=msg;
     done(1);
 }

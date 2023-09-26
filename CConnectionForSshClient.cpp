@@ -244,7 +244,7 @@ void CConnectionForSshClient::handleChannelInitializationFailure(const QString &
 void CConnectionForSshClient::handleJobFinished(QSsh::SftpJobId job, const QSsh::SftpError errorType,const QString &error)
 {
     //传送完成，开始执行指令
-    qDebug() << "SecureUploader: Finished job #" << job << ":" << (error.isEmpty() ? QString::fromLocal8Bit("OK") : error);
+    qDebug() << "SecureUploader: Finished job #" << job << ":" << (error.isEmpty() ? QStringLiteral("OK") : error);
     if(error.isEmpty()==true)
     {
         m_bSendfile=true;

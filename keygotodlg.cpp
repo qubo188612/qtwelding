@@ -45,11 +45,11 @@ void keygotoDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("插入跳转指令"));
+        ui->pushButton->setText(QStringLiteral("插入跳转指令"));
     }
     else
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("替换跳转指令"));
+        ui->pushButton->setText(QStringLiteral("替换跳转指令"));
     }
 }
 
@@ -61,15 +61,15 @@ void keygotoDlg::on_pushButton_clicked()
     QString msg=cmd.cmd_goto(line);
     if(ui->gotoline->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写跳转行数"));
+        ui->record->append(QStringLiteral("请填写跳转行数"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("跳转行数格式出错"));
+        ui->record->append(QStringLiteral("跳转行数格式出错"));
         return;
     }
-    ui->record->append(QString::fromLocal8Bit("插入跳转指令成功"));
+    ui->record->append(QStringLiteral("插入跳转指令成功"));
     cmd_msg=msg;
     done(1);
 }

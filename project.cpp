@@ -41,7 +41,7 @@ Project::~Project()
 
 }
 
-int Project::SaveProject(char* filename)
+int Project::SaveProject(QString filename)
 {
     QVariantHash data=encoed_json();
 
@@ -64,14 +64,14 @@ int Project::SaveProject(char* filename)
 
     file.close();   // 关闭file
 
-    project_path=QString::fromLocal8Bit(filename);
+    project_path=filename;
 
     SaveProjectPath(PROJECT_PATH_MOTO);
 
     return 0;
 }
 
-int Project::LoadProject(char* filename)
+int Project::LoadProject(QString filename)
 {
     QFile loadFile(filename);
 
@@ -87,14 +87,14 @@ int Project::LoadProject(char* filename)
     if(0!=decoed_json(allData))
         return 1;
 
-    project_path=QString::fromLocal8Bit(filename);
+    project_path=filename;
 
     SaveProjectPath(PROJECT_PATH_MOTO);
 
     return 0;
 }
 
-int Project::SaveProjectPath(char* filename)
+int Project::SaveProjectPath(QString filename)
 {
     QVariantHash data=encoedpath_json();
 
@@ -120,7 +120,7 @@ int Project::SaveProjectPath(char* filename)
     return 0;
 }
 
-int Project::LoadProjectPath(char* filename)
+int Project::LoadProjectPath(QString filename)
 {
     QFile loadFile(filename);
 
@@ -281,7 +281,7 @@ QString Project::project_Id_toQString(Project_ID project_Id)
     switch(project_Id)
     {
         case PROGECT_ID_TEACH_SCAN:
-            msg=QString::fromLocal8Bit("示教扫描类型");
+            msg=QStringLiteral("示教扫描类型");
         break;
     }
     return msg;

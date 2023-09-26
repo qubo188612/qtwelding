@@ -80,11 +80,11 @@ void keytracingDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("插入跟踪指令"));
+        ui->pushButton->setText(QStringLiteral("插入跟踪指令"));
     }
     else
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("替换跟踪指令"));
+        ui->pushButton->setText(QStringLiteral("替换跟踪指令"));
     }
 }
 
@@ -96,24 +96,24 @@ void keytracingDlg::on_pushButton_clicked()
     QString stime=ui->timelineEdit->text();
     if(tcp<0||tcp>ui->tracingtcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个坐标系"));
+        ui->record->append(QStringLiteral("请选择一个坐标系"));
         return;
     }
     if(route<0||route>ui->tracingfilenamecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹工艺"));
+        ui->record->append(QStringLiteral("请选择一个跟踪轨迹工艺"));
         return;
     }
     if(ui->timelineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采样点发送间隔时间"));
+        ui->record->append(QStringLiteral("请填写采样点发送间隔时间"));
         return;
     }
     bool rc;
     int time=stime.toInt(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采样点时间格式错误"));
+        ui->record->append(QStringLiteral("采样点时间格式错误"));
         return;
     }
     my_cmd cmd;

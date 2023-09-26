@@ -72,12 +72,12 @@ void keycreatpDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->creatpBtn->setText(QString::fromLocal8Bit("插入点位生成轨迹指令"));
+        ui->creatpBtn->setText(QStringLiteral("插入点位生成轨迹指令"));
     }
     else
     {
         b_inster=true;
-        ui->creatpBtn->setText(QString::fromLocal8Bit("替换点位生成轨迹指令"));
+        ui->creatpBtn->setText(QStringLiteral("替换点位生成轨迹指令"));
     }
 }
 
@@ -107,7 +107,7 @@ void keycreatpDlg::on_creatpAddBtn_clicked()
     }
     if(now_pointname.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的点名称"));
+        ui->record->append(QStringLiteral("请选择要插入的点名称"));
         return;
     }
     if(now_creatpline==pointsname.size()-1)
@@ -120,7 +120,7 @@ void keycreatpDlg::on_creatpAddBtn_clicked()
     }
     now_creatpline++;
     updatalistUi();
-    ui->record->append(QString::fromLocal8Bit("插入点坐标完成"));
+    ui->record->append(QStringLiteral("插入点坐标完成"));
 }
 
 //删除点位
@@ -129,14 +129,14 @@ void keycreatpDlg::on_creatpDelBtn_clicked()
     if(now_creatpline>=0&&pointsname.size()>now_creatpline)
     {
         pointsname.erase(pointsname.begin()+now_creatpline);
-        ui->record->append(QString::fromLocal8Bit("删除点坐标完成"));
+        ui->record->append(QStringLiteral("删除点坐标完成"));
         if(now_creatpline>=pointsname.size())
             now_creatpline=now_creatpline-1;
         updatalistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要删除的点坐标"));
+        ui->record->append(QStringLiteral("请先选中要删除的点坐标"));
     }
 }
 
@@ -146,12 +146,12 @@ void keycreatpDlg::on_creatpBtn_clicked()
     QString name=ui->creatpnamelineEdit->text();
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请输入要生成的轨迹名字"));
+        ui->record->append(QStringLiteral("请输入要生成的轨迹名字"));
         return;
     }
     if(pointsname.size()<2)
     {
-        ui->record->append(QString::fromLocal8Bit("生成轨迹至少需要1个以上的点坐标"));
+        ui->record->append(QStringLiteral("生成轨迹至少需要1个以上的点坐标"));
         return;
     }
     if(b_inster==false)
@@ -160,7 +160,7 @@ void keycreatpDlg::on_creatpBtn_clicked()
         {
             if(name==m_mcs->project->project_weld_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成的轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("生成的轨迹与已有的轨迹重名"));
                 return;
             }
         }
@@ -178,14 +178,14 @@ void keycreatpDlg::on_creatpBtn_clicked()
             }
             if(b_find==false)
             {
-                ui->record->append(QString::fromLocal8Bit("前面没有名为")+pointname+QString::fromLocal8Bit("的坐标点"));
+                ui->record->append(QStringLiteral("前面没有名为")+pointname+QStringLiteral("的坐标点"));
                 return;
             }
         }
     }
     my_cmd cmd;
     QString msg=cmd.cmd_creatp(pointsname,name);
-    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
     cmd_msg=msg;
     done(1);
 }

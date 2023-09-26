@@ -57,25 +57,25 @@ QString RobotData::robot_model_toQString(ROBOT_MODEL robot_model)
     switch(robot_model)
     {
     case ROBOT_MODEL_NULL:
-        msg=QString::fromLocal8Bit("无");
+        msg=QStringLiteral("无");
         break;
     case ROBOT_MODEL_EMERGEN:
-        msg=QString::fromLocal8Bit("智昌");
+        msg=QStringLiteral("智昌");
         break;
     case ROBOT_MODEL_DOBOT:
-        msg=QString::fromLocal8Bit("越彊");
+        msg=QStringLiteral("越彊");
         break;
     case ROBOT_MODEL_UR:
-        msg=QString::fromLocal8Bit("优傲");
+        msg=QStringLiteral("优傲");
         break;
     case ROBOT_MODEL_KUKA:
-        msg=QString::fromLocal8Bit("库卡");
+        msg=QStringLiteral("库卡");
         break;
     case ROBOT_MODEL_KAWASAKI:
-        msg=QString::fromLocal8Bit("川崎");
+        msg=QStringLiteral("川崎");
         break;
     case ROBOT_MODEL_YASKAWA:
-        msg=QString::fromLocal8Bit("安川");
+        msg=QStringLiteral("安川");
         break;
     }
     return msg;
@@ -87,16 +87,16 @@ QString RobotData::robot_state_toQString(ROBOT_STATE robot_state)
     switch(robot_state)
     {
     case ROBOT_STATE_UNLINK:
-        msg=QString::fromLocal8Bit("未链接");
+        msg=QStringLiteral("未链接");
         break;
     case ROBOT_STATE_IDLE:
-        msg=QString::fromLocal8Bit("空闲");
+        msg=QStringLiteral("空闲");
         break;
     case ROBOT_STATE_MOVE:
-        msg=QString::fromLocal8Bit("忙碌");
+        msg=QStringLiteral("忙碌");
         break;
     case ROBOT_STATE_STOP:
-        msg=QString::fromLocal8Bit("扫描");
+        msg=QStringLiteral("扫描");
         break;
     }
     return msg;
@@ -108,10 +108,10 @@ QString RobotData::weld_model_toQString(WELD_MODEL weld_model)
     switch(weld_model)
     {
     case WELD_MODEL_NULL:
-        msg=QString::fromLocal8Bit("无");
+        msg=QStringLiteral("无");
         break;
     case WELD_MODEL_ROBOT_LINK:
-        msg=QString::fromLocal8Bit("机器人直连");
+        msg=QStringLiteral("机器人直连");
         break;
     }
     return msg;
@@ -123,10 +123,10 @@ QString RobotData::plc_model_toQString(PLC_MODEL plc_model)
     switch(plc_model)
     {
     case PLC_MODEL_NULL:
-        msg=QString::fromLocal8Bit("无");
+        msg=QStringLiteral("无");
         break;
     case PLC_MODEL_MODBUSTCP:
-        msg=QString::fromLocal8Bit("MODBUS-TCP");
+        msg=QStringLiteral("MODBUS-TCP");
         break;
     }
     return msg;
@@ -138,10 +138,10 @@ QString RobotData::weldwork_elem_toQString(Alternatingcurrent weld_elem)
     switch(weld_elem)
     {
         case DIRECT:       //直流电
-            msg=QString::fromLocal8Bit("直流");
+            msg=QStringLiteral("直流");
         break;
         case ALTERNATING:  //交流电
-            msg=QString::fromLocal8Bit("交流");
+            msg=QStringLiteral("交流");
         break;
     }
     return msg;
@@ -153,19 +153,19 @@ QString RobotData::weldwork_model_toQString(Weldworkmodel weld_model)
     switch(weld_model)
     {
         case STATIC:    //空闲
-            msg=QString::fromLocal8Bit("空闲");
+            msg=QStringLiteral("空闲");
         break;
         case FIRE:         //起弧
-            msg=QString::fromLocal8Bit("起弧");
+            msg=QStringLiteral("起弧");
         break;
         case WIND:         //送丝
-            msg=QString::fromLocal8Bit("送丝");
+            msg=QStringLiteral("送丝");
         break;
         case REWIND:       //退丝
-            msg=QString::fromLocal8Bit("退丝");
+            msg=QStringLiteral("退丝");
         break;
         case GASS:         //出气
-            msg=QString::fromLocal8Bit("出气");
+            msg=QStringLiteral("出气");
         break;
     }
     return msg;

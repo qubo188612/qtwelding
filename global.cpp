@@ -112,19 +112,19 @@ QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
     switch(pendulum_mode)
     {
         case PENDULUM_ID_SIMPLE:
-            msg=QString::fromLocal8Bit("单摆");
+            msg=QStringLiteral("单摆");
         break;
         case PENDULUM_ID_TRIANGLE:
-            msg=QString::fromLocal8Bit("三角摆");
+            msg=QStringLiteral("三角摆");
         break;
         case PENDULUM_ID_L:
-            msg=QString::fromLocal8Bit("L摆");
+            msg=QStringLiteral("L摆");
         break;
         case PENDULUM_ID_SINE:
-            msg=QString::fromLocal8Bit("正弦摆");
+            msg=QStringLiteral("正弦摆");
         break;
         case PENDULUM_ID_CIRCULAR:
-            msg=QString::fromLocal8Bit("椭圆摆");
+            msg=QStringLiteral("椭圆摆");
         break;
     }
     return msg;
@@ -136,13 +136,13 @@ QString Trend_mode_toQString(Trend_mode trend_mode)
     switch(trend_mode)
     {
         case TREND_MODE_X_Z:
-            msg=QString::fromLocal8Bit("X轴走向,开口朝Z轴正方向");
+            msg=QStringLiteral("X轴走向,开口朝Z轴正方向");
         break;
         case TREND_MODE_Y_Z:
-            msg=QString::fromLocal8Bit("Y轴走向,开口朝Z轴正方向");
+            msg=QStringLiteral("Y轴走向,开口朝Z轴正方向");
         break;
         case TREND_MODE_Z_Y:
-            msg=QString::fromLocal8Bit("Z轴走向,开口朝Y轴负方向");
+            msg=QStringLiteral("Z轴走向,开口朝Y轴负方向");
         break;
     }
     return msg;
@@ -154,13 +154,13 @@ QString Trace_edit_mode_toQString(Trace_edit_mode trace_edit_mode)
     switch(trace_edit_mode)
     {
         case TRACE_EDIT_MODE_ONE_TO_ONE:
-            msg=QString::fromLocal8Bit("单扫对单轨道模式");
+            msg=QStringLiteral("单扫对单轨道模式");
         break;
         case TRACE_EDIT_MODE_THREE_TO_ONE:
-            msg=QString::fromLocal8Bit("三直线交点模式");
+            msg=QStringLiteral("三直线交点模式");
         break;
         case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE:
-            msg=QString::fromLocal8Bit("两端点三直线交点模式");
+            msg=QStringLiteral("两端点三直线交点模式");
         break;
     }
     return msg;
@@ -172,13 +172,13 @@ QString Plotpos_edit_mode_toQString(Plotpos_edit_mode plotpos_edit_mode)
     switch(plotpos_edit_mode)
     {
         case PLOTPOS_EDIT_MODE_THREE_TO_ONE:
-            msg=QString::fromLocal8Bit("三直线交点模式");
+            msg=QStringLiteral("三直线交点模式");
         break;
         case PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE:
-            msg=QString::fromLocal8Bit("两点直线与三点交点模式");
+            msg=QStringLiteral("两点直线与三点交点模式");
         break;
         case PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE:
-            msg=QString::fromLocal8Bit("直线与三点交点模式");
+            msg=QStringLiteral("直线与三点交点模式");
         break;
     }
     return msg;
@@ -190,10 +190,10 @@ QString Creataddp_edit_mode_toQString(Creataddp_edit_mode creataddp_edit_mode)
     switch(creataddp_edit_mode)
     {
         case CREATADDP_EDIT_MODE_HEAD:
-            msg=QString::fromLocal8Bit("点位放在轨迹头部");
+            msg=QStringLiteral("点位放在轨迹头部");
         break;
         case CREATADDP_EDIT_MODE_TAIL:
-            msg=QString::fromLocal8Bit("点位放在轨迹尾部");
+            msg=QStringLiteral("点位放在轨迹尾部");
         break;
     }
     return msg;
@@ -206,17 +206,17 @@ QString Filter_mode_toQString(Filter_mode filter_mode)
     {
     #if USE_PLC_FILTER==1
         case FILTER_MLS:
-            msg=QString::fromLocal8Bit("MLS滤波");
+            msg=QStringLiteral("MLS滤波");
         break;
         case FILTER_SOR:
-            msg=QString::fromLocal8Bit("SOR滤波");
+            msg=QStringLiteral("SOR滤波");
         break;
     #endif
         case FILTER_SVD:
-            msg=QString::fromLocal8Bit("SVD滤波");
+            msg=QStringLiteral("SVD滤波");
         break;
         case FILTER_GAUSSIAN:
-            msg=QString::fromLocal8Bit("GAUSSIAN滤波");
+            msg=QStringLiteral("GAUSSIAN滤波");
         break;
     }
     return msg;
@@ -228,10 +228,10 @@ QString Savepcd_edit_mode_toQString(Savepcd_edit_mode savepcd_mode)
     switch(savepcd_mode)
     {
     case SAVEPCD_EDIT_MODE_TIME:
-        msg=QString::fromLocal8Bit("文件名用时间后缀");
+        msg=QStringLiteral("文件名用时间后缀");
         break;
     case SAVEPCD_EDIT_MODE_STATIC:
-        msg=QString::fromLocal8Bit("文件名无后缀(会替换调之前保存的文件)");
+        msg=QStringLiteral("文件名无后缀(会替换调之前保存的文件)");
         break;
     }
     return msg;

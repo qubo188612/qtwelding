@@ -127,11 +127,11 @@ void keysavepcdDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->savepcdBtn->setText(QString::fromLocal8Bit("插入保存点云指令"));
+        ui->savepcdBtn->setText(QStringLiteral("插入保存点云指令"));
     }
     else
     {
-        ui->savepcdBtn->setText(QString::fromLocal8Bit("替换保存点云指令"));
+        ui->savepcdBtn->setText(QStringLiteral("替换保存点云指令"));
     }
 }
 
@@ -141,13 +141,13 @@ void keysavepcdDlg::on_savepcdBtn_clicked()
     QString name=ui->savepcdname->text();
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请输入保存名称"));
+        ui->record->append(QStringLiteral("请输入保存名称"));
         return;
     }
     Savepcd_edit_mode mode=(Savepcd_edit_mode)ui->savepcdmodecombo->currentIndex();
     if(mode<0||mode>=ui->savepcdmodecombo->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择保存模式"));
+        ui->record->append(QStringLiteral("请选择保存模式"));
         return;
     }
     std::vector<QString> scanname;
@@ -161,7 +161,7 @@ void keysavepcdDlg::on_savepcdBtn_clicked()
     }
     if(false==b_nosame_vector_QString(pointsname))
     {
-        ui->record->append(QString::fromLocal8Bit("保存的点名称里有重复"));
+        ui->record->append(QStringLiteral("保存的点名称里有重复"));
         return;
     }
     for(int n=0;n<ui->scanlist->count();n++)
@@ -170,7 +170,7 @@ void keysavepcdDlg::on_savepcdBtn_clicked()
     }
     if(false==b_nosame_vector_QString(scanname))
     {
-        ui->record->append(QString::fromLocal8Bit("保存的扫描轨迹名称里有重复"));
+        ui->record->append(QStringLiteral("保存的扫描轨迹名称里有重复"));
         return;
     }
     for(int n=0;n<ui->creatslist->count();n++)
@@ -179,7 +179,7 @@ void keysavepcdDlg::on_savepcdBtn_clicked()
     }
     if(false==b_nosame_vector_QString(creatsname))
     {
-        ui->record->append(QString::fromLocal8Bit("保存的跟踪轨迹名称里有重复"));
+        ui->record->append(QStringLiteral("保存的跟踪轨迹名称里有重复"));
         return;
     }
     for(int n=0;n<ui->traceslist->count();n++)
@@ -188,13 +188,13 @@ void keysavepcdDlg::on_savepcdBtn_clicked()
     }
     if(false==b_nosame_vector_QString(tracesname))
     {
-        ui->record->append(QString::fromLocal8Bit("保存的工艺轨迹名称里有重复"));
+        ui->record->append(QStringLiteral("保存的工艺轨迹名称里有重复"));
         return;
     }
 
     my_cmd cmd;
     QString msg=cmd.cmd_savepcd(scanname,pointsname,creatsname,tracesname,mode,name);
-    ui->record->append(QString::fromLocal8Bit("插入保存点云指令成功"));
+    ui->record->append(QStringLiteral("插入保存点云指令成功"));
     cmd_msg=msg;
     done(1);
 }
@@ -209,11 +209,11 @@ void keysavepcdDlg::on_pointsAddBtn_clicked()
     }
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要保存的点名称"));
+        ui->record->append(QStringLiteral("请选择要保存的点名称"));
         return;
     }
     ui->pointslist->addItem(name);
-    ui->record->append(QString::fromLocal8Bit("保存点添加完成"));
+    ui->record->append(QStringLiteral("保存点添加完成"));
 }
 
 //删除点位
@@ -222,11 +222,11 @@ void keysavepcdDlg::on_pointsDelBtn_clicked()
     int line=ui->pointslist->currentIndex().row();
     if(line<0||line>=ui->pointslist->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要删除的点名称"));
+        ui->record->append(QStringLiteral("请选择要删除的点名称"));
         return;
     }
     ui->pointslist->takeItem(line);
-    ui->record->append(QString::fromLocal8Bit("删除点完成"));
+    ui->record->append(QStringLiteral("删除点完成"));
 }
 
 //插入扫描轨迹
@@ -239,11 +239,11 @@ void keysavepcdDlg::on_scanAddBtn_clicked()
     }
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要保存的扫描轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要保存的扫描轨迹名称"));
         return;
     }
     ui->scanlist->addItem(name);
-    ui->record->append(QString::fromLocal8Bit("保存扫描轨迹添加完成"));
+    ui->record->append(QStringLiteral("保存扫描轨迹添加完成"));
 }
 
 //删除扫描轨迹
@@ -252,11 +252,11 @@ void keysavepcdDlg::on_scanDelBtn_clicked()
     int line=ui->scanlist->currentIndex().row();
     if(line<0||line>=ui->scanlist->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要删除的扫描轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要删除的扫描轨迹名称"));
         return;
     }
     ui->scanlist->takeItem(line);
-    ui->record->append(QString::fromLocal8Bit("删除扫描轨迹完成"));
+    ui->record->append(QStringLiteral("删除扫描轨迹完成"));
 }
 
 //插入跟踪轨迹
@@ -269,11 +269,11 @@ void keysavepcdDlg::on_creatsAddBtn_clicked()
     }
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要保存的跟踪轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要保存的跟踪轨迹名称"));
         return;
     }
     ui->creatslist->addItem(name);
-    ui->record->append(QString::fromLocal8Bit("保存跟踪轨迹添加完成"));
+    ui->record->append(QStringLiteral("保存跟踪轨迹添加完成"));
 }
 
 //删除跟踪轨迹
@@ -282,11 +282,11 @@ void keysavepcdDlg::on_creatsDelBtn_clicked()
     int line=ui->creatslist->currentIndex().row();
     if(line<0||line>=ui->creatslist->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要删除的跟踪轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要删除的跟踪轨迹名称"));
         return;
     }
     ui->creatslist->takeItem(line);
-    ui->record->append(QString::fromLocal8Bit("删除跟踪轨迹完成"));
+    ui->record->append(QStringLiteral("删除跟踪轨迹完成"));
 }
 
 //插入工艺轨迹
@@ -299,11 +299,11 @@ void keysavepcdDlg::on_tracesAddBtn_clicked()
     }
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要保存的工艺轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要保存的工艺轨迹名称"));
         return;
     }
     ui->traceslist->addItem(name);
-    ui->record->append(QString::fromLocal8Bit("保存工艺轨迹添加完成"));
+    ui->record->append(QStringLiteral("保存工艺轨迹添加完成"));
 }
 
 //删除工艺轨迹
@@ -312,10 +312,10 @@ void keysavepcdDlg::on_tracesDelBtn_clicked()
     int line=ui->traceslist->currentIndex().row();
     if(line<0||line>=ui->traceslist->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要删除的工艺轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要删除的工艺轨迹名称"));
         return;
     }
     ui->traceslist->takeItem(line);
-    ui->record->append(QString::fromLocal8Bit("删除工艺轨迹完成"));
+    ui->record->append(QStringLiteral("删除工艺轨迹完成"));
 }
 

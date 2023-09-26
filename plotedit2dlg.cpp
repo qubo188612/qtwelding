@@ -128,8 +128,8 @@ void plotedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个主要跟踪轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个主要跟踪轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -141,8 +141,8 @@ void plotedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个拟合平面点1"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个拟合平面点1"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -154,8 +154,8 @@ void plotedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个拟合平面点2"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个拟合平面点2"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -167,8 +167,8 @@ void plotedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个拟合平面点3"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个拟合平面点3"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -176,8 +176,8 @@ void plotedit2Dlg::on_pushButton_clicked()
     }
     if(name1==name2||name1==name3||name2==name3)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("选择的三个点中存在同名点"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("选择的三个点中存在同名点"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );

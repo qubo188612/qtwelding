@@ -65,13 +65,13 @@ void keygettcppos2Dlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->gettcppos2Btn->setText(QString::fromLocal8Bit("插入生成点坐标指令"));
+        ui->gettcppos2Btn->setText(QStringLiteral("插入生成点坐标指令"));
         ui->updata_posBtn->hide();
     }
     else
     {
         b_inster=true;
-        ui->gettcppos2Btn->setText(QString::fromLocal8Bit("替换生成点坐标指令"));
+        ui->gettcppos2Btn->setText(QStringLiteral("替换生成点坐标指令"));
         ui->updata_posBtn->show();
     }
 }
@@ -81,7 +81,7 @@ void keygettcppos2Dlg::on_arriveBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -95,7 +95,7 @@ void keygettcppos2Dlg::on_arriveBtn_pressed()
     RobPos pos=inster_pos;
     movemod=MOVEJ;//用关节移动方式到位
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //长安到点抬起
@@ -103,11 +103,11 @@ void keygettcppos2Dlg::on_arriveBtn_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 
@@ -141,7 +141,7 @@ void keygettcppos2Dlg::on_gettcppos2Btn_clicked()
             }
             if(m_mcs->rob->b_send_group_robot==false)
             {
-                ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+                ui->record->append(QStringLiteral("机器人TCP设置异常"));
                 return;
             }
             usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -158,7 +158,7 @@ void keygettcppos2Dlg::on_gettcppos2Btn_clicked()
             }
             if(m_mcs->rob->TCPpos.nEn==false)
             {
-                ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+                ui->record->append(QStringLiteral("获取机器人坐标失败"));
                 return;
             }
             robpos=m_mcs->rob->TCPpos;
@@ -172,7 +172,7 @@ void keygettcppos2Dlg::on_gettcppos2Btn_clicked()
         QString name=ui->gettcppos2name->text();
         if(name.isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写点坐标名称"));
+            ui->record->append(QStringLiteral("请填写点坐标名称"));
             return;
         }
         if(b_inster==false)
@@ -181,19 +181,19 @@ void keygettcppos2Dlg::on_gettcppos2Btn_clicked()
             {
                 if(name==m_mcs->project->project_robpos_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
+                    ui->record->append(QStringLiteral("生成的点坐标与已有的点坐标重名"));
                     return;
                 }
             }
         }
-        ui->record->append(QString::fromLocal8Bit("插入移动指令成功"));
+        ui->record->append(QStringLiteral("插入移动指令成功"));
         msg=cmd.cmd_gettcppos2(robpos,name);
         cmd_msg=msg;
         done(1);
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -225,7 +225,7 @@ void keygettcppos2Dlg::on_updata_posBtn_clicked()
         }
         if(m_mcs->rob->b_send_group_robot==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            ui->record->append(QStringLiteral("机器人TCP设置异常"));
             return;
         }
         usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -242,7 +242,7 @@ void keygettcppos2Dlg::on_updata_posBtn_clicked()
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
             return;
         }
         RobPos pos=m_mcs->rob->TCPpos;
@@ -260,7 +260,7 @@ void keygettcppos2Dlg::on_updata_posBtn_clicked()
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 

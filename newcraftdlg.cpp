@@ -12,7 +12,7 @@ newcraftDlg::newcraftDlg(my_parameters *mcs,QWidget *parent) :
     QString msg;
     for(int n=0;n<CRAFT_ID_TOTAL_NUM;n++)
     {
-        QString msg=QString::fromLocal8Bit("工艺")+QString::number(n)+": "+m_mcs->craft->craft_Id_toQString((Craft_ID)n);
+        QString msg=QStringLiteral("工艺")+QString::number(n)+": "+m_mcs->craft->craft_Id_toQString((Craft_ID)n);
         ui->craft_Id->addItem(msg);
     }
 
@@ -41,13 +41,13 @@ void newcraftDlg::on_pushButton_clicked()
 {
     if(now_craft_Id>=ui->craft_Id->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要新建的工艺类型"));
+        ui->record->append(QStringLiteral("请先选中要新建的工艺类型"));
     }
     else
     {
         if(this->b_file==true)
         {
-            QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工艺路径"), "./CRAFT/.craft", "CRAFT(*.craft)");
+            QString fileName = QFileDialog::getSaveFileName(this, QStringLiteral("请选择要保存的新工艺路径"), "./CRAFT/.craft", "CRAFT(*.craft)");
             if(fileName.size()>0)
             {
                 m_mcs->craft->craft_id=(Craft_ID)now_craft_Id;
@@ -67,14 +67,14 @@ void newcraftDlg::on_pushButton_clicked()
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新选择路径"));
+                ui->record->append(QStringLiteral("保存操作未完成，请重新选择路径"));
             }
         }
         else
         {
             QString craftName;
-            edittext->init_dlg_show(QString::fromLocal8Bit("工艺名称:"));
-            edittext->setWindowTitle(QString::fromLocal8Bit("工艺名称"));
+            edittext->init_dlg_show(QStringLiteral("工艺名称:"));
+            edittext->setWindowTitle(QStringLiteral("工艺名称"));
             int rc=edittext->exec();
             edittext->close_dlg_show();
             if(rc!=0)//确定
@@ -85,7 +85,7 @@ void newcraftDlg::on_pushButton_clicked()
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新命名"));
+                ui->record->append(QStringLiteral("保存操作未完成，请重新命名"));
             }
         }
     }

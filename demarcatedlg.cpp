@@ -56,12 +56,12 @@ void demarcateDlg::init_dlg_show()
         m_mcs->resultdata.ctx_param = modbus_new_tcp(server_ip.toUtf8(), server_port1.toInt());
         if (modbus_connect(m_mcs->resultdata.ctx_param) == -1)
         {
-            ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+            ui->record->append(server_port1+QStringLiteral("端口连接失败"));
             modbus_free(m_mcs->resultdata.ctx_param);
             return;
         }
         m_mcs->resultdata.link_param_state=true;
-        ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+        ui->record->append(server_port1+QStringLiteral("端口连接成功"));
     }
 
     if(m_mcs->resultdata.link_robotset_state==false)
@@ -71,12 +71,12 @@ void demarcateDlg::init_dlg_show()
         m_mcs->resultdata.ctx_robotset = modbus_new_tcp(server_ip.toUtf8(), server_port1.toInt());
         if (modbus_connect(m_mcs->resultdata.ctx_robotset) == -1)
         {
-            ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+            ui->record->append(server_port1+QStringLiteral("端口连接失败"));
             modbus_free(m_mcs->resultdata.ctx_robotset);
             return;
         }
         m_mcs->resultdata.link_robotset_state=true;
-        ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+        ui->record->append(server_port1+QStringLiteral("端口连接成功"));
     }
 
     if(link_ftp_state==false)
@@ -86,11 +86,11 @@ void demarcateDlg::init_dlg_show()
         client->connectToHost(server_ip.toUtf8(), server_port1.toInt());
         if(!client->waitForConnected(1000))
         {
-            ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+            ui->record->append(server_port1+QStringLiteral("端口连接失败"));
             return;
         }
         link_ftp_state=true;
-        ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+        ui->record->append(server_port1+QStringLiteral("端口连接成功"));
     }
 
     u_int16_t tab_reg[1];
@@ -122,7 +122,7 @@ void demarcateDlg::close_dlg_show()
         modbus_free(m_mcs->resultdata.ctx_param);
         m_mcs->resultdata.link_param_state=false;
         QString msg=QString::number(PORT_ALS_PARAMETER);
-        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+        ui->record->append(msg+QStringLiteral("端口关闭"));
     }
     if(m_mcs->resultdata.link_robotset_state==true)
     {
@@ -130,14 +130,14 @@ void demarcateDlg::close_dlg_show()
         modbus_free(m_mcs->resultdata.ctx_robotset);
         m_mcs->resultdata.link_robotset_state=false;
         QString msg=QString::number(PORT_ALSROBOTCAM_SET);
-        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+        ui->record->append(msg+QStringLiteral("端口关闭"));
     }
     if(link_ftp_state==true)
     {
         client->disconnectFromHost();
         link_ftp_state=false;
         QString msg=QString::number(PORT_ALSTCP_FTP);
-        ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+        ui->record->append(msg+QStringLiteral("端口关闭"));
     }
 
     m_mcs->cam->sop_cam[0].DisConnect();
@@ -172,7 +172,7 @@ void demarcateDlg::on_pushButton_clicked()  //添加TCP点
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
@@ -184,7 +184,7 @@ void demarcateDlg::on_pushButton_clicked()  //添加TCP点
         {
             m_mcs->e2proomdata.demdlg_Robotpos.insert(m_mcs->e2proomdata.demdlg_Robotpos.begin()+now_robpos+1,m_mcs->rob->TCPpos);
         }
-        ui->record->append(QString::fromLocal8Bit("添加TCP点成功"));
+        ui->record->append(QStringLiteral("添加TCP点成功"));
         now_robpos++;
         updataRoblistUi();
     }
@@ -195,14 +195,14 @@ void demarcateDlg::on_pushButton_3_clicked() //删除TCP点
     if(now_robpos>=0&&m_mcs->e2proomdata.demdlg_Robotpos.size()>now_robpos)
     {
         m_mcs->e2proomdata.demdlg_Robotpos.erase(m_mcs->e2proomdata.demdlg_Robotpos.begin()+now_robpos);
-        ui->record->append(QString::fromLocal8Bit("删除TCP点"));
+        ui->record->append(QStringLiteral("删除TCP点"));
         if(now_robpos>=m_mcs->e2proomdata.demdlg_Robotpos.size())
             now_robpos=now_robpos-1;
         updataRoblistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要删除的TCP点"));
+        ui->record->append(QStringLiteral("请先选中要删除的TCP点"));
     }
 }
 
@@ -224,18 +224,18 @@ void demarcateDlg::on_pushButton_2_clicked()   //替换TCP点
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
         }
         else
         {
             m_mcs->e2proomdata.demdlg_Robotpos[now_robpos]=m_mcs->rob->TCPpos;
-            ui->record->append(QString::fromLocal8Bit("替换TCP点成功"));
+            ui->record->append(QStringLiteral("替换TCP点成功"));
             updataRoblistUi();
         }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要替换的TCP点"));
+        ui->record->append(QStringLiteral("请先选中要替换的TCP点"));
     }
 }
 
@@ -243,7 +243,7 @@ void demarcateDlg::on_pushButton_2_clicked()   //替换TCP点
 void demarcateDlg::on_pushButton_8_clicked()    //清空TCP点
 {
     m_mcs->e2proomdata.demdlg_Robotpos.clear();
-    ui->record->append(QString::fromLocal8Bit("清空TCP点"));
+    ui->record->append(QStringLiteral("清空TCP点"));
     now_robpos=m_mcs->e2proomdata.demdlg_Robotpos.size()-1;
     updataRoblistUi();
 }
@@ -266,11 +266,11 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
     }
     if(m_mcs->cam->sop_cam[0].b_ros_lineEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
+        ui->record->append(QStringLiteral("获取激光头坐标失败"));
     }
     else if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
@@ -301,7 +301,7 @@ void demarcateDlg::on_pushButton_4_clicked()    //添加激光头点
         {
             m_mcs->e2proomdata.demdlg_Leaserpos.insert(m_mcs->e2proomdata.demdlg_Leaserpos.begin()+now_leaserpos+1,sing);
         }
-        ui->record->append(QString::fromLocal8Bit("添加TCP点成功"));
+        ui->record->append(QStringLiteral("添加TCP点成功"));
         now_leaserpos++;
         updataLeaserlistUi();
     }
@@ -313,14 +313,14 @@ void demarcateDlg::on_pushButton_6_clicked()    //删除激光头点
     if(now_leaserpos>=0&&m_mcs->e2proomdata.demdlg_Leaserpos.size()>now_leaserpos)
     {
         m_mcs->e2proomdata.demdlg_Leaserpos.erase(m_mcs->e2proomdata.demdlg_Leaserpos.begin()+now_leaserpos);
-        ui->record->append(QString::fromLocal8Bit("删除激光头点"));
+        ui->record->append(QStringLiteral("删除激光头点"));
         if(now_leaserpos>=m_mcs->e2proomdata.demdlg_Leaserpos.size())
             now_leaserpos=now_leaserpos-1;
         updataLeaserlistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要删除的激光头点"));
+        ui->record->append(QStringLiteral("请先选中要删除的激光头点"));
     }
 }
 
@@ -344,11 +344,11 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
         }
         if(m_mcs->cam->sop_cam[0].b_ros_lineEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
+            ui->record->append(QStringLiteral("获取激光头坐标失败"));
         }
         else if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
         }
         else
         {
@@ -371,13 +371,13 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
             sing.leaserpos.Z=m_mcs->cam->sop_cam[0].ros_line->targetpointoutcloud[0].y;
             sing.leaserpos.nEn=true;
             m_mcs->e2proomdata.demdlg_Leaserpos[now_leaserpos]=sing;
-            ui->record->append(QString::fromLocal8Bit("替换激光头点成功"));
+            ui->record->append(QStringLiteral("替换激光头点成功"));
             updataLeaserlistUi();
         }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要替换的激光头点"));
+        ui->record->append(QStringLiteral("请先选中要替换的激光头点"));
     }
 }
 
@@ -385,7 +385,7 @@ void demarcateDlg::on_pushButton_5_clicked()    //替换激光头点
 void demarcateDlg::on_pushButton_9_clicked()     //清空激光头点
 {
     m_mcs->e2proomdata.demdlg_Leaserpos.clear();
-    ui->record->append(QString::fromLocal8Bit("清空激光头点"));
+    ui->record->append(QStringLiteral("清空激光头点"));
     now_leaserpos=m_mcs->e2proomdata.demdlg_Leaserpos.size()-1;
     updataLeaserlistUi();
 }
@@ -401,11 +401,11 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
         {
             if(m_mcs->e2proomdata.demdlg_Robotpos.size()!=1)
             {
-                ui->record->append(QString::fromLocal8Bit("TCP坐标点应该只能有一个"));
+                ui->record->append(QStringLiteral("TCP坐标点应该只能有一个"));
             }
             else if(m_mcs->e2proomdata.demdlg_Leaserpos.size()<4)
             {
-                ui->record->append(QString::fromLocal8Bit("激光头坐标点个数要至少大于4个"));
+                ui->record->append(QStringLiteral("激光头坐标点个数要至少大于4个"));
             }
             else
             {
@@ -419,11 +419,11 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                     updataDemarcateResult();
                     updataUi();
                     pulldemdl();
-                    ui->record->append(QString::fromLocal8Bit("标定完成"));
+                    ui->record->append(QStringLiteral("标定完成"));
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("标定计算出现问题,请检查数据"));
+                    ui->record->append(QStringLiteral("标定计算出现问题,请检查数据"));
                 }
                 m_mcs->e2proomdata.write_demdlg_para();
                 ui->err->setText(QString::number(err,'f',2));
@@ -434,11 +434,11 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
         {
             if(m_mcs->e2proomdata.demdlg_Leaserpos.size()!=m_mcs->e2proomdata.demdlg_Robotpos.size())
             {
-                ui->record->append(QString::fromLocal8Bit("TCP坐标点要与激光头坐标点个数相同"));
+                ui->record->append(QStringLiteral("TCP坐标点要与激光头坐标点个数相同"));
             }
             else if(m_mcs->e2proomdata.demdlg_Robotpos.size()<4)
             {
-                ui->record->append(QString::fromLocal8Bit("TCP坐标点个数要至少大于4个"));
+                ui->record->append(QStringLiteral("TCP坐标点个数要至少大于4个"));
             }
             else
             {
@@ -463,7 +463,7 @@ void demarcateDlg::on_pushButton_7_clicked()      //计算标定结果
                 updataDemarcateResult();
                 updataUi();
                 pulldemdl();
-                ui->record->append(QString::fromLocal8Bit("标定完成"));
+                ui->record->append(QStringLiteral("标定完成"));
             }
         }
         break;
@@ -482,7 +482,7 @@ void demarcateDlg::pulldemdl()
             int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_P_DATA_EYE_HAND_CALIBRATIONMODE_REG_ADD,1,tab_reg);
             if(rc!=1)
             {
-                ui->record->append(QString::fromLocal8Bit("标定模式导入失败"));
+                ui->record->append(QStringLiteral("标定模式导入失败"));
             }
             QJsonObject jsent;
             QJsonObject json;
@@ -513,7 +513,7 @@ void demarcateDlg::pulldemdl()
             int rc=modbus_write_registers(m_mcs->resultdata.ctx_robotset,ALSROBOTCAM_P_DATA_EYE_HAND_CALIBRATIONMODE_REG_ADD,1,tab_reg);
             if(rc!=1)
             {
-                ui->record->append(QString::fromLocal8Bit("标定模式导入失败"));
+                ui->record->append(QStringLiteral("标定模式导入失败"));
             }
             QJsonObject jsent;
             QJsonObject json;

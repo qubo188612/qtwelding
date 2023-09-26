@@ -22,7 +22,7 @@ int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,st
     int pointnum=posturelistIn.size();
     if(pointnum<2)
     {
-        returnmsg=QString::fromLocal8Bit("姿态个数至少需要2个");
+        returnmsg=QStringLiteral("姿态个数至少需要2个");
         return 1;
     }
     Eigen::Vector3d pointst(posturelistIn[0].posture.X,posturelistIn[0].posture.Y,posturelistIn[0].posture.Z),pointed(posturelistIn[pointnum-1].posture.X,posturelistIn[pointnum-1].posture.Y,posturelistIn[pointnum-1].posture.Z);
@@ -30,7 +30,7 @@ int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,st
     double dis=pointvector.norm();//直线距离
     if(dis==0)
     {
-        returnmsg=QString::fromLocal8Bit("姿态起点与终点位置距离不能等于0");
+        returnmsg=QStringLiteral("姿态起点与终点位置距离不能等于0");
         return 1;
     }
     std::vector<ChangeRobPosVariable> tempposture(posturelistIn.size());
@@ -45,7 +45,7 @@ int Craft::tidyup_posturelist(std::vector<ChangeRobPosVariable> posturelistIn,st
         double result=pointvector.dot(pointcentervector);
         if(result<0)
         {
-            returnmsg=QString::fromLocal8Bit("中间姿态")+QString::number(n)+QString::fromLocal8Bit("坐标没有位于起点和终点之间");
+            returnmsg=QStringLiteral("中间姿态")+QString::number(n)+QStringLiteral("坐标没有位于起点和终点之间");
             return 1;
         }
         d_Mysort s_gropu;
@@ -69,22 +69,22 @@ QString Craft::craft_Id_toQString(Craft_ID craft_id)
     switch(craft_id)
     {
         case CRAFT_ID_FIXED_POSTURE:
-            msg=QString::fromLocal8Bit("固定焊接姿态");
+            msg=QStringLiteral("固定焊接姿态");
         break;
         case CRAFT_ID_STARTENDCHANGE_POSTURE:
-            msg=QString::fromLocal8Bit("单一方向起终点变姿态");
+            msg=QStringLiteral("单一方向起终点变姿态");
         break;
         case CRAFT_ID_LASERNORMAL_POSTURE:
-            msg=QString::fromLocal8Bit("激光器测量法线姿态");
+            msg=QStringLiteral("激光器测量法线姿态");
         break;
         case CRAFT_ID_CORRUGATED_POSTURE:
-            msg=QString::fromLocal8Bit("波纹板变姿态");
+            msg=QStringLiteral("波纹板变姿态");
         break;
     }
     return msg;
 }
 
-int Craft::LoadCraft(char* filename)    //读取工艺
+int Craft::LoadCraft(QString filename)    //读取工艺
 {
     QFile loadFile(filename);
 
@@ -103,7 +103,7 @@ int Craft::LoadCraft(char* filename)    //读取工艺
     return 0;
 }
 
-int Craft::SaveProject(char* filename)
+int Craft::SaveProject(QString filename)
 {
     QVariantHash data=encoed_json();
 

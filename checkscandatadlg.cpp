@@ -10,11 +10,11 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
 
     m_mcs=mcs;
 
-    ui->tabWidget->setTabText(0,QString::fromLocal8Bit("点位"));
-    ui->tabWidget->setTabText(1,QString::fromLocal8Bit("扫描轨迹"));
-    ui->tabWidget->setTabText(2,QString::fromLocal8Bit("跟踪轨迹"));
-    ui->tabWidget->setTabText(3,QString::fromLocal8Bit("工艺轨迹"));
-    ui->tabWidget->setTabText(4,QString::fromLocal8Bit("变换矩阵"));
+    ui->tabWidget->setTabText(0,QStringLiteral("点位"));
+    ui->tabWidget->setTabText(1,QStringLiteral("扫描轨迹"));
+    ui->tabWidget->setTabText(2,QStringLiteral("跟踪轨迹"));
+    ui->tabWidget->setTabText(3,QStringLiteral("工艺轨迹"));
+    ui->tabWidget->setTabText(4,QStringLiteral("变换矩阵"));
 
     ui->tab1pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
     ui->tab1pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
@@ -390,7 +390,7 @@ void checkscandataDlg::on_tab1listWidget_itemClicked(QListWidgetItem *item)
         }
         if(m_mcs->project->project_robpos_trace[pointnum].nEn==false)
         {
-            msg=QString::fromLocal8Bit("点位数据无效");
+            msg=QStringLiteral("点位数据无效");
             ui->tab1pointstate->setText(msg);
             ui->tab1realposX->clear();
             ui->tab1realposY->clear();
@@ -721,7 +721,7 @@ void checkscandataDlg::on_tab5listWidget_itemClicked(QListWidgetItem *item)
         }
         if(m_mcs->project->project_coord_matrix4d[matrix4dnum].nEn==false)
         {
-            msg=QString::fromLocal8Bit("变化矩阵数据无效");
+            msg=QStringLiteral("变化矩阵数据无效");
             ui->tab5state->setText(msg);
             ui->tab5a11_label->clear();
             ui->tab5a12_label->clear();

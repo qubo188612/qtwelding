@@ -145,8 +145,8 @@ void plotedit1Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个主线点1坐标"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个主线点1坐标"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -158,8 +158,8 @@ void plotedit1Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个主线点2坐标"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个主线点2坐标"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -171,8 +171,8 @@ void plotedit1Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个拟合平面点1"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个拟合平面点1"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -184,8 +184,8 @@ void plotedit1Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个拟合平面点2"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个拟合平面点2"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -197,8 +197,8 @@ void plotedit1Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个拟合平面点3"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个拟合平面点3"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -209,8 +209,8 @@ void plotedit1Dlg::on_pushButton_clicked()
        name2==name3||name2==name4||
        name3==name4)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("选择的五个点中存在同名点"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("选择的五个点中存在同名点"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );

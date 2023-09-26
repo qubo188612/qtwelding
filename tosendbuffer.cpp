@@ -63,7 +63,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -90,7 +90,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -115,7 +115,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos+QString::fromLocal8Bit("的坐标点");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_pos+QStringLiteral("的坐标点");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -141,7 +141,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos1+QString::fromLocal8Bit("的坐标点");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_pos1+QStringLiteral("的坐标点");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -160,7 +160,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos2+QString::fromLocal8Bit("的坐标点");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_pos2+QStringLiteral("的坐标点");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -179,7 +179,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pos3+QString::fromLocal8Bit("的坐标点");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_pos3+QStringLiteral("的坐标点");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -209,7 +209,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -227,7 +227,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 扫描轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -259,7 +259,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -277,7 +277,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 扫描轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -307,7 +307,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -322,9 +322,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_ONE_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有1个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(TRACE_EDIT_MODE_ONE_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_SCAN)+QStringLiteral("项的参数只能有1个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -352,7 +352,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+scannames[m]+QStringLiteral("的扫描轨道");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -372,9 +372,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_THREE_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有3个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(TRACE_EDIT_MODE_THREE_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_SCAN)+QStringLiteral("项的参数只能有3个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -402,7 +402,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+scannames[m]+QStringLiteral("的扫描轨道");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -422,9 +422,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_SCAN)+QString::fromLocal8Bit("项的参数只能有5个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_SCAN)+QStringLiteral("项的参数只能有5个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -452,7 +452,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scannames[m]+QString::fromLocal8Bit("的扫描轨道");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+scannames[m]+QStringLiteral("的扫描轨道");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -470,7 +470,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 不支持当前轨道生成模式");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 不支持当前轨道生成模式");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -495,7 +495,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -523,7 +523,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -555,7 +555,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 变换矩阵与已有的矩阵重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 变换矩阵与已有的矩阵重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -575,7 +575,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pointx+QString::fromLocal8Bit("的坐标点");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_pointx+QStringLiteral("的坐标点");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -594,7 +594,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_pointo+QString::fromLocal8Bit("的坐标点");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_pointo+QStringLiteral("的坐标点");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -613,7 +613,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_cpointx+QString::fromLocal8Bit("的坐标点");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_cpointx+QStringLiteral("的坐标点");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -632,7 +632,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+s_cpointo+QString::fromLocal8Bit("的坐标点");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+s_cpointo+QStringLiteral("的坐标点");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -642,7 +642,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+CMD_POINTX+QString::fromLocal8Bit("的参数项与")+CMD_POINTO+QString::fromLocal8Bit("的参数项相同");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+CMD_POINTX+QStringLiteral("的参数项与")+CMD_POINTO+QStringLiteral("的参数项相同");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -652,7 +652,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+CMD_CPOINTX+QString::fromLocal8Bit("的参数项与")+CMD_CPOINTO+QString::fromLocal8Bit("的参数项相同");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+CMD_CPOINTX+QStringLiteral("的参数项与")+CMD_CPOINTO+QStringLiteral("的参数项相同");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -679,7 +679,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -708,7 +708,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 采样结果轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 采样结果轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -728,7 +728,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatname+QString::fromLocal8Bit("的焊接轨迹");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+creatname+QStringLiteral("的焊接轨迹");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -775,7 +775,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -794,7 +794,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的跟踪轨迹");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的跟踪轨迹");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -815,7 +815,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -849,7 +849,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+change+QString::fromLocal8Bit("的矩阵");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
                                                                                                                                                          m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -868,7 +868,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的跟踪轨迹");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的跟踪轨迹");
                                                                                                                                                       m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -889,7 +889,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -918,7 +918,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name+QStringLiteral("的跟踪轨迹工艺");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -942,7 +942,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name1+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name1+QStringLiteral("的跟踪轨迹工艺");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -962,7 +962,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name2+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name2+QStringLiteral("的跟踪轨迹工艺");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -982,7 +982,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -1012,7 +1012,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name+QStringLiteral("的跟踪轨迹工艺");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1035,7 +1035,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的跟踪轨迹工艺");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1055,7 +1055,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1085,7 +1085,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1096,7 +1096,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 点的参数个数至少要大于等于1个");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 点的参数个数至少要大于等于1个");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1121,7 +1121,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 b_ok=false;
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointname+QString::fromLocal8Bit("的坐标点");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+pointname+QStringLiteral("的坐标点");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1153,7 +1153,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -1173,7 +1173,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的坐标点");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的坐标点");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1203,7 +1203,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -1231,7 +1231,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -1259,7 +1259,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1290,7 +1290,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的点与已有的点重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的点与已有的点重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1305,9 +1305,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_THREE_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_CREATS)+QString::fromLocal8Bit("项的参数只能有3个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(PLOTPOS_EDIT_MODE_THREE_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_CREATS)+QStringLiteral("项的参数只能有3个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1335,7 +1335,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsnames[m]+QString::fromLocal8Bit("的跟踪轨道");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+creatsnames[m]+QStringLiteral("的跟踪轨道");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1355,9 +1355,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_POINTS)+QString::fromLocal8Bit("项的参数只能有5个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(PLOTPOS_EDIT_MODE_FIVEPOINTS_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_POINTS)+QStringLiteral("项的参数只能有5个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1385,7 +1385,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsnames[m]+QString::fromLocal8Bit("的点坐标");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+pointsnames[m]+QStringLiteral("的点坐标");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1405,9 +1405,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_CREATS)+QString::fromLocal8Bit("项的参数只能有1个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_CREATS)+QStringLiteral("项的参数只能有1个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1417,9 +1417,9 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": ")+
-                                           QString::fromLocal8Bit(CMD_MODE)+QString::fromLocal8Bit("值为")+QString::number(PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE)+
-                                           QString::fromLocal8Bit("时,")+QString::fromLocal8Bit(CMD_POINTS)+QString::fromLocal8Bit("项的参数只能有3个");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": ")+
+                                           QStringLiteral(CMD_MODE)+QStringLiteral("值为")+QString::number(PLOTPOS_EDIT_MODE_LINE_THREEPOINTS_TO_ONE)+
+                                           QStringLiteral("时,")+QStringLiteral(CMD_POINTS)+QStringLiteral("项的参数只能有3个");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1447,7 +1447,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                             {
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsnames[m]+QString::fromLocal8Bit("的跟踪轨道");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+creatsnames[m]+QStringLiteral("的跟踪轨道");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1477,7 +1477,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 {
                                     err=1;
                                     main_record.lock();
-                                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsnames[m]+QString::fromLocal8Bit("的点坐标");
+                                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+pointsnames[m]+QStringLiteral("的点坐标");
                                     m_mcs->main_record.push_back(return_msg);
                                     main_record.unlock();
                                     errmsg.push_back(return_msg);
@@ -1496,7 +1496,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         {
                             err=1;
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 不支持当前点的生成模式");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 不支持当前点的生成模式");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             errmsg.push_back(return_msg);
@@ -1522,7 +1522,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1533,7 +1533,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 点的参数个数有且只有3个");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 点的参数个数有且只有3个");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1558,7 +1558,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                                 b_ok=false;
                                 err=1;
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointname+QString::fromLocal8Bit("的坐标点");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+pointname+QStringLiteral("的坐标点");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 errmsg.push_back(return_msg);
@@ -1590,7 +1590,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的跟踪轨迹工艺");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的跟踪轨迹工艺");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1610,7 +1610,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 跟踪工艺轨迹与已有的轨迹重名");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1640,7 +1640,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 滤波结果轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1660,7 +1660,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+name_in+QString::fromLocal8Bit("的焊接轨迹");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的焊接轨迹");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1681,7 +1681,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+QString::fromLocal8Bit("无法跳转到本身所在行");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+QStringLiteral("无法跳转到本身所在行");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1691,7 +1691,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+QString::fromLocal8Bit("跳转行数超过总行数");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+QStringLiteral("跳转行数超过总行数");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     break;
@@ -1714,7 +1714,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1743,7 +1743,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsnames[m]+QString::fromLocal8Bit("的跟踪轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+creatsnames[m]+QStringLiteral("的跟踪轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1775,7 +1775,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的轨迹与已有的轨迹重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的轨迹与已有的轨迹重名");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
@@ -1795,7 +1795,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+weldname+QString::fromLocal8Bit("的跟踪轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+weldname+QStringLiteral("的跟踪轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1814,7 +1814,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointname+QString::fromLocal8Bit("的跟踪轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+pointname+QStringLiteral("的跟踪轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1841,7 +1841,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 获取到的工艺与已有的工艺重名");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取到的工艺与已有的工艺重名");
                     m_mcs->main_record.push_back(return_msg);
                     errmsg.push_back(return_msg);
                     main_record.unlock();
@@ -1868,7 +1868,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的点名称里有重复");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 保存的点名称里有重复");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1894,7 +1894,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+pointsname[m]+QString::fromLocal8Bit("的点轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+pointsname[m]+QStringLiteral("的点轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1907,7 +1907,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的扫描规定名称里有重复");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 保存的扫描规定名称里有重复");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1933,7 +1933,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+scanname[m]+QString::fromLocal8Bit("的扫描轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+scanname[m]+QStringLiteral("的扫描轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1946,7 +1946,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的跟踪轨道名称里有重复");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 保存的跟踪轨道名称里有重复");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1972,7 +1972,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+creatsname[m]+QString::fromLocal8Bit("的跟踪轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+creatsname[m]+QStringLiteral("的跟踪轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -1985,7 +1985,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 保存的工艺轨道名称里有重复");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 保存的工艺轨道名称里有重复");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -2011,7 +2011,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     {
                         err=1;
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 前面没有名为")+tracesname[m]+QString::fromLocal8Bit("的工艺轨道");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+tracesname[m]+QStringLiteral("的工艺轨道");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
@@ -2040,35 +2040,25 @@ int toSendbuffer::cmdlist_check()
             //语法出错
             err=1;
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 语法出错(")+msg+QStringLiteral(")");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
         }
         if(key==CMD_TRACE_KEY)//跟踪命令时查看是否能找到工艺路径
         {
             QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
-            /*
-        #if _MSC_VERL
-            QTextCodec *code = QTextCodec::codecForName("GBK");
-        #else
-            QTextCodec *code = QTextCodec::codecForName("UTF-8");
-        #endif
-            std::string fname = code->fromUnicode(craftfilepath).data();
-
-            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
-            */
-            int rc=m_mcs->craft->LoadCraft((char*)(craftfilepath.toStdString().c_str()));
+            int rc=m_mcs->craft->LoadCraft(craftfilepath);
             if(rc!=0)
             {
                 err=1;
                 main_record.lock();
                 if(rc==1)
                 {
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 该路径找不到焊接工艺参数文件");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 该路径找不到焊接工艺参数文件");
                 }
                 else
                 {
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊接工艺参数文件格式出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 焊接工艺参数文件格式出错");
                 }
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
@@ -2091,7 +2081,7 @@ int toSendbuffer::cmdlist_check()
                 {
                     err=1;
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                 }
@@ -2109,11 +2099,11 @@ int toSendbuffer::cmdlist_check()
                 main_record.lock();
                 if(rc==1)
                 {
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 该路径找不到轨迹文件");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 该路径找不到轨迹文件");
                 }
                 else
                 {
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹的文件格式出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹的文件格式出错");
                 }
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
@@ -2136,7 +2126,7 @@ int toSendbuffer::cmdlist_skip(int stline)
         QString msg,key;
         my_cmd cmd;
         main_record.lock();
-        return_msg=QString::fromLocal8Bit("执行Line")+QString::number(n)+QString::fromLocal8Bit(": ")+m_mcs->project->project_cmdlist[n];
+        return_msg=QStringLiteral("执行Line")+QString::number(n)+QStringLiteral(": ")+m_mcs->project->project_cmdlist[n];
         m_mcs->main_record.push_back(return_msg);
         main_record.unlock();
         int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
@@ -2144,7 +2134,7 @@ int toSendbuffer::cmdlist_skip(int stline)
         {
             //语法出错
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 语法出错(")+msg+QStringLiteral(")");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -2168,7 +2158,7 @@ int toSendbuffer::cmdlist_skip(int stline)
             if(0!=loadtemp_pos(m_mcs->project->project_robpos_trace[robpos_trace_num]))
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+name+QString::fromLocal8Bit("没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+name+QStringLiteral("没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -2189,7 +2179,7 @@ int toSendbuffer::cmdlist_skip(int stline)
             if(0!=loadtemp_pos(m_mcs->project->project_robpos_trace[robpos_trace_num]))
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+name+QString::fromLocal8Bit("没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+name+QStringLiteral("没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -2210,7 +2200,7 @@ int toSendbuffer::cmdlist_skip(int stline)
             if(0!=loadtemp_pos(m_mcs->project->project_robpos_trace[robpos_trace_num]))
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+name+QString::fromLocal8Bit("没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+name+QStringLiteral("没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -2231,7 +2221,7 @@ int toSendbuffer::cmdlist_skip(int stline)
             if(0!=loadtemp_scan(m_mcs->project->project_scan_trace[scan_trace_num]))
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+name+QString::fromLocal8Bit("没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+name+QStringLiteral("没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -2252,7 +2242,7 @@ int toSendbuffer::cmdlist_skip(int stline)
             if(0!=loadtemp_scan(m_mcs->project->project_scan_trace[scan_trace_num]))
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+name+QString::fromLocal8Bit("没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+name+QStringLiteral("没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -2273,7 +2263,7 @@ int toSendbuffer::cmdlist_skip(int stline)
             if(0!=loadtemp_pos(m_mcs->project->project_robpos_trace[robpos_trace_num]))
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+name+QString::fromLocal8Bit("没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+name+QStringLiteral("没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -2287,7 +2277,7 @@ int toSendbuffer::cmdlist_skip(int stline)
         else if(key==CMD_STOP_KEY)//流程停止了
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("代码中停止进程");
+            return_msg=QStringLiteral("代码中停止进程");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -2364,16 +2354,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         }
         if(key==CMD_TRACE_KEY)
         {
-        /*
-        #if _MSC_VER
-            QTextCodec *code = QTextCodec::codecForName("GBK");
-        #else
-            QTextCodec *code = QTextCodec::codecForName("UTF-8");
-        #endif
-            std::string fname = code->fromUnicode(craftfilepath).data();
-            m_mcs->craft->LoadCraft((char*)fname.c_str());
-        */
-            m_mcs->craft->LoadCraft((char*)(craftfilepath.toStdString().c_str()));
+            m_mcs->craft->LoadCraft(craftfilepath);
         }
         else
         {
@@ -2484,7 +2465,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     if(fabs(Realdistance-Distance)>STARTENDCHANGE_POSTURE_ALLOWERROR)
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 工艺的变姿态轨迹长度与实际测得的轨迹长度误差大于")+QString::number(STARTENDCHANGE_POSTURE_ALLOWERROR);
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 工艺的变姿态轨迹长度与实际测得的轨迹长度误差大于")+QString::number(STARTENDCHANGE_POSTURE_ALLOWERROR);
                         main_record.unlock();
                         return 1;
                     }
@@ -2551,7 +2532,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     else
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹姿态插值出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹姿态插值出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         return 1;
@@ -2933,7 +2914,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 else
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊缝搜索异常");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 焊缝搜索异常");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -2959,7 +2940,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             {
                 //矩阵无效
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -3042,7 +3023,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹坐标拟合出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3086,7 +3067,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                    false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace2,weld_trace2))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹坐标拟合出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3119,7 +3100,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(linePoints.size()<=2&&SidePoints.size()<=4)
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标数据太少");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹坐标数据太少");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3206,7 +3187,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                    false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace4,weld_trace4))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标拟合出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹坐标拟合出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3255,7 +3236,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(linePoints.size()<=2&&SidePoints1.size()<=4)
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹端点1的坐标数据太少");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹端点1的坐标数据太少");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3263,7 +3244,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(linePoints.size()<=2&&SidePoints2.size()<=4)
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹端点2的坐标数据太少");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹端点2的坐标数据太少");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3371,7 +3352,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         {
             //点无效
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pointx+QString::fromLocal8Bit("点没有获取到坐标值");
+            return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pointx+QStringLiteral("点没有获取到坐标值");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3388,7 +3369,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         {
             //点无效
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pointo+QString::fromLocal8Bit("点没有获取到坐标值");
+            return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pointo+QStringLiteral("点没有获取到坐标值");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3405,7 +3386,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         {
             //点无效
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_cpointx+QString::fromLocal8Bit("点没有获取到坐标值");
+            return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_cpointx+QStringLiteral("点没有获取到坐标值");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3422,7 +3403,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         {
             //点无效
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_cpointo+QString::fromLocal8Bit("点没有获取到坐标值");
+            return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_cpointo+QStringLiteral("点没有获取到坐标值");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3499,7 +3480,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         if(!tarjectMath.pos_interpolation(m_mcs->rob->cal_posture_model,weld,interpolatweld,time,speed))
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹采样出错");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹采样出错");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3575,7 +3556,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                     if(!tarjectMath.pos_interpolation(m_mcs->rob->cal_posture_model,weld,interpolatweld,time,samplespeed))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹采样出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹采样出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         return 1;
@@ -3640,7 +3621,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(0!=tarjectMath.creat_wave(m_mcs->rob->cal_posture_model,trace.point,wave_info,&wavetrace.point,&wavet_out))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 摆焊轨迹计算异常");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3652,7 +3633,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(0!=tarjectMath.creat_wave_continue(m_mcs->rob->cal_posture_model,trace.point,wave_info,&wavetrace.point,wavet_in,&wavet_out))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 摆焊轨迹计算异常");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 摆焊轨迹计算异常");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3710,7 +3691,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
             if(m_mcs->project->project_robpos_trace[weld_point_num].nEn!=true)//点无效
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+m_mcs->project->project_robpos_trace[weld_point_num].name+QString::fromLocal8Bit("点没有获取到坐标值");
+                return_msg=QStringLiteral("Line")+QString::number(n)+": "+m_mcs->project->project_robpos_trace[weld_point_num].name+QStringLiteral("点没有获取到坐标值");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 return 1;
@@ -3762,7 +3743,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         if(m_mcs->project->project_robpos_trace[weld_namein_num].nEn!=true)//点无效
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+namein+QString::fromLocal8Bit("点没有获取到坐标值");
+            return_msg=QStringLiteral("Line")+QString::number(n)+": "+namein+QStringLiteral("点没有获取到坐标值");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3794,7 +3775,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         if(0!=loadlog_creat(filename,weld))
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹的文件格式出错");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹的文件格式出错");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -3895,7 +3876,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(linePoints.size()<=4&&SidePoints.size()<=4)
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标数据太少");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹坐标数据太少");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3973,7 +3954,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[0]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[0]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3982,7 +3963,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[1]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[1]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -3991,7 +3972,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[2]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[2]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4000,7 +3981,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[3]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[3]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4009,7 +3990,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[4]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[4]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4110,7 +4091,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[0]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[0]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4119,7 +4100,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[1]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[1]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4128,7 +4109,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 {
                     //点无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointsname[2]+QString::fromLocal8Bit("点没有获取到坐标值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointsname[2]+QStringLiteral("点没有获取到坐标值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4164,7 +4145,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(linePoints.size()<=4)
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹坐标数据太少");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹坐标数据太少");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4236,7 +4217,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,time,speed))
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -4310,7 +4291,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         if(num==0)
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 轨迹生成出错");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹生成出错");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -4403,7 +4384,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(0!=Mypcl::Moving_Least_Squares(weld,interpolatweld,filters.msl_poly))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 滤波结果出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4415,7 +4396,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(0!=Mypcl::Statistical_Outlier_Removal(weld,interpolatweld,filters.sor_nearpoint_num,filters.sor_standard_deviation))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 滤波结果出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4428,7 +4409,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(0!=Mypcl::Singular_Value_Decomposition(weld,interpolatweld,filters.svd_Degree,filters.svd_WindowSize,filters.svd_SingularThreshold))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 滤波结果出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4440,7 +4421,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 if(0!=Mypcl::Gaussian(weld,interpolatweld,filters.gaussian_SmoothingRadius,filters.gaussian_SmoothingSigma))
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 滤波结果出错");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 滤波结果出错");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     return 1;
@@ -4559,7 +4540,7 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
         {
             //点无效
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+pointname+QString::fromLocal8Bit("点没有获取到坐标值");
+            return_msg=QStringLiteral("Line")+QString::number(n)+": "+pointname+QStringLiteral("点没有获取到坐标值");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             return 1;
@@ -4760,7 +4741,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         m_mcs->robotcontrol->pause_movepoint_buffer.clear();
     #endif
         main_record.lock();
-        return_msg=QString::fromLocal8Bit("已经执行完全部命令");
+        return_msg=QStringLiteral("已经执行完全部命令");
         m_mcs->main_record.push_back(return_msg);
         main_record.unlock();
         return 1;
@@ -4770,7 +4751,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         if(b_cmdlist_build==false)     //手动停止
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("手动停止进程");
+            return_msg=QStringLiteral("手动停止进程");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             cmd_lock(1);
@@ -4788,7 +4769,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         QString msg,key;
         my_cmd cmd;
         main_record.lock();
-        return_msg=QString::fromLocal8Bit("执行Line")+QString::number(n)+QString::fromLocal8Bit(": ")+m_mcs->project->project_cmdlist[n];
+        return_msg=QStringLiteral("执行Line")+QString::number(n)+QStringLiteral(": ")+m_mcs->project->project_cmdlist[n];
         m_mcs->main_record.push_back(return_msg);
         main_record.unlock();
         int rc=cmd.decodecmd(m_mcs->project->project_cmdlist[n],msg,key);
@@ -4796,7 +4777,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         {
             //语法出错
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 语法出错(")+msg+QStringLiteral(")");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             line=n;
@@ -4831,7 +4812,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //矩阵无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -4938,7 +4919,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -4964,7 +4945,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //语法出错
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n+1)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+                    return_msg=QStringLiteral("Line")+QString::number(n+1)+QStringLiteral(": 语法出错(")+msg+QStringLiteral(")");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -4993,7 +4974,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(b_cmdlist_build==false)     //停止
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("手动停止进程");
+                        return_msg=QStringLiteral("手动停止进程");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         paused_key=key;
@@ -5042,7 +5023,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //矩阵无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -5070,7 +5051,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5115,7 +5096,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos1+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos1+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5133,7 +5114,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos2+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos2+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5151,7 +5132,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos3+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos3+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5221,7 +5202,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5247,7 +5228,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //语法出错
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n+1)+QString::fromLocal8Bit(": 语法出错(")+msg+QString::fromLocal8Bit(")");
+                    return_msg=QStringLiteral("Line")+QString::number(n+1)+QStringLiteral(": 语法出错(")+msg+QStringLiteral(")");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -5276,7 +5257,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(b_cmdlist_build==false)     //停止
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("手动停止进程");
+                        return_msg=QStringLiteral("手动停止进程");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         paused_key=key;
@@ -5348,7 +5329,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         if(b_cmdlist_build==false)     //停止
                         {
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("手动停止进程");
+                            return_msg=QStringLiteral("手动停止进程");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             paused_key=key;
@@ -5367,7 +5348,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             if(m_mcs->rob->b_link_ctx_plc==false)
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 没有与PLC建立通信");
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 没有与PLC建立通信");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 line=n;
@@ -5382,7 +5363,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(1!=modbus_write_registers(m_mcs->rob->ctx_plc,add,1,&data))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 与PLC通信出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 与PLC通信出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5409,7 +5390,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         else
                         {
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 与PLC通信出错");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 与PLC通信出错");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             line=n;
@@ -5418,7 +5399,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         if(b_cmdlist_build==false)     //停止
                         {
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("手动停止进程");
+                            return_msg=QStringLiteral("手动停止进程");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             paused_key=key;
@@ -5463,7 +5444,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //矩阵无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -5615,7 +5596,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
                         {
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             line=n;
@@ -5638,7 +5619,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(b_cmdlist_build==false)     //停止
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("手动停止进程");
+                        return_msg=QStringLiteral("手动停止进程");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         paused_key=key;
@@ -5672,7 +5653,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                             {
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位计算结果出错");
+                                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 line=n;
@@ -5768,7 +5749,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             if(b_cmdlist_build==false)     //停止
                             {
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("手动停止进程");
+                                return_msg=QStringLiteral("手动停止进程");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 paused_key=key;
@@ -5786,7 +5767,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     else//没有找到寻位点
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位点找不到");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位点找不到");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -5826,7 +5807,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //矩阵无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -5987,7 +5968,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位计算结果出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6003,7 +5984,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 else//第一个点寻找失败
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 起点处找不到焊缝");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 起点处找不到焊缝");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -6030,7 +6011,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6053,7 +6034,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QStringLiteral("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     paused_key=key;
@@ -6096,7 +6077,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                         {
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位计算结果出错");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             line=n;
@@ -6118,7 +6099,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             if(b_find==false)//没有找到终点
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 寻位点找不到");
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位点找不到");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 line=n;
@@ -6177,7 +6158,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
                         {
                             main_record.lock();
-                            return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描计算结果出错");
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 扫描计算结果出错");
                             m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             line=n;
@@ -6200,7 +6181,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             if(b_find==false)//没有找到点
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 扫描点找不到");
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 扫描点找不到");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 line=n;
@@ -6237,7 +6218,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //矩阵无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -6353,7 +6334,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6376,7 +6357,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QStringLiteral("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     paused_key=key;
@@ -6467,7 +6448,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 {
                     //矩阵无效
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+change+QString::fromLocal8Bit("矩阵没有获取到有效值");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -6504,7 +6485,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6549,7 +6530,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos1+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos1+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6567,7 +6548,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos2+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos2+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6585,7 +6566,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     {
                         //点无效
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+": "+s_pos3+QString::fromLocal8Bit("点没有获取到坐标值");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+": "+s_pos3+QStringLiteral("点没有获取到坐标值");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6655,7 +6636,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
                     {
                         main_record.lock();
-                        return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 圆弧三点轨迹拟合出错");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -6678,7 +6659,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QStringLiteral("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     paused_key=key;
@@ -6773,7 +6754,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             if(b_cmdlist_build==false)     //停止
                             {
                                 main_record.lock();
-                                return_msg=QString::fromLocal8Bit("手动停止进程");
+                                return_msg=QStringLiteral("手动停止进程");
                                 m_mcs->main_record.push_back(return_msg);
                                 main_record.unlock();
                                 paused_key=key;
@@ -6792,7 +6773,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QStringLiteral("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     paused_key=key;
@@ -6833,7 +6814,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 else
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊缝搜索异常");
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 焊缝搜索异常");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     line=n;
@@ -6843,7 +6824,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             else
             {
                 main_record.lock();
-                return_msg=QString::fromLocal8Bit("Line")+QString::number(n)+QString::fromLocal8Bit(": 焊缝搜索异常");
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 焊缝搜索异常");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
                 line=n;
@@ -6855,7 +6836,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 if(b_cmdlist_build==false)     //停止
                 {
                     main_record.lock();
-                    return_msg=QString::fromLocal8Bit("手动停止进程");
+                    return_msg=QStringLiteral("手动停止进程");
                     m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     paused_key=key;
@@ -6906,7 +6887,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         else if(key==CMD_STOP_KEY)//流程停止了
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("代码中停止进程");
+            return_msg=QStringLiteral("代码中停止进程");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             line=n;
@@ -6926,7 +6907,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         if(b_cmdlist_build==false)//流程停止或暂停了
         {
             main_record.lock();
-            return_msg=QString::fromLocal8Bit("手动停止进程");
+            return_msg=QStringLiteral("手动停止进程");
             m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             line=n;
@@ -6937,7 +6918,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
     u16data_elec_work=0;
     cmd_elec(STATIC);
     main_record.lock();
-    return_msg=QString::fromLocal8Bit("指令执行结束");
+    return_msg=QStringLiteral("指令执行结束");
     m_mcs->main_record.push_back(return_msg);
     main_record.unlock();
     line=m_mcs->project->project_cmdlist.size();

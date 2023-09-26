@@ -28,13 +28,13 @@ void infoDlg::init_dlg_show()
         int day=m_mcs->sn_data.nLeftHours/(60*24);
         int hours=(m_mcs->sn_data.nLeftHours-day*24*60)/60;
         int minute=m_mcs->sn_data.nLeftHours-day*24*60-hours*60;
-        msg=QString::number(day)+QString::fromLocal8Bit("天")+
-            QString::number(hours)+QString::fromLocal8Bit("时")+
-            QString::number(minute)+QString::fromLocal8Bit("分");
+        msg=QString::number(day)+QStringLiteral("天")+
+            QString::number(hours)+QStringLiteral("时")+
+            QString::number(minute)+QStringLiteral("分");
     }
     else
     {
-        msg=QString::fromLocal8Bit("无限制");
+        msg=QStringLiteral("无限制");
     }
     ui->nLeftHourslabel->setText(msg);
 
@@ -51,14 +51,14 @@ void infoDlg::on_SN_DataBtn_clicked()//修改有效期
     int day=m_mcs->sn_data.nLeftHours/(60*24);
     int hours=(m_mcs->sn_data.nLeftHours-day*24*60)/60;
     int minute=m_mcs->sn_data.nLeftHours-day*24*60-hours*60;
-    msg=QString::fromLocal8Bit("剩余使用时长")+
-            QString::number(day)+QString::fromLocal8Bit("天")+
-            QString::number(hours)+QString::fromLocal8Bit("时")+
-            QString::number(minute)+QString::fromLocal8Bit("分")+
-            QString::fromLocal8Bit(",请输入序列号:");
+    msg=QStringLiteral("剩余使用时长")+
+            QString::number(day)+QStringLiteral("天")+
+            QString::number(hours)+QStringLiteral("时")+
+            QString::number(minute)+QStringLiteral("分")+
+            QStringLiteral(",请输入序列号:");
 
     sndata->init_dlg_show(msg);
-    sndata->setWindowTitle(QString::fromLocal8Bit("软件激活"));
+    sndata->setWindowTitle(QStringLiteral("软件激活"));
     int rc=sndata->exec();
     sndata->close_dlg_show();
 
@@ -69,13 +69,13 @@ void infoDlg::on_SN_DataBtn_clicked()//修改有效期
             day=m_mcs->sn_data.nLeftHours/(60*24);
             hours=(m_mcs->sn_data.nLeftHours-day*24*60)/60;
             minute=m_mcs->sn_data.nLeftHours-day*24*60-hours*60;
-            msg=QString::number(day)+QString::fromLocal8Bit("天")+
-                QString::number(hours)+QString::fromLocal8Bit("时")+
-                QString::number(minute)+QString::fromLocal8Bit("分");
+            msg=QString::number(day)+QStringLiteral("天")+
+                QString::number(hours)+QStringLiteral("时")+
+                QString::number(minute)+QStringLiteral("分");
         }
         else
         {
-            msg=QString::fromLocal8Bit("无限制");
+            msg=QStringLiteral("无限制");
         }
         ui->nLeftHourslabel->setText(msg);
     }

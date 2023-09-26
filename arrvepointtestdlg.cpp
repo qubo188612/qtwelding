@@ -30,37 +30,37 @@ void arrvepointtestDlg::on_arriveBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     if(ui->lineEdit_X->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填入X数据"));
+        ui->record->append(QStringLiteral("请填入X数据"));
         return;
     }
     if(ui->lineEdit_Y->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填入Y数据"));
+        ui->record->append(QStringLiteral("请填入Y数据"));
         return;
     }
     if(ui->lineEdit_Z->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填入Z数据"));
+        ui->record->append(QStringLiteral("请填入Z数据"));
         return;
     }
     if(ui->lineEdit_RX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填入RX数据"));
+        ui->record->append(QStringLiteral("请填入RX数据"));
         return;
     }
     if(ui->lineEdit_RY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填入RY数据"));
+        ui->record->append(QStringLiteral("请填入RY数据"));
         return;
     }
     if(ui->lineEdit_RZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填入RZ数据"));
+        ui->record->append(QStringLiteral("请填入RZ数据"));
         return;
     }
     RobPos pos;
@@ -68,37 +68,37 @@ void arrvepointtestDlg::on_arriveBtn_pressed()
     pos.X=ui->lineEdit_X->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("X数据格式异常"));
+        ui->record->append(QStringLiteral("X数据格式异常"));
         return;
     }
     pos.Y=ui->lineEdit_Y->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("Y数据格式异常"));
+        ui->record->append(QStringLiteral("Y数据格式异常"));
         return;
     }
     pos.Z=ui->lineEdit_Z->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("Z数据格式异常"));
+        ui->record->append(QStringLiteral("Z数据格式异常"));
         return;
     }
     pos.RX=ui->lineEdit_RX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("RX数据格式异常"));
+        ui->record->append(QStringLiteral("RX数据格式异常"));
         return;
     }
     pos.RY=ui->lineEdit_RY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("RY数据格式异常"));
+        ui->record->append(QStringLiteral("RY数据格式异常"));
         return;
     }
     pos.RZ=ui->lineEdit_RZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("RZ数据格式异常"));
+        ui->record->append(QStringLiteral("RZ数据格式异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -108,7 +108,7 @@ void arrvepointtestDlg::on_arriveBtn_pressed()
     int tcp=m_mcs->e2proomdata.maindlg_movetcp;
     movemod=MOVEJ;//用关节移动方式到位
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //长按到点抬起
@@ -116,11 +116,11 @@ void arrvepointtestDlg::on_arriveBtn_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 
@@ -142,12 +142,12 @@ void arrvepointtestDlg::on_updataleaser_clicked()
     }
     if(m_mcs->cam->sop_cam[0].b_ros_lineEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取激光头坐标失败"));
+        ui->record->append(QStringLiteral("获取激光头坐标失败"));
         return;
     }
     else if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
         return;
     }
     else
@@ -172,7 +172,7 @@ void arrvepointtestDlg::on_updataleaser_clicked()
     #endif
         if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
         {
-            ui->record->append(QString::fromLocal8Bit("扫描计算结果出错"));
+            ui->record->append(QStringLiteral("扫描计算结果出错"));
             return;
         }
         ui->lineEdit_X->setText(QString::number(weld_trace[0].X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -181,7 +181,7 @@ void arrvepointtestDlg::on_updataleaser_clicked()
         ui->lineEdit_RX->setText(QString::number(scan_trace[0].robotpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RY->setText(QString::number(scan_trace[0].robotpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RZ->setText(QString::number(scan_trace[0].robotpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("更新机器人坐标完成"));
+        ui->record->append(QStringLiteral("更新机器人坐标完成"));
     }
 }
 
@@ -190,7 +190,7 @@ void arrvepointtestDlg::on_updatapose_clicked()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     int num=0;
@@ -206,14 +206,14 @@ void arrvepointtestDlg::on_updatapose_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
         ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("更新当前机器人坐标完成"));
+        ui->record->append(QStringLiteral("更新当前机器人坐标完成"));
     }
 }
 
@@ -222,7 +222,7 @@ void arrvepointtestDlg::on_updatapos_clicked()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     int num=0;
@@ -238,7 +238,7 @@ void arrvepointtestDlg::on_updatapos_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
@@ -248,7 +248,7 @@ void arrvepointtestDlg::on_updatapos_clicked()
         ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("更新当前机器人坐标完成"));
+        ui->record->append(QStringLiteral("更新当前机器人坐标完成"));
     }
 }
 

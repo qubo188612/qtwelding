@@ -41,19 +41,19 @@ void sndataDlg::on_pushButton_clicked()
         QString msg;
         if(m_mcs->sn_data.nLeftHours==SN_TIME_SN)
         {
-            msg=QString::fromLocal8Bit("序列号验证正确,有效期永久");
+            msg=QStringLiteral("序列号验证正确,有效期永久");
         }
         else
         {
             int day=m_mcs->sn_data.nLeftHours/(60*24);
             int hours=(m_mcs->sn_data.nLeftHours-day*24*60)/60;
             int minute=m_mcs->sn_data.nLeftHours-day*24*60-hours*60;
-            msg=QString::fromLocal8Bit("序列号验证正确,剩余使用时长")+
-                    QString::number(day)+QString::fromLocal8Bit("天")+
-                    QString::number(hours)+QString::fromLocal8Bit("时")+
-                    QString::number(minute)+QString::fromLocal8Bit("分");
+            msg=QStringLiteral("序列号验证正确,剩余使用时长")+
+                    QString::number(day)+QStringLiteral("天")+
+                    QString::number(hours)+QStringLiteral("时")+
+                    QString::number(minute)+QStringLiteral("分");
         }
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
                                                                       msg,
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes

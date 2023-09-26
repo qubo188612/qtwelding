@@ -67,12 +67,12 @@ void keyplotposDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->plotposBtn->setText(QString::fromLocal8Bit("插入计算点坐标指令"));
+        ui->plotposBtn->setText(QStringLiteral("插入计算点坐标指令"));
     }
     else
     {
         b_inster=true;
-        ui->plotposBtn->setText(QString::fromLocal8Bit("替换计算点坐标指令"));
+        ui->plotposBtn->setText(QStringLiteral("替换计算点坐标指令"));
     }
 }
 
@@ -92,7 +92,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
         QString name=ui->plotposname->text();
         if(name.size()==0)
         {
-            ui->record->append(QString::fromLocal8Bit("请输入要插入的点坐标名字"));
+            ui->record->append(QStringLiteral("请输入要插入的点坐标名字"));
             return;
         }
         if(b_inster==false)
@@ -101,7 +101,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
             {
                 if(name==m_mcs->project->project_robpos_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("要生成的点坐标与已有的点坐标重名"));
+                    ui->record->append(QStringLiteral("要生成的点坐标与已有的点坐标重名"));
                     return;
                 }
             }
@@ -115,7 +115,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
             {
                 if(m_mcs->project->project_weld_trace.size()<=0)
                 {
-                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的跟踪轨迹"));
+                    ui->record->append(QStringLiteral("当前指令位置没有可用的跟踪轨迹"));
                     return;
                 }
                 if(b_inster==false)
@@ -126,7 +126,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
                 {
                     plotedit0->init_dlg_show(cmd_list_in);
                 }
-                plotedit0->setWindowTitle(QString::fromLocal8Bit("计算点坐标(三直线交点模式)"));
+                plotedit0->setWindowTitle(QStringLiteral("计算点坐标(三直线交点模式)"));
                 int rc=plotedit0->exec();
                 plotedit0->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -138,7 +138,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
                     scanname[1]=plotedit0->name1;
                     scanname[2]=plotedit0->name2;
                     QString msg=cmd.cmd_plotpos(plotpos_edit_mode,scanname,nullname,name);
-                    ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
+                    ui->record->append(QStringLiteral("插入计算点坐标指令成功"));
                     cmd_msg=msg;
                     done(1);
                 }
@@ -148,7 +148,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
             {
                 if(m_mcs->project->project_robpos_trace.size()<=0)
                 {
-                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的点坐标"));
+                    ui->record->append(QStringLiteral("当前指令位置没有可用的点坐标"));
                     return;
                 }
                 if(b_inster==false)
@@ -159,7 +159,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
                 {
                     plotedit1->init_dlg_show(cmd_list_in);
                 }
-                plotedit1->setWindowTitle(QString::fromLocal8Bit("计算点坐标(两点直线与三点交点模式)"));
+                plotedit1->setWindowTitle(QStringLiteral("计算点坐标(两点直线与三点交点模式)"));
                 int rc=plotedit1->exec();
                 plotedit1->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -173,7 +173,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
                     pointsname[3]=plotedit1->name3;
                     pointsname[4]=plotedit1->name4;
                     QString msg=cmd.cmd_plotpos(plotpos_edit_mode,nullname,pointsname,name);
-                    ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
+                    ui->record->append(QStringLiteral("插入计算点坐标指令成功"));
                     cmd_msg=msg;
                     done(1);
                 }
@@ -183,12 +183,12 @@ void keyplotposDlg::on_plotposBtn_clicked()
             {
                 if(m_mcs->project->project_robpos_trace.size()<=0)
                 {
-                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的点坐标"));
+                    ui->record->append(QStringLiteral("当前指令位置没有可用的点坐标"));
                     return;
                 }
                 if(m_mcs->project->project_weld_trace.size()<=0)
                 {
-                    ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的跟踪轨迹"));
+                    ui->record->append(QStringLiteral("当前指令位置没有可用的跟踪轨迹"));
                     return;
                 }
                 if(b_inster==false)
@@ -199,7 +199,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
                 {
                     plotedit2->init_dlg_show(cmd_list_in);
                 }
-                plotedit2->setWindowTitle(QString::fromLocal8Bit("计算点坐标(直线与三点交点模式)"));
+                plotedit2->setWindowTitle(QStringLiteral("计算点坐标(直线与三点交点模式)"));
                 int rc=plotedit2->exec();
                 plotedit2->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -213,7 +213,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
                     pointsname[1]=plotedit2->name2;
                     pointsname[2]=plotedit2->name3;
                     QString msg=cmd.cmd_plotpos(plotpos_edit_mode,scanname,pointsname,name);
-                    ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
+                    ui->record->append(QStringLiteral("插入计算点坐标指令成功"));
                     cmd_msg=msg;
                     done(1);
                 }
@@ -223,7 +223,7 @@ void keyplotposDlg::on_plotposBtn_clicked()
     }
     else
     {
-        QString msg=QString::fromLocal8Bit("程序有错误，请先排除:");
+        QString msg=QStringLiteral("程序有错误，请先排除:");
         ui->record->append(msg);
         for(int i=0;i<err_msg.size();i++)
         {

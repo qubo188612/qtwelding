@@ -48,11 +48,11 @@ void keyaoutDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->AoutputBtn->setText(QString::fromLocal8Bit("插入模拟量输出指令"));
+        ui->AoutputBtn->setText(QStringLiteral("插入模拟量输出指令"));
     }
     else
     {
-        ui->AoutputBtn->setText(QString::fromLocal8Bit("替换模拟量输出指令"));
+        ui->AoutputBtn->setText(QStringLiteral("替换模拟量输出指令"));
     }
 }
 
@@ -68,35 +68,35 @@ void keyaoutDlg::on_AoutputBtn_clicked()
     QString s_A4=ui->A4lineEdit->text();
     if(s_A1.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写A1模拟量"));
+        ui->record->append(QStringLiteral("请填写A1模拟量"));
         return;
     }
     aout[0]=s_A1.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("A1模拟量内容格式错误"));
+        ui->record->append(QStringLiteral("A1模拟量内容格式错误"));
         return;
     }
     aout[1]=s_A2.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("A2模拟量内容格式错误"));
+        ui->record->append(QStringLiteral("A2模拟量内容格式错误"));
         return;
     }
     aout[2]=s_A3.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("A3模拟量内容格式错误"));
+        ui->record->append(QStringLiteral("A3模拟量内容格式错误"));
         return;
     }
     aout[3]=s_A4.toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("A4模拟量内容格式错误"));
+        ui->record->append(QStringLiteral("A4模拟量内容格式错误"));
         return;
     }
     msg=cmd.cmd_aout(aout);
-    ui->record->append(QString::fromLocal8Bit("插入模拟量输出指令成功"));
+    ui->record->append(QStringLiteral("插入模拟量输出指令成功"));
     cmd_msg=msg;
     done(1);
 }

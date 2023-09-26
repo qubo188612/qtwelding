@@ -63,16 +63,16 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
 
     b_robot_serves=false;
 
-    ui->tabWidget->setTabText(0,QString::fromLocal8Bit("任务0-99"));
-    ui->tabWidget->setTabText(1,QString::fromLocal8Bit("任务100"));
-    ui->tabWidget->setTabText(2,QString::fromLocal8Bit("任务101"));
-    ui->tabWidget->setTabText(3,QString::fromLocal8Bit("任务102"));
-    ui->tabWidget->setTabText(4,QString::fromLocal8Bit("任务103"));
-    ui->tabWidget->setTabText(5,QString::fromLocal8Bit("任务104"));
-    ui->tabWidget->setTabText(6,QString::fromLocal8Bit("任务105"));
-    ui->tabWidget->setTabText(7,QString::fromLocal8Bit("任务106"));
-    ui->tabWidget->setTabText(8,QString::fromLocal8Bit("任务107"));
-    ui->tabWidget->setTabText(9,QString::fromLocal8Bit("任务108"));
+    ui->tabWidget->setTabText(0,QStringLiteral("任务0-99"));
+    ui->tabWidget->setTabText(1,QStringLiteral("任务100"));
+    ui->tabWidget->setTabText(2,QStringLiteral("任务101"));
+    ui->tabWidget->setTabText(3,QStringLiteral("任务102"));
+    ui->tabWidget->setTabText(4,QStringLiteral("任务103"));
+    ui->tabWidget->setTabText(5,QStringLiteral("任务104"));
+    ui->tabWidget->setTabText(6,QStringLiteral("任务105"));
+    ui->tabWidget->setTabText(7,QStringLiteral("任务106"));
+    ui->tabWidget->setTabText(8,QStringLiteral("任务107"));
+    ui->tabWidget->setTabText(9,QStringLiteral("任务108"));
 
     ui->IPadd->setText(m_mcs->cam->sop_cam[0].ipaddress);
 
@@ -274,18 +274,18 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=4)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("更新机器人IP地址设置失败"));
+                        ui->record->append(QStringLiteral("更新机器人IP地址设置失败"));
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("更新机器人IP地址设置成功"));
+                        ui->record->append(QStringLiteral("更新机器人IP地址设置成功"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("机器人IP地址非法,请检查"));
+                    ui->record->append(QStringLiteral("机器人IP地址非法,请检查"));
             }
 
             tab_reg[0]=robotmod;
@@ -294,18 +294,18 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             if(rc!=2)
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("更新机器人设置失败"));
+                    ui->record->append(QStringLiteral("更新机器人设置失败"));
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("更新机器人设置成功,请重启激光头"));
+                    ui->record->append(QStringLiteral("更新机器人设置成功,请重启激光头"));
             }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置机器人参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置机器人参数"));
        }
     });
 
@@ -317,7 +317,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号"));
        }
     });
     connect(ui->taskclearBtn,&QPushButton::clicked,[=](){
@@ -325,14 +325,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         {
             taskclear->get_task_list();
             taskclear->init_dlg_show();
-            taskclear->setWindowTitle(QString::fromLocal8Bit("查看任务号列表"));
+            taskclear->setWindowTitle(QStringLiteral("查看任务号列表"));
             taskclear->exec();
             taskclear->close_dlg_show();
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再查看任务号列表"));
+                 ui->record->append(QStringLiteral("请连接相机后再查看任务号列表"));
         }
      });
     connect(ui->psetBtn,&QPushButton::clicked,[=](){
@@ -353,32 +353,32 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             if(rc!=3)
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("更新P变量设置失败"));
+                    ui->record->append(QStringLiteral("更新P变量设置失败"));
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("更新P变量设置成功,请重启激光头"));
+                    ui->record->append(QStringLiteral("更新P变量设置成功,请重启激光头"));
             }
         }
         else
         {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置P变量参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置P变量参数"));
         }
     });
     connect(ui->pshowBtn,&QPushButton::clicked,[=](){
         if(m_mcs->resultdata.link_result_state==true)
         {
             pshow->init_dlg_show();
-            pshow->setWindowTitle(QString::fromLocal8Bit("查看P变量图示"));
+            pshow->setWindowTitle(QStringLiteral("查看P变量图示"));
             pshow->exec();
             pshow->close_dlg_show();
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再查看P变量图示"));
+                 ui->record->append(QStringLiteral("请连接相机后再查看P变量图示"));
         }
     });
 
@@ -418,12 +418,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     }
                     if(ui->checkBox->isChecked()==false)
                     {
-                         QString msg=QString::fromLocal8Bit("当前任务号列表:共")+QString::number(m_mcs->resultdata.taskfilename.size())+QString::fromLocal8Bit("个");
+                         QString msg=QStringLiteral("当前任务号列表:共")+QString::number(m_mcs->resultdata.taskfilename.size())+QStringLiteral("个");
                          ui->record->append(msg);
                          for(int i=0;i<m_mcs->resultdata.taskfilename.size();i++)
                          {
-                             QString msg=QString::fromLocal8Bit("任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
-                                     QString::fromLocal8Bit(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
+                             QString msg=QStringLiteral("任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
+                                     QStringLiteral(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
                              ui->record->append(msg);
                          }
                     }
@@ -435,7 +435,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     {
                         if(ui->checkBox->isChecked()==false)
                         {
-                            ui->record->append(QString::fromLocal8Bit("自定义任务号生成成功"));
+                            ui->record->append(QStringLiteral("自定义任务号生成成功"));
                         }
                     }
                 }
@@ -445,7 +445,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     {
                         if(ui->checkBox->isChecked()==false)
                         {
-                            ui->record->append(QString::fromLocal8Bit("删除自定义任务号完成"));
+                            ui->record->append(QStringLiteral("删除自定义任务号完成"));
                         }
                     }
                     taskclear->delete_task_num();
@@ -471,7 +471,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                         #endif
                             if(ui->checkBox->isChecked()==false)
                             {
-                                QString msg=QString::fromLocal8Bit("homography_matrix:[");
+                                QString msg=QStringLiteral("homography_matrix:[");
                                 for(int i=0;i<m_mcs->resultdata.homography_matrix.size();i++)
                                 {
                                     msg=msg+QString::number(m_mcs->resultdata.homography_matrix[i],'f',3);
@@ -497,7 +497,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                             }
                             if(ui->checkBox->isChecked()==false)
                             {
-                                QString msg=QString::fromLocal8Bit("pData_demdlg_R:[");
+                                QString msg=QStringLiteral("pData_demdlg_R:[");
                                 for(int i=0;i<m_mcs->resultdata.pData_demdlg_R.size();i++)
                                 {
                                     msg=msg+QString::number(m_mcs->resultdata.pData_demdlg_R[i],'f',3);
@@ -523,7 +523,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                             }
                             if(ui->checkBox->isChecked()==false)
                             {
-                                QString msg=QString::fromLocal8Bit("pData_demdlg_T:[");
+                                QString msg=QStringLiteral("pData_demdlg_T:[");
                                 for(int i=0;i<m_mcs->resultdata.pData_demdlg_T.size();i++)
                                 {
                                     msg=msg+QString::number(m_mcs->resultdata.pData_demdlg_T[i],'f',3);
@@ -549,7 +549,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                             }
                             if(ui->checkBox->isChecked()==false)
                             {
-                                QString msg=QString::fromLocal8Bit("pData_matrix_camera2plane:[");
+                                QString msg=QStringLiteral("pData_matrix_camera2plane:[");
                                 for(int i=0;i<m_mcs->resultdata.pData_matrix_camera2plane.size();i++)
                                 {
                                     msg=msg+QString::number(m_mcs->resultdata.pData_matrix_camera2plane[i],'f',3);
@@ -575,7 +575,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                             }
                             if(ui->checkBox->isChecked()==false)
                             {
-                                QString msg=QString::fromLocal8Bit("pData_matrix_plane2robot:[");
+                                QString msg=QStringLiteral("pData_matrix_plane2robot:[");
                                 for(int i=0;i<m_mcs->resultdata.pData_matrix_plane2robot.size();i++)
                                 {
                                     msg=msg+QString::number(m_mcs->resultdata.pData_matrix_plane2robot[i],'f',3);
@@ -617,18 +617,18 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
              if(rc!=5)
              {
                  if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("更新相机设置失败"));
+                     ui->record->append(QStringLiteral("更新相机设置失败"));
              }
              else
              {
                  if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("更新相机设置成功,请重启激光头"));
+                     ui->record->append(QStringLiteral("更新相机设置成功,请重启激光头"));
              }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置相机参数"));
+                 ui->record->append(QStringLiteral("请连接相机后再设置相机参数"));
         }
     });
     connect(ui->setdposBtn,&QPushButton::clicked,[=](){
@@ -648,24 +648,24 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                  if(rc!=3)
                  {
                      if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("更新补偿设置失败"));
+                         ui->record->append(QStringLiteral("更新补偿设置失败"));
                  }
                  else
                  {
                      if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("更新补偿设置成功"));
+                         ui->record->append(QStringLiteral("更新补偿设置成功"));
                  }
              }
              else
              {
                  if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("补偿数据格式输入错误"));
+                     ui->record->append(QStringLiteral("补偿数据格式输入错误"));
              }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置补偿参数"));
+                 ui->record->append(QStringLiteral("请连接相机后再设置补偿参数"));
         }
     });
 
@@ -695,12 +695,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     ui->checkBox_Y->setChecked(false);
                 }
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("Y轴反向参数设置失败"));
+                    ui->record->append(QStringLiteral("Y轴反向参数设置失败"));
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("Y轴反向参数设置成功"));
+                    ui->record->append(QStringLiteral("Y轴反向参数设置成功"));
             }
         }
         else
@@ -714,7 +714,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 ui->checkBox_Y->setChecked(false);
             }
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置Y轴反向参数"));
+                 ui->record->append(QStringLiteral("请连接相机后再设置Y轴反向参数"));
         }
     });
 
@@ -744,12 +744,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     ui->checkBox_Z->setChecked(false);
                 }
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("Z轴反向参数设置失败"));
+                    ui->record->append(QStringLiteral("Z轴反向参数设置失败"));
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("Z轴反向参数设置成功"));
+                    ui->record->append(QStringLiteral("Z轴反向参数设置成功"));
             }
         }
         else
@@ -763,7 +763,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 ui->checkBox_Z->setChecked(false);
             }
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再设置Z轴反向参数"));
+                 ui->record->append(QStringLiteral("请连接相机后再设置Z轴反向参数"));
         }
     });
 
@@ -776,7 +776,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg0_99_threshold<20||alg0_99_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -784,13 +784,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                m_mcs->cam->sop_cam[0].roscmd_set_exposure(m_mcs->cam->sop_cam[0].i32_exposure);
                m_mcs->resultdata.alg100_threshold=alg0_99_threshold;
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("设置相机曝光值成功"));
+                   ui->record->append(QStringLiteral("设置相机曝光值成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置曝光值"));
+                ui->record->append(QStringLiteral("请连接相机后再设置曝光值"));
        }
     });
 
@@ -814,18 +814,18 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
                ui->alg0_99_threshold->setText(QString::number(exposure));
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取相机曝光值成功"));
+                   ui->record->append(QStringLiteral("读取相机曝光值成功"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取相机曝光值失败"));
+                   ui->record->append(QStringLiteral("读取相机曝光值失败"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取曝光值"));
+                ui->record->append(QStringLiteral("请连接相机后再读取曝光值"));
        }
     });
 #endif
@@ -836,7 +836,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg100_threshold<20||alg100_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -850,20 +850,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS100_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号100参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号100参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg100_threshold=alg100_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号100参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号100参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号100参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号100参数"));
        }
     });
 
@@ -876,12 +876,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号100参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号100参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号100参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号100参数成功"));
            #if _MSC_VER
                Sleep(1000);
            #else
@@ -893,7 +893,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号100参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号100参数失败"));
                }
                else
                {
@@ -917,14 +917,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号100参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号100参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号100参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号100参数"));
        }
     });
 
@@ -937,7 +937,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号100参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号100参数失败"));
            }
            else
            {
@@ -961,13 +961,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号100参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号100参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号100参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号100参数"));
        }
     });
 
@@ -991,26 +991,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:100");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:100");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -1031,7 +1031,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=4)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                        ui->record->append(QStringLiteral("设置更新区域失败"));
                 }
                 else
                 {
@@ -1040,7 +1040,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     ui->tab2tableWidget->item(ALS100_CUTTOP_REG_ADD-ALS100_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_top));
                     ui->tab2tableWidget->item(ALS100_CUTDEEP_REG_ADD-ALS100_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_deep));
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                        ui->record->append(QStringLiteral("设置更新区域成功"));
                 }
 
             }
@@ -1048,7 +1048,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+                 ui->record->append(QStringLiteral("请连接相机后再更新区域"));
         }
     });
 
@@ -1059,7 +1059,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg101_threshold<20||alg101_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -1073,20 +1073,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS101_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号101参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号101参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg101_threshold=alg101_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号101参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号101参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号101参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号101参数"));
        }
     });
 
@@ -1099,12 +1099,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号101参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号101参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号101参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号101参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -1116,7 +1116,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号101参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号101参数失败"));
                }
                else
                {
@@ -1140,14 +1140,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号101参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号101参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号101参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号101参数"));
        }
     });
 
@@ -1160,7 +1160,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号101参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号101参数失败"));
            }
            else
            {
@@ -1184,13 +1184,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号101参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号101参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号101参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号101参数"));
        }
     });
 
@@ -1214,26 +1214,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:101");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:101");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -1254,7 +1254,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=4)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                        ui->record->append(QStringLiteral("设置更新区域失败"));
                 }
                 else
                 {
@@ -1263,7 +1263,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     ui->tab3tableWidget->item(ALS101_CUTTOP_REG_ADD-ALS101_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_top));
                     ui->tab3tableWidget->item(ALS101_CUTDEEP_REG_ADD-ALS101_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_deep));
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                        ui->record->append(QStringLiteral("设置更新区域成功"));
                 }
 
             }
@@ -1271,7 +1271,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+                 ui->record->append(QStringLiteral("请连接相机后再更新区域"));
         }
     });
 
@@ -1282,7 +1282,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg102_threshold<20||alg102_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -1296,20 +1296,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS102_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号102参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号102参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg102_threshold=alg102_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号102参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号102参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号102参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号102参数"));
        }
     });
 
@@ -1322,12 +1322,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号102参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号102参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号102参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号102参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -1339,7 +1339,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号102参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号102参数失败"));
                }
                else
                {
@@ -1363,14 +1363,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号102参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号102参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号102参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号102参数"));
        }
     });
 
@@ -1383,7 +1383,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号102参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号102参数失败"));
            }
            else
            {
@@ -1407,13 +1407,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号102参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号102参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号102参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号102参数"));
        }
     });
 
@@ -1437,26 +1437,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:102");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:102");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -1467,7 +1467,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg103_threshold<20||alg103_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -1481,20 +1481,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS103_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号103参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号103参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg103_threshold=alg103_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号103参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号103参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号103参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号103参数"));
        }
     });
 
@@ -1507,12 +1507,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号103参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号103参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号103参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号103参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -1524,7 +1524,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号103参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号103参数失败"));
                }
                else
                {
@@ -1548,14 +1548,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号103参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号103参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号103参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号103参数"));
        }
     });
 
@@ -1568,7 +1568,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号103参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号103参数失败"));
            }
            else
            {
@@ -1592,13 +1592,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号103参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号103参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号103参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号103参数"));
        }
     });
 
@@ -1622,26 +1622,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:103");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:103");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -1652,7 +1652,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg104_threshold<20||alg104_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -1666,20 +1666,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS104_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号104参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号104参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg104_threshold=alg104_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号104参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号104参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号104参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号104参数"));
        }
     });
 
@@ -1692,12 +1692,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号104参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号104参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号104参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号104参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -1709,7 +1709,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号104参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号104参数失败"));
                }
                else
                {
@@ -1733,14 +1733,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号104参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号104参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号104参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号104参数"));
        }
     });
 
@@ -1753,7 +1753,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号104参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号104参数失败"));
            }
            else
            {
@@ -1777,13 +1777,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号104参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号104参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号104参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号104参数"));
        }
     });
 
@@ -1807,26 +1807,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:104");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:104");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -1837,7 +1837,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg105_threshold<20||alg105_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -1851,20 +1851,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS105_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号105参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号105参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg105_threshold=alg105_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号105参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号105参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号105参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号105参数"));
        }
     });
 
@@ -1877,12 +1877,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号105参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号105参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号105参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号105参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -1894,7 +1894,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号105参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号105参数失败"));
                }
                else
                {
@@ -1918,14 +1918,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号105参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号105参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号105参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号105参数"));
        }
     });
 
@@ -1938,7 +1938,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号105参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号105参数失败"));
            }
            else
            {
@@ -1962,13 +1962,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号105参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号105参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号105参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号105参数"));
        }
     });
 
@@ -1992,26 +1992,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:105");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:105");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -2032,7 +2032,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=4)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                        ui->record->append(QStringLiteral("设置更新区域失败"));
                 }
                 else
                 {
@@ -2041,7 +2041,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     ui->tab7tableWidget->item(ALS105_CUTTOP_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_top));
                     ui->tab7tableWidget->item(ALS105_CUTDEEP_REG_ADD-ALS105_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_deep));
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                        ui->record->append(QStringLiteral("设置更新区域成功"));
                 }
 
             }
@@ -2049,7 +2049,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+                 ui->record->append(QStringLiteral("请连接相机后再更新区域"));
         }
     });
 
@@ -2060,7 +2060,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg106_threshold<20||alg106_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -2074,20 +2074,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS106_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号106参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号106参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg106_threshold=alg106_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号106参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号106参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号106参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号106参数"));
        }
     });
 
@@ -2100,12 +2100,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号106参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号106参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号106参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号106参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -2117,7 +2117,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号106参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号106参数失败"));
                }
                else
                {
@@ -2141,14 +2141,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号106参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号106参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号106参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号106参数"));
        }
     });
 
@@ -2161,7 +2161,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号106参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号106参数失败"));
            }
            else
            {
@@ -2185,13 +2185,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号106参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号106参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号106参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号106参数"));
        }
     });
 
@@ -2215,26 +2215,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:106");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:106");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -2255,7 +2255,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=4)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                        ui->record->append(QStringLiteral("设置更新区域失败"));
                 }
                 else
                 {
@@ -2264,7 +2264,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     ui->tab8tableWidget->item(ALS106_CUTTOP_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_top));
                     ui->tab8tableWidget->item(ALS106_CUTDEEP_REG_ADD-ALS106_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_deep));
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                        ui->record->append(QStringLiteral("设置更新区域成功"));
                 }
 
             }
@@ -2272,7 +2272,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+                 ui->record->append(QStringLiteral("请连接相机后再更新区域"));
         }
     });
 
@@ -2283,7 +2283,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg107_threshold<20||alg107_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -2297,20 +2297,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS107_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号107参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号107参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg107_threshold=alg107_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号107参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号107参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号107参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号107参数"));
        }
     });
 
@@ -2323,12 +2323,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号107参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号107参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号107参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号107参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -2340,7 +2340,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号107参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号107参数失败"));
                }
                else
                {
@@ -2364,14 +2364,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号107参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号107参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号107参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号107参数"));
        }
     });
 
@@ -2384,7 +2384,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号107参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号107参数失败"));
            }
            else
            {
@@ -2408,13 +2408,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号107参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号107参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号107参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号107参数"));
        }
     });
 
@@ -2438,26 +2438,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:107");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:107");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -2468,7 +2468,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(alg108_threshold<20||alg108_threshold>65535)
            {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("设置相机曝光值超出范围"));
+                    ui->record->append(QStringLiteral("设置相机曝光值超出范围"));
            }
            else
            {
@@ -2482,20 +2482,20 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(rc!=ALS108_REG_TOTALNUM)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号108参数失败"));
+                       ui->record->append(QStringLiteral("设置任务号108参数失败"));
                }
                else
                {
                    m_mcs->resultdata.alg108_threshold=alg108_threshold;
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("设置任务号108参数成功"));
+                       ui->record->append(QStringLiteral("设置任务号108参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号108参数"));
+                ui->record->append(QStringLiteral("请连接相机后再设置任务号108参数"));
        }
     });
 
@@ -2508,12 +2508,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(rc!=1)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号108参数失败"));
+                   ui->record->append(QStringLiteral("重置任务号108参数失败"));
            }
            else
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("重置任务号108参数成功"));
+                   ui->record->append(QStringLiteral("重置任务号108参数成功"));
                 #if _MSC_VER
                     Sleep(1000);
                 #else
@@ -2525,7 +2525,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                if(real_readnum<0)
                {
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号108参数失败"));
+                       ui->record->append(QStringLiteral("重新读取任务号108参数失败"));
                }
                else
                {
@@ -2549,14 +2549,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                    }
 
                    if(ui->checkBox->isChecked()==false)
-                       ui->record->append(QString::fromLocal8Bit("重新读取任务号108参数成功"));
+                       ui->record->append(QStringLiteral("重新读取任务号108参数成功"));
                }
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再重置任务号108参数"));
+                ui->record->append(QStringLiteral("请连接相机后再重置任务号108参数"));
        }
     });
 
@@ -2569,7 +2569,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
            if(real_readnum<0)
            {
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号108参数失败"));
+                   ui->record->append(QStringLiteral("读取任务号108参数失败"));
            }
            else
            {
@@ -2593,13 +2593,13 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                }
 
                if(ui->checkBox->isChecked()==false)
-                   ui->record->append(QString::fromLocal8Bit("读取任务号108参数成功"));
+                   ui->record->append(QStringLiteral("读取任务号108参数成功"));
            }
        }
        else
        {
            if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("请连接相机后再读取任务号108参数"));
+                ui->record->append(QStringLiteral("请连接相机后再读取任务号108参数"));
        }
     });
 
@@ -2623,26 +2623,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                     m_mcs->resultdata.client->write(arry);
                     if(ui->checkBox->isChecked()==false)
                     {
-                        QString msg=QString::fromLocal8Bit("生成自定义任务号:")+QString::number(taskname)+QString::fromLocal8Bit(" 算法号:108");
+                        QString msg=QStringLiteral("生成自定义任务号:")+QString::number(taskname)+QStringLiteral(" 算法号:108");
                         ui->record->append(msg);
                     }
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                         ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                         ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("另存自定义任务号的值需为200-1000之间或1-99之间"));
+                     ui->record->append(QStringLiteral("另存自定义任务号的值需为200-1000之间或1-99之间"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再另存自定义任务号"));
+                 ui->record->append(QStringLiteral("请连接相机后再另存自定义任务号"));
         }
      });
 
@@ -2661,26 +2661,26 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=2)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域失败"));
+                        ui->record->append(QStringLiteral("设置更新区域失败"));
                 }
                 else
                 {
                     ui->tab10tableWidget->item(ALS108_CENTER_X_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_center_x));
                     ui->tab10tableWidget->item(ALS108_CENTER_Y_REG_ADD-ALS108_EXPOSURE_TIME_REG_ADD-1,2)->setText(QString::number(u16_zoom_center_y));
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("设置更新区域成功"));
+                        ui->record->append(QStringLiteral("设置更新区域成功"));
                 }
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再更新区域"));
+                 ui->record->append(QStringLiteral("请连接相机后再更新区域"));
         }
     });
 
     connect(ui->tasknumshowBtn,&QPushButton::clicked,[=](){
-        showtasknum->setWindowTitle(QString::fromLocal8Bit("任务号图示"));
+        showtasknum->setWindowTitle(QStringLiteral("任务号图示"));
         showtasknum->exec();
     });
 
@@ -2693,12 +2693,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             if(rc!=1)
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(QString::fromLocal8Bit("写入视图步骤失败"));
+                    ui->record->append(QStringLiteral("写入视图步骤失败"));
             }
             else
             {
                 cambuild->init_dlg_show();
-                cambuild->setWindowTitle(QString::fromLocal8Bit("激光头标定"));
+                cambuild->setWindowTitle(QStringLiteral("激光头标定"));
                 cambuild->exec();
                 cambuild->close_dlg_show();
                 tab_reg[0]=1;
@@ -2706,14 +2706,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=1)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("恢复视图步骤失败"));
+                        ui->record->append(QStringLiteral("恢复视图步骤失败"));
                 }
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再进行激光头标定"));
+                 ui->record->append(QStringLiteral("请连接相机后再进行激光头标定"));
         }
     });
 
@@ -2729,24 +2729,24 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 if(rc!=1)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("写入视图步骤失败"));
+                        ui->record->append(QStringLiteral("写入视图步骤失败"));
                 }
                 else
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("写入视图步骤成功"));
+                        ui->record->append(QStringLiteral("写入视图步骤成功"));
                 }
             }
             else
             {
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("请停止录制视频后再写入视图步骤"));
+                     ui->record->append(QStringLiteral("请停止录制视频后再写入视图步骤"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再写入视图步骤"));
+                 ui->record->append(QStringLiteral("请连接相机后再写入视图步骤"));
         }
     });
 
@@ -2763,12 +2763,12 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
             dir=dir+time+format;
             cv::imwrite(dir.toStdString(),(m_mcs->cam->sop_cam[0].cv_image));
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("保存图片成功"));
+                 ui->record->append(QStringLiteral("保存图片成功"));
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再保存图片"));
+                 ui->record->append(QStringLiteral("请连接相机后再保存图片"));
         }
     });
 
@@ -2787,23 +2787,23 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
                 dir=dir+time+format;
                 m_mcs->cam->sop_cam[0].StartRecord(dir);
                 m_mcs->resultdata.b_luzhi=true;
-                ui->saveavishowBtn->setText(QString::fromLocal8Bit("停止录制"));
+                ui->saveavishowBtn->setText(QStringLiteral("停止录制"));
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("视频录制中"));
+                     ui->record->append(QStringLiteral("视频录制中"));
             }
             else if(m_mcs->resultdata.b_luzhi==true)
             {
                 m_mcs->resultdata.b_luzhi=false;
                 m_mcs->cam->sop_cam[0].StopRecord();
-                ui->saveavishowBtn->setText(QString::fromLocal8Bit("录制视频"));
+                ui->saveavishowBtn->setText(QStringLiteral("录制视频"));
                 if(ui->checkBox->isChecked()==false)
-                     ui->record->append(QString::fromLocal8Bit("视频录制完成"));
+                     ui->record->append(QStringLiteral("视频录制完成"));
             }
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再录制视频"));
+                 ui->record->append(QStringLiteral("请连接相机后再录制视频"));
         }
     });
 
@@ -2813,14 +2813,14 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
         if(m_mcs->cam->sop_cam[0].b_connect==true)
         {
             sshpassword->init_dlg_show();
-            sshpassword->setWindowTitle(QString::fromLocal8Bit("激光器升级"));
+            sshpassword->setWindowTitle(QStringLiteral("激光器升级"));
             sshpassword->exec();
             sshpassword->close_dlg_show();
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("请连接相机后再进行激光器升级"));
+                 ui->record->append(QStringLiteral("请连接相机后再进行激光器升级"));
         }
     });
 #endif
@@ -2879,13 +2879,13 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if (modbus_connect(m_mcs->resultdata.ctx_result) == -1)
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(server_port2+QString::fromLocal8Bit("端口连接失败"));
+                    ui->record->append(server_port2+QStringLiteral("端口连接失败"));
                 modbus_free(m_mcs->resultdata.ctx_result);
                 return;
             }      
             m_mcs->resultdata.link_result_state=true;
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(server_port2+QString::fromLocal8Bit("端口连接成功"));
+                ui->record->append(server_port2+QStringLiteral("端口连接成功"));
             open_camer_modbus();
         }
         if(m_mcs->resultdata.link_param_state==false)
@@ -2896,13 +2896,13 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if (modbus_connect(m_mcs->resultdata.ctx_param) == -1)
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+                    ui->record->append(server_port1+QStringLiteral("端口连接失败"));
                 modbus_free(m_mcs->resultdata.ctx_param);
                 return;
             }
             m_mcs->resultdata.link_param_state=true;
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+                ui->record->append(server_port1+QStringLiteral("端口连接成功"));
         }
         if(m_mcs->resultdata.link_robotset_state==false)
         {
@@ -2912,13 +2912,13 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if (modbus_connect(m_mcs->resultdata.ctx_robotset) == -1)
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+                    ui->record->append(server_port1+QStringLiteral("端口连接失败"));
                 modbus_free(m_mcs->resultdata.ctx_robotset);
                 return;
             }
             m_mcs->resultdata.link_robotset_state=true;
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+                ui->record->append(server_port1+QStringLiteral("端口连接成功"));
         }
         if(m_mcs->resultdata.link_ftp_state==false)
         {
@@ -2928,7 +2928,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if(!m_mcs->resultdata.client->waitForConnected(1000))
             {
                 if(ui->checkBox->isChecked()==false)
-                    ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+                    ui->record->append(server_port1+QStringLiteral("端口连接失败"));
                 return;
             }
             /******************/
@@ -2947,7 +2947,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             /*******************/
             m_mcs->resultdata.link_ftp_state=true;
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+                ui->record->append(server_port1+QStringLiteral("端口连接成功"));
         }
 
         int real_readnum;
@@ -2956,7 +2956,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前机器人设置信息失败"));
+                ui->record->append(QStringLiteral("获取当前机器人设置信息失败"));
         }
         else
         {
@@ -2971,76 +2971,76 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
                 {
                     case 0:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:无机器人"));
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:无机器人"));
                     }
                     break;
                     case 1:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:智昌机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:智昌机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 2:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:智昌-川崎机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:智昌-川崎机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 3:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:摩卡-纳伯特机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:摩卡-纳伯特机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 4:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:岗上机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:岗上机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 5:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:埃夫特机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:埃夫特机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 6:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:藦卡机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:藦卡机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 7:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:智歌机器人协议2"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:智歌机器人协议2"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 8:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:华成工控-创想"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:华成工控-创想"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 9:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:新时达机器人"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:新时达机器人"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
                     case 10:
                     {
-                        ui->record->append(QString::fromLocal8Bit("获取当前内部机器人设置:智昌-川崎机器人AS"));
-                        QString msg=QString::fromLocal8Bit("获取当前内部机器人端口号:")+QString::number(port);
+                        ui->record->append(QStringLiteral("获取当前内部机器人设置:智昌-川崎机器人AS"));
+                        QString msg=QStringLiteral("获取当前内部机器人端口号:")+QString::number(port);
                         ui->record->append(msg);
                     }
                     break;
@@ -3053,7 +3053,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前机器人IP地址失败"));
+                ui->record->append(QStringLiteral("获取当前机器人IP地址失败"));
         }
         else
         {
@@ -3065,7 +3065,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             ui->robot_ip->setText(robot_ip);
             if(ui->checkBox->isChecked()==false)
             {
-                QString msg=QString::fromLocal8Bit("当前机器人IP地址:")+robot_ip;
+                QString msg=QStringLiteral("当前机器人IP地址:")+robot_ip;
                 ui->record->append(msg);
             }
         }
@@ -3074,7 +3074,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前标定补偿信息失败"));
+                ui->record->append(QStringLiteral("获取当前标定补偿信息失败"));
         }
         else
         {
@@ -3089,7 +3089,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             ui->dZ->setText(QString::number(f_dZ,'f',2));
             if(ui->checkBox->isChecked()==false)
             {
-                QString msg=QString::fromLocal8Bit("获取当前标定补偿: X=")+QString::number(f_dX,'f',2)+" Y="+QString::number(f_dY,'f',2)+" Z="+QString::number(f_dZ,'f',2);
+                QString msg=QStringLiteral("获取当前标定补偿: X=")+QString::number(f_dX,'f',2)+" Y="+QString::number(f_dY,'f',2)+" Z="+QString::number(f_dZ,'f',2);
                 ui->record->append(msg);
             }
         }
@@ -3098,7 +3098,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前数据反向信息失败"));
+                ui->record->append(QStringLiteral("获取当前数据反向信息失败"));
         }
         else
         {
@@ -3108,26 +3108,26 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if(dY==0)
             {
                 ui->checkBox_Y->setChecked(false);
-                msgY=QString::fromLocal8Bit("与标定同向");
+                msgY=QStringLiteral("与标定同向");
             }
             else
             {
                 ui->checkBox_Y->setChecked(true);
-                msgY=QString::fromLocal8Bit("与标定反向");
+                msgY=QStringLiteral("与标定反向");
             }
             if(dZ==0)
             {
                 ui->checkBox_Z->setChecked(false);
-                msgZ=QString::fromLocal8Bit("与标定同向");
+                msgZ=QStringLiteral("与标定同向");
             }
             else
             {
                 ui->checkBox_Z->setChecked(true);
-                msgZ=QString::fromLocal8Bit("与标定反向");
+                msgZ=QStringLiteral("与标定反向");
             }
             if(ui->checkBox->isChecked()==false)
             {
-                QString msg=QString::fromLocal8Bit("获取当前数据反向信息: Y")+msgY+" Z"+msgZ;
+                QString msg=QStringLiteral("获取当前数据反向信息: Y")+msgY+" Z"+msgZ;
                 ui->record->append(msg);
             }
         }
@@ -3137,7 +3137,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前相机分辨率信息失败"));
+                ui->record->append(QStringLiteral("获取当前相机分辨率信息失败"));
         }
         else
         {
@@ -3157,7 +3157,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
 
             if(ui->checkBox->isChecked()==false)
             {
-                ui->record->append(QString::fromLocal8Bit("获取当前相机设置:"));
+                ui->record->append(QStringLiteral("获取当前相机设置:"));
                 QString msg=QString::number(width)+"x"+QString::number(height)+" fps:"+QString::number(fps);
                 ui->record->append(msg);
             }
@@ -3167,7 +3167,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前相机P变量信息失败"));
+                ui->record->append(QStringLiteral("获取当前相机P变量信息失败"));
         }
         else
         {
@@ -3180,7 +3180,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             if(ui->checkBox->isChecked()==false)
             {
                 QString msg;
-                ui->record->append(QString::fromLocal8Bit("获取当前P变量设置:"));
+                ui->record->append(QStringLiteral("获取当前P变量设置:"));
                 if(pEn==0)
                 {
                     msg="P变量功能:关";
@@ -3203,14 +3203,14 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(real_readnum<0)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("获取当前任务号信息失败"));
+                ui->record->append(QStringLiteral("获取当前任务号信息失败"));
         }
         else
         {
             ui->tasknum->setText(QString::number(task));
             if(ui->checkBox->isChecked()==false)
             {
-                QString msg=QString::fromLocal8Bit("获取当前内部任务号:")+QString::number(task);
+                QString msg=QStringLiteral("获取当前内部任务号:")+QString::number(task);
                 ui->record->append(msg);
             }
         }
@@ -3245,12 +3245,12 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         if(m_mcs->cam->sop_cam[0].b_connect==true)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("相机连接成功"));
+                ui->record->append(QStringLiteral("相机连接成功"));
         }
         else if(m_mcs->cam->sop_cam[0].b_connect==false)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("相机连接失败"));
+                ui->record->append(QStringLiteral("相机连接失败"));
         }
     }
     else
@@ -3272,13 +3272,13 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
         {
             m_mcs->resultdata.b_luzhi=false;
             m_mcs->cam->sop_cam[0].StopRecord();
-            ui->saveavishowBtn->setText(QString::fromLocal8Bit("录制视频"));
+            ui->saveavishowBtn->setText(QStringLiteral("录制视频"));
             if(ui->checkBox->isChecked()==false)
-                 ui->record->append(QString::fromLocal8Bit("视频录制完成"));
+                 ui->record->append(QStringLiteral("视频录制完成"));
         }
         m_mcs->cam->sop_cam[0].DisConnect();
         if(ui->checkBox->isChecked()==false)
-            ui->record->append(QString::fromLocal8Bit("相机关闭"));
+            ui->record->append(QStringLiteral("相机关闭"));
 
 
         if(m_mcs->resultdata.link_ftp_state==true)
@@ -3287,7 +3287,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             m_mcs->resultdata.link_ftp_state=false;
             QString msg=QString::number(PORT_ALSTCP_FTP);
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+                ui->record->append(msg+QStringLiteral("端口关闭"));
         }
         if(m_mcs->resultdata.link_result_state==true)
         {
@@ -3297,7 +3297,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             m_mcs->resultdata.link_result_state=false;
             QString msg=QString::number(PORT_ALS_RESULT);
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+                ui->record->append(msg+QStringLiteral("端口关闭"));
         }
         if(m_mcs->resultdata.link_param_state==true)
         {
@@ -3306,7 +3306,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             m_mcs->resultdata.link_param_state=false;
             QString msg=QString::number(PORT_ALS_PARAMETER);
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+                ui->record->append(msg+QStringLiteral("端口关闭"));
         }
         if(m_mcs->resultdata.link_robotset_state==true)
         {
@@ -3315,7 +3315,7 @@ void qtmysunnyDlg::img_windowshow(bool b_show,PictureBox *lab_show)
             m_mcs->resultdata.link_robotset_state=false;
             QString msg=QString::number(PORT_ALSROBOTCAM_SET);
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+                ui->record->append(msg+QStringLiteral("端口关闭"));
         }
     }
     UpdataUi();
@@ -3325,11 +3325,11 @@ void qtmysunnyDlg::UpdataUi()
 {
     if(m_mcs->cam->sop_cam[0].b_connect==false)
     {
-        ui->connectcameraBtn->setText(QString::fromLocal8Bit("连接相机"));
+        ui->connectcameraBtn->setText(QStringLiteral("连接相机"));
     }
     else
     {
-        ui->connectcameraBtn->setText(QString::fromLocal8Bit("断开相机"));
+        ui->connectcameraBtn->setText(QStringLiteral("断开相机"));
     }
 }
 
@@ -3349,7 +3349,7 @@ void qtmysunnyDlg::UpdataRobot(u_int16_t robotmod)
         case 9:
         {
             b_robot_serves=false;
-            ui->label_4->setText(QString::fromLocal8Bit("机器人端口:"));
+            ui->label_4->setText(QStringLiteral("机器人端口:"));
          // ui->label_43->show();
          // ui->robot_ip->hide();
          // ui->robotport->show();
@@ -3358,7 +3358,7 @@ void qtmysunnyDlg::UpdataRobot(u_int16_t robotmod)
         case 10:    //机器人做服务器
         {
             b_robot_serves=true;
-            ui->label_4->setText(QString::fromLocal8Bit("机器人IP:"));
+            ui->label_4->setText(QStringLiteral("机器人IP:"));
          // ui->label_43->hide();
          // ui->robot_ip->show();
          // ui->robotport->hide();
@@ -3405,12 +3405,12 @@ void qtmysunnyDlg::open_camer_modbus()
         if(rc!=1)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("激光器相机启动设置失败"));
+                ui->record->append(QStringLiteral("激光器相机启动设置失败"));
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("激光器相机启动设置成功"));
+                ui->record->append(QStringLiteral("激光器相机启动设置成功"));
         }
     }
 }
@@ -3425,12 +3425,12 @@ void qtmysunnyDlg::close_camer_modbus()
         if(rc!=1)
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("激光器相机关闭设置失败"));
+                ui->record->append(QStringLiteral("激光器相机关闭设置失败"));
         }
         else
         {
             if(ui->checkBox->isChecked()==false)
-                ui->record->append(QString::fromLocal8Bit("激光器相机关闭设置成功"));
+                ui->record->append(QStringLiteral("激光器相机关闭设置成功"));
         }
     }
 }
@@ -3476,9 +3476,9 @@ void qtmysunnyDlg::init_show_pos_list()
     ui->label_38->setText(QString::number(camfps,'f',2));
 
     if(pos_data3[0]==0xff)
-        ui->label_25->setText(QString::fromLocal8Bit("是"));
+        ui->label_25->setText(QStringLiteral("是"));
     else if(pos_data3[0]==0)
-        ui->label_25->setText(QString::fromLocal8Bit("否"));
+        ui->label_25->setText(QStringLiteral("否"));
 
     ui->label_55->setText(QString::number(RY,'f',3));
     ui->label_56->setText(QString::number(RZ,'f',3));
@@ -3489,7 +3489,7 @@ void qtmysunnyDlg::init_show_pos_list()
 void qtmysunnyDlg::init_show_pos_failed()
 {
     if(ui->checkBox->isChecked()==false)
-        ui->record->append(QString::fromLocal8Bit("获取当前检测信息失败"));
+        ui->record->append(QStringLiteral("获取当前检测信息失败"));
     b_init_show_pos_failed_finish=true;
 }
 
@@ -3823,12 +3823,12 @@ void qtmysunnyDlg::init_set_task()
     if(rc!=1)
     {
         if(ui->checkBox->isChecked()==false)
-            ui->record->append(QString::fromLocal8Bit("更新任务号失败"));
+            ui->record->append(QStringLiteral("更新任务号失败"));
     }
     else
     {
         if(ui->checkBox->isChecked()==false)
-            ui->record->append(QString::fromLocal8Bit("更新任务号成功"));
+            ui->record->append(QStringLiteral("更新任务号成功"));
         if(tasknum>=TASKNUM_START)
         {
             u_int16_t num=tasknum-TASKNUM_START+1;
@@ -3869,7 +3869,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号100参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号100参数失败"));
                 }
                 else
                 {
@@ -3893,7 +3893,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号100参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号100参数成功"));
                 }
             }
             case TABWIDGET_TASK101:
@@ -3904,7 +3904,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号101参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号101参数失败"));
                 }
                 else
                 {
@@ -3928,7 +3928,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号101参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号101参数成功"));
                 }
             }
             case TABWIDGET_TASK102:
@@ -3939,7 +3939,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号102参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号102参数失败"));
                 }
                 else
                 {
@@ -3963,7 +3963,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号102参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号102参数成功"));
                 }
             }
             break;
@@ -3975,7 +3975,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号103参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号103参数失败"));
                 }
                 else
                 {
@@ -3999,7 +3999,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号103参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号103参数成功"));
                 }
             }
             break;
@@ -4011,7 +4011,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号104参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号104参数失败"));
                 }
                 else
                 {
@@ -4035,7 +4035,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号104参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号104参数成功"));
                 }
             }
             break;
@@ -4047,7 +4047,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号105参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号105参数失败"));
                 }
                 else
                 {
@@ -4071,7 +4071,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号105参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号105参数成功"));
                 }
             }
             break;
@@ -4083,7 +4083,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号106参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号106参数失败"));
                 }
                 else
                 {
@@ -4107,7 +4107,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号106参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号106参数成功"));
                 }
             }
             break;
@@ -4119,7 +4119,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号107参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号107参数失败"));
                 }
                 else
                 {
@@ -4143,7 +4143,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号107参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号107参数成功"));
                 }
             }
             break;
@@ -4155,7 +4155,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                 if(real_readnum<0)
                 {
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号108参数失败"));
+                        ui->record->append(QStringLiteral("读取任务号108参数失败"));
                 }
                 else
                 {
@@ -4179,7 +4179,7 @@ void qtmysunnyDlg::showupdata_tabWidget(int index)
                     }
 
                     if(ui->checkBox->isChecked()==false)
-                        ui->record->append(QString::fromLocal8Bit("读取任务号108参数成功"));
+                        ui->record->append(QStringLiteral("读取任务号108参数成功"));
                 }
             }
             break;

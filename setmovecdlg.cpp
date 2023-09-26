@@ -161,7 +161,7 @@ void setmovecDlg::on_pushButton_get_stpos_clicked() //获取起点坐标姿态
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取起点坐标失败"));
+        ui->record->append(QStringLiteral("获取起点坐标失败"));
     }
     else
     {
@@ -171,7 +171,7 @@ void setmovecDlg::on_pushButton_get_stpos_clicked() //获取起点坐标姿态
         ui->lineEdit_stRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_stRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_stRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取起点坐标成功"));
+        ui->record->append(QStringLiteral("获取起点坐标成功"));
     }
 }
 
@@ -191,7 +191,7 @@ void setmovecDlg::on_pushButton_get_centerpos_clicked()//获取中间点坐标�
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取途径点坐标失败"));
+        ui->record->append(QStringLiteral("获取途径点坐标失败"));
     }
     else
     {
@@ -201,7 +201,7 @@ void setmovecDlg::on_pushButton_get_centerpos_clicked()//获取中间点坐标�
         ui->lineEdit_centerRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取途径点坐标成功"));
+        ui->record->append(QStringLiteral("获取途径点坐标成功"));
     }
 }
 
@@ -220,7 +220,7 @@ void setmovecDlg::on_pushButton_get_edpos_clicked()//获取终点坐标姿态
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取终点坐标失败"));
+        ui->record->append(QStringLiteral("获取终点坐标失败"));
     }
     else
     {
@@ -230,7 +230,7 @@ void setmovecDlg::on_pushButton_get_edpos_clicked()//获取终点坐标姿态
         ui->lineEdit_edRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取终点坐标成功"));
+        ui->record->append(QStringLiteral("获取终点坐标成功"));
     }
 }
 
@@ -269,7 +269,7 @@ void setmovecDlg::on_arriveBtn_st_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -280,72 +280,72 @@ void setmovecDlg::on_arriveBtn_st_pressed()
     RobPos pos;
     if(ui->lineEdit_stX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点X数据"));
+        ui->record->append(QStringLiteral("请填写起点X数据"));
         return;
     }
     if(ui->lineEdit_stY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点Y数据"));
+        ui->record->append(QStringLiteral("请填写起点Y数据"));
         return;
     }
     if(ui->lineEdit_stZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点Z数据"));
+        ui->record->append(QStringLiteral("请填写起点Z数据"));
         return;
     }
     if(ui->lineEdit_stRX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点RX数据"));
+        ui->record->append(QStringLiteral("请填写起点RX数据"));
         return;
     }
     if(ui->lineEdit_stRY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点RY数据"));
+        ui->record->append(QStringLiteral("请填写起点RY数据"));
         return;
     }
     if(ui->lineEdit_stRZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点RZ数据"));
+        ui->record->append(QStringLiteral("请填写起点RZ数据"));
         return;
     }
     pos.X=ui->lineEdit_stX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点X数据格式出错"));
+        ui->record->append(QStringLiteral("起点X数据格式出错"));
         return;
     }
     pos.Y=ui->lineEdit_stY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点Y数据格式出错"));
+        ui->record->append(QStringLiteral("起点Y数据格式出错"));
         return;
     }
     pos.Z=ui->lineEdit_stZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点Z数据格式出错"));
+        ui->record->append(QStringLiteral("起点Z数据格式出错"));
         return;
     }
     pos.RX=ui->lineEdit_stRX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点RX数据格式出错"));
+        ui->record->append(QStringLiteral("起点RX数据格式出错"));
         return;
     }
     pos.RY=ui->lineEdit_stRY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点RY数据格式出错"));
+        ui->record->append(QStringLiteral("起点RY数据格式出错"));
         return;
     }
     pos.RZ=ui->lineEdit_stRZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点RZ数据格式出错"));
+        ui->record->append(QStringLiteral("起点RZ数据格式出错"));
         return;
     }
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //松开长按到点
@@ -353,11 +353,11 @@ void setmovecDlg::on_arriveBtn_st_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 //按下长按到点
@@ -365,7 +365,7 @@ void setmovecDlg::on_arriveBtn_center_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -376,72 +376,72 @@ void setmovecDlg::on_arriveBtn_center_pressed()
     RobPos pos;
     if(ui->lineEdit_centerX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点X数据"));
+        ui->record->append(QStringLiteral("请填写途径点X数据"));
         return;
     }
     if(ui->lineEdit_centerY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点Y数据"));
+        ui->record->append(QStringLiteral("请填写途径点Y数据"));
         return;
     }
     if(ui->lineEdit_centerZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点Z数据"));
+        ui->record->append(QStringLiteral("请填写途径点Z数据"));
         return;
     }
     if(ui->lineEdit_centerRX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点RX数据"));
+        ui->record->append(QStringLiteral("请填写途径点RX数据"));
         return;
     }
     if(ui->lineEdit_centerRY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点RY数据"));
+        ui->record->append(QStringLiteral("请填写途径点RY数据"));
         return;
     }
     if(ui->lineEdit_centerRZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点RZ数据"));
+        ui->record->append(QStringLiteral("请填写途径点RZ数据"));
         return;
     }
     pos.X=ui->lineEdit_centerX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点X数据格式出错"));
+        ui->record->append(QStringLiteral("途径点X数据格式出错"));
         return;
     }
     pos.Y=ui->lineEdit_centerY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点Y数据格式出错"));
+        ui->record->append(QStringLiteral("途径点Y数据格式出错"));
         return;
     }
     pos.Z=ui->lineEdit_centerZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点Z数据格式出错"));
+        ui->record->append(QStringLiteral("途径点Z数据格式出错"));
         return;
     }
     pos.RX=ui->lineEdit_centerRX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点RX数据格式出错"));
+        ui->record->append(QStringLiteral("途径点RX数据格式出错"));
         return;
     }
     pos.RY=ui->lineEdit_centerRY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点RY数据格式出错"));
+        ui->record->append(QStringLiteral("途径点RY数据格式出错"));
         return;
     }
     pos.RZ=ui->lineEdit_centerRZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点RZ数据格式出错"));
+        ui->record->append(QStringLiteral("途径点RZ数据格式出错"));
         return;
     }
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //松开长按到点
@@ -449,11 +449,11 @@ void setmovecDlg::on_arriveBtn_center_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 //按下长按到点
@@ -461,7 +461,7 @@ void setmovecDlg::on_arriveBtn_ed_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -472,72 +472,72 @@ void setmovecDlg::on_arriveBtn_ed_pressed()
     RobPos pos;
     if(ui->lineEdit_edX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点X数据"));
+        ui->record->append(QStringLiteral("请填写终点X数据"));
         return;
     }
     if(ui->lineEdit_edY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点Y数据"));
+        ui->record->append(QStringLiteral("请填写终点Y数据"));
         return;
     }
     if(ui->lineEdit_edZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点Z数据"));
+        ui->record->append(QStringLiteral("请填写终点Z数据"));
         return;
     }
     if(ui->lineEdit_edRX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点RX数据"));
+        ui->record->append(QStringLiteral("请填写终点RX数据"));
         return;
     }
     if(ui->lineEdit_edRY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点RY数据"));
+        ui->record->append(QStringLiteral("请填写终点RY数据"));
         return;
     }
     if(ui->lineEdit_edRZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点RZ数据"));
+        ui->record->append(QStringLiteral("请填写终点RZ数据"));
         return;
     }
     pos.X=ui->lineEdit_edX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点X数据格式出错"));
+        ui->record->append(QStringLiteral("终点X数据格式出错"));
         return;
     }
     pos.Y=ui->lineEdit_edY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点Y数据格式出错"));
+        ui->record->append(QStringLiteral("终点Y数据格式出错"));
         return;
     }
     pos.Z=ui->lineEdit_edZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点Z数据格式出错"));
+        ui->record->append(QStringLiteral("终点Z数据格式出错"));
         return;
     }
     pos.RX=ui->lineEdit_edRX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点RX数据格式出错"));
+        ui->record->append(QStringLiteral("终点RX数据格式出错"));
         return;
     }
     pos.RY=ui->lineEdit_edRY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点RY数据格式出错"));
+        ui->record->append(QStringLiteral("终点RY数据格式出错"));
         return;
     }
     pos.RZ=ui->lineEdit_edRZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点RZ数据格式出错"));
+        ui->record->append(QStringLiteral("终点RZ数据格式出错"));
         return;
     }
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //松开长按到点
@@ -545,11 +545,11 @@ void setmovecDlg::on_arriveBtn_ed_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 //长按到变化后起点
@@ -557,7 +557,7 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -568,78 +568,78 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
     RobPos pos;
     if(ui->lineEdit_stX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点X数据"));
+        ui->record->append(QStringLiteral("请填写起点X数据"));
         return;
     }
     if(ui->lineEdit_stY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点Y数据"));
+        ui->record->append(QStringLiteral("请填写起点Y数据"));
         return;
     }
     if(ui->lineEdit_stZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点Z数据"));
+        ui->record->append(QStringLiteral("请填写起点Z数据"));
         return;
     }
     if(ui->lineEdit_stRX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点RX数据"));
+        ui->record->append(QStringLiteral("请填写起点RX数据"));
         return;
     }
     if(ui->lineEdit_stRY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点RY数据"));
+        ui->record->append(QStringLiteral("请填写起点RY数据"));
         return;
     }
     if(ui->lineEdit_stRZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写起点RZ数据"));
+        ui->record->append(QStringLiteral("请填写起点RZ数据"));
         return;
     }
     pos.X=ui->lineEdit_stX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点X数据格式出错"));
+        ui->record->append(QStringLiteral("起点X数据格式出错"));
         return;
     }
     pos.Y=ui->lineEdit_stY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点Y数据格式出错"));
+        ui->record->append(QStringLiteral("起点Y数据格式出错"));
         return;
     }
     pos.Z=ui->lineEdit_stZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点Z数据格式出错"));
+        ui->record->append(QStringLiteral("起点Z数据格式出错"));
         return;
     }
     pos.RX=ui->lineEdit_stRX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点RX数据格式出错"));
+        ui->record->append(QStringLiteral("起点RX数据格式出错"));
         return;
     }
     pos.RY=ui->lineEdit_stRY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点RY数据格式出错"));
+        ui->record->append(QStringLiteral("起点RY数据格式出错"));
         return;
     }
     pos.RZ=ui->lineEdit_stRZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("起点RZ数据格式出错"));
+        ui->record->append(QStringLiteral("起点RZ数据格式出错"));
         return;
     }
     if(b_change==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+        ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
         return;
     }
     else if(changename.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+        ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
         return;
     }
     else
@@ -658,12 +658,12 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
         }
         if(b_find==false)
         {
-            ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+            ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
             return;
         }
         else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+            ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
             return;
         }
         else
@@ -697,7 +697,7 @@ void setmovecDlg::on_arriveBtn_st_2_pressed()
         }
     }
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //松开长按到点
@@ -705,18 +705,18 @@ void setmovecDlg::on_arriveBtn_st_2_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 void setmovecDlg::on_arriveBtn_center_2_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -727,78 +727,78 @@ void setmovecDlg::on_arriveBtn_center_2_pressed()
     RobPos pos;
     if(ui->lineEdit_centerX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点X数据"));
+        ui->record->append(QStringLiteral("请填写途径点X数据"));
         return;
     }
     if(ui->lineEdit_centerY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点Y数据"));
+        ui->record->append(QStringLiteral("请填写途径点Y数据"));
         return;
     }
     if(ui->lineEdit_centerZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点Z数据"));
+        ui->record->append(QStringLiteral("请填写途径点Z数据"));
         return;
     }
     if(ui->lineEdit_centerRX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点RX数据"));
+        ui->record->append(QStringLiteral("请填写途径点RX数据"));
         return;
     }
     if(ui->lineEdit_centerRY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点RY数据"));
+        ui->record->append(QStringLiteral("请填写途径点RY数据"));
         return;
     }
     if(ui->lineEdit_centerRZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写途径点RZ数据"));
+        ui->record->append(QStringLiteral("请填写途径点RZ数据"));
         return;
     }
     pos.X=ui->lineEdit_centerX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点X数据格式出错"));
+        ui->record->append(QStringLiteral("途径点X数据格式出错"));
         return;
     }
     pos.Y=ui->lineEdit_centerY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点Y数据格式出错"));
+        ui->record->append(QStringLiteral("途径点Y数据格式出错"));
         return;
     }
     pos.Z=ui->lineEdit_centerZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点Z数据格式出错"));
+        ui->record->append(QStringLiteral("途径点Z数据格式出错"));
         return;
     }
     pos.RX=ui->lineEdit_centerRX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点RX数据格式出错"));
+        ui->record->append(QStringLiteral("途径点RX数据格式出错"));
         return;
     }
     pos.RY=ui->lineEdit_centerRY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点RY数据格式出错"));
+        ui->record->append(QStringLiteral("途径点RY数据格式出错"));
         return;
     }
     pos.RZ=ui->lineEdit_centerRZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("途径点RZ数据格式出错"));
+        ui->record->append(QStringLiteral("途径点RZ数据格式出错"));
         return;
     }
     if(b_change==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+        ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
         return;
     }
     else if(changename.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+        ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
         return;
     }
     else
@@ -817,12 +817,12 @@ void setmovecDlg::on_arriveBtn_center_2_pressed()
         }
         if(b_find==false)
         {
-            ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+            ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
             return;
         }
         else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+            ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
             return;
         }
         else
@@ -856,7 +856,7 @@ void setmovecDlg::on_arriveBtn_center_2_pressed()
         }
     }
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //松开长按到点
@@ -864,11 +864,11 @@ void setmovecDlg::on_arriveBtn_center_2_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 
@@ -878,7 +878,7 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -889,78 +889,78 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
     RobPos pos;
     if(ui->lineEdit_edX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点X数据"));
+        ui->record->append(QStringLiteral("请填写终点X数据"));
         return;
     }
     if(ui->lineEdit_edY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点Y数据"));
+        ui->record->append(QStringLiteral("请填写终点Y数据"));
         return;
     }
     if(ui->lineEdit_edZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点Z数据"));
+        ui->record->append(QStringLiteral("请填写终点Z数据"));
         return;
     }
     if(ui->lineEdit_edRX->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点RX数据"));
+        ui->record->append(QStringLiteral("请填写终点RX数据"));
         return;
     }
     if(ui->lineEdit_edRY->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点RY数据"));
+        ui->record->append(QStringLiteral("请填写终点RY数据"));
         return;
     }
     if(ui->lineEdit_edRZ->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写终点RZ数据"));
+        ui->record->append(QStringLiteral("请填写终点RZ数据"));
         return;
     }
     pos.X=ui->lineEdit_edX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点X数据格式出错"));
+        ui->record->append(QStringLiteral("终点X数据格式出错"));
         return;
     }
     pos.Y=ui->lineEdit_edY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点Y数据格式出错"));
+        ui->record->append(QStringLiteral("终点Y数据格式出错"));
         return;
     }
     pos.Z=ui->lineEdit_edZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点Z数据格式出错"));
+        ui->record->append(QStringLiteral("终点Z数据格式出错"));
         return;
     }
     pos.RX=ui->lineEdit_edRX->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点RX数据格式出错"));
+        ui->record->append(QStringLiteral("终点RX数据格式出错"));
         return;
     }
     pos.RY=ui->lineEdit_edRY->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点RY数据格式出错"));
+        ui->record->append(QStringLiteral("终点RY数据格式出错"));
         return;
     }
     pos.RZ=ui->lineEdit_edRZ->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("终点RZ数据格式出错"));
+        ui->record->append(QStringLiteral("终点RZ数据格式出错"));
         return;
     }
     if(b_change==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+        ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
         return;
     }
     else if(changename.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+        ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
         return;
     }
     else
@@ -979,12 +979,12 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
         }
         if(b_find==false)
         {
-            ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+            ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
             return;
         }
         else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+            ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
             return;
         }
         else
@@ -1018,7 +1018,7 @@ void setmovecDlg::on_arriveBtn_ed_2_pressed()
         }
     }
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //松开长按到点
@@ -1026,11 +1026,11 @@ void setmovecDlg::on_arriveBtn_ed_2_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 //获取变换前起点坐标
@@ -1049,7 +1049,7 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取起点坐标失败"));
+        ui->record->append(QStringLiteral("获取起点坐标失败"));
     }
     else
     {
@@ -1072,12 +1072,12 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
                 }
                 if(b_find==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+                    ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
                     return;
                 }
                 else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+                    ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
                     return;
                 }
                 else
@@ -1113,13 +1113,13 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+                ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
                 return;
             }
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+            ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
             return;
         }
         ui->lineEdit_stX->setText(QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -1128,7 +1128,7 @@ void setmovecDlg::on_pushButton_get_stpos_2_clicked()
         ui->lineEdit_stRX->setText(QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_stRY->setText(QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_stRZ->setText(QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取起点坐标成功"));
+        ui->record->append(QStringLiteral("获取起点坐标成功"));
     }
 }
 
@@ -1148,7 +1148,7 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取途径点坐标失败"));
+        ui->record->append(QStringLiteral("获取途径点坐标失败"));
     }
     else
     {
@@ -1171,12 +1171,12 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
                 }
                 if(b_find==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+                    ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
                     return;
                 }
                 else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+                    ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
                     return;
                 }
                 else
@@ -1212,13 +1212,13 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+                ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
                 return;
             }
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+            ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
             return;
         }
         ui->lineEdit_centerX->setText(QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -1227,7 +1227,7 @@ void setmovecDlg::on_pushButton_get_centerpos_2_clicked()
         ui->lineEdit_centerRX->setText(QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRY->setText(QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_centerRZ->setText(QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取途径点坐标成功"));
+        ui->record->append(QStringLiteral("获取途径点坐标成功"));
     }
 }
 
@@ -1247,7 +1247,7 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取终点坐标失败"));
+        ui->record->append(QStringLiteral("获取终点坐标失败"));
     }
     else
     {
@@ -1270,12 +1270,12 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
                 }
                 if(b_find==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+                    ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
                     return;
                 }
                 else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+                    ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
                     return;
                 }
                 else
@@ -1311,13 +1311,13 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+                ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
                 return;
             }
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+            ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
             return;
         }
         ui->lineEdit_edX->setText(QString::number(pos.X,'f',ROBOT_POSE_DECIMAL_PLACE));
@@ -1326,7 +1326,7 @@ void setmovecDlg::on_pushButton_get_edpos_2_clicked()
         ui->lineEdit_edRX->setText(QString::number(pos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRY->setText(QString::number(pos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_edRZ->setText(QString::number(pos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取终点坐标成功"));
+        ui->record->append(QStringLiteral("获取终点坐标成功"));
     }
 }
 

@@ -107,12 +107,12 @@ void keycreataddpDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->pushButton->setText(QString::fromLocal8Bit("插入跟踪轨迹相加指令"));
+        ui->pushButton->setText(QStringLiteral("插入跟踪轨迹相加指令"));
     }
     else
     {
         b_inster=true;
-        ui->pushButton->setText(QString::fromLocal8Bit("替换跟踪轨迹相加指令"));
+        ui->pushButton->setText(QStringLiteral("替换跟踪轨迹相加指令"));
     }
 }
 
@@ -127,22 +127,22 @@ void keycreataddpDlg::on_pushButton_clicked()
     int mode=ui->traceaddpmodecombo->currentIndex();
     if(routeweld<0||routeweld>ui->traceaddpweldcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹"));
+        ui->record->append(QStringLiteral("请选择一个跟踪轨迹"));
         return;
     }
     if(routepoint<0||routepoint>ui->traceaddpointcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个点位"));
+        ui->record->append(QStringLiteral("请选择一个点位"));
         return;
     }
     if(mode<0||mode>ui->traceaddpmodecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个相加模式"));
+        ui->record->append(QStringLiteral("请选择一个相加模式"));
         return;
     }
     if(nameout.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成的跟踪轨迹名字"));
+        ui->record->append(QStringLiteral("请填写生成的跟踪轨迹名字"));
         return;
     }
     my_cmd cmd;

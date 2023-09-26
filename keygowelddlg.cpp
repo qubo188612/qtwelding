@@ -83,11 +83,11 @@ void keygoweldDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("插入前往起弧点指令"));
+        ui->pushButton->setText(QStringLiteral("插入前往起弧点指令"));
     }
     else
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("替换前往起弧点指令"));
+        ui->pushButton->setText(QStringLiteral("替换前往起弧点指令"));
     }
 }
 
@@ -99,17 +99,17 @@ void keygoweldDlg::on_pushButton_clicked()
     float speed=ui->goweldspeedlineEdit->text().toFloat();
     if(tcp<0||tcp>ui->goweldtcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个坐标系"));
+        ui->record->append(QStringLiteral("请选择一个坐标系"));
         return;
     }
     if(route<0||route>ui->goweldfilenamecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹工艺"));
+        ui->record->append(QStringLiteral("请选择一个跟踪轨迹工艺"));
         return;
     }
     if(ui->goweldspeedlineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写速度"));
+        ui->record->append(QStringLiteral("请填写速度"));
         return;
     }
     my_cmd cmd;

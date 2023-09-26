@@ -45,13 +45,13 @@ void keycamDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->leaseropenBtn->setText(QString::fromLocal8Bit("插入开激光指令"));
-        ui->leasercloseBtn->setText(QString::fromLocal8Bit("插入关激光指令"));
+        ui->leaseropenBtn->setText(QStringLiteral("插入开激光指令"));
+        ui->leasercloseBtn->setText(QStringLiteral("插入关激光指令"));
     }
     else
     {
-        ui->leaseropenBtn->setText(QString::fromLocal8Bit("替换开激光指令"));
-        ui->leasercloseBtn->setText(QString::fromLocal8Bit("替换关激光指令"));
+        ui->leaseropenBtn->setText(QStringLiteral("替换开激光指令"));
+        ui->leasercloseBtn->setText(QStringLiteral("替换关激光指令"));
     }
 }
 
@@ -64,15 +64,15 @@ void keycamDlg::on_leaseropenBtn_clicked()
     QString msg=cmd.cmd_cam(task,1);
     if(ui->leasertasknum->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写任务号"));
+        ui->record->append(QStringLiteral("请填写任务号"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("任务号格式出错"));
+        ui->record->append(QStringLiteral("任务号格式出错"));
         return;
     }
-    ui->record->append(QString::fromLocal8Bit("插入开激光指令成功"));
+    ui->record->append(QStringLiteral("插入开激光指令成功"));
     cmd_msg=msg;
     done(1);
 }
@@ -82,7 +82,7 @@ void keycamDlg::on_leasercloseBtn_clicked()
 {
     my_cmd cmd;
     QString msg=cmd.cmd_cam_work(0);
-    ui->record->append(QString::fromLocal8Bit("插入关激光指令成功"));
+    ui->record->append(QStringLiteral("插入关激光指令成功"));
     cmd_msg=msg;
     done(1);
 }

@@ -171,11 +171,11 @@ void setprojectDlg::close_dlg_show()
             modbus_free(m_mcs->resultdata.ctx_param);
             m_mcs->resultdata.link_param_state=false;
             QString msg=QString::number(PORT_ALS_PARAMETER);
-            ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+            ui->record->append(msg+QStringLiteral("端口关闭"));
         }
 
         m_mcs->cam->sop_cam[0].DisConnect();
-        ui->ConnectCamBtn->setText(QString::fromLocal8Bit("连接相机"));
+        ui->ConnectCamBtn->setText(QStringLiteral("连接相机"));
     }
 }
 
@@ -184,7 +184,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
     int tcp=ui->movetcpcombo->currentIndex();
     if(tcp<0||tcp>ui->movetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
@@ -212,7 +212,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         }
         if(m_mcs->rob->b_send_group_robot==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            ui->record->append(QStringLiteral("机器人TCP设置异常"));
             return;
         }
         usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -229,7 +229,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
             return;
         }
         Robmovemodel movemodel=(Robmovemodel)ui->movemodecombo->currentIndex();
@@ -240,12 +240,12 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         QString msg;
         if(ui->movespeed->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+            ui->record->append(QStringLiteral("请填写移动速度"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+            ui->record->append(QStringLiteral("移动速度格式出错"));
             return;
         }
         switch(movemodel)
@@ -259,7 +259,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
             case MOVEC:
             {
                 setmovec->init_dlg_show();
-                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧移动设置"));
+                setmovec->setWindowTitle(QStringLiteral("圆弧移动设置"));
                 setmovec->set_arrive_param(speed,tcp);
                 int rc=setmovec->exec();
                 setmovec->close_dlg_show();
@@ -269,7 +269,7 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消圆弧移动设置"));
+                    ui->record->append(QStringLiteral("取消圆弧移动设置"));
                     return;
                 }
             }
@@ -283,13 +283,13 @@ void setprojectDlg::on_moveaddBtn_clicked()//插入移动指令
         {
             m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
         }
-        ui->record->append(QString::fromLocal8Bit("插入移动指令成功"));
+        ui->record->append(QStringLiteral("插入移动指令成功"));
         now_cmdline++;
         updatacmdlistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -302,12 +302,12 @@ void setprojectDlg::on_delaytimeBtn_clicked()//插入延时指令
     QString msg=cmd.cmd_delay(time);
     if(ui->delaytime->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写延时时间"));
+        ui->record->append(QStringLiteral("请填写延时时间"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("延时时间格式出错"));
+        ui->record->append(QStringLiteral("延时时间格式出错"));
         return;
     }
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
@@ -318,7 +318,7 @@ void setprojectDlg::on_delaytimeBtn_clicked()//插入延时指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入延时指令成功"));
+    ui->record->append(QStringLiteral("插入延时指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -332,12 +332,12 @@ void setprojectDlg::on_leaseropenBtn_clicked()//插入开激光指令
     QString msg=cmd.cmd_cam(task,1);
     if(ui->leasertasknum->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写任务号"));
+        ui->record->append(QStringLiteral("请填写任务号"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("任务号格式出错"));
+        ui->record->append(QStringLiteral("任务号格式出错"));
         return;
     }
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
@@ -348,7 +348,7 @@ void setprojectDlg::on_leaseropenBtn_clicked()//插入开激光指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入开激光指令成功"));
+    ui->record->append(QStringLiteral("插入开激光指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -366,7 +366,7 @@ void setprojectDlg::on_leasercloseBtn_clicked()//插入关激光指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入关激光指令成功"));
+    ui->record->append(QStringLiteral("插入关激光指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -382,22 +382,22 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
     QString msg=cmd.cmd_elec(eled,elev,elem,1);
     if(ui->weldercurrent->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写电流值"));
+        ui->record->append(QStringLiteral("请填写电流值"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("电流值格式出错"));
+        ui->record->append(QStringLiteral("电流值格式出错"));
         return;
     }
     if(ui->weldercurrent_v->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写电压值"));
+        ui->record->append(QStringLiteral("请填写电压值"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("电压值格式出错"));
+        ui->record->append(QStringLiteral("电压值格式出错"));
         return;
     }
     if(now_cmdline==m_mcs->project->project_cmdlist.size()-1)
@@ -408,7 +408,7 @@ void setprojectDlg::on_welderarcingBtn_clicked()//插入起弧指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入起弧指令成功"));
+    ui->record->append(QStringLiteral("插入起弧指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -426,7 +426,7 @@ void setprojectDlg::on_welderarcoutBtn_clicked()//插入息弧指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入息弧指令成功"));
+    ui->record->append(QStringLiteral("插入息弧指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -437,7 +437,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
     int tcp=ui->scantcpcombo->currentIndex();
     if(tcp<0||tcp>ui->scantcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
@@ -465,7 +465,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         }
         if(m_mcs->rob->b_send_group_robot==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            ui->record->append(QStringLiteral("机器人TCP设置异常"));
             return;
         }
         usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -482,7 +482,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
             return;
         }
         bool rc;
@@ -493,17 +493,17 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         QString name=ui->scanname->text();
         if(ui->scanspeed->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
+            ui->record->append(QStringLiteral("请填写采集速度"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("采集速度格式出错"));
+            ui->record->append(QStringLiteral("采集速度格式出错"));
             return;
         }
         if(ui->scanname->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写轨迹名称"));
+            ui->record->append(QStringLiteral("请填写轨迹名称"));
             return;
         }
         QString msg;
@@ -519,7 +519,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
             case MOVEC:
             {
                 setmovec->init_dlg_show();
-                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧采集设置"));
+                setmovec->setWindowTitle(QStringLiteral("圆弧采集设置"));
                 setmovec->set_arrive_param(speed,tcp);
                 int rc=setmovec->exec();
                 setmovec->close_dlg_show();
@@ -529,7 +529,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消圆弧采集设置"));
+                    ui->record->append(QStringLiteral("取消圆弧采集设置"));
                     return;
                 }
             }
@@ -541,7 +541,7 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         {
             if(name==m_mcs->project->project_scan_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("扫描轨迹与已有的轨迹重名"));
                 return;
             }
         }
@@ -553,13 +553,13 @@ void setprojectDlg::on_scanaddBtn_clicked()//插入采集数据指令
         {
             m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
         }
-        ui->record->append(QString::fromLocal8Bit("插入采集指令成功"));
+        ui->record->append(QStringLiteral("插入采集指令成功"));
         now_cmdline++;
         updatacmdlistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -573,22 +573,22 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
     float speed=ui->tracespeed->text().toFloat(&rc);
     if(route<0||route>ui->tracetrackcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名字"));
+        ui->record->append(QStringLiteral("请选择要插入的轨迹名字"));
         return;
     }
     else if(ui->tracespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写跟踪速度"));
+        ui->record->append(QStringLiteral("请填写跟踪速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("跟踪速度格式出错"));
+        ui->record->append(QStringLiteral("跟踪速度格式出错"));
         return;
     }
     if(name_out.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写跟踪轨迹工艺名字"));
+        ui->record->append(QStringLiteral("请填写跟踪轨迹工艺名字"));
         return;
     }
     my_cmd cmd;
@@ -596,27 +596,21 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
     //请选择工艺包路径
     if(filepath.size()==0)
     {
-        ui->record->append(QString::fromLocal8Bit("工艺包路径为空"));
+        ui->record->append(QStringLiteral("工艺包路径为空"));
         return;
     }
     else
     {
         //这里判断工艺包是否格式正确
-    #if _MSC_VER
-        QTextCodec *code = QTextCodec::codecForName("GBK");
-    #else
-        QTextCodec *code = QTextCodec::codecForName("UTF-8");
-    #endif
-        std::string fname = code->fromUnicode(filepath).data();
-        int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+        int rc=m_mcs->craft->LoadCraft(filepath);
         if(rc==1)
         {
-            ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+            ui->record->append(QStringLiteral("该路径找不到工艺包文件"));
             return;
         }
         else if(rc==2)
         {
-            ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+            ui->record->append(QStringLiteral("工艺包文件格式错误"));
             return;
         }
     }
@@ -629,7 +623,7 @@ void setprojectDlg::on_tracecmdaddBtn_clicked()//插入跟踪轨迹指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+    ui->record->append(QStringLiteral("插入跟踪轨迹指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -644,21 +638,21 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
         QString name=ui->tracename->text();
         if(name.size()==0)
         {
-            ui->record->append(QString::fromLocal8Bit("请输入要插入的轨迹名字"));
+            ui->record->append(QStringLiteral("请输入要插入的轨迹名字"));
             return;
         }
         for(int n=0;n<m_mcs->project->project_weld_trace.size();n++)
         {
             if(name==m_mcs->project->project_weld_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("跟踪轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("跟踪轨迹与已有的轨迹重名"));
                 return;
             }
         }
         m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(now_cmdline+1,err_msg);
         if(m_mcs->project->project_scan_trace.size()<=0)
         {
-            ui->record->append(QString::fromLocal8Bit("当前指令位置没有可用的扫描轨迹"));
+            ui->record->append(QStringLiteral("当前指令位置没有可用的扫描轨迹"));
             return;
         }
         Trace_edit_mode trace_edit_mode=(Trace_edit_mode)ui->traceeditcombo->currentIndex();
@@ -667,7 +661,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
             case TRACE_EDIT_MODE_ONE_TO_ONE://单扫对单轨道模式
             {
                 traceedit0->init_dlg_show();
-                traceedit0->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(单扫对单轨模式)"));
+                traceedit0->setWindowTitle(QStringLiteral("生成跟踪轨迹(单扫对单轨模式)"));
                 int rc=traceedit0->exec();
                 traceedit0->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -685,7 +679,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
                     {
                         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                     }
-                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                     now_cmdline++;
                     updatacmdlistUi();
                 }
@@ -694,7 +688,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
             case TRACE_EDIT_MODE_THREE_TO_ONE:  //三直线交点模式
             {
                 traceedit1->init_dlg_show();
-                traceedit1->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(三直线交点模式)"));
+                traceedit1->setWindowTitle(QStringLiteral("生成跟踪轨迹(三直线交点模式)"));
                 int rc=traceedit1->exec();
                 traceedit1->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -714,7 +708,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
                     {
                         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                     }
-                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                     now_cmdline++;
                     updatacmdlistUi();
                 }
@@ -723,7 +717,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
             case TRACE_EDIT_MODE_TOWPOINT_THREE_TO_ONE: //两端点三直线交点模式
             {
                 traceedit2->init_dlg_show();
-                traceedit2->setWindowTitle(QString::fromLocal8Bit("生成跟踪轨迹(两端点三直线交点模式)"));
+                traceedit2->setWindowTitle(QStringLiteral("生成跟踪轨迹(两端点三直线交点模式)"));
                 int rc=traceedit2->exec();
                 traceedit2->close_dlg_show();
                 if(rc!=0)//确定保存生成轨迹
@@ -746,7 +740,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
                     {
                         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                     }
-                    ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                    ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                     now_cmdline++;
                     updatacmdlistUi();
                 }
@@ -756,7 +750,7 @@ void setprojectDlg::on_traceeditBtn_clicked()//编辑生成跟踪轨迹
     }
     else
     {
-        QString msg=QString::fromLocal8Bit("程序有错误，请先排除:");
+        QString msg=QStringLiteral("程序有错误，请先排除:");
         ui->record->append(msg);
         for(int i=0;i<err_msg.size();i++)
         {
@@ -782,7 +776,7 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
             {
                 if(name==m_mcs->project->project_scan_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                    ui->record->append(QStringLiteral("扫描轨迹与已有的轨迹重名"));
                     return;
                 }
             }
@@ -794,7 +788,7 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
             {
                 if(name==m_mcs->project->project_weld_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("从跟踪轨迹与已有的轨迹重名"));
+                    ui->record->append(QStringLiteral("从跟踪轨迹与已有的轨迹重名"));
                     return;
                 }
             }
@@ -802,21 +796,15 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
         else if(key==CMD_TRACE_KEY)
         {
             QString filepath=cmd.cmd_trace_craftfilepath;
-        #if _MSC_VER
-            QTextCodec *code = QTextCodec::codecForName("GBK");
-        #else
-            QTextCodec *code = QTextCodec::codecForName("UTF-8");
-        #endif
-            std::string fname = code->fromUnicode(filepath).data();
-            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            int rc=m_mcs->craft->LoadCraft(filepath);
             if(rc==1)
             {
-                ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+                ui->record->append(QStringLiteral("该路径找不到工艺包文件"));
                 return;
             }
             else if(rc==2)
             {
-                ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+                ui->record->append(QStringLiteral("工艺包文件格式错误"));
                 return;
             }
         }
@@ -829,7 +817,7 @@ void setprojectDlg::on_customaddBtn_clicked()//插入自定义指令
         {
             m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,ui->customcmd->text());
         }
-        ui->record->append(QString::fromLocal8Bit("插入自定义指令成功"));
+        ui->record->append(QStringLiteral("插入自定义指令成功"));
         now_cmdline++;
         updatacmdlistUi();
     }
@@ -851,21 +839,15 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
         if(key==CMD_TRACE_KEY)
         {
             QString filepath=cmd.cmd_trace_craftfilepath;
-        #if _MSC_VER
-            QTextCodec *code = QTextCodec::codecForName("GBK");
-        #else
-            QTextCodec *code = QTextCodec::codecForName("UTF-8");
-        #endif
-            std::string fname = code->fromUnicode(filepath).data();
-            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+            int rc=m_mcs->craft->LoadCraft(filepath);
             if(rc==1)
             {
-                ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+                ui->record->append(QStringLiteral("该路径找不到工艺包文件"));
                 return;
             }
             else if(rc==2)
             {
-                ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+                ui->record->append(QStringLiteral("工艺包文件格式错误"));
                 return;
             }
         }
@@ -874,7 +856,7 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
             m_mcs->project->project_cmdlist[now_cmdline]=ui->customcmd->text();
             if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
             {
-                ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                ui->record->append(QStringLiteral("替换自定义指令成功"));
             }
             else
             {
@@ -887,7 +869,7 @@ void setprojectDlg::on_customreplaceBtn_clicked()//替换自定义指令
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请先选中要替换的指令"));
+            ui->record->append(QStringLiteral("请先选中要替换的指令"));
         }
     }
     else
@@ -920,12 +902,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keymov->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -942,7 +924,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -955,7 +937,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -970,12 +952,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keydelay->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -990,12 +972,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keycam->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1010,12 +992,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keyweld->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1032,7 +1014,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1045,7 +1027,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1062,7 +1044,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1075,7 +1057,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1097,21 +1079,15 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                         if(key==CMD_TRACE_KEY)
                         {
                             QString filepath=cmd.cmd_trace_craftfilepath;
-                        #if _MSC_VER
-                            QTextCodec *code = QTextCodec::codecForName("GBK");
-                        #else
-                            QTextCodec *code = QTextCodec::codecForName("UTF-8");
-                        #endif
-                            std::string fname = code->fromUnicode(filepath).data();
-                            int rc=m_mcs->craft->LoadCraft((char*)fname.c_str());
+                            int rc=m_mcs->craft->LoadCraft(filepath);
                             if(rc==1)
                             {
-                                ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+                                ui->record->append(QStringLiteral("该路径找不到工艺包文件"));
                                 return;
                             }
                             else if(rc==2)
                             {
-                                ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+                                ui->record->append(QStringLiteral("工艺包文件格式错误"));
                                 return;
                             }
                         }
@@ -1119,7 +1095,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=keytrace->cmd_msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1132,7 +1108,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1149,7 +1125,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1162,7 +1138,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1180,7 +1156,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1193,7 +1169,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1208,12 +1184,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keyio->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1228,12 +1204,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 {
                     QString msg=keyplc->cmd_msg;
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                     updatacmdlistUi();
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1250,7 +1226,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1263,7 +1239,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1280,7 +1256,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1293,7 +1269,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1310,7 +1286,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1323,7 +1299,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1340,7 +1316,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1353,7 +1329,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1370,7 +1346,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1383,7 +1359,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1400,7 +1376,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1413,7 +1389,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1430,7 +1406,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1443,7 +1419,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1460,7 +1436,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1473,7 +1449,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1490,7 +1466,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1503,7 +1479,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1520,7 +1496,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1533,7 +1509,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1550,7 +1526,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1563,7 +1539,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1580,7 +1556,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1593,7 +1569,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1610,7 +1586,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1623,7 +1599,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1649,12 +1625,12 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                             int rc=m_mcs->tosendbuffer->loadlog_creat(filename,weld);
                             if(rc==1)
                             {
-                                ui->record->append(QString::fromLocal8Bit("该路径找不到跟踪轨迹文件"));
+                                ui->record->append(QStringLiteral("该路径找不到跟踪轨迹文件"));
                                 return;
                             }
                             else
                             {
-                                ui->record->append(QString::fromLocal8Bit("跟踪轨迹文件格式错误"));
+                                ui->record->append(QStringLiteral("跟踪轨迹文件格式错误"));
                                 return;
                             }
                         }
@@ -1663,7 +1639,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1676,7 +1652,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1694,7 +1670,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1707,7 +1683,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1724,7 +1700,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1737,7 +1713,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1754,7 +1730,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1767,7 +1743,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1784,7 +1760,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1797,7 +1773,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1814,7 +1790,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1827,7 +1803,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1844,7 +1820,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1857,7 +1833,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1868,7 +1844,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 m_mcs->project->project_cmdlist[now_cmdline]=msg;
                 if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                 {
-                    ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                    ui->record->append(QStringLiteral("替换自定义指令成功"));
                 }
                 else
                 {
@@ -1892,7 +1868,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1905,7 +1881,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1922,7 +1898,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -1935,7 +1911,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -1944,7 +1920,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 m_mcs->craft->craft_name=cmd.cmd_crafts_name;
                 m_mcs->craft->craft_id=cmd.cmd_crafts_craft_id;
                 m_mcs->craft->posturelist=cmd.cmd_crafts_posturelist;
-                QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
+                QString msg=QStringLiteral(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
                     +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
                 QString cmd_msg;
                 int rc;
@@ -1995,7 +1971,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -2008,7 +1984,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
@@ -2025,7 +2001,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                     m_mcs->project->project_cmdlist[now_cmdline]=msg;
                     if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
                     {
-                        ui->record->append(QString::fromLocal8Bit("替换自定义指令成功"));
+                        ui->record->append(QStringLiteral("替换自定义指令成功"));
                     }
                     else
                     {
@@ -2038,14 +2014,14 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消替换自定义指令"));
+                    ui->record->append(QStringLiteral("取消替换自定义指令"));
                     return;
                 }
             }
         }
         else if(rc==-1)
         {
-            ui->record->append(QString::fromLocal8Bit("这是注释的指令行"));
+            ui->record->append(QStringLiteral("这是注释的指令行"));
         }
         else
         {
@@ -2054,7 +2030,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要查看的指令"));
+        ui->record->append(QStringLiteral("请先选中要查看的指令"));
     }
 }
 
@@ -2064,22 +2040,22 @@ void setprojectDlg::on_cmdlistdeleteBtn_clicked()//删除指令
     if(now_cmdline>=0&&m_mcs->project->project_cmdlist.size()>now_cmdline)
     {
         m_mcs->project->project_cmdlist.erase(m_mcs->project->project_cmdlist.begin()+now_cmdline);
-        ui->record->append(QString::fromLocal8Bit("删除指令"));
+        ui->record->append(QStringLiteral("删除指令"));
         if(now_cmdline>=m_mcs->project->project_cmdlist.size())
             now_cmdline=now_cmdline-1;
         updatacmdlistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要删除的指令"));
+        ui->record->append(QStringLiteral("请先选中要删除的指令"));
     }
 }
 
 
 void setprojectDlg::on_cmdlistclearBtn_clicked()//清空指令
 {
-    QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                  QString::fromLocal8Bit("确认清空全部指令？"),
+    QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                  QStringLiteral("确认清空全部指令？"),
                                                                   QMessageBox::Yes|QMessageBox::No,
                                                                   QMessageBox::No
                                                                   );
@@ -2090,12 +2066,12 @@ void setprojectDlg::on_cmdlistclearBtn_clicked()//清空指令
             m_mcs->project->project_cmdlist.clear();
             now_cmdline=m_mcs->project->project_cmdlist.size()-1;
             updatacmdlistUi();
-            ui->record->append(QString::fromLocal8Bit("清空指令完成"));
+            ui->record->append(QStringLiteral("清空指令完成"));
         }
         break;
         case QMessageBox::No:
         {
-            ui->record->append(QString::fromLocal8Bit("取消清空指令操作"));
+            ui->record->append(QStringLiteral("取消清空指令操作"));
         }
         break;
     }
@@ -2114,14 +2090,14 @@ void setprojectDlg::on_SaveAsBtn_clicked()//另存为
     m_mcs->sn_data.save();
 #endif
     QString project_name;
-    edittext->init_dlg_show(QString::fromLocal8Bit("另存为工程名称:"));
-    edittext->setWindowTitle(QString::fromLocal8Bit("工程另存为"));
+    edittext->init_dlg_show(QStringLiteral("另存为工程名称:"));
+    edittext->setWindowTitle(QStringLiteral("工程另存为"));
     int rc=edittext->exec();
     edittext->close_dlg_show();
     if(rc!=0)//确定
     {
         project_name=edittext->msg_edit;
-        QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工程路径"), "./DATA/.json", "JSON(*.json)");
+        QString fileName = QFileDialog::getSaveFileName(this, QStringLiteral("请选择要保存的新工程路径"), "./DATA/.json", "JSON(*.json)");
         if(fileName.size()>0)
         {
             m_mcs->project->project_name=project_name;
@@ -2137,17 +2113,17 @@ void setprojectDlg::on_SaveAsBtn_clicked()//另存为
                 }
             }
             m_mcs->project->project_path=msg;
-            m_mcs->project->SaveProject((char*)msg.toStdString().c_str());
-            ui->record->append(QString::fromLocal8Bit("另存成功，当前新工程路径为:")+msg);
+            m_mcs->project->SaveProject(msg);
+            ui->record->append(QStringLiteral("另存成功，当前新工程路径为:")+msg);
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新选择路径"));
+            ui->record->append(QStringLiteral("保存操作未完成，请重新选择路径"));
         }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("取消另存为操作"));
+        ui->record->append(QStringLiteral("取消另存为操作"));
     }
 }
 
@@ -2156,8 +2132,8 @@ void setprojectDlg::on_OKBtn_clicked()//保存指令
 #ifdef USE_SN_DATA
     m_mcs->sn_data.save();
 #endif
-    m_mcs->project->SaveProject((char*)m_mcs->project->project_path.toStdString().c_str());
-    ui->record->append(QString::fromLocal8Bit("已经保存当前操作"));
+    m_mcs->project->SaveProject(m_mcs->project->project_path);
+    ui->record->append(QStringLiteral("已经保存当前操作"));
 }
 
 void setprojectDlg::on_tracefilepathBtn_clicked()//修改路径
@@ -2165,21 +2141,15 @@ void setprojectDlg::on_tracefilepathBtn_clicked()//修改路径
 #ifdef USE_SN_DATA
     m_mcs->sn_data.save();
 #endif
-    QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
-#if _MSC_VER
-    QTextCodec *code = QTextCodec::codecForName("GBK");
-#else
-    QTextCodec *code = QTextCodec::codecForName("UTF-8");
-#endif
-    std::string name = code->fromUnicode(fileName).data();
-    if(name.size()>0)
+    QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
+    if(fileName.size()>0)
     {
-        if(0!=m_mcs->craft->LoadCraft((char*)name.c_str()))
+        if(0!=m_mcs->craft->LoadCraft(fileName))
         {
-            ui->record->append(QString::fromLocal8Bit("工艺文件读取失败"));
+            ui->record->append(QStringLiteral("工艺文件读取失败"));
             return;
         }
-        ui->record->append(QString::fromLocal8Bit("工艺文件读取成功"));
+        ui->record->append(QStringLiteral("工艺文件读取成功"));
         ui->tracefilepath->setText(fileName);
     }
 }
@@ -2188,7 +2158,7 @@ void setprojectDlg::on_ConnectCamBtn_clicked()//连接相机
 {
     if(m_mcs->resultdata.link_result_state==false)
     {
-        ui->record->append(QString::fromLocal8Bit("激光头未连接成功"));
+        ui->record->append(QStringLiteral("激光头未连接成功"));
     }
     else
     {
@@ -2211,18 +2181,18 @@ void setprojectDlg::on_ConnectCamBtn_clicked()//连接相机
                 m_mcs->resultdata.ctx_param = modbus_new_tcp(server_ip.toUtf8(), server_port1.toInt());
                 if (modbus_connect(m_mcs->resultdata.ctx_param) == -1)
                 {
-                    ui->record->append(server_port1+QString::fromLocal8Bit("端口连接失败"));
+                    ui->record->append(server_port1+QStringLiteral("端口连接失败"));
                     modbus_free(m_mcs->resultdata.ctx_param);
                     return;
                 }
                 m_mcs->resultdata.link_param_state=true;
-                ui->record->append(server_port1+QString::fromLocal8Bit("端口连接成功"));
+                ui->record->append(server_port1+QStringLiteral("端口连接成功"));
             }
 
             u_int16_t tab_reg[1];
             tab_reg[0]=1;
             modbus_write_registers(m_mcs->resultdata.ctx_param,ALS_SHOW_STEP_REG_ADD,1,tab_reg);
-            ui->ConnectCamBtn->setText(QString::fromLocal8Bit("断开相机"));
+            ui->ConnectCamBtn->setText(QStringLiteral("断开相机"));
             ui->Camtask->setText(QString::number(m_mcs->resultdata.task));
         }
         else
@@ -2247,11 +2217,11 @@ void setprojectDlg::on_ConnectCamBtn_clicked()//连接相机
                 modbus_free(m_mcs->resultdata.ctx_param);
                 m_mcs->resultdata.link_param_state=false;
                 QString msg=QString::number(PORT_ALS_PARAMETER);
-                ui->record->append(msg+QString::fromLocal8Bit("端口关闭"));
+                ui->record->append(msg+QStringLiteral("端口关闭"));
             }
 
             m_mcs->cam->sop_cam[0].DisConnect();
-            ui->ConnectCamBtn->setText(QString::fromLocal8Bit("连接相机"));
+            ui->ConnectCamBtn->setText(QStringLiteral("连接相机"));
         }
     }
 }
@@ -2260,7 +2230,7 @@ void setprojectDlg::on_setCamtaskBtn_clicked()//设置任务号
 {
     if(thread1==NULL)
     {
-        ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
+        ui->record->append(QStringLiteral("请连接相机后再设置任务号"));
     }
     else
     {
@@ -2270,17 +2240,17 @@ void setprojectDlg::on_setCamtaskBtn_clicked()//设置任务号
             uint16_t task=ui->Camtask->text().toInt(&b_task);
             if(b_task==false)
             {
-                ui->record->append(QString::fromLocal8Bit("任务号格式错误"));
+                ui->record->append(QStringLiteral("任务号格式错误"));
             }
             else
             {
                 m_mcs->tosendbuffer->cmd_cam(task,1);
-                ui->record->append(QString::fromLocal8Bit("更新任务号成功"));
+                ui->record->append(QStringLiteral("更新任务号成功"));
             }
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请连接相机后再设置任务号"));
+            ui->record->append(QStringLiteral("请连接相机后再设置任务号"));
         }
     }
 }
@@ -2363,7 +2333,7 @@ void setprojectDlg::on_IOoutputBtn_clicked()//输出IO口指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入IO口输出指令成功"));
+    ui->record->append(QStringLiteral("插入IO口输出指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -2446,7 +2416,7 @@ void setprojectDlg::on_IOinputBtn_clicked()//等待输入IO口指令
     {
         m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
     }
-    ui->record->append(QString::fromLocal8Bit("插入等待IO口输入指令成功"));
+    ui->record->append(QStringLiteral("插入等待IO口输入指令成功"));
     now_cmdline++;
     updatacmdlistUi();
 }
@@ -2455,7 +2425,7 @@ void setprojectDlg::on_IOinputBtn_clicked()//等待输入IO口指令
 void setprojectDlg::on_othercmdaddBtn_clicked()
 {
     othercmd->init_dlg_show();
-    othercmd->setWindowTitle(QString::fromLocal8Bit("全部指令"));
+    othercmd->setWindowTitle(QStringLiteral("全部指令"));
     int rc=othercmd->exec();
     othercmd->close_dlg_show();
     if(rc!=0)//确定
@@ -2480,13 +2450,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入移动指令成功"));
+                ui->record->append(QStringLiteral("插入移动指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消移动指令设置"));
+                ui->record->append(QStringLiteral("取消移动指令设置"));
                 return;
             }
         }
@@ -2508,13 +2478,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入点位移动指令成功"));
+                ui->record->append(QStringLiteral("插入点位移动指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消点位移动指令设置"));
+                ui->record->append(QStringLiteral("取消点位移动指令设置"));
                 return;
             }
         }
@@ -2536,13 +2506,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入延时指令成功"));
+                ui->record->append(QStringLiteral("插入延时指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消延时指令设置"));
+                ui->record->append(QStringLiteral("取消延时指令设置"));
                 return;
             }
         }
@@ -2564,13 +2534,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入激光器指令成功"));
+                ui->record->append(QStringLiteral("插入激光器指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消激光器指令设置"));
+                ui->record->append(QStringLiteral("取消激光器指令设置"));
                 return;
             }
         }
@@ -2592,13 +2562,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入弧光指令成功"));
+                ui->record->append(QStringLiteral("插入弧光指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消弧光指令设置"));
+                ui->record->append(QStringLiteral("取消弧光指令设置"));
                 return;
             }
         }
@@ -2620,13 +2590,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入采集激光数据指令成功"));
+                ui->record->append(QStringLiteral("插入采集激光数据指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消采集激光数据指令设置"));
+                ui->record->append(QStringLiteral("取消采集激光数据指令设置"));
                 return;
             }
         }
@@ -2648,13 +2618,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入采集激光数据指令成功"));
+                ui->record->append(QStringLiteral("插入采集激光数据指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消采集激光数据指令设置"));
+                ui->record->append(QStringLiteral("取消采集激光数据指令设置"));
                 return;
             }
         }
@@ -2676,13 +2646,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入跟踪轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消跟踪轨迹指令设置"));
                 return;
             }
         }
@@ -2704,13 +2674,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入跟踪轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消跟踪轨迹指令设置"));
                 return;
             }
         }
@@ -2733,13 +2703,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入生成跟踪轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入生成跟踪轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消生成跟踪轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消生成跟踪轨迹指令设置"));
                 return;
             }
         }
@@ -2761,13 +2731,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入IO口指令成功"));
+                ui->record->append(QStringLiteral("插入IO口指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消IO口指令设置"));
+                ui->record->append(QStringLiteral("取消IO口指令设置"));
                 return;
             }
         }
@@ -2789,13 +2759,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入PLC指令成功"));
+                ui->record->append(QStringLiteral("插入PLC指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消PLC指令设置"));
+                ui->record->append(QStringLiteral("取消PLC指令设置"));
                 return;
             }
         }
@@ -2817,13 +2787,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入寻位指令成功"));
+                ui->record->append(QStringLiteral("插入寻位指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消寻位指令设置"));
+                ui->record->append(QStringLiteral("取消寻位指令设置"));
                 return;
             }
         }
@@ -2845,13 +2815,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入寻位指令成功"));
+                ui->record->append(QStringLiteral("插入寻位指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消寻位指令设置"));
+                ui->record->append(QStringLiteral("取消寻位指令设置"));
                 return;
             }
         }
@@ -2873,13 +2843,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入定位指令成功"));
+                ui->record->append(QStringLiteral("插入定位指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消定位指令设置"));
+                ui->record->append(QStringLiteral("取消定位指令设置"));
                 return;
             }
         }
@@ -2901,13 +2871,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入获取扫描的焊缝坐标值指令成功"));
+                ui->record->append(QStringLiteral("插入获取扫描的焊缝坐标值指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消获取扫描的焊缝坐标值指令设置"));
+                ui->record->append(QStringLiteral("取消获取扫描的焊缝坐标值指令设置"));
                 return;
             }
         }
@@ -2929,13 +2899,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入采样轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入采样轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消采样轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消采样轨迹指令设置"));
                 return;
             }
         }
@@ -2957,13 +2927,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹工艺指令成功"));
+                ui->record->append(QStringLiteral("插入跟踪轨迹工艺指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹工艺指令设置"));
+                ui->record->append(QStringLiteral("取消跟踪轨迹工艺指令设置"));
                 return;
             }
         }
@@ -2985,13 +2955,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹工艺相加指令成功"));
+                ui->record->append(QStringLiteral("插入跟踪轨迹工艺相加指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹工艺相加指令设置"));
+                ui->record->append(QStringLiteral("取消跟踪轨迹工艺相加指令设置"));
                 return;
             }
         }
@@ -3013,13 +2983,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入前往起弧点指令成功"));
+                ui->record->append(QStringLiteral("插入前往起弧点指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消前往起弧点指令设置"));
+                ui->record->append(QStringLiteral("取消前往起弧点指令设置"));
                 return;
             }
         }
@@ -3041,13 +3011,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入生成摆焊指令成功"));
+                ui->record->append(QStringLiteral("插入生成摆焊指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消生成摆焊指令设置"));
+                ui->record->append(QStringLiteral("取消生成摆焊指令设置"));
                 return;
             }
         }
@@ -3069,13 +3039,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入模拟量输出指令成功"));
+                ui->record->append(QStringLiteral("插入模拟量输出指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消模拟量输出指令设置"));
+                ui->record->append(QStringLiteral("取消模拟量输出指令设置"));
                 return;
             }
         }
@@ -3097,13 +3067,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入点坐标生成轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入点坐标生成轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消点坐标生成轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消点坐标生成轨迹指令设置"));
                 return;
             }
         }
@@ -3125,13 +3095,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入点坐标姿态指令成功"));
+                ui->record->append(QStringLiteral("插入点坐标姿态指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消点坐标姿态指令设置"));
+                ui->record->append(QStringLiteral("取消点坐标姿态指令设置"));
                 return;
             }
         }
@@ -3153,13 +3123,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入获取点坐标指令成功"));
+                ui->record->append(QStringLiteral("插入获取点坐标指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消获取点坐标指令设置"));
+                ui->record->append(QStringLiteral("取消获取点坐标指令设置"));
                 return;
             }
         }
@@ -3181,13 +3151,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入跟踪轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消跟踪轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消跟踪轨迹指令设置"));
                 return;
             }
         }
@@ -3210,13 +3180,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入计算点坐标指令成功"));
+                ui->record->append(QStringLiteral("插入计算点坐标指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消计算点坐标指令设置"));
+                ui->record->append(QStringLiteral("取消计算点坐标指令设置"));
                 return;
             }
         }
@@ -3238,13 +3208,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入圆弧跟踪轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入圆弧跟踪轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消圆弧跟踪轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消圆弧跟踪轨迹指令设置"));
                 return;
             }
         }
@@ -3266,13 +3236,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入获取点坐标指令成功"));
+                ui->record->append(QStringLiteral("插入获取点坐标指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消获取点坐标指令设置"));
+                ui->record->append(QStringLiteral("取消获取点坐标指令设置"));
                 return;
             }
         }
@@ -3294,13 +3264,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入继续跟踪轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入继续跟踪轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消继续跟踪轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消继续跟踪轨迹指令设置"));
                 return;
             }
         }
@@ -3322,13 +3292,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入扫描轨迹滤波指令成功"));
+                ui->record->append(QStringLiteral("插入扫描轨迹滤波指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消扫描轨迹滤波指令设置"));
+                ui->record->append(QStringLiteral("取消扫描轨迹滤波指令设置"));
                 return;
             }
         }
@@ -3350,13 +3320,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入跳转行数指令成功"));
+                ui->record->append(QStringLiteral("插入跳转行数指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消跳转行数指令设置"));
+                ui->record->append(QStringLiteral("取消跳转行数指令设置"));
                 return;
             }
         }
@@ -3372,7 +3342,7 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
             {
                 m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
             }
-            ui->record->append(QString::fromLocal8Bit("插入停止程序指令成功"));
+            ui->record->append(QStringLiteral("插入停止程序指令成功"));
             now_cmdline++;
             updatacmdlistUi();
         }
@@ -3394,13 +3364,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入相加生成轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入相加生成轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消相加生成轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消相加生成轨迹指令设置"));
                 return;
             }
         }
@@ -3422,13 +3392,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入相加生成轨迹指令成功"));
+                ui->record->append(QStringLiteral("插入相加生成轨迹指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消相加生成轨迹指令设置"));
+                ui->record->append(QStringLiteral("取消相加生成轨迹指令设置"));
                 return;
             }
         }
@@ -3436,12 +3406,12 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
         {
             bool rc;
             newcraft->init_dlg_show(false);
-            newcraft->setWindowTitle(QString::fromLocal8Bit("新建工艺"));
+            newcraft->setWindowTitle(QStringLiteral("新建工艺"));
             rc=newcraft->exec();
             newcraft->close_dlg_show();
             if(rc!=0)//保存成功返回
             {
-                QString msg=QString::fromLocal8Bit(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
+                QString msg=QStringLiteral(" 工艺类型")+QString::number(m_mcs->craft->craft_id)+": "
                             +m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id);
                 QString cmd_msg;
                 switch(m_mcs->craft->craft_id)
@@ -3491,13 +3461,13 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,cmd_msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入创建工艺指令成功"));
+                ui->record->append(QStringLiteral("插入创建工艺指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消创建工艺指令设置"));
+                ui->record->append(QStringLiteral("取消创建工艺指令设置"));
             }
         }
         else if(key==CMD_SAVEPCD_KEY)
@@ -3518,20 +3488,20 @@ void setprojectDlg::on_othercmdaddBtn_clicked()
                 {
                     m_mcs->project->project_cmdlist.insert(m_mcs->project->project_cmdlist.begin()+now_cmdline+1,msg);
                 }
-                ui->record->append(QString::fromLocal8Bit("插入保存点云指令成功"));
+                ui->record->append(QStringLiteral("插入保存点云指令成功"));
                 now_cmdline++;
                 updatacmdlistUi();
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("取消保存点云指令设置"));
+                ui->record->append(QStringLiteral("取消保存点云指令设置"));
                 return;
             }
         }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("取消指令设置"));
+        ui->record->append(QStringLiteral("取消指令设置"));
         return;
     }
 }
@@ -3545,7 +3515,7 @@ void setprojectDlg::on_ctlrobotEncheckBox_clicked()
     {
         if(m_mcs->rob->b_connect==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+            ui->record->append(QStringLiteral("机器人通信异常"));
             return;
         }
         else
@@ -3558,13 +3528,13 @@ void setprojectDlg::on_ctlrobotEncheckBox_clicked()
     #endif
         */
         m_mcs->mainDlg_robotEnable=false;
-        ui->record->append(QString::fromLocal8Bit("机器人关闭使能"));
+        ui->record->append(QStringLiteral("机器人关闭使能"));
     }
     else
     {
         if(m_mcs->rob->b_connect==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人通信异常"));
+            ui->record->append(QStringLiteral("机器人通信异常"));
             return;
         }
         else
@@ -3577,7 +3547,7 @@ void setprojectDlg::on_ctlrobotEncheckBox_clicked()
     #endif
     */
         m_mcs->mainDlg_robotEnable=true;
-        ui->record->append(QString::fromLocal8Bit("机器人开启使能"));
+        ui->record->append(QStringLiteral("机器人开启使能"));
     }
 }
 
@@ -3587,11 +3557,11 @@ void setprojectDlg::on_ctlmovetcpcombo_currentIndexChanged(int index)
     {
         int tcp=index;
         m_mcs->tosendbuffer->cmd_settcp(tcp);
-        ui->record->append(QString::fromLocal8Bit("切换tcp"));
+        ui->record->append(QStringLiteral("切换tcp"));
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -3629,7 +3599,7 @@ int setprojectDlg::task_setmaindlgtcp(int tcp)
     }
     if(m_mcs->rob->b_send_group_robot==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+        ui->record->append(QStringLiteral("机器人TCP设置异常"));
         return 1;
     }
     usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -3646,7 +3616,7 @@ int setprojectDlg::task_setmaindlgtcp(int tcp)
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
         return 1;
     }
     return 0;
@@ -3657,7 +3627,7 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3665,22 +3635,22 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3689,7 +3659,7 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_XSUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人X轴负移动"));
+    ui->record->append(QStringLiteral("机器人X轴负移动"));
     return;
 }
 
@@ -3697,7 +3667,7 @@ void setprojectDlg::on_ctlposXsubBtn_pressed()
 void setprojectDlg::on_ctlposXsubBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人X+按下
@@ -3705,7 +3675,7 @@ void setprojectDlg::on_ctlposXaddBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3713,22 +3683,22 @@ void setprojectDlg::on_ctlposXaddBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3737,14 +3707,14 @@ void setprojectDlg::on_ctlposXaddBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_XADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人X轴正移动"));
+    ui->record->append(QStringLiteral("机器人X轴正移动"));
 }
 
 //机器人X+抬起
 void setprojectDlg::on_ctlposXaddBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人Y-按下
@@ -3752,7 +3722,7 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3760,22 +3730,22 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3784,7 +3754,7 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_YSUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人Y轴负移动"));
+    ui->record->append(QStringLiteral("机器人Y轴负移动"));
     return;
 }
 
@@ -3792,7 +3762,7 @@ void setprojectDlg::on_ctlposYsubBtn_pressed()
 void setprojectDlg::on_ctlposYsubBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人Y+按下
@@ -3800,7 +3770,7 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3808,22 +3778,22 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3832,7 +3802,7 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_YADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人Y轴正移动"));
+    ui->record->append(QStringLiteral("机器人Y轴正移动"));
     return;
 }
 
@@ -3840,7 +3810,7 @@ void setprojectDlg::on_ctlposYaddBtn_pressed()
 void setprojectDlg::on_ctlposYaddBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人Z-按下
@@ -3848,7 +3818,7 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3856,22 +3826,22 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3880,7 +3850,7 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_ZSUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人Z轴负移动"));
+    ui->record->append(QStringLiteral("机器人Z轴负移动"));
     return;
 }
 
@@ -3888,7 +3858,7 @@ void setprojectDlg::on_ctlposZsubBtn_pressed()
 void setprojectDlg::on_ctlposZsubBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人Z+按下
@@ -3896,7 +3866,7 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3904,22 +3874,22 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3928,7 +3898,7 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_ZADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人Z轴正移动"));
+    ui->record->append(QStringLiteral("机器人Z轴正移动"));
     return;
 }
 
@@ -3936,7 +3906,7 @@ void setprojectDlg::on_ctlposZaddBtn_pressed()
 void setprojectDlg::on_ctlposZaddBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人RX-按下
@@ -3944,7 +3914,7 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -3952,22 +3922,22 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -3976,7 +3946,7 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_RXSUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人RX轴负移动"));
+    ui->record->append(QStringLiteral("机器人RX轴负移动"));
     return;
 }
 
@@ -3984,7 +3954,7 @@ void setprojectDlg::on_ctlposRXsubBtn_pressed()
 void setprojectDlg::on_ctlposRXsubBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人RX+按下
@@ -3992,7 +3962,7 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4000,22 +3970,22 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4024,7 +3994,7 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_RXADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人RX轴正移动"));
+    ui->record->append(QStringLiteral("机器人RX轴正移动"));
     return;
 }
 
@@ -4032,7 +4002,7 @@ void setprojectDlg::on_ctlposRXaddBtn_pressed()
 void setprojectDlg::on_ctlposRXaddBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人RY-按下
@@ -4040,7 +4010,7 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4048,22 +4018,22 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4072,7 +4042,7 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_RYSUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人RY轴负移动"));
+    ui->record->append(QStringLiteral("机器人RY轴负移动"));
     return;
 }
 
@@ -4080,7 +4050,7 @@ void setprojectDlg::on_ctlposRYsubBtn_pressed()
 void setprojectDlg::on_ctlposRYsubBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人RY+按下
@@ -4088,7 +4058,7 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4096,22 +4066,22 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4120,7 +4090,7 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_RYADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人RY轴正移动"));
+    ui->record->append(QStringLiteral("机器人RY轴正移动"));
     return;
 }
 
@@ -4128,7 +4098,7 @@ void setprojectDlg::on_ctlposRYaddBtn_pressed()
 void setprojectDlg::on_ctlposRYaddBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人RZ-按下
@@ -4136,7 +4106,7 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4144,22 +4114,22 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4168,7 +4138,7 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_RZSUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人RZ轴负移动"));
+    ui->record->append(QStringLiteral("机器人RZ轴负移动"));
     return;
 }
 
@@ -4176,7 +4146,7 @@ void setprojectDlg::on_ctlposRZsubBtn_pressed()
 void setprojectDlg::on_ctlposRZsubBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人RZ+按下
@@ -4184,7 +4154,7 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4192,22 +4162,22 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4216,7 +4186,7 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_RZADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人RZ轴正移动"));
+    ui->record->append(QStringLiteral("机器人RZ轴正移动"));
     return;
 }
 
@@ -4224,7 +4194,7 @@ void setprojectDlg::on_ctlposRZaddBtn_pressed()
 void setprojectDlg::on_ctlposRZaddBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人OUT1-按下
@@ -4232,7 +4202,7 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4240,22 +4210,22 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4264,7 +4234,7 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT1SUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人OUT1轴负移动"));
+    ui->record->append(QStringLiteral("机器人OUT1轴负移动"));
     return;
 }
 
@@ -4272,7 +4242,7 @@ void setprojectDlg::on_ctlposOut1subBtn_pressed()
 void setprojectDlg::on_ctlposOut1subBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人OUT1+按下
@@ -4280,7 +4250,7 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4288,22 +4258,22 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4312,7 +4282,7 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT1ADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人OUT1轴正移动"));
+    ui->record->append(QStringLiteral("机器人OUT1轴正移动"));
     return;
 }
 
@@ -4320,7 +4290,7 @@ void setprojectDlg::on_ctlposOut1addBtn_pressed()
 void setprojectDlg::on_ctlposOut1addBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人OUT2-按下
@@ -4328,7 +4298,7 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4336,22 +4306,22 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4360,7 +4330,7 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT2SUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人OUT2轴负移动"));
+    ui->record->append(QStringLiteral("机器人OUT2轴负移动"));
     return;
 }
 
@@ -4368,7 +4338,7 @@ void setprojectDlg::on_ctlposOut2subBtn_pressed()
 void setprojectDlg::on_ctlposOut2subBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人OUT2+按下
@@ -4376,7 +4346,7 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4384,22 +4354,22 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4408,7 +4378,7 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT2ADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人OUT2轴正移动"));
+    ui->record->append(QStringLiteral("机器人OUT2轴正移动"));
     return;
 }
 
@@ -4416,7 +4386,7 @@ void setprojectDlg::on_ctlposOut2addBtn_pressed()
 void setprojectDlg::on_ctlposOut2addBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人OUT3-按下
@@ -4424,7 +4394,7 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4432,22 +4402,22 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4456,7 +4426,7 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT3SUB;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人OUT3轴负移动"));
+    ui->record->append(QStringLiteral("机器人OUT3轴负移动"));
     return;
 }
 
@@ -4464,7 +4434,7 @@ void setprojectDlg::on_ctlposOut3subBtn_pressed()
 void setprojectDlg::on_ctlposOut3subBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 //机器人OUT3+按下
@@ -4472,7 +4442,7 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("机器人未连接成功"));
+        ui->record->append(QStringLiteral("机器人未连接成功"));
         return;
     }
     int tcp=ui->ctlmovetcpcombo->currentIndex();//获取到移动TCP
@@ -4480,22 +4450,22 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
     float f_speed=ui->ctlmovespeed->text().toFloat(&rc);//获取到速度值
     if(tcp<0||tcp>ui->ctlmovetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->ctlmovespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     if(m_mcs->mainDlg_robotEnable==false)
     {
-        ui->record->append(QString::fromLocal8Bit("请打勾机器人使能"));
+        ui->record->append(QStringLiteral("请打勾机器人使能"));
         return;
     }
     m_mcs->e2proomdata.maindlg_movespeed=f_speed;
@@ -4504,7 +4474,7 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
     m_mcs->mainDlg_robmovestate=MAINDLG_OUT3ADD;
     if(0!=task_setmaindlgtcp(tcp))
         return;
-    ui->record->append(QString::fromLocal8Bit("机器人OUT3轴正移动"));
+    ui->record->append(QStringLiteral("机器人OUT3轴正移动"));
     return;
 }
 
@@ -4512,7 +4482,7 @@ void setprojectDlg::on_ctlposOut3addBtn_pressed()
 void setprojectDlg::on_ctlposOut3addBtn_released()
 {
     m_mcs->mainDlg_robmovestate=MAINDLG_NOTMOVE;
-    ui->record->append(QString::fromLocal8Bit("机器人停止移动"));
+    ui->record->append(QStringLiteral("机器人停止移动"));
 }
 
 void setprojectDlg::updatacmdlistUi()

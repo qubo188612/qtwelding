@@ -113,12 +113,12 @@ void keyfilterDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->pushButton->setText(QString::fromLocal8Bit("插入轨迹滤波指令"));
+        ui->pushButton->setText(QStringLiteral("插入轨迹滤波指令"));
     }
     else
     {
         b_inster=true;
-        ui->pushButton->setText(QString::fromLocal8Bit("替换轨迹滤波指令"));
+        ui->pushButton->setText(QStringLiteral("替换轨迹滤波指令"));
     }
 }
 
@@ -135,17 +135,17 @@ void keyfilterDlg::on_pushButton_clicked()
 
     if(route<0||route>ui->filternamecombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要滤波的轨迹名字"));
+        ui->record->append(QStringLiteral("请选择要滤波的轨迹名字"));
         return;
     }
     if(mode<0||mode>ui->tabWidget->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择滤波模式"));
+        ui->record->append(QStringLiteral("请选择滤波模式"));
         return;
     }
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成轨迹"));
+        ui->record->append(QStringLiteral("请填写生成轨迹"));
         return;
     }
     switch(mode)
@@ -155,13 +155,13 @@ void keyfilterDlg::on_pushButton_clicked()
         {
             if(ui->msl_poly->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写拟合阶次"));
+                ui->record->append(QStringLiteral("请填写拟合阶次"));
                 return;
             }
             i_data=ui->msl_poly->text().toInt(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("拟合阶次格式错误"));
+                ui->record->append(QStringLiteral("拟合阶次格式错误"));
                 return;
             }
             filters.msl_poly=i_data;
@@ -171,26 +171,26 @@ void keyfilterDlg::on_pushButton_clicked()
         {
             if(ui->sor_nearpoint_num->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写邻域点数"));
+                ui->record->append(QStringLiteral("请填写邻域点数"));
                 return;
             }
             i_data=ui->sor_nearpoint_num->text().toInt(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("邻域点数格式错误"));
+                ui->record->append(QStringLiteral("邻域点数格式错误"));
                 return;
             }
             filters.sor_nearpoint_num=i_data;
 
             if(ui->sor_standard_deviation->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写标准差"));
+                ui->record->append(QStringLiteral("请填写标准差"));
                 return;
             }
             f_data=ui->sor_standard_deviation->text().toFloat(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("标准差格式错误"));
+                ui->record->append(QStringLiteral("标准差格式错误"));
                 return;
             }
             filters.sor_standard_deviation=f_data;
@@ -202,39 +202,39 @@ void keyfilterDlg::on_pushButton_clicked()
         {
             if(ui->svd_Degree->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写拟合阶次"));
+                ui->record->append(QStringLiteral("请填写拟合阶次"));
                 return;
             }
             i_data=ui->svd_Degree->text().toInt(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("拟合阶次格式错误"));
+                ui->record->append(QStringLiteral("拟合阶次格式错误"));
                 return;
             }
             filters.svd_Degree=i_data;
 
             if(ui->svd_WindowSize->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写邻域点数"));
+                ui->record->append(QStringLiteral("请填写邻域点数"));
                 return;
             }
             i_data=ui->svd_WindowSize->text().toInt(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("邻域点数格式错误"));
+                ui->record->append(QStringLiteral("邻域点数格式错误"));
                 return;
             }
             filters.svd_WindowSize=i_data;
 
             if(ui->svd_SingularThreshold->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写判定距离"));
+                ui->record->append(QStringLiteral("请填写判定距离"));
                 return;
             }
             f_data=ui->svd_SingularThreshold->text().toFloat(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("判定距离格式错误"));
+                ui->record->append(QStringLiteral("判定距离格式错误"));
                 return;
             }
             filters.svd_SingularThreshold=f_data;
@@ -244,26 +244,26 @@ void keyfilterDlg::on_pushButton_clicked()
         {
             if(ui->gaussian_SmoothingRadius->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写平滑半径"));
+                ui->record->append(QStringLiteral("请填写平滑半径"));
                 return;
             }
             f_data=ui->gaussian_SmoothingRadius->text().toFloat(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("平滑半径格式错误"));
+                ui->record->append(QStringLiteral("平滑半径格式错误"));
                 return;
             }
             filters.gaussian_SmoothingRadius=f_data;
 
             if(ui->gaussian_SmoothingSigma->text().isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请填写标准差"));
+                ui->record->append(QStringLiteral("请填写标准差"));
                 return;
             }
             f_data=ui->gaussian_SmoothingSigma->text().toFloat(&rc);
             if(rc==false)
             {
-                ui->record->append(QString::fromLocal8Bit("标准差格式错误"));
+                ui->record->append(QStringLiteral("标准差格式错误"));
                 return;
             }
             filters.gaussian_SmoothingSigma=f_data;
@@ -280,12 +280,12 @@ void keyfilterDlg::on_pushButton_clicked()
         {
             if(name==m_mcs->project->project_weld_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("生成轨迹与已有的轨迹重名"));
                 return;
             }
         }
     }
-    ui->record->append(QString::fromLocal8Bit("插入轨迹滤波指令成功"));
+    ui->record->append(QStringLiteral("插入轨迹滤波指令成功"));
     cmd_msg=msg;
     done(1);
 }

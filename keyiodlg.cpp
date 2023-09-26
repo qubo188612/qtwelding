@@ -89,13 +89,13 @@ void keyioDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->IOoutputBtn->setText(QString::fromLocal8Bit("插入IO口输出指令"));
-        ui->IOinputBtn->setText(QString::fromLocal8Bit("插入等待IO口输入指令"));
+        ui->IOoutputBtn->setText(QStringLiteral("插入IO口输出指令"));
+        ui->IOinputBtn->setText(QStringLiteral("插入等待IO口输入指令"));
     }
     else
     {
-        ui->IOoutputBtn->setText(QString::fromLocal8Bit("替换IO口输出指令"));
-        ui->IOinputBtn->setText(QString::fromLocal8Bit("替换等待IO口输入指令"));
+        ui->IOoutputBtn->setText(QStringLiteral("替换IO口输出指令"));
+        ui->IOinputBtn->setText(QStringLiteral("替换等待IO口输入指令"));
     }
 }
 
@@ -170,7 +170,7 @@ void keyioDlg::on_IOoutputBtn_clicked()
         io[7]=0;
     }
     msg=cmd.cmd_ioout(io);
-    ui->record->append(QString::fromLocal8Bit("插入IO口输出指令成功"));
+    ui->record->append(QStringLiteral("插入IO口输出指令成功"));
     cmd_msg=msg;
     done(1);
 }
@@ -246,7 +246,7 @@ void keyioDlg::on_IOinputBtn_clicked()
         io[7]=0;
     }
     msg=cmd.cmd_iowaitin(io);
-    ui->record->append(QString::fromLocal8Bit("插入等待IO口输入指令成功"));
+    ui->record->append(QStringLiteral("插入等待IO口输入指令成功"));
     cmd_msg=msg;
     done(1);
 }

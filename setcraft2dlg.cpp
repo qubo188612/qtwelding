@@ -52,7 +52,7 @@ void setcraft2Dlg::on_pushButton_clicked()
     m_mcs->craft->posturelist[0].Variable.Y=ui->lineEdit_Y->text().toFloat();
     m_mcs->craft->posturelist[0].Variable.Z=ui->lineEdit_Z->text().toFloat();
     if(b_file==true)
-        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+        m_mcs->craft->SaveProject(m_mcs->craft->craft_path);
     else
     {
         my_cmd cmd;

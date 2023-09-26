@@ -110,8 +110,8 @@ void plotedit0Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个主要跟踪轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个主要跟踪轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -123,8 +123,8 @@ void plotedit0Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个跟踪轨迹1"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个跟踪轨迹1"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -136,8 +136,8 @@ void plotedit0Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个跟踪轨迹2"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个跟踪轨迹2"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -145,8 +145,8 @@ void plotedit0Dlg::on_pushButton_clicked()
     }
     if(name0==name1||name0==name2||name1==name2)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("选择的三个轨迹中存在同名轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("选择的三个轨迹中存在同名轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );

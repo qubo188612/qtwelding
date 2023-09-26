@@ -73,14 +73,14 @@ void setcraft0Dlg::on_pushButton_clicked()//获取当前焊接姿态
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
         ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取当前机器人坐标完成"));
+        ui->record->append(QStringLiteral("获取当前机器人坐标完成"));
     }
 }
 
@@ -94,7 +94,7 @@ void setcraft0Dlg::on_pushButton_2_clicked()//确定并保存
     m_mcs->craft->posturelist[0].posture.RY=ui->lineEdit_RY->text().toFloat();
     m_mcs->craft->posturelist[0].posture.RZ=ui->lineEdit_RZ->text().toFloat();
     if(b_file==true)
-        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+        m_mcs->craft->SaveProject(m_mcs->craft->craft_path);
     else
     {
         my_cmd cmd;

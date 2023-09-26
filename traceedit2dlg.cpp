@@ -146,8 +146,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个主要扫描轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个主要扫描轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -159,8 +159,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个端点1的扫描轨迹1"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个端点1的扫描轨迹1"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -172,8 +172,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个端点1的扫描轨迹2"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个端点1的扫描轨迹2"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -185,8 +185,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个端点2的扫描轨迹1"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个端点2的扫描轨迹1"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -198,8 +198,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("请选择一个端点2的扫描轨迹2"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("请选择一个端点2的扫描轨迹2"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -208,8 +208,8 @@ void traceedit2Dlg::on_pushButton_clicked()
 
     if(name0==name1||name0==name2||name1==name2)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("选择的端点1三个轨迹中存在同名轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("选择的端点1三个轨迹中存在同名轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -217,8 +217,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else if(name0==name3||name0==name4||name3==name4)
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("选择的端点2三个轨迹中存在同名轨迹"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("选择的端点2三个轨迹中存在同名轨迹"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );
@@ -226,8 +226,8 @@ void traceedit2Dlg::on_pushButton_clicked()
     }
     else if((name3==name1&&name4==name2)||(name3==name2&&name4==name1))
     {
-        QMessageBox:: StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("端点1与端点2属于同一点"),
+        QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("端点1与端点2属于同一点"),
                                                                       QMessageBox::Yes,
                                                                       QMessageBox::Yes
                                                                       );

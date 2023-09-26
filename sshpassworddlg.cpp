@@ -19,10 +19,10 @@ sshpasswordDlg::sshpasswordDlg(my_parameters *mcs,QWidget *parent) :
     });
 
     connect(ui->sshfileBtn,&QPushButton::clicked,[=](){
-        m_mcs->resultdata.setup_file = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的升级文件"), "", "TAR(*.tar)");
+        m_mcs->resultdata.setup_file = QFileDialog::getOpenFileName(this, QStringLiteral("请选择要导入的升级文件"), "", "TAR(*.tar)");
         if(m_mcs->resultdata.setup_file.size()>0)
         {
-            ui->record->append(QString::fromLocal8Bit("选择升级文件:"));
+            ui->record->append(QStringLiteral("选择升级文件:"));
             ui->record->append(m_mcs->resultdata.setup_file);
 
         //  QString st="/home/"+m_mcs->e2proomdata.sshdlg_usename+"/sunny-tis.tar";
@@ -36,12 +36,12 @@ sshpasswordDlg::sshpasswordDlg(my_parameters *mcs,QWidget *parent) :
         if(m_mcs->resultdata.setup_file.size()>0)
         {
             QString st="/dev/sunny-tis.tar";
-            ui->record->append(QString::fromLocal8Bit("开始传输升级文件..."));
+            ui->record->append(QStringLiteral("开始传输升级文件..."));
             emit sigSendFile(m_mcs->resultdata.setup_file,st);
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请先选择升级文件"));
+            ui->record->append(QStringLiteral("请先选择升级文件"));
         }
     });
 
@@ -58,7 +58,7 @@ sshpasswordDlg::sshpasswordDlg(my_parameters *mcs,QWidget *parent) :
 //      }
 //      else
 //      {
-//          ui->record->append(QString::fromLocal8Bit("请先传输升级文件"));
+//          ui->record->append(QStringLiteral("请先传输升级文件"));
 //      }
     });
 }
@@ -92,12 +92,12 @@ void sshpasswordDlg::SshConnect()
 {
     if(!m_mcs->resultdata.m_bConnectState)
     {
-        ui->record->append(QString::fromLocal8Bit("ssh服务创建中..."));
+        ui->record->append(QStringLiteral("ssh服务创建中..."));
         createSSHConnection();  //发起连接
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("ssh服务重启中..."));
+        ui->record->append(QStringLiteral("ssh服务重启中..."));
         m_mcs->resultdata.m_bConnectState = false;
         emit sigDisconnected();//断开连接
         createSSHConnection();
@@ -130,11 +130,11 @@ void sshpasswordDlg::slotConnectStateChanged(bool bState, QString strIp, int nPo
     m_mcs->resultdata.m_bConnectState = bState;
     if(m_mcs->resultdata.m_bConnectState)
     {
-        ui->record->append(QString::fromLocal8Bit("ssh服务连接成功,请等待相机响应..."));
+        ui->record->append(QStringLiteral("ssh服务连接成功,请等待相机响应..."));
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("ssh服务连接失败"));
+        ui->record->append(QStringLiteral("ssh服务连接失败"));
     }
 }
 
@@ -142,12 +142,12 @@ void sshpasswordDlg::slotsshFileScpfinish(bool bState)
 {
     if(bState==true)
     {
-        ui->record->append(QString::fromLocal8Bit("升级文件传输完成,请开始升级"));
+        ui->record->append(QStringLiteral("升级文件传输完成,请开始升级"));
         m_mcs->resultdata.m_bFileState=true;
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("升级文件传输失败，请重试"));
+        ui->record->append(QStringLiteral("升级文件传输失败，请重试"));
     }
 }
 
@@ -241,7 +241,7 @@ void sshpasswordDlg::slotDataArrived(QString strMsg, QString strIp, int nPort)
         if(strMsg.contains("done"))
         {
             m_mcs->resultdata.updata_step=7;
-            ui->record->append(QString::fromLocal8Bit("相机程序升级完成"));
+            ui->record->append(QStringLiteral("相机程序升级完成"));
         }
     }
 }

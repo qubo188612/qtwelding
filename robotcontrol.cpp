@@ -1790,7 +1790,7 @@ void RobotcontrolThread1::run() //接到上位机命令
         if(ret==-1)
         {
             main_record.lock();
-            QString return_msg=QString::fromLocal8Bit("机器人控制服务器申请失败");
+            QString return_msg=QStringLiteral("机器人控制服务器申请失败");
             _p->m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
             continue;
@@ -1817,7 +1817,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                 else
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("机器人控制服务器建立连接失败");
+                    QString return_msg=QStringLiteral("机器人控制服务器建立连接失败");
                     _p->m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     break;
@@ -1829,7 +1829,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                 if (ret == -1)
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("机器人控制服务器设置socket连接失败");
+                    QString return_msg=QStringLiteral("机器人控制服务器设置socket连接失败");
                     _p->m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     break;
@@ -2853,7 +2853,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_EMERGEN_INFO_PORT))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        QString return_msg=QStringLiteral("与远端机器人数据端口连接失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -2863,7 +2863,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(0!=_p->m_client.SetRcvBufferlong(ROBOT_EMERGEN_INFO_RECVBUFFER_MAX*2))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        QString return_msg=QStringLiteral("接收远端机器人数据缓存申请失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -2881,7 +2881,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_EMERGEN_SEND_PORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人命令端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -2893,7 +2893,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_EMERGEN_INFO_SENDRECVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人命令缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -2915,7 +2915,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_totalcontrolent.Connect(rodb_ip.toStdString().c_str(),ROBOT_EMERGEN_TOTALCONTROL_RORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人总控端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人总控端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -2927,7 +2927,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_totalcontrolent.SetRcvBufferlong(ROBOT_EMERGEN_INFO_TOTALCONTROLCVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人总控缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人总控缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -2958,7 +2958,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_DOBOT_INFO_PORT))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        QString return_msg=QStringLiteral("与远端机器人数据端口连接失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -2968,7 +2968,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(0!=_p->m_client.SetRcvBufferlong(ROBOT_DOBOT_INFO_RECVBUFFER_MAX*2))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        QString return_msg=QStringLiteral("接收远端机器人数据缓存申请失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -2986,7 +2986,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_DOBOT_SEND_PORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人命令端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -2998,7 +2998,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_DOBOT_INFO_SENDRECVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人命令缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3020,7 +3020,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_totalcontrolent.Connect(rodb_ip.toStdString().c_str(),ROBOT_DOBOT_TOTALCONTROL_RORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人总控端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人总控端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3032,7 +3032,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_totalcontrolent.SetRcvBufferlong(ROBOT_DOBOT_INFO_TOTALCONTROLCVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人总控缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人总控缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3063,7 +3063,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_UR_INFO_PORT))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        QString return_msg=QStringLiteral("与远端机器人数据端口连接失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3073,7 +3073,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(0!=_p->m_client.SetRcvBufferlong(ROBOT_UR_INFO_RECVBUFFER_MAX*2))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        QString return_msg=QStringLiteral("接收远端机器人数据缓存申请失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3091,7 +3091,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_UR_SEND_PORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人命令端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3103,7 +3103,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_UR_INFO_SENDRECVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人命令缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3125,7 +3125,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_totalcontrolent.Connect(rodb_ip.toStdString().c_str(),ROBOT_UR_TOTALCONTROL_RORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人总控端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人总控端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3137,7 +3137,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_totalcontrolent.SetRcvBufferlong(ROBOT_UR_INFO_TOTALCONTROLCVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人总控缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人总控缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3168,7 +3168,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_KUKA_INFO_PORT))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        QString return_msg=QStringLiteral("与远端机器人数据端口连接失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3178,7 +3178,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(0!=_p->m_client.SetRcvBufferlong(ROBOT_KUKA_INFO_RECVBUFFER_MAX*2))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        QString return_msg=QStringLiteral("接收远端机器人数据缓存申请失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3196,7 +3196,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_KUKA_SEND_PORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人命令端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3208,7 +3208,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_UR_INFO_SENDRECVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人命令缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3238,7 +3238,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(false==_p->m_client.Connect(rodb_ip.toStdString().c_str(),ROBOT_KAWASAKI_INFO_PORT))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("与远端机器人数据端口连接失败");
+                        QString return_msg=QStringLiteral("与远端机器人数据端口连接失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3248,7 +3248,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(0!=_p->m_client.SetRcvBufferlong(ROBOT_KAWASAKI_INFO_RECVBUFFER_MAX*2))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("接收远端机器人数据缓存申请失败");
+                        QString return_msg=QStringLiteral("接收远端机器人数据缓存申请失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3266,7 +3266,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(false==_p->m_sendent.Connect(rodb_ip.toStdString().c_str(),ROBOT_KAWASAKI_SEND_PORT))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("与远端机器人命令端口连接失败");
+                            QString return_msg=QStringLiteral("与远端机器人命令端口连接失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3278,7 +3278,7 @@ void RobotlinkThread::run() //连接机器人命令
                         if(0!=_p->m_sendent.SetRcvBufferlong(ROBOT_KAWASAKI_INFO_SENDRECVBUFFER_MAX*2))
                         {
                             main_record.lock();
-                            QString return_msg=QString::fromLocal8Bit("接收远端机器人命令缓存申请失败");
+                            QString return_msg=QStringLiteral("接收远端机器人命令缓存申请失败");
                             _p->m_mcs->main_record.push_back(return_msg);
                             main_record.unlock();
                             sleep(nextlinktime);
@@ -3310,7 +3310,7 @@ void RobotlinkThread::run() //连接机器人命令
             }
             _p->RobotInit(tcp);
             main_record.lock();
-            QString return_msg=QString::fromLocal8Bit("机器人状态获取成功");
+            QString return_msg=QStringLiteral("机器人状态获取成功");
             if(robot_totalcontrolnEn!=0)
             {
                 //总控有效的情况下机器人才能完全启动
@@ -3374,7 +3374,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(false==_p->m_weldsendent.Connect(weld_ip.toStdString().c_str(),SOMEONEPORT))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("与远端焊机命令端口连接失败");
+                        QString return_msg=QStringLiteral("与远端焊机命令端口连接失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3386,7 +3386,7 @@ void RobotlinkThread::run() //连接机器人命令
                     if(0!=_p->m_weldsendent.SetRcvBufferlong(WELD_SOMEONE_INFO_SENDRECVBUFFER_MAX*2))
                     {
                         main_record.lock();
-                        QString return_msg=QString::fromLocal8Bit("接收远端焊机命令缓存申请失败");
+                        QString return_msg=QStringLiteral("接收远端焊机命令缓存申请失败");
                         _p->m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         sleep(nextlinktime);
@@ -3409,7 +3409,7 @@ void RobotlinkThread::run() //连接机器人命令
             }
             _p->WeldInit();
             main_record.lock();
-            QString return_msg=QString::fromLocal8Bit("焊机状态获取成功");
+            QString return_msg=QStringLiteral("焊机状态获取成功");
             _p->m_mcs->main_record.push_back(return_msg);
             main_record.unlock();
         }
@@ -4057,7 +4057,7 @@ void RobotsendThread::run()
                 if(send_buf.size()!=_p->m_sendent.Send(send_buf.c_str(),send_buf.size()))
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("远端机器人发送命令失败,系统尝试重连机器人");
+                    QString return_msg=QStringLiteral("远端机器人发送命令失败,系统尝试重连机器人");
                     _p->mb_mapping->tab_registers[ROB_CONNECT_STATE_REG_ADD]=0;
                     _p->m_mcs->main_record.push_back(return_msg);
                     _p->b_relink=true;
@@ -4233,7 +4233,7 @@ void RobottotalcontrolThread::run()
                 if(totalcontrolent_buf.size()!=_p->m_totalcontrolent.Send(totalcontrolent_buf.c_str(),totalcontrolent_buf.size()))
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("远端焊机发送命令失败,系统尝试重连机器人");
+                    QString return_msg=QStringLiteral("远端焊机发送命令失败,系统尝试重连机器人");
                     _p->mb_mapping->tab_registers[ROB_CONNECT_STATE_REG_ADD]=0;
                     _p->m_mcs->main_record.push_back(return_msg);
                     _p->b_relink=true;
@@ -4371,7 +4371,7 @@ void WeldsendThread::run()
                 if(send_buf.size()!=_p->m_weldsendent.Send(send_buf.c_str(),send_buf.size()))
                 {
                     main_record.lock();
-                    QString return_msg=QString::fromLocal8Bit("远端焊机发送命令失败,系统尝试重连机器人");
+                    QString return_msg=QStringLiteral("远端焊机发送命令失败,系统尝试重连机器人");
                     _p->mb_mapping->tab_registers[ROB_CONNECT_STATE_REG_ADD]=0;
                     _p->m_mcs->main_record.push_back(return_msg);
                     _p->b_relink=true;

@@ -72,12 +72,12 @@ void keycreataddDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->creataddBtn->setText(QString::fromLocal8Bit("插入相加生成轨迹指令"));
+        ui->creataddBtn->setText(QStringLiteral("插入相加生成轨迹指令"));
     }
     else
     {
         b_inster=true;
-        ui->creataddBtn->setText(QString::fromLocal8Bit("替换相加生成轨迹指令"));
+        ui->creataddBtn->setText(QStringLiteral("替换相加生成轨迹指令"));
     }
 }
 
@@ -108,7 +108,7 @@ void keycreataddDlg::on_creataddAddBtn_clicked()
     }
     if(now_weldname.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名称"));
+        ui->record->append(QStringLiteral("请选择要插入的轨迹名称"));
         return;
     }
     if(now_creataddline==weldsname.size()-1)
@@ -121,7 +121,7 @@ void keycreataddDlg::on_creataddAddBtn_clicked()
     }
     now_creataddline++;
     updatalistUi();
-    ui->record->append(QString::fromLocal8Bit("插入轨迹完成"));
+    ui->record->append(QStringLiteral("插入轨迹完成"));
 }
 
 //删除轨迹
@@ -130,14 +130,14 @@ void keycreataddDlg::on_creataddDelBtn_clicked()
     if(now_creataddline>=0&&weldsname.size()>now_creataddline)
     {
         weldsname.erase(weldsname.begin()+now_creataddline);
-        ui->record->append(QString::fromLocal8Bit("删除轨迹坐标完成"));
+        ui->record->append(QStringLiteral("删除轨迹坐标完成"));
         if(now_creataddline>=weldsname.size())
             now_creataddline=now_creataddline-1;
         updatalistUi();
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要删除的轨迹"));
+        ui->record->append(QStringLiteral("请先选中要删除的轨迹"));
     }
 }
 
@@ -147,12 +147,12 @@ void keycreataddDlg::on_creataddBtn_clicked()
     QString name=ui->creataddnamelineEdit->text();
     if(name.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请输入要生成的轨迹名字"));
+        ui->record->append(QStringLiteral("请输入要生成的轨迹名字"));
         return;
     }
     if(weldsname.size()<2)
     {
-        ui->record->append(QString::fromLocal8Bit("生成轨迹至少需要1个以上的轨迹"));
+        ui->record->append(QStringLiteral("生成轨迹至少需要1个以上的轨迹"));
         return;
     }
     if(b_inster==false)
@@ -161,7 +161,7 @@ void keycreataddDlg::on_creataddBtn_clicked()
         {
             if(name==m_mcs->project->project_weld_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成的轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("生成的轨迹与已有的轨迹重名"));
                 return;
             }
         }
@@ -179,14 +179,14 @@ void keycreataddDlg::on_creataddBtn_clicked()
             }
             if(b_find==false)
             {
-                ui->record->append(QString::fromLocal8Bit("前面没有名为")+weldname+QString::fromLocal8Bit("的轨迹"));
+                ui->record->append(QStringLiteral("前面没有名为")+weldname+QStringLiteral("的轨迹"));
                 return;
             }
         }
     }
     my_cmd cmd;
     QString msg=cmd.cmd_creatadd(weldsname,name);
-    ui->record->append(QString::fromLocal8Bit("插入相加生成轨迹指令成功"));
+    ui->record->append(QStringLiteral("插入相加生成轨迹指令成功"));
     cmd_msg=msg;
     done(1);
 }

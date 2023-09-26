@@ -78,12 +78,12 @@ void keysetposeDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->setposeBtn->setText(QString::fromLocal8Bit("插入点坐标姿态指令"));
+        ui->setposeBtn->setText(QStringLiteral("插入点坐标姿态指令"));
     }
     else
     {
         b_inster=true;
-        ui->setposeBtn->setText(QString::fromLocal8Bit("替换点坐标姿态指令"));
+        ui->setposeBtn->setText(QStringLiteral("替换点坐标姿态指令"));
     }
 }
 
@@ -103,14 +103,14 @@ void keysetposeDlg::on_getposeBtn_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
         ui->setposeRXEdit->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->setposeRYEdit->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->setposeRZEdit->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取当前机器人坐标完成"));
+        ui->record->append(QStringLiteral("获取当前机器人坐标完成"));
     }
 }
 
@@ -125,79 +125,79 @@ void keysetposeDlg::on_setposeBtn_clicked()
     bool rc;
     if(namein.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请选择输入点坐标"));
+        ui->record->append(QStringLiteral("请选择输入点坐标"));
         return;
     }
     if(nameout.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成点坐标名称"));
+        ui->record->append(QStringLiteral("请填写生成点坐标名称"));
         return;
     }
     if(ui->setposeRXEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写设置姿态RX"));
+        ui->record->append(QStringLiteral("请填写设置姿态RX"));
         return;
     }
     pose[0]=ui->setposeRXEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("设置姿态RX格式错误"));
+        ui->record->append(QStringLiteral("设置姿态RX格式错误"));
         return;
     }
     if(ui->setposeRYEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写设置姿态RY"));
+        ui->record->append(QStringLiteral("请填写设置姿态RY"));
         return;
     }
     pose[1]=ui->setposeRYEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("设置姿态RY格式错误"));
+        ui->record->append(QStringLiteral("设置姿态RY格式错误"));
         return;
     }
     if(ui->setposeRZEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写设置姿态RZ"));
+        ui->record->append(QStringLiteral("请填写设置姿态RZ"));
         return;
     }
     pose[2]=ui->setposeRZEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("设置姿态RZ格式错误"));
+        ui->record->append(QStringLiteral("设置姿态RZ格式错误"));
         return;
     }
 
     if(ui->setposeaddXEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写设置补偿X"));
+        ui->record->append(QStringLiteral("请填写设置补偿X"));
         return;
     }
     add[0]=ui->setposeaddXEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("设置补偿X格式错误"));
+        ui->record->append(QStringLiteral("设置补偿X格式错误"));
         return;
     }
     if(ui->setposeaddYEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写设置补偿Y"));
+        ui->record->append(QStringLiteral("请填写设置补偿Y"));
         return;
     }
     add[1]=ui->setposeaddYEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("设置补偿Y格式错误"));
+        ui->record->append(QStringLiteral("设置补偿Y格式错误"));
         return;
     }
     if(ui->setposeaddZEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写设置补偿Z"));
+        ui->record->append(QStringLiteral("请填写设置补偿Z"));
         return;
     }
     add[2]=ui->setposeaddZEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("设置补偿Z格式错误"));
+        ui->record->append(QStringLiteral("设置补偿Z格式错误"));
         return;
     }
     if(b_inster==false)
@@ -206,13 +206,13 @@ void keysetposeDlg::on_setposeBtn_clicked()
         {
             if(nameout==m_mcs->project->project_robpos_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
+                ui->record->append(QStringLiteral("生成的点坐标与已有的点坐标重名"));
                 return;
             }
         }
     }
     msg=cmd.cmd_setpose(namein,pose,add,nameout);
-    ui->record->append(QString::fromLocal8Bit("插入点坐标姿态指令成功"));
+    ui->record->append(QStringLiteral("插入点坐标姿态指令成功"));
     cmd_msg=msg;
     done(1);
 }

@@ -118,33 +118,25 @@ void keytraceDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->tracecmdaddBtn->setText(QString::fromLocal8Bit("插入跟踪轨迹指令"));
+        ui->tracecmdaddBtn->setText(QStringLiteral("插入跟踪轨迹指令"));
     }
     else
     {
-        ui->tracecmdaddBtn->setText(QString::fromLocal8Bit("替换跟踪轨迹指令"));
+        ui->tracecmdaddBtn->setText(QStringLiteral("替换跟踪轨迹指令"));
     }
 }
 
 void keytraceDlg::on_tracefilepathBtn_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
-    /*
-#if _MSC_VER
-    QTextCodec *code = QTextCodec::codecForName("GBK");
-#else
-    QTextCodec *code = QTextCodec::codecForName("UTF-8");
-#endif
-    std::string name = code->fromUnicode(fileName).data();
-    */
+    QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("请选择要导入的焊接工艺文件"), "./CRAFT/", "CRAFT(*.craft)");
     if(fileName.toStdString().size()>0)
     {
-        if(0!=m_mcs->craft->LoadCraft((char*)(fileName.toStdString().c_str())))
+        if(0!=m_mcs->craft->LoadCraft(fileName))
         {
-            ui->record->append(QString::fromLocal8Bit("工艺文件读取失败"));
+            ui->record->append(QStringLiteral("工艺文件读取失败"));
             return;
         }
-        ui->record->append(QString::fromLocal8Bit("工艺文件读取成功"));
+        ui->record->append(QStringLiteral("工艺文件读取成功"));
         ui->tracefilepath->setText(fileName);
     }
 }
@@ -158,22 +150,22 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
     float speed=ui->tracespeed->text().toFloat(&rc);
     if(route<0||route>ui->tracetrackcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择要插入的轨迹名字"));
+        ui->record->append(QStringLiteral("请选择要插入的轨迹名字"));
         return;
     }
     else if(ui->tracespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写跟踪速度"));
+        ui->record->append(QStringLiteral("请填写跟踪速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("跟踪速度格式出错"));
+        ui->record->append(QStringLiteral("跟踪速度格式出错"));
         return;
     }
     if(name_out.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成的跟踪轨迹工艺名字"));
+        ui->record->append(QStringLiteral("请填写生成的跟踪轨迹工艺名字"));
         return;
     }
     my_cmd cmd;
@@ -181,29 +173,21 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
     //请选择工艺包路径
     if(filepath.size()==0)
     {
-        ui->record->append(QString::fromLocal8Bit("工艺包路径为空"));
+        ui->record->append(QStringLiteral("工艺包路径为空"));
         return;
     }
     else
     {
         //这里判断工艺包是否格式正确
-    /*
-    #if _MSC_VER
-        QTextCodec *code = QTextCodec::codecForName("GBK");
-    #else
-        QTextCodec *code = QTextCodec::codecForName("UTF-8");
-    #endif
-        std::string fname = code->fromUnicode(filepath).data();
-    */
-        int rc=m_mcs->craft->LoadCraft((char*)(filepath.toStdString().c_str()));
+        int rc=m_mcs->craft->LoadCraft(filepath);
         if(rc==1)
         {
-            ui->record->append(QString::fromLocal8Bit("该路径找不到工艺包文件"));
+            ui->record->append(QStringLiteral("该路径找不到工艺包文件"));
             return;
         }
         else if(rc==2)
         {
-            ui->record->append(QString::fromLocal8Bit("工艺包文件格式错误"));
+            ui->record->append(QStringLiteral("工艺包文件格式错误"));
             return;
         }
     }
@@ -213,7 +197,7 @@ void keytraceDlg::on_tracecmdaddBtn_clicked()
         change=ui->tracechangecombo->currentText();
     }
     QString msg=cmd.cmd_trace(name_in,speed,filepath,name_out,change);
-    ui->record->append(QString::fromLocal8Bit("插入跟踪轨迹指令成功"));
+    ui->record->append(QStringLiteral("插入跟踪轨迹指令成功"));
     cmd_msg=msg;
     done(1);
 }

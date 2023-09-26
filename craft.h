@@ -59,9 +59,9 @@ public:
 
     QString craft_Id_toQString(Craft_ID craft_id);
 
-    int LoadCraft(char* filename);    //读取工艺,返回值0:正确，返回值1:个路径问题，返回值2:工艺包格式问题
+    int LoadCraft(QString filename);    //读取工艺,返回值0:正确，返回值1:个路径问题，返回值2:工艺包格式问题
 
-    int SaveProject(char* filename);    //保存工艺
+    int SaveProject(QString filename);    //保存工艺
 
     std::vector<ChangeRobPosVariable> posturelist;        //焊接姿态
                                             //craft_id=CRAFT_ID_FIXED_POSTURE时，posturelist.size()=1,且posturelist[0]为这个轨迹的焊接姿态

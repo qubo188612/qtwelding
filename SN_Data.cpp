@@ -644,7 +644,7 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
 
     if ((nRegisterNoLen < 20) || (nRegisterNoLen > 30))
     {
-        *err_msg=QString::fromLocal8Bit("序列号长度不正确");
+        *err_msg=QStringLiteral("序列号长度不正确");
         return 1;//密码长度不正确
     }
 
@@ -655,7 +655,7 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
     //1.检查该串密码是否被使用过,用一个字节表示当前有多少字节空间,然后一个个读出来比较
     if(nCurrentSerialCount > 1000)//序列号个数超过阈值
     {
-        *err_msg=QString::fromLocal8Bit("序列号个数超过阈值");
+        *err_msg=QStringLiteral("序列号个数超过阈值");
         return 7;
     }
 
@@ -672,7 +672,7 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
             }
             if (j == (nRegisterNoLen - 3))
             {
-                *err_msg=QString::fromLocal8Bit("序列号重复");
+                *err_msg=QStringLiteral("序列号重复");
                 return 6;//序列号重复
             }
             i++;
@@ -696,7 +696,7 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
     }
     if (nIndicator1 <= 0)
     {
-        *err_msg=QString::fromLocal8Bit("没有第一个'.' 分隔符");
+        *err_msg=QStringLiteral("没有第一个'.' 分隔符");
         return 2;//没有第一个'.' 分隔符
     }
 
@@ -721,7 +721,7 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
 
     if (nIndicator2 <= 0)
     {
-        *err_msg=QString::fromLocal8Bit("没有第二个'.' 分隔符");
+        *err_msg=QStringLiteral("没有第二个'.' 分隔符");
         return 3;//没有第二个'.'分隔符
     }
 
@@ -747,13 +747,13 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
     if (CheckVerify(strTemp, nRegisterNoLen, FirstP, nIndicator1, MiddleP, nIndicator2 - nIndicator1 - 1,
         SecondP, nRegisterNoLen - 3 - nIndicator2 - 1) == FALSE)
     {
-        *err_msg=QString::fromLocal8Bit("解码不正确");
+        *err_msg=QStringLiteral("解码不正确");
         return 5;
     }
 
     if ((nDays > 10000) || (nDays < 1))
     {
-        *err_msg=QString::fromLocal8Bit("解码后剩余时间不正确");
+        *err_msg=QStringLiteral("解码后剩余时间不正确");
         return 4;//解码后剩余时间不正确
     }
 
@@ -804,7 +804,7 @@ Uint32 SN_Data::JudgeSN(Uint8 *strRegisterNo,Uint8 nRegisterNoLen,QString *err_m
     }
     else
     {
-        *err_msg=QString::fromLocal8Bit("序列号核对失败");
+        *err_msg=QStringLiteral("序列号核对失败");
         return 5;// 序列号核对失败
     }
 }

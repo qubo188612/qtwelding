@@ -127,14 +127,14 @@ void setcraft3Dlg::on_pushButton_get_stpos_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
         ui->lineEdit_RX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_RZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取当前机器人平坡姿态完成"));
+        ui->record->append(QStringLiteral("获取当前机器人平坡姿态完成"));
     }
 }
 
@@ -154,14 +154,14 @@ void setcraft3Dlg::on_pushButton_get_edpos_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
         ui->lineEdit_upRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_upRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_upRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取当前机器人上坡姿态完成"));
+        ui->record->append(QStringLiteral("获取当前机器人上坡姿态完成"));
     }
 }
 
@@ -182,14 +182,14 @@ void setcraft3Dlg::on_pushButton_get_centerpos_clicked()
     }
     if(m_mcs->rob->TCPpos.nEn==false)
     {
-        ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+        ui->record->append(QStringLiteral("获取机器人坐标失败"));
     }
     else
     {
         ui->lineEdit_downRX->setText(QString::number(m_mcs->rob->TCPpos.RX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_downRY->setText(QString::number(m_mcs->rob->TCPpos.RY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
         ui->lineEdit_downRZ->setText(QString::number(m_mcs->rob->TCPpos.RZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
-        ui->record->append(QString::fromLocal8Bit("获取当前机器人下坡姿态完成"));
+        ui->record->append(QStringLiteral("获取当前机器人下坡姿态完成"));
     }
 }
 
@@ -231,7 +231,7 @@ void setcraft3Dlg::on_pushButtonOK_clicked()
     m_mcs->craft->posturelist[2].posture.RZ=ui->lineEdit_downRZ->text().toFloat();
     m_mcs->craft->posture_distance=ui->lineEdit_posture_distance->text().toFloat();
     if(b_file==true)
-        m_mcs->craft->SaveProject((char*)m_mcs->craft->craft_path.toStdString().c_str());
+        m_mcs->craft->SaveProject(m_mcs->craft->craft_path);
     else
     {
         my_cmd cmd;

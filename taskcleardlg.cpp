@@ -16,7 +16,7 @@ taskcleardlg::taskcleardlg(my_parameters *mcs,QWidget *parent) :
     connect(ui->taskclearBtn,&QPushButton::clicked,[=](){
         if(nowtask_Id>=ui->tasklist->count())
         {
-            ui->record->append(QString::fromLocal8Bit("请先选中要删除的自定义任务号"));
+            ui->record->append(QStringLiteral("请先选中要删除的自定义任务号"));
         }
         else
         {
@@ -25,13 +25,13 @@ taskcleardlg::taskcleardlg(my_parameters *mcs,QWidget *parent) :
             QStringList list=msg.split(" ");
             if(list.size()!=2)
             {
-                ui->record->append(QString::fromLocal8Bit("查找自定义任务号出错"));
+                ui->record->append(QStringLiteral("查找自定义任务号出错"));
                 return;
             }
             QStringList data=list[0].split(":");
             if(data[0]!="自定义任务号")
             {
-                ui->record->append(QString::fromLocal8Bit("只能删除自定义任务号"));
+                ui->record->append(QStringLiteral("只能删除自定义任务号"));
                 return;
             }
             int task=data[1].toInt();
@@ -45,8 +45,8 @@ taskcleardlg::taskcleardlg(my_parameters *mcs,QWidget *parent) :
      });
 
     connect(ui->taskclearallBtn,&QPushButton::clicked,[=](){
-        QMessageBox::StandardButton result= QMessageBox::information(this, QString::fromLocal8Bit("提示信息"),
-                                                                      QString::fromLocal8Bit("确认删除全部自定义任务号？"),
+        QMessageBox::StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
+                                                                      QStringLiteral("确认删除全部自定义任务号？"),
                                                                       QMessageBox::Yes|QMessageBox::No,
                                                                       QMessageBox::No
                                                                       );
@@ -60,12 +60,12 @@ taskcleardlg::taskcleardlg(my_parameters *mcs,QWidget *parent) :
                 json.insert("rm",sing);
                 QString send=QString(QJsonDocument(json).toJson());
                 m_mcs->resultdata.client->write(send.toUtf8());
-                ui->record->append(QString::fromLocal8Bit("正在删除全部自定义任务号"));
+                ui->record->append(QStringLiteral("正在删除全部自定义任务号"));
             }
             break;
             case QMessageBox::No:
             {
-                ui->record->append(QString::fromLocal8Bit("取消删除全部自定义任务号操作"));
+                ui->record->append(QStringLiteral("取消删除全部自定义任务号操作"));
             }
             break;
         }
@@ -96,13 +96,13 @@ void taskcleardlg::set_task_num()
         QString msg;
         if(m_mcs->resultdata.taskfilename[i].taskname>=100&&m_mcs->resultdata.taskfilename[i].taskname<200)
         {
-            msg=QString::fromLocal8Bit("任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
-                    QString::fromLocal8Bit(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
+            msg=QStringLiteral("任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
+                    QStringLiteral(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
         }
         else
         {
-            msg=QString::fromLocal8Bit("自定义任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
-                    QString::fromLocal8Bit(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
+            msg=QStringLiteral("自定义任务号:")+QString::number(m_mcs->resultdata.taskfilename[i].taskname)+
+                    QStringLiteral(" 算法号:")+QString::number(m_mcs->resultdata.taskfilename[i].alsnum);
         }
         ui->tasklist->addItem(msg);
     }
@@ -112,7 +112,7 @@ void taskcleardlg::set_task_num()
 
 void taskcleardlg::delete_task_num()
 {
-    ui->record->append(QString::fromLocal8Bit("删除自定义任务号完成"));
+    ui->record->append(QStringLiteral("删除自定义任务号完成"));
 }
 
 void taskcleardlg::get_task_list()

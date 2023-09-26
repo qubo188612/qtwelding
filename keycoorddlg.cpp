@@ -127,12 +127,12 @@ void keycoordDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->pushButton->setText(QString::fromLocal8Bit("插入定位指令"));
+        ui->pushButton->setText(QStringLiteral("插入定位指令"));
     }
     else
     {
         b_inster=true;
-        ui->pushButton->setText(QString::fromLocal8Bit("替换定位指令"));
+        ui->pushButton->setText(QStringLiteral("替换定位指令"));
     }
 }
 
@@ -152,37 +152,37 @@ void keycoordDlg::on_pushButton_clicked()
     QString msg;
     if(route_pointo<0||route_pointo>ui->comboBox_pointo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个坐标系零点"));
+        ui->record->append(QStringLiteral("请选择一个坐标系零点"));
         return;
     }
     if(route_pointx<0||route_pointx>ui->comboBox_pointx->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个坐标系X方向点"));
+        ui->record->append(QStringLiteral("请选择一个坐标系X方向点"));
         return;
     }
     if(route_cpointo<0||route_cpointo>ui->comboBox_cpointo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个基准坐标系零点"));
+        ui->record->append(QStringLiteral("请选择一个基准坐标系零点"));
         return;
     }
     if(route_cpointx<0||route_cpointx>ui->comboBox_cpointx->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个基准坐标系X方向点"));
+        ui->record->append(QStringLiteral("请选择一个基准坐标系X方向点"));
         return;
     }
     if(name_pointo==name_pointx)
     {
-        ui->record->append(QString::fromLocal8Bit("坐标系零点和坐标系X方向点不能为同一个点"));
+        ui->record->append(QStringLiteral("坐标系零点和坐标系X方向点不能为同一个点"));
         return;
     }
     if(name_cpointo==name_cpointx)
     {
-        ui->record->append(QString::fromLocal8Bit("基准坐标系零点和基准坐标系X方向点不能为同一个点"));
+        ui->record->append(QStringLiteral("基准坐标系零点和基准坐标系X方向点不能为同一个点"));
         return;
     }
     if(ui->name->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成的定位矩阵名称"));
+        ui->record->append(QStringLiteral("请填写生成的定位矩阵名称"));
         return;
     }
     if(b_inster==false)//插入
@@ -193,7 +193,7 @@ void keycoordDlg::on_pushButton_clicked()
         {
             if(name==m_mcs->project->project_coord_matrix4d[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成的定位矩阵名称与已有的矩阵重名"));
+                ui->record->append(QStringLiteral("生成的定位矩阵名称与已有的矩阵重名"));
                 return;
             }
         }

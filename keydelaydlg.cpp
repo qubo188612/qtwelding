@@ -45,11 +45,11 @@ void keydelayDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->delaytimeBtn->setText(QString::fromLocal8Bit("插入延时指令"));
+        ui->delaytimeBtn->setText(QStringLiteral("插入延时指令"));
     }
     else
     {
-        ui->delaytimeBtn->setText(QString::fromLocal8Bit("替换延时指令"));
+        ui->delaytimeBtn->setText(QStringLiteral("替换延时指令"));
     }
 }
 
@@ -62,15 +62,15 @@ void keydelayDlg::on_delaytimeBtn_clicked()
     QString msg=cmd.cmd_delay(time);
     if(ui->delaytime->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写延时时间"));
+        ui->record->append(QStringLiteral("请填写延时时间"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("延时时间格式出错"));
+        ui->record->append(QStringLiteral("延时时间格式出错"));
         return;
     }
-    ui->record->append(QString::fromLocal8Bit("插入延时指令成功"));
+    ui->record->append(QStringLiteral("插入延时指令成功"));
     cmd_msg=msg;
     done(1);
 }

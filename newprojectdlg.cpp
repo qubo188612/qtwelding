@@ -12,7 +12,7 @@ newprojectDlg::newprojectDlg(my_parameters *mcs,QWidget *parent) :
     QString msg;
     for(int n=0;n<PROJECT_ID_TOTAL_NUM;n++)
     {
-        QString msg=QString::fromLocal8Bit("工程")+QString::number(n)+": "+m_mcs->project->project_Id_toQString((Project_ID)n);
+        QString msg=QStringLiteral("工程")+QString::number(n)+": "+m_mcs->project->project_Id_toQString((Project_ID)n);
         ui->project_Id->addItem(msg);
     }
 }
@@ -39,15 +39,15 @@ void newprojectDlg::on_pushButton_clicked()
     QString project_name=ui->project_name->text();
     if(project_name.size()==0)
     {
-        ui->record->append(QString::fromLocal8Bit("请先选填写要新建的工程名称"));
+        ui->record->append(QStringLiteral("请先选填写要新建的工程名称"));
     }
     else if(now_project_Id>=ui->project_Id->count())
     {
-        ui->record->append(QString::fromLocal8Bit("请先选中要新建的工程类型"));
+        ui->record->append(QStringLiteral("请先选中要新建的工程类型"));
     }
     else
     {
-        QString fileName = QFileDialog::getSaveFileName(this, QString::fromLocal8Bit("请选择要保存的新工程路径"), "./DATA/.json", "JSON(*.json)");
+        QString fileName = QFileDialog::getSaveFileName(this, QStringLiteral("请选择要保存的新工程路径"), "./DATA/.json", "JSON(*.json)");
         if(fileName.size()>0)
         {
             m_mcs->project->project_name=project_name;
@@ -64,12 +64,12 @@ void newprojectDlg::on_pushButton_clicked()
                 }
             }
             m_mcs->project->project_path=msg;
-            m_mcs->project->SaveProject((char*)msg.toStdString().c_str());
+            m_mcs->project->SaveProject(msg);
             done(1);
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("保存操作未完成，请重新选择路径"));
+            ui->record->append(QStringLiteral("保存操作未完成，请重新选择路径"));
         }
     }
 }

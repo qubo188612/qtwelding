@@ -90,13 +90,13 @@ void keytracecontinueDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->pushButton->setText(QString::fromLocal8Bit("插入继续跟踪轨迹指令"));
+        ui->pushButton->setText(QStringLiteral("插入继续跟踪轨迹指令"));
         ui->updata_posBtn->hide();
     }
     else
     {
         b_inster=true;
-        ui->pushButton->setText(QString::fromLocal8Bit("替换继续跟踪轨迹指令"));
+        ui->pushButton->setText(QStringLiteral("替换继续跟踪轨迹指令"));
         ui->updata_posBtn->show();
     }
 }
@@ -106,7 +106,7 @@ void keytracecontinueDlg::on_arriveBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -120,7 +120,7 @@ void keytracecontinueDlg::on_arriveBtn_pressed()
     RobPos pos=inster_pos;
     movemod=MOVEJ;//用关节移动方式到位
     m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 
@@ -130,11 +130,11 @@ void keytracecontinueDlg::on_arriveBtn_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 
@@ -168,7 +168,7 @@ void keytracecontinueDlg::on_pushButton_clicked()
             }
             if(m_mcs->rob->b_send_group_robot==false)
             {
-                ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+                ui->record->append(QStringLiteral("机器人TCP设置异常"));
                 return;
             }
             usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -185,7 +185,7 @@ void keytracecontinueDlg::on_pushButton_clicked()
             }
             if(m_mcs->rob->TCPpos.nEn==false)
             {
-                ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+                ui->record->append(QStringLiteral("获取机器人坐标失败"));
                 return;
             }
             robpos=m_mcs->rob->TCPpos;
@@ -199,7 +199,7 @@ void keytracecontinueDlg::on_pushButton_clicked()
         QString name=ui->tracecontinuename->text();
         if(name.isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写继续跟踪轨迹工艺名"));
+            ui->record->append(QStringLiteral("请填写继续跟踪轨迹工艺名"));
             return;
         }
         if(b_inster==false)
@@ -208,7 +208,7 @@ void keytracecontinueDlg::on_pushButton_clicked()
             {
                 if(name==m_mcs->project->project_interweld_trace[n].name)
                 {
-                    ui->record->append(QString::fromLocal8Bit("生成的跟踪轨迹工艺与已有的跟踪轨迹工艺重名"));
+                    ui->record->append(QStringLiteral("生成的跟踪轨迹工艺与已有的跟踪轨迹工艺重名"));
                     return;
                 }
             }
@@ -217,17 +217,17 @@ void keytracecontinueDlg::on_pushButton_clicked()
         QString namein=ui->tracecontinuenamecombo->currentText();
         if(route<0||route>ui->tracecontinuenamecombo->count()-1)
         {
-            ui->record->append(QString::fromLocal8Bit("请选择一个原焊接轨迹工艺名"));
+            ui->record->append(QStringLiteral("请选择一个原焊接轨迹工艺名"));
             return;
         }
-        ui->record->append(QString::fromLocal8Bit("插入继续跟踪轨迹指令成功"));
+        ui->record->append(QStringLiteral("插入继续跟踪轨迹指令成功"));
         msg=cmd.cmd_tracecontinue(namein,robpos,name);
         cmd_msg=msg;
         done(1);
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -259,7 +259,7 @@ void keytracecontinueDlg::on_updata_posBtn_clicked()
         }
         if(m_mcs->rob->b_send_group_robot==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            ui->record->append(QStringLiteral("机器人TCP设置异常"));
             return;
         }
         usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -276,7 +276,7 @@ void keytracecontinueDlg::on_updata_posBtn_clicked()
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
             return;
         }
         RobPos pos=m_mcs->rob->TCPpos;
@@ -294,7 +294,7 @@ void keytracecontinueDlg::on_updata_posBtn_clicked()
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 

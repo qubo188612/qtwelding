@@ -50,12 +50,12 @@ void keygettcpposDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->gettcpposBtn->setText(QString::fromLocal8Bit("插入获取坐标点指令"));
+        ui->gettcpposBtn->setText(QStringLiteral("插入获取坐标点指令"));
     }
     else
     {
         b_inster=true;
-        ui->gettcpposBtn->setText(QString::fromLocal8Bit("替换获取坐标点指令"));
+        ui->gettcpposBtn->setText(QStringLiteral("替换获取坐标点指令"));
     }
 }
 
@@ -68,40 +68,40 @@ void keygettcpposDlg::on_gettcpposBtn_clicked()
     bool rc;
     if(ui->gettcpposname->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写坐标点名称"));
+        ui->record->append(QStringLiteral("请填写坐标点名称"));
         return;
     }
     if(ui->addXEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写补偿X"));
+        ui->record->append(QStringLiteral("请填写补偿X"));
         return;
     }
     add[0]=ui->addXEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("补偿X格式出错"));
+        ui->record->append(QStringLiteral("补偿X格式出错"));
         return;
     }
     if(ui->addYEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写补偿Y"));
+        ui->record->append(QStringLiteral("请填写补偿Y"));
         return;
     }
     add[1]=ui->addYEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("补偿Y格式出错"));
+        ui->record->append(QStringLiteral("补偿Y格式出错"));
         return;
     }
     if(ui->addZEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写补偿Z"));
+        ui->record->append(QStringLiteral("请填写补偿Z"));
         return;
     }
     add[2]=ui->addZEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("补偿Z格式出错"));
+        ui->record->append(QStringLiteral("补偿Z格式出错"));
         return;
     }
     if(b_inster==false)
@@ -110,13 +110,13 @@ void keygettcpposDlg::on_gettcpposBtn_clicked()
         {
             if(name==m_mcs->project->project_robpos_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
+                ui->record->append(QStringLiteral("生成的点坐标与已有的点坐标重名"));
                 return;
             }
         }
     }
     msg=cmd.cmd_gettcppos(name,add);
-    ui->record->append(QString::fromLocal8Bit("插入获取坐标点指令成功"));
+    ui->record->append(QStringLiteral("插入获取坐标点指令成功"));
     cmd_msg=msg;
     done(1);
 }

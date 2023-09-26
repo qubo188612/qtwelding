@@ -109,12 +109,12 @@ void keycreatcDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->creatcBtn->setText(QString::fromLocal8Bit("插入生成跟踪轨迹指令"));
+        ui->creatcBtn->setText(QStringLiteral("插入生成跟踪轨迹指令"));
     }
     else
     {
         b_inster=true;
-        ui->creatcBtn->setText(QString::fromLocal8Bit("替换生成跟踪轨迹指令"));
+        ui->creatcBtn->setText(QStringLiteral("替换生成跟踪轨迹指令"));
     }
 }
 
@@ -129,49 +129,49 @@ void keycreatcDlg::on_creatcBtn_clicked()
     route=ui->pos1comboBox->currentIndex();
     if(route<0||route>ui->pos1comboBox->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择圆弧起点点位"));
+        ui->record->append(QStringLiteral("请选择圆弧起点点位"));
         return;
     }
     pointsname[0]=ui->pos1comboBox->currentText();
     route=ui->pos2comboBox->currentIndex();
     if(route<0||route>ui->pos2comboBox->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择圆弧中间点位"));
+        ui->record->append(QStringLiteral("请选择圆弧中间点位"));
         return;
     }
     pointsname[1]=ui->pos2comboBox->currentText();
     route=ui->pos3comboBox->currentIndex();
     if(route<0||route>ui->pos3comboBox->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择圆弧终点点位"));
+        ui->record->append(QStringLiteral("请选择圆弧终点点位"));
         return;
     }
     pointsname[2]=ui->pos3comboBox->currentText();
     if(ui->creatcspeedlineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采样速度"));
+        ui->record->append(QStringLiteral("请填写采样速度"));
         return;
     }
     speed=ui->creatcspeedlineEdit->text().toFloat(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采样速度格式出错"));
+        ui->record->append(QStringLiteral("采样速度格式出错"));
         return;
     }
     if(ui->creatctimelineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采样间隔"));
+        ui->record->append(QStringLiteral("请填写采样间隔"));
         return;
     }
     time=ui->creatctimelineEdit->text().toInt(&rc);
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采样间隔格式出错"));
+        ui->record->append(QStringLiteral("采样间隔格式出错"));
         return;
     }
     if(ui->creatcnamelineEdit->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成轨迹名称"));
+        ui->record->append(QStringLiteral("请填写生成轨迹名称"));
         return;
     }
     if(b_inster==false)
@@ -180,19 +180,19 @@ void keycreatcDlg::on_creatcBtn_clicked()
         {
             if(name==m_mcs->project->project_robpos_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("生成的点坐标与已有的点坐标重名"));
+                ui->record->append(QStringLiteral("生成的点坐标与已有的点坐标重名"));
                 return;
             }
         }
         if(false==b_nosame_vector_QString(pointsname))
         {
-            ui->record->append(QString::fromLocal8Bit("圆弧起点、终点、中间点不能有相同点"));
+            ui->record->append(QStringLiteral("圆弧起点、终点、中间点不能有相同点"));
             return;
         }
     }
     my_cmd cmd;
     QString msg=cmd.cmd_creatc(pointsname,speed,time,name);
-    ui->record->append(QString::fromLocal8Bit("插入生成轨迹指令成功"));
+    ui->record->append(QStringLiteral("插入生成轨迹指令成功"));
     cmd_msg=msg;
     done(1);
 }

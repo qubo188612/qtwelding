@@ -19,7 +19,7 @@ keysscanDlg::keysscanDlg(my_parameters *mcs,QWidget *parent) :
     ui->sscanchangecombo->setDisabled(true);
 
     ui->sscanmovemodecombo->setCurrentIndex(MOVEL);
-    ui->label_17->setText(QString::fromLocal8Bit("移动点位"));
+    ui->label_17->setText(QStringLiteral("移动点位"));
     ui->label_18->hide();
     ui->label_19->hide();
     ui->pos2comboBox->hide();
@@ -123,7 +123,7 @@ void keysscanDlg::init_dlg_show(QString cmdlist)
                         break;
                     }
                 }
-                ui->label_17->setText(QString::fromLocal8Bit("移动点位"));
+                ui->label_17->setText(QStringLiteral("移动点位"));
                 ui->label_18->hide();
                 ui->label_19->hide();
                 ui->pos2comboBox->hide();
@@ -159,7 +159,7 @@ void keysscanDlg::init_dlg_show(QString cmdlist)
                         break;
                     }
                 }
-                ui->label_17->setText(QString::fromLocal8Bit("圆弧起点点位"));
+                ui->label_17->setText(QStringLiteral("圆弧起点点位"));
                 ui->label_18->show();
                 ui->label_19->show();
                 ui->pos2comboBox->show();
@@ -201,11 +201,11 @@ void keysscanDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->sscanaddBtn->setText(QString::fromLocal8Bit("插入采集数据指令"));
+        ui->sscanaddBtn->setText(QStringLiteral("插入采集数据指令"));
     }
     else
     {
-        ui->sscanaddBtn->setText(QString::fromLocal8Bit("替换采集数据指令"));
+        ui->sscanaddBtn->setText(QStringLiteral("替换采集数据指令"));
     }
 }
 
@@ -217,7 +217,7 @@ void keysscanDlg::on_sscanmovemodecombo_currentIndexChanged(int index)
         case MOVEL:
         case MOVEJ:
         {
-            ui->label_17->setText(QString::fromLocal8Bit("移动点位"));
+            ui->label_17->setText(QStringLiteral("移动点位"));
             ui->label_18->hide();
             ui->label_19->hide();
             ui->pos2comboBox->hide();
@@ -226,7 +226,7 @@ void keysscanDlg::on_sscanmovemodecombo_currentIndexChanged(int index)
         break;
         case MOVEC:
         {
-            ui->label_17->setText(QString::fromLocal8Bit("圆弧起点点位"));
+            ui->label_17->setText(QStringLiteral("圆弧起点点位"));
             ui->label_18->show();
             ui->label_19->show();
             ui->pos2comboBox->show();
@@ -269,22 +269,22 @@ void keysscanDlg::on_sscanaddBtn_clicked()
     QString msg;
     if(tcp<0||tcp>ui->sscantcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(ui->sscanspeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写采集速度"));
+        ui->record->append(QStringLiteral("请填写采集速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("采集速度格式出错"));
+        ui->record->append(QStringLiteral("采集速度格式出错"));
         return;
     }
     if(ui->sscanname->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写轨迹名称"));
+        ui->record->append(QStringLiteral("请填写轨迹名称"));
         return;
     }
     if(ui->sscanchangecheckBox->isChecked()==true)
@@ -298,7 +298,7 @@ void keysscanDlg::on_sscanaddBtn_clicked()
         {
             if(s_pos.isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请选择移动点位"));
+                ui->record->append(QStringLiteral("请选择移动点位"));
                 return;
             }
             msg=cmd.cmd_sscan(s_pos,movemodel,speed,tcp,name,change);
@@ -308,17 +308,17 @@ void keysscanDlg::on_sscanaddBtn_clicked()
         {
             if(s_pos1.isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请选择圆弧起点位"));
+                ui->record->append(QStringLiteral("请选择圆弧起点位"));
                 return;
             }
             if(s_pos2.isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请选择圆弧中间点位"));
+                ui->record->append(QStringLiteral("请选择圆弧中间点位"));
                 return;
             }
             if(s_pos3.isEmpty())
             {
-                ui->record->append(QString::fromLocal8Bit("请选择圆弧终点位"));
+                ui->record->append(QStringLiteral("请选择圆弧终点位"));
                 return;
             }
             msg=cmd.cmd_sscanC(s_pos1,s_pos2,s_pos3,movemodel,speed,tcp,name,change);
@@ -333,12 +333,12 @@ void keysscanDlg::on_sscanaddBtn_clicked()
         {
             if(name==m_mcs->project->project_scan_trace[n].name)
             {
-                ui->record->append(QString::fromLocal8Bit("扫描轨迹与已有的轨迹重名"));
+                ui->record->append(QStringLiteral("扫描轨迹与已有的轨迹重名"));
                 return;
             }
         }
     }
-    ui->record->append(QString::fromLocal8Bit("插入采集数据指令成功"));
+    ui->record->append(QStringLiteral("插入采集数据指令成功"));
     cmd_msg=msg;
     done(1);
 }

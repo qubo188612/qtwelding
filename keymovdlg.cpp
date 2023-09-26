@@ -133,14 +133,14 @@ void keymovDlg::setbutton(int name)
     if(name==0)
     {
         b_inster=false;
-        ui->moveaddBtn->setText(QString::fromLocal8Bit("插入移动指令"));
+        ui->moveaddBtn->setText(QStringLiteral("插入移动指令"));
         ui->updata_posBtn->hide();
         ui->updata_posBtn_2->hide();
     }
     else
     {
         b_inster=true;
-        ui->moveaddBtn->setText(QString::fromLocal8Bit("替换移动指令"));
+        ui->moveaddBtn->setText(QStringLiteral("替换移动指令"));
         ui->updata_posBtn->show();
         ui->updata_posBtn_2->show();
     }
@@ -152,7 +152,7 @@ void keymovDlg::on_moveaddBtn_clicked()
     int tcp=ui->movetcpcombo->currentIndex();
     if(tcp<0||tcp>ui->movetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
@@ -183,7 +183,7 @@ void keymovDlg::on_moveaddBtn_clicked()
             }
             if(m_mcs->rob->b_send_group_robot==false)
             {
-                ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+                ui->record->append(QStringLiteral("机器人TCP设置异常"));
                 return;
             }
             usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -200,7 +200,7 @@ void keymovDlg::on_moveaddBtn_clicked()
             }
             if(m_mcs->rob->TCPpos.nEn==false)
             {
-                ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+                ui->record->append(QStringLiteral("获取机器人坐标失败"));
                 return;
             }
             robpos=m_mcs->rob->TCPpos;
@@ -217,12 +217,12 @@ void keymovDlg::on_moveaddBtn_clicked()
         QString msg;
         if(ui->movespeed->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+            ui->record->append(QStringLiteral("请填写移动速度"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+            ui->record->append(QStringLiteral("移动速度格式出错"));
             return;
         }   
         if(ui->movechangecheckBox->isChecked()==true)
@@ -240,7 +240,7 @@ void keymovDlg::on_moveaddBtn_clicked()
             case MOVEC:
             {
                 setmovec->init_dlg_show(cmd_list_in,ui->movechangecheckBox->isChecked(),change);
-                setmovec->setWindowTitle(QString::fromLocal8Bit("圆弧移动设置"));
+                setmovec->setWindowTitle(QStringLiteral("圆弧移动设置"));
                 setmovec->set_arrive_param(speed,tcp);
                 int rc=setmovec->exec();
                 setmovec->close_dlg_show();
@@ -250,19 +250,19 @@ void keymovDlg::on_moveaddBtn_clicked()
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("取消圆弧移动设置"));
+                    ui->record->append(QStringLiteral("取消圆弧移动设置"));
                     return;
                 }
             }
             break;
         }
-        ui->record->append(QString::fromLocal8Bit("插入移动指令成功"));
+        ui->record->append(QStringLiteral("插入移动指令成功"));
         cmd_msg=msg;
         done(1);
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -272,7 +272,7 @@ void keymovDlg::on_arriveBtn_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -282,12 +282,12 @@ void keymovDlg::on_arriveBtn_pressed()
     QString msg;
     if(ui->movespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     QString key;
@@ -303,10 +303,10 @@ void keymovDlg::on_arriveBtn_pressed()
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("只有MOVEJ和MOVEL的点可以到位运动"));
+        ui->record->append(QStringLiteral("只有MOVEJ和MOVEL的点可以到位运动"));
         return;
     }
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //到点抬起
@@ -314,11 +314,11 @@ void keymovDlg::on_arriveBtn_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 
 //变换矩阵有效
@@ -340,7 +340,7 @@ void keymovDlg::on_updata_posBtn_clicked()
     int tcp=ui->movetcpcombo->currentIndex();
     if(tcp<0||tcp>ui->movetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
@@ -368,7 +368,7 @@ void keymovDlg::on_updata_posBtn_clicked()
         }
         if(m_mcs->rob->b_send_group_robot==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            ui->record->append(QStringLiteral("机器人TCP设置异常"));
             return;
         }
         usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -385,7 +385,7 @@ void keymovDlg::on_updata_posBtn_clicked()
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
             return;
         }
         Robmovemodel movemodel=(Robmovemodel)ui->movemodecombo->currentIndex();
@@ -406,13 +406,13 @@ void keymovDlg::on_updata_posBtn_clicked()
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("只有MOVEJ和MOVEL的点可以直接更新到当前点"));
+            ui->record->append(QStringLiteral("只有MOVEJ和MOVEL的点可以直接更新到当前点"));
             return;
         }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -422,7 +422,7 @@ void keymovDlg::on_updata_posBtn_2_clicked()
     int tcp=ui->movetcpcombo->currentIndex();
     if(tcp<0||tcp>ui->movetcpcombo->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个tcp"));
+        ui->record->append(QStringLiteral("请选择一个tcp"));
         return;
     }
     if(m_mcs->rob->b_link_ctx_posget==true)
@@ -450,7 +450,7 @@ void keymovDlg::on_updata_posBtn_2_clicked()
         }
         if(m_mcs->rob->b_send_group_robot==false)
         {
-            ui->record->append(QString::fromLocal8Bit("机器人TCP设置异常"));
+            ui->record->append(QStringLiteral("机器人TCP设置异常"));
             return;
         }
         usleep(ROB_WORK_DELAY);//等待服务器获取到机器人坐标
@@ -467,7 +467,7 @@ void keymovDlg::on_updata_posBtn_2_clicked()
         }
         if(m_mcs->rob->TCPpos.nEn==false)
         {
-            ui->record->append(QString::fromLocal8Bit("获取机器人坐标失败"));
+            ui->record->append(QStringLiteral("获取机器人坐标失败"));
             return;
         }
         Robmovemodel movemodel=(Robmovemodel)ui->movemodecombo->currentIndex();
@@ -493,12 +493,12 @@ void keymovDlg::on_updata_posBtn_2_clicked()
                     }
                     if(b_find==false)
                     {
-                        ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+                        ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
                         return;
                     }
                     else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                     {
-                        ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+                        ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
                         return;
                     }
                     else
@@ -534,13 +534,13 @@ void keymovDlg::on_updata_posBtn_2_clicked()
                 }
                 else
                 {
-                    ui->record->append(QString::fromLocal8Bit("请先选择要使用的变换矩阵"));
+                    ui->record->append(QStringLiteral("请先选择要使用的变换矩阵"));
                     return;
                 }
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+                ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
                 return;
             }
             inster_pos=pos;
@@ -557,13 +557,13 @@ void keymovDlg::on_updata_posBtn_2_clicked()
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("只有MOVEJ和MOVEL的点可以直接更新到当前点"));
+            ui->record->append(QStringLiteral("只有MOVEJ和MOVEL的点可以直接更新到当前点"));
             return;
         }
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
     }
 }
 
@@ -572,7 +572,7 @@ void keymovDlg::on_arriveBtn_2_pressed()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
@@ -582,12 +582,12 @@ void keymovDlg::on_arriveBtn_2_pressed()
     QString msg;
     if(ui->movespeed->text().isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写移动速度"));
+        ui->record->append(QStringLiteral("请填写移动速度"));
         return;
     }
     if(rc==false)
     {
-        ui->record->append(QString::fromLocal8Bit("移动速度格式出错"));
+        ui->record->append(QStringLiteral("移动速度格式出错"));
         return;
     }
     QString key;
@@ -618,12 +618,12 @@ void keymovDlg::on_arriveBtn_2_pressed()
                 }
                 if(b_find==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("代码中没有该旋转矩阵"));
+                    ui->record->append(QStringLiteral("代码中没有该旋转矩阵"));
                     return;
                 }
                 else if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn==false)
                 {
-                    ui->record->append(QString::fromLocal8Bit("该旋转矩阵还没有有效值"));
+                    ui->record->append(QStringLiteral("该旋转矩阵还没有有效值"));
                     return;
                 }
                 else
@@ -658,23 +658,23 @@ void keymovDlg::on_arriveBtn_2_pressed()
             }
             else
             {
-                ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+                ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
                 return;
             }
         }
         else
         {
-            ui->record->append(QString::fromLocal8Bit("请先勾选使用变换矩阵"));
+            ui->record->append(QStringLiteral("请先勾选使用变换矩阵"));
             return;
         }
         m_mcs->tosendbuffer->cmd_move(pos,movemod,speed,tcp);//移动
     }
     else
     {
-        ui->record->append(QString::fromLocal8Bit("只有MOVEJ和MOVEL的点可以到位运动"));
+        ui->record->append(QStringLiteral("只有MOVEJ和MOVEL的点可以到位运动"));
         return;
     }
-    ui->record->append(QString::fromLocal8Bit("开始到位中..."));
+    ui->record->append(QStringLiteral("开始到位中..."));
 }
 
 //长按到变化后点抬起
@@ -682,10 +682,10 @@ void keymovDlg::on_arriveBtn_2_released()
 {
     if(m_mcs->rob->b_link_ctx_posget==false)
     {
-        ui->record->append(QString::fromLocal8Bit("与机器人的连接异常"));
+        ui->record->append(QStringLiteral("与机器人的连接异常"));
         return;
     }
     m_mcs->tosendbuffer->cmd_lock(0);
-    ui->record->append(QString::fromLocal8Bit("停止到位"));
+    ui->record->append(QStringLiteral("停止到位"));
 }
 

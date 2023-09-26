@@ -113,11 +113,11 @@ void keytraceaddDlg::setbutton(int name)
 {
     if(name==0)
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("插入跟踪轨迹相加指令"));
+        ui->pushButton->setText(QStringLiteral("插入跟踪轨迹相加指令"));
     }
     else
     {
-        ui->pushButton->setText(QString::fromLocal8Bit("替换跟踪轨迹相加指令"));
+        ui->pushButton->setText(QStringLiteral("替换跟踪轨迹相加指令"));
     }
 }
 
@@ -146,17 +146,17 @@ void keytraceaddDlg::on_pushButton_clicked()
     int time=0;
     if(route1<0||route1>ui->tracingfilenamecombo_1->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹1工艺"));
+        ui->record->append(QStringLiteral("请选择一个跟踪轨迹1工艺"));
         return;
     }
     if(route2<0||route2>ui->tracingfilenamecombo_2->count()-1)
     {
-        ui->record->append(QString::fromLocal8Bit("请选择一个跟踪轨迹2工艺"));
+        ui->record->append(QStringLiteral("请选择一个跟踪轨迹2工艺"));
         return;
     }
     if(nameout.isEmpty())
     {
-        ui->record->append(QString::fromLocal8Bit("请填写生成的跟踪轨迹工艺名字"));
+        ui->record->append(QStringLiteral("请填写生成的跟踪轨迹工艺名字"));
         return;
     }
     if(b_sample_link==true)
@@ -164,34 +164,34 @@ void keytraceaddDlg::on_pushButton_clicked()
         samplespeed=ui->samplespeedlineEdit->text().toFloat(&rc);
         if(ui->samplespeedlineEdit->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写采样速度"));
+            ui->record->append(QStringLiteral("请填写采样速度"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("采样速度格式出错"));
+            ui->record->append(QStringLiteral("采样速度格式出错"));
             return;
         }
         time=ui->sampletimelineEdit->text().toInt(&rc);
         if(ui->sampletimelineEdit->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写采样间隔"));
+            ui->record->append(QStringLiteral("请填写采样间隔"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("采样间隔格式出错"));
+            ui->record->append(QStringLiteral("采样间隔格式出错"));
             return;
         }
         speed=ui->speedlineEdit->text().toFloat(&rc);
         if(ui->speedlineEdit->text().isEmpty())
         {
-            ui->record->append(QString::fromLocal8Bit("请填写焊接速度"));
+            ui->record->append(QStringLiteral("请填写焊接速度"));
             return;
         }
         if(rc==false)
         {
-            ui->record->append(QString::fromLocal8Bit("焊接速度格式出错"));
+            ui->record->append(QStringLiteral("焊接速度格式出错"));
             return;
         }
     }
