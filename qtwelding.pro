@@ -290,9 +290,9 @@ HEADERS += \
 
 win32{
 #opencv库的添加
-INCLUDEPATH += D:/opencv-4.6.0/build/include \
+INCLUDEPATH += D:/opencv/build/include \
 
-LIBS += D:/opencv-4.6.0/build/x64/vc16/lib/opencv*.lib \
+LIBS += D:/opencv/build/x64/vc16/lib/opencv*.lib \
 
 #自定义ROS接口添加
 #INCLUDEPATH += C:/Users/34638/Documents/ros2topic/myRos2test/install/tutorial_interfaces/include \
@@ -310,16 +310,39 @@ INCLUDEPATH += D:/libmodbus/include \
 
 LIBS += D:/libmodbus/x64/lib/*.lib
 
-LIBS += -lws2_32
+#Eigen库的添加
+INCLUDEPATH += D:/eigen3
 
 #QSsh库的添加
-INCLUDEPATH += C:/Users/34638/Documents/QtProject/QSsh/src/libs/qssh \
+win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSsh
+else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSshd
 
-LIBS += C:/Users/34638/Documents/QtProject/QSsh/build/lib/QSsh.lib
+INCLUDEPATH += D:/Qt/6.2.4/msvc2019_64/include/Qssh
 
 INCLUDEPATH += C:/Botan/include/botan-2 \
 
 LIBS += C:/Botan/lib/*.lib
+
+#VTK库添加
+win32:CONFIG(release, debug|release): LIBS += D:/VTK/lib/vtk*-9.2.lib
+else:win32:CONFIG(debug, debug|release): LIBS += D:/VTK/lib/vtk*-9.2d.lib
+INCLUDEPATH += D:/VTK/include/vtk-9.2
+
+#boost库添加
+win32:CONFIG(release, debug|release): LIBS += D:/boost/lib64-msvc-14.2/libboost*.lib
+else:win32:CONFIG(debug, debug|release): LIBS += D:/boost/lib64-msvc-14.2/libboost*-gd-*.lib
+INCLUDEPATH += D:/boost/
+
+#PCL库添加
+win32:CONFIG(release, debug|release): LIBS += D:/PCL/lib/pcl_*.lib
+else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/lib/pcl_*d.lib
+INCLUDEPATH += D:/PCL/include/pcl-1.13
+
+#pthread库的添加
+INCLUDEPATH += D:/pthreads/include \
+
+LIBS += D:/pthreads/lib/x64/pthreadVC2.lib \
+
 }
 
 unix {

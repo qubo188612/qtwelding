@@ -1047,18 +1047,23 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                         objmin=doc.createElement("XPos");
                         s_data=doc.createTextNode(QString::number(f_movX,'f',ROBOT_POSE_DECIMAL_PLACE));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("YPos");
                         s_data=doc.createTextNode(QString::number(f_movY,'f',ROBOT_POSE_DECIMAL_PLACE));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("ZPos");
                         s_data=doc.createTextNode(QString::number(f_movZ,'f',ROBOT_POSE_DECIMAL_PLACE));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("ARot");
                         s_data=doc.createTextNode(QString::number(f_movRX,'f',ROBOT_POSTURE_DECIMAL_PLACE));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("BRot");
                         s_data=doc.createTextNode(QString::number(f_movRY,'f',ROBOT_POSTURE_DECIMAL_PLACE));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("CRot");
                         s_data=doc.createTextNode(QString::number(f_movRZ,'f',ROBOT_POSTURE_DECIMAL_PLACE));
                         objmin.appendChild(s_data);
@@ -1082,18 +1087,23 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                         objmin=doc.createElement("XPos");
                         s_data=doc.createTextNode(QString::number(i_out1));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("YPos");
                         s_data=doc.createTextNode(QString::number(i_out2));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("ZPos");
                         s_data=doc.createTextNode(QString::number(i_out3));
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("ARot");
                         s_data=doc.createTextNode("0");
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("BRot");
                         s_data=doc.createTextNode("0");
                         objmin.appendChild(s_data);
+                        obj2.appendChild(objmin);
                         objmin=doc.createElement("CRot");
                         s_data=doc.createTextNode("0");
                         objmin.appendChild(s_data);
@@ -4061,6 +4071,44 @@ void RobotsendThread::run()
             #endif
             }
             mutexsend_buf_group.unlock();
+            switch(_p->rob_mod)
+            {
+                case ROBOT_MODEL_NULL://无机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_EMERGEN://智昌机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_DOBOT://越彊机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_UR://优傲机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_KUKA://库卡机器人
+                {
+                    usleep(1000);
+                }
+                break;
+                case ROBOT_MODEL_KAWASAKI://川崎机器人
+                {
+
+                }
+                break;
+                case ROBOT_MODEL_YASKAWA://安川机器人
+                {
+
+                }
+                break;
+            }
         }
         else
         {

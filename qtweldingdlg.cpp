@@ -197,6 +197,8 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     connect(SN_timer,&QTimer::timeout,this,&qtweldingDlg::init_SNtimeoutShow);
 #endif
 
+ /*****************/
+
     ConnectCamer();//连接相机
     ConnectRobot();//连接机器人
     ConnectPLC();//连接PLC
@@ -2075,6 +2077,17 @@ void qtweldingDlg::ConnectRobot()
         {
             ui->record->append(QString::fromLocal8Bit("焊机远程IP地址格式错误"));
         }
+        /**********************/
+        //启动时使能
+        u16_data[0]=1;
+        rc=modbus_write_registers(m_mcs->rob->ctx_posget,ROB_TOLTAL_CONTROL_REG_ADD,1,u16_data);
+        if(rc!=1)
+        {
+            ui->record->append(QString::fromLocal8Bit("机器人控制设置失败"));
+        }
+        m_mcs->mainDlg_robotEnable=true;
+        ui->robotEncheckBox->setCheckState(Qt::Checked);
+        /**********************/
     }
     else
     {
