@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>icons/上.png</file>
-        <file>icons/俯.png</file>
-        <file>icons/前.png</file>
-        <file>icons/右.png</file>
-        <file>icons/后.png</file>
-        <file>icons/左.png</file>
+        <file>icons/1.png</file>
+        <file>icons/2.png</file>
+        <file>icons/3.png</file>
+        <file>icons/4.png</file>
+        <file>icons/5.png</file>
+        <file>icons/6.png</file>
     </qresource>
 </RCC>

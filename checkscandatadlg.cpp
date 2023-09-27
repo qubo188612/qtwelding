@@ -16,12 +16,12 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui->tabWidget->setTabText(3,QStringLiteral("工艺轨迹"));
     ui->tabWidget->setTabText(4,QStringLiteral("变换矩阵"));
 
-    ui->tab1pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
-    ui->tab1pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
-    ui->tab1pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
-    ui->tab1pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
-    ui->tab1pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
-    ui->tab1pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab1pushButton_1->setIcon(QIcon(":/new/prefix1/icons/1.png"));
+    ui->tab1pushButton_2->setIcon(QIcon(":/new/prefix1/icons/2.png"));
+    ui->tab1pushButton_3->setIcon(QIcon(":/new/prefix1/icons/3.png"));
+    ui->tab1pushButton_4->setIcon(QIcon(":/new/prefix1/icons/4.png"));
+    ui->tab1pushButton_5->setIcon(QIcon(":/new/prefix1/icons/5.png"));
+    ui->tab1pushButton_6->setIcon(QIcon(":/new/prefix1/icons/6.png"));
     ui->tab1pushButton_1->setIconSize(ui->tab1pushButton_1->size());
     ui->tab1pushButton_2->setIconSize(ui->tab1pushButton_2->size());
     ui->tab1pushButton_3->setIconSize(ui->tab1pushButton_3->size());
