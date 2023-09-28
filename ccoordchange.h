@@ -3,7 +3,7 @@
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
-#include <global.h>
+#include "global.h"
 
 class CCoordChange  //两坐标矩阵运算
 {

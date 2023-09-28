@@ -1,5 +1,4 @@
-
-CONFIG += c++17 console
+CONFIG += c++17
 CONFIG -= app_bundle
 
 win32{

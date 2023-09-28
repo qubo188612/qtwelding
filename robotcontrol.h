@@ -4,6 +4,7 @@
 #include "global.h"
 #include "my_parameters.h"
 #include "XTcp.h"
+#include <QThread>
 #include <QMutex>
 #include <QtXml>
 #include <QDomDocument>
