@@ -584,7 +584,11 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
                 }
                 if(m_mcs->resultdata.link_result_state==true)
                 {
+                #if _MSC_VER||WINDOWS_TCP
+                    m_mcs->cam->sop_cam[0].InitConnect_cloud(m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_POINTCLOUDS_RESULT);
+                #else
                     m_mcs->cam->sop_cam[0].InitConnect();
+                #endif
                 }
             }
             else
@@ -615,7 +619,11 @@ void qtweldingDlg::on_editprojectBtn_clicked()//工程编辑
             }
             if(m_mcs->resultdata.link_result_state==true)
             {
+            #if _MSC_VER||WINDOWS_TCP
+                m_mcs->cam->sop_cam[0].InitConnect_cloud(m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_POINTCLOUDS_RESULT);
+            #else
                 m_mcs->cam->sop_cam[0].InitConnect();
+            #endif
             }
         }
         break;
@@ -849,7 +857,11 @@ void qtweldingDlg::on_demarcateBtn_clicked()//标定设置
         demarcate->exec();
         demarcate->close_dlg_show();
 
+    #if _MSC_VER||WINDOWS_TCP
+        m_mcs->cam->sop_cam[0].InitConnect_cloud(m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_POINTCLOUDS_RESULT);
+    #else
         m_mcs->cam->sop_cam[0].InitConnect();
+    #endif
         if(m_mcs->cam->sop_cam[0].b_connect==true)
         {
             ui->record->append(QStringLiteral("激光头连接成功"));
@@ -1874,7 +1886,11 @@ void qtweldingDlg::ConnectCamer()
         }
         m_mcs->resultdata.link_result_state=true;
         ui->record->append(server_port2+QStringLiteral("端口连接成功"));
+    #if _MSC_VER||WINDOWS_TCP
+        m_mcs->cam->sop_cam[0].InitConnect_cloud(m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_POINTCLOUDS_RESULT);
+    #else
         m_mcs->cam->sop_cam[0].InitConnect();
+    #endif
     //  RunAlgCamer();
     }
 }
@@ -1951,7 +1967,11 @@ void qtweldingDlg::RunAlgCamer()
             ui->record->append(QStringLiteral("激光头相机启动设置成功"));
             if(b_RunAlgCamer==false)
             {
+            #if _MSC_VER||WINDOWS_TCP
+                m_mcs->cam->sop_cam[0].InitConnect_cloud(m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_POINTCLOUDS_RESULT);
+            #else
                 m_mcs->cam->sop_cam[0].InitConnect();
+            #endif
 
                 if(m_mcs->cam->sop_cam[0].b_connect==true)
                 {

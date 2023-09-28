@@ -46,8 +46,11 @@ void demarcateDlg::init_dlg_show()
     connect(thread1, SIGNAL(Send_show_demarcate_inlab(cv::Mat)), this, SLOT(init_show_demarcate_inlab(cv::Mat)));
     b_thread1=true;
     thread1->start();
-
+#if _MSC_VER||WINDOWS_TCP
+    m_mcs->cam->sop_cam[0].InitConnect_all(ui->widget,m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_CAMIMAGE_RESULT,PORT_ALSTCP_POINTCLOUDS_RESULT);
+#else
     m_mcs->cam->sop_cam[0].InitConnect(ui->widget,2);
+#endif
 
     if(m_mcs->resultdata.link_param_state==false)
     {

@@ -196,6 +196,7 @@ HEADERS += \
     PictureBox.h \
     ResultData.h \
     SN_Data.h \
+    TCProsinterface.h \
     TimeFunction.h \
     XTcp.h \
     arrvepointtestdlg.h \
@@ -295,14 +296,14 @@ INCLUDEPATH += D:/opencv/build/include \
 LIBS += D:/opencv/build/x64/vc16/lib/opencv*.lib \
 
 #自定义ROS接口添加
-INCLUDEPATH += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/include \
+#INCLUDEPATH += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/include \
 
-LIBS += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/lib/*.lib \
+#LIBS += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/lib/*.lib \
 
 #ROS库添加
-INCLUDEPATH += C:/opt/ros/foxy/x64/include \
+#INCLUDEPATH += C:/opt/ros/foxy/x64/include \
 
-LIBS += C:/opt/ros/foxy/x64/Lib/*.lib \
+#LIBS += C:/opt/ros/foxy/x64/Lib/*.lib \
 
 
 #modbustcp库的添加

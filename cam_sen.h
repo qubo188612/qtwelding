@@ -1,9 +1,11 @@
 #ifndef CAM_SEN_H
 #define CAM_SEN_H
 
-#include "soptopcamera.h"
+#include "global.h"
 #if _MSC_VER||WINDOWS_TCP
 #include "soptocameratcpip.h"
+#else
+#include "soptopcamera.h"
 #endif
 
 class my_parameters;

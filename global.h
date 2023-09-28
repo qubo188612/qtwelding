@@ -1,14 +1,20 @@
 ﻿#ifndef GLOBAL_H
 #define GLOBAL_H
 
+//#define WINDOWS_TCP                 1//linux仿windowstcp测试
+
+#if _MSC_VER||WINDOWS_TCP
+#include "TCProsinterface.h"
+#else
 #include "tutorial_interfaces/msg/if_algorhmitcloud.hpp"
+#endif
+
 #include "QString"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <set>
 
 
-//#define WINDOWS_TCP 1   //linux仿windowstcp测试
 #define USE_MYROBOT_CONTROL         1//使用本地的机器人控制协议
 //#define USE_MYMOVEC_CONTROL       1//使用本地moveC插值运动(适用于无曲线moveC移动的机器人)
 #define OPEN_SHOW_ROBOTSOCKDATA     1//显示与机器人通信内容
@@ -17,7 +23,6 @@
 #define USE_SN_DATA                 1//使用序列号
 //#define USE_PLC_FILTER            1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
 #define OPEN_OFFLINEMAP_PROGRAM     1//变换矩阵开启离线地图编成功能
-
 
 #if _MSC_VER
 #include "tistdtypes.h"
@@ -717,10 +722,15 @@ public:
     RobPos robotpos;       //此时的机器人坐标
 };
 
+
 class Scan_trace_line  //扫描线结果
 {
 public:
+#if _MSC_VER||WINDOWS_TCP
+    IFAlgorhmitcloud ros_line;
+#else
     tutorial_interfaces::msg::IfAlgorhmitcloud ros_line;//线激光结果
+#endif
     RobPos robotpos;       //此时的机器人坐标
     systime robottime;     //机器人当前采集的时间
 };

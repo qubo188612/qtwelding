@@ -2170,7 +2170,11 @@ void setprojectDlg::on_ConnectCamBtn_clicked()//连接相机
             b_thread1=true;
             thread1->start();
 
+        #if _MSC_VER||WINDOWS_TCP
+            m_mcs->cam->sop_cam[0].InitConnect_all(ui->widget,m_mcs->ip->camer_ip[0].ip,PORT_ALSTCP_CAMIMAGE_RESULT,PORT_ALSTCP_POINTCLOUDS_RESULT);
+        #else
             m_mcs->cam->sop_cam[0].InitConnect(ui->widget,2);
+        #endif
 
             m_mcs->tosendbuffer->cmd_cam(m_mcs->resultdata.task,1);
 
