@@ -18,7 +18,6 @@
 #include <QHostAddress>
 #include <QThread>
 
-
 #define RECONNET_SPAN_TIME (1000*10)  //连接状态心跳
 
 

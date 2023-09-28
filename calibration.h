@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 #include <global.h>
 
+
 #define  CAL_RADIAN			(CV_PI/180.0)
 #define  CAL_ANGLE          (180.0/CV_PI)
 

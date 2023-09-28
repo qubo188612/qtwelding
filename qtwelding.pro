@@ -1,17 +1,15 @@
-QT -= gui
 
 CONFIG += c++17 console
 CONFIG -= app_bundle
 
 win32{
-DEFINES += OPENCV_DISABLE_THREAD_SUPPORT
+#DEFINES += OPENCV_DISABLE_THREAD_SUPPORT
 }
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QT       += core gui network
-QT       += xml
-QT       += openglwidgets
+QT       += core gui network xml openglwidgets
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0

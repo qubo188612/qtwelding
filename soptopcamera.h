@@ -3,11 +3,11 @@
 #include "global.h"
 #if _MSC_VER||WINDOWS_TCP
 #else
-#include "opencv2/core/mat.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include <opencv2/core/mat.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/image.hpp>
-#include "tutorial_interfaces/msg/if_algorhmitmsg.hpp"
-#include "tutorial_interfaces/msg/if_algorhmitcloud.hpp"
+#include <tutorial_interfaces/msg/if_algorhmitmsg.hpp>
+#include <tutorial_interfaces/msg/if_algorhmitcloud.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 #include <QThread>
@@ -17,7 +17,7 @@
 #include <QObject>
 #include <QTimerEvent>
 #include <QProcess>
-#include <global.h>
+#include "global.h"
 #include "PictureBox.h"
 
 #define SOPTOPCAM_SAVEBUFF		32

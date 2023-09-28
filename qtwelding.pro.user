@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 11.0.2, 2023-09-28T14:57:47. -->
+<!-- Written by QtCreator 11.0.2, 2023-09-28T16:45:23. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -85,6 +85,7 @@
    <valuemap type="QVariantMap" key="CppEditor.QuickFix">
     <value type="bool" key="UseGlobalSettings">true</value>
    </valuemap>
+   <valuelist type="QVariantList" key="ProjectExplorer.Project.Environment"/>
   </valuemap>
  </data>
  <data>

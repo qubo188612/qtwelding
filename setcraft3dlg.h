@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QDoubleValidator>
-#include <my_parameters.h>
+#include "my_parameters.h"
 #include "my_cmd.h"
 
 namespace Ui {
