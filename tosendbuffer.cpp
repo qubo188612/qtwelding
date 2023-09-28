@@ -5297,13 +5297,13 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         {
             switch(cmd.cmd_io_workmod)
             {
-                case OUT://输出IO
+                case OUTIO://输出IO
                 {
                     std::vector<int> io_out=cmd.cmd_io_output;
                     cmd_ioout(io_out);
                 }
                 break;
-                case WAITIN://等待IO输入
+                case WAITINIO://等待IO输入
                 {
                     std::vector<int> io_in=cmd.cmd_io_input;
                     bool b_io=true;

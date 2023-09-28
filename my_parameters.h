@@ -2,7 +2,6 @@
 #define MY_PARAMETERS_H
 #include <opencv2/opencv.hpp>
 #include "cam_sen.h"
-#include "soptopcamera.h"
 #include "ResultData.h"
 #include "E2proomData.h"
 #include "project.h"

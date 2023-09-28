@@ -1,5 +1,6 @@
 ﻿#ifndef SOPTOCAMERATCPIP_H
 #define SOPTOCAMERATCPIP_H
+#include "TCProsinterface.h"
 #include "global.h"
 #if _MSC_VER||WINDOWS_TCP
 #include "PictureBox.h"
@@ -18,7 +19,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMutex>
-#include "TCProsinterface.h"
+
 
 #define RECVBUFFER_MAX      CAMBUILD_IMAGE_HEIGHT*CAMBUILD_IMAGE_WIDTH*3
 

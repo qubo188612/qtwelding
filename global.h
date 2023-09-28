@@ -806,8 +806,8 @@ typedef enum Robmovemodel_ID            //机器人移动方式
 
 typedef enum IOmodel_ID     //机器人IO口收发方式
 {
-    OUT=0,        //输出
-    WAITIN=1,     //等待输入
+    OUTIO=0,        //输出
+    WAITINIO=1,     //等待输入
 }IOmodel;
 
 typedef enum Plcmodel_ID     //PLC读写方式

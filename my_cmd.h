@@ -21,8 +21,8 @@
 //跟踪指令，举例 TRACE: CREAT[跟踪第一条line] SPEED[25] CRAFT[/home/qubo/caf.json] CHANGE[矩阵1] NAME[焊接轨迹1]
 //跟踪指令，举例 TRACE2: CREAT[跟踪第一条line] SPEED[25] CRAFTS[工艺1] CHANGE[矩阵1] NAME[焊接轨迹1]
 //生成轨迹指令，举例 CREAT: MODE[1] SCAN[扫描第一条line,第二条,第三] NAME[跟踪第一条line]
-//IO口输出指令，举例 IO: OUT[1,0,0,1,0,1,0,1]
-//IO口等待输入指令，举例IO: WAITIN[1,0,1,0,1,1,1,1
+//IO口输出指令，举例 IO: OUTIO[1,0,0,1,0,1,0,1]
+//IO口等待输入指令，举例IO: WAITINIO[1,0,1,0,1,1,1,1]
 //写PLC指令，举例 PLC: WRITEPLC[20] DATA16[2]
 //等待PLC指令，举例 PLC: WAITPLC[20] DATA16[2]
 //寻位指令，举例 SEARCH: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] TCP[0] SIDE[0] SIDEMOVE[1,1,1] SIDESPEED[25] NAME[寻位的点point1]

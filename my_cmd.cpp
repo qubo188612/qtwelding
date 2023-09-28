@@ -2000,7 +2000,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                             return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(ROBOTOUTPUTNUM)+QStringLiteral("个");
                             return 1;
                         }
-                        cmd_io_workmod=OUT;
+                        cmd_io_workmod=OUTIO;
                     }
                     else
                     {
@@ -2022,7 +2022,7 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                             return_msg=paramname+QStringLiteral("项参数有且只有")+QString::number(ROBOTINPUTNUM)+QStringLiteral("个");
                             return 1;
                         }
-                        cmd_io_workmod=WAITIN;
+                        cmd_io_workmod=WAITINIO;
                     }
                     else
                     {

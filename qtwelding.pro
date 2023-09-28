@@ -3,6 +3,10 @@ QT -= gui
 CONFIG += c++17 console
 CONFIG -= app_bundle
 
+win32{
+DEFINES += OPENCV_DISABLE_THREAD_SUPPORT
+}
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QT       += core gui network

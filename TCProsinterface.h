@@ -1,13 +1,14 @@
 #ifndef TCPROSINTERFACE_H
 #define TCPROSINTERFACE_H
 
-#include <QString>
+#include <string>
+#include <vector>
 
 class Stamp
 {
 public:
     int32_t sec;
-    u_int32_t nanosec;
+    uint32_t nanosec;
 };
 
 class Header

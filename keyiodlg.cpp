@@ -32,12 +32,12 @@ void keyioDlg::init_dlg_show(QString cmdlist)
             std::vector<int> io;
             switch(cmd.cmd_io_workmod)
             {
-                case OUT://输出IO
+                case OUTIO://输出IO
                 {
                     io=cmd.cmd_io_output;
                 }
                 break;
-                case WAITIN://等待IO输入
+                case WAITINIO://等待IO输入
                 {
                     io=cmd.cmd_io_input;
                 }

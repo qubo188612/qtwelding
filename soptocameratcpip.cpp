@@ -359,7 +359,4 @@ void tcprcvThread::Stop()
         }
     }
 }
-
-
-
 #endif
