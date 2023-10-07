@@ -1,6 +1,7 @@
 #ifndef CCONNECTIONFORSSHCLIENT_H
 #define CCONNECTIONFORSSHCLIENT_H
 
+#ifdef DEBUS_SSH
 /* Func:以用户密码的形式连接ssh服务器  发送命令到shell执行  需加\n
  * Note:定时检查连接状态的逻辑是  连接成功关闭定时器检查
  *      连接断开  开启定时器检查并尝试重连  直至连接成功
@@ -80,5 +81,5 @@ private slots:
     void slotShellError();
 };
 
-
+#endif
 #endif // CCONNECTIONFORSSHCLIENT_H

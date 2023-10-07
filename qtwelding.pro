@@ -1,10 +1,6 @@
 CONFIG += c++17
 CONFIG -= app_bundle
 
-win32{
-#DEFINES += OPENCV_DISABLE_THREAD_SUPPORT
-}
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QT       += core gui network xml openglwidgets
@@ -291,24 +287,36 @@ HEADERS += \
 
 
 win32{
-#opencv库的添加
-INCLUDEPATH += D:/opencv/build/include \
 
-LIBS += D:/opencv/build/x64/vc16/lib/opencv*.lib \
+CONFIG(debug, debug|release) {
+    QMAKE_CXXFLAGS_DEBUG += /MTd
+}
+
+CONFIG(release, debug|release) {
+    QMAKE_CXXFLAGS_RELEASE += /MT
+}
+
+
+#opencv库的添加
+
+INCLUDEPATH += D:/opencv/build/include
+
+win32:CONFIG(release, debug|release): LIBS += D:/opencv/build/x64/vc16/lib/opencv*.lib
+else:win32:CONFIG(debug, debug|release): LIBS += D:/opencv/build/x64/vc16/lib/opencv*d.lib
 
 #自定义ROS接口添加
-#INCLUDEPATH += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/include \
+#INCLUDEPATH += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/include
 
-#LIBS += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/lib/*.lib \
+#LIBS += C:/Users/qubo/Documents/Qtproject/myRos2test/install/tutorial_interfaces/lib/*.lib
 
 #ROS库添加
-#INCLUDEPATH += C:/opt/ros/foxy/x64/include \
+#INCLUDEPATH += C:/opt/ros/foxy/x64/include
 
 #LIBS += C:/opt/ros/foxy/x64/Lib/*.lib \
 
 
 #modbustcp库的添加
-INCLUDEPATH += D:/libmodbus/include \
+INCLUDEPATH += D:/libmodbus/include
 
 LIBS += D:/libmodbus/x64/lib/*.lib
 
@@ -316,14 +324,14 @@ LIBS += D:/libmodbus/x64/lib/*.lib
 INCLUDEPATH += D:/eigen3
 
 #QSsh库的添加
-win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSsh
-else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSshd
+#win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSsh
+#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSshd
 
-INCLUDEPATH += D:/Qt/6.2.4/msvc2019_64/include/Qssh
+#INCLUDEPATH += D:/Qt/6.2.4/msvc2019_64/include/Qssh
 
-INCLUDEPATH += C:/Botan/include/botan-2 \
+#INCLUDEPATH += C:/Botan/include/botan-2
 
-LIBS += C:/Botan/lib/*.lib
+#LIBS += C:/Botan/lib/*.lib
 
 #VTK库添加
 win32:CONFIG(release, debug|release): LIBS += D:/VTK/lib/vtk*-9.2.lib
@@ -341,9 +349,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/lib/pcl_*d.lib
 INCLUDEPATH += D:/PCL/include/pcl-1.13
 
 #pthread库的添加
-#INCLUDEPATH += D:/pthreads/include \
+#INCLUDEPATH += D:/pthreads/include
 
-#LIBS += D:/pthreads/lib/x64/pthreadVC2.lib \
+#LIBS += D:/pthreads/lib/x64/pthreadVC2.lib
 
 }
 

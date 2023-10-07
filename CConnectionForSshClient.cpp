@@ -1,6 +1,7 @@
 ﻿#include "CConnectionForSshClient.h"
 #include <QDebug>
 
+#ifdef DEBUS_SSH
 
 CConnectionForSshClient::CConnectionForSshClient(QString strIp, int nPort, QString strPwd, QString strUser)
 {
@@ -269,3 +270,5 @@ void CConnectionForSshClient::slotDataReceived()
         emit sigDataArrived(strRecv, m_strIp, m_nPort);
 
 }
+
+#endif
