@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <QThread>
 #include "XTcp.h"
-#include "opencv2/imgcodecs/legacy/constants_c.h"
+#include <opencv2/imgcodecs/legacy/constants_c.h>
 #if _MSC_VER
 
 #else

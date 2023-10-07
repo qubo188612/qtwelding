@@ -1,12 +1,12 @@
 #ifndef RESULTDATA_H
 #define RESULTDATA_H
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <modbus/modbus.h>
 #include <QThread>
 #include "global.h"
 #include <QTcpSocket>
 #ifdef DEBUS_SSH
-#include <CConnectionForSshClient.h>
+#include "CConnectionForSshClient.h"
 #endif
 
 #define MODBUS_ROBOT_REGISTERS_NUM      0x20

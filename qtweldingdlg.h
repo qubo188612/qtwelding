@@ -6,7 +6,7 @@
 #include <QFileDialog>
 #include <QMutex>
 #include "my_parameters.h"
-#include "qthread.h"
+#include <QThread>
 #if _MSC_VER
 #include <QDir>
 #include <synchapi.h>

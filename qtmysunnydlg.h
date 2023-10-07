@@ -10,7 +10,7 @@
 #include "sshpassworddlg.h"
 #endif
 #include "cambuilddlg.h"
-#include <my_parameters.h>
+#include "my_parameters.h"
 #if _MSC_VER
 #include <QDir>
 #include <synchapi.h>

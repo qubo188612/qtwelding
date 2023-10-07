@@ -4,7 +4,7 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <opencv2/opencv.hpp>
-#include <global.h>
+#include "global.h"
 #include "tistdtypes.h"
 
 class FitlineSide

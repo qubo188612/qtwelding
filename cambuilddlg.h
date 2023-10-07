@@ -4,7 +4,7 @@
 #include "global.h"
 #include <QDialog>
 #include <QDoubleValidator>
-#include <my_parameters.h>
+#include "my_parameters.h"
 #include <QKeyEvent>
 
 
