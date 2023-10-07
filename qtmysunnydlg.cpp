@@ -238,7 +238,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
        {
           m_mcs->cam->sop_cam[0].ipaddress=ui->IPadd->text();
           m_mcs->ip->camer_ip[0].ip=m_mcs->cam->sop_cam[0].ipaddress;
-          m_mcs->ip->SaveIP(IPADDRESS_PATH_MOTO);
+          m_mcs->ip->SaveIP((char*)IPADDRESS_PATH_MOTO);
           img_windowshow(true,ui->widget);
           UpdataUi();
        }

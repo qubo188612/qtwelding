@@ -64,9 +64,9 @@ void plcsetDlg::on_plc_model_currentIndexChanged(int index)
 void plcsetDlg::on_pushButton_clicked()
 {
     m_mcs->rob->plc_model=(PLC_MODEL)ui->plc_model->currentIndex();
-    m_mcs->rob->SaveRob(ROBOTDATA_PATH_MOTO);
+    m_mcs->rob->SaveRob((char*)ROBOTDATA_PATH_MOTO);
     m_mcs->ip->robot_ip[0].plc_ip.ip=ui->plc_ip->text();
     m_mcs->ip->robot_ip[0].plc_ip.port=ui->plc_port->text().toInt();
-    m_mcs->ip->SaveIP(IPADDRESS_PATH_MOTO);
+    m_mcs->ip->SaveIP((char*)IPADDRESS_PATH_MOTO);
 }
 

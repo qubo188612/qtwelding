@@ -36,7 +36,7 @@ RobotData::RobotData()
 
 //  send_group_robot.reserve(6000000);
 
-    if(0!=LoadRob(ROBOTDATA_PATH_MOTO))
+    if(0!=LoadRob((char*)ROBOTDATA_PATH_MOTO))
     {
         robot_model=ROBOT_MODEL_NULL;
         cal_posture_model=CAL_ROBOT_YASKAWA;

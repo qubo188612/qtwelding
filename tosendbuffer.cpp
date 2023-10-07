@@ -4758,7 +4758,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             cmd_lock(1);
             return 1;
         }
+    #if _MSC_VER
+        Sleep(0);
+    #else
         sleep(0);
+    #endif
     //  usleep(ROB_WORK_DELAY_STEP);
     }
 #ifdef USE_MYROBOT_CONTROL
@@ -4983,7 +4987,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         line=n;
                         return 1;
                     }
+                #if _MSC_VER
+                    Sleep(0);
+                #else
                     sleep(0);
+                #endif
                 //  usleep(ROB_WORK_DELAY_STEP);
                 }
             #ifdef USE_MYROBOT_CONTROL
@@ -5266,7 +5274,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         line=n;
                         return 1;
                     }
+                #if _MSC_VER
+                    Sleep(0);
+                #else
                     sleep(0);
+                #endif
                 //  usleep(ROB_WORK_DELAY_STEP);
                 }
             #ifdef USE_MYROBOT_CONTROL
@@ -5338,7 +5350,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             line=n;
                             return 1;
                         }
+                    #if _MSC_VER
+                        Sleep(0);
+                    #else
                         sleep(0);
+                    #endif
                     }
                 }
                 break;
@@ -5408,7 +5424,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             line=n;
                             return 1;
                         }
+                    #if _MSC_VER
+                        Sleep(0);
+                    #else
                         sleep(0);
+                    #endif
                     }
                 }
                 break;
@@ -5758,7 +5778,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                                 line=n;
                                 return 1;
                             }
+                        #if _MSC_VER
+                            Sleep(0);
+                        #else
                             sleep(0);
+                        #endif
                         //  usleep(ROB_WORK_DELAY_STEP);
                         }
                     #ifdef USE_MYROBOT_CONTROL
@@ -6782,7 +6806,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     line=n;
                     return 1;
                 }
+            #if _MSC_VER
+                Sleep(0);
+            #else
                 sleep(0);
+            #endif
             //  usleep(ROB_WORK_DELAY_STEP);
             }
         #ifdef USE_MYROBOT_CONTROL
@@ -6845,7 +6873,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     line=n;
                     return 1;
                 }
+            #if _MSC_VER
+                Sleep(0);
+            #else
                 sleep(0);
+            #endif
             //  usleep(ROB_WORK_DELAY_STEP);
             }
         #ifdef USE_MYROBOT_CONTROL

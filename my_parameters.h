@@ -8,6 +8,7 @@
 #include "ipaddress.h"
 #include "robotdata.h"
 #include "process.h"
+#include "process1_scanbeforetrace.h"
 #include "tosendbuffer.h"
 #include "craft.h"
 #include "synchronous.h"

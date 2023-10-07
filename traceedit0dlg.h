@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "my_parameters.h"
 
+
 namespace Ui {
 class traceedit0Dlg;
 }

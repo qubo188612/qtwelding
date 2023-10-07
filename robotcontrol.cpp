@@ -109,7 +109,11 @@ void Robotcontrol::Close_control_modbus()
         link_state=false;
         while (b_stop_link_state==false)
         {
-          sleep(0);
+        #if _MSC_VER
+            Sleep(0);
+        #else
+            sleep(0);
+        #endif
         }
 
         if(b_client==true)
@@ -196,7 +200,11 @@ void Robotcontrol::Close_control_modbus()
         server_state=false;
         while (b_stop_server_state==false)
         {
-          sleep(0);
+        #if _MSC_VER
+            Sleep(0);
+        #else
+            sleep(0);
+        #endif
         }
         thread1->quit();
         thread1->wait();
@@ -355,7 +363,11 @@ void Robotcontrol::RobotInit(int tcp)//机器人初始化
         break;
         case ROBOT_MODEL_KAWASAKI://川崎机器人
         {
+        #if _MSC_VER
+            Sleep(1000);
+        #else
             sleep(1);
+        #endif
             if(b_client==true)
             { 
                 QString msg;
@@ -370,14 +382,22 @@ void Robotcontrol::RobotInit(int tcp)//机器人初始化
             }
             if(b_sendent==true)
             {
+            #if _MSC_VER
+                Sleep(1000);
+            #else
                 sleep(1);
+            #endif
                 mutexsend_buf_group.lock();
                 QString msg="as\n";    //进入as指令
                 std::string str=msg.toStdString();
                 send_buf_group.push_back(str);
                 mutexsend_buf_group.unlock();
             }
+        #if _MSC_VER
+            Sleep(1000);
+        #else
             sleep(1);
+        #endif
         }
         break;
         case ROBOT_MODEL_YASKAWA://安川机器人
@@ -416,7 +436,11 @@ void Robotcontrol::RobotOPEN_ELE(bool b_wait)
                 mutextotalcontrol_buf_group.unlock();
                 if(b_wait==true)
                 {
+                #if _MSC_VER
+                    Sleep(3000);
+                #else
                     sleep(3);
+                #endif
                 }
             }
         }
@@ -432,7 +456,11 @@ void Robotcontrol::RobotOPEN_ELE(bool b_wait)
                 mutextotalcontrol_buf_group.unlock();
                 if(b_wait==true)
                 {
+                #if _MSC_VER
+                    Sleep(3000);
+                #else
                     sleep(3);
+                #endif
                 }
             }
         }

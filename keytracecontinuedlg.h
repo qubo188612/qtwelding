@@ -4,6 +4,9 @@
 #include <QDialog>
 #include "my_parameters.h"
 #include "my_cmd.h"
+#if _MSC_VER
+#include "TimeFunction.h"
+#endif
 
 namespace Ui {
 class keytracecontinueDlg;

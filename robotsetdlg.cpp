@@ -83,9 +83,9 @@ void robotsetDlg::on_pushButton_clicked()
     m_mcs->rob->out_num=ui->robot_outnum->currentIndex();
     m_mcs->rob->robot_model=(ROBOT_MODEL)ui->robot_model->currentIndex();
     m_mcs->rob->cal_posture_model=(CAL_POSTURE)ui->robot_posure_model->currentIndex();
-    m_mcs->rob->SaveRob(ROBOTDATA_PATH_MOTO);
+    m_mcs->rob->SaveRob((char*)ROBOTDATA_PATH_MOTO);
     m_mcs->ip->robot_ip[0].robot_ip.ip=ui->robot_ip->text();
     m_mcs->ip->robot_ip[0].robot_ip.port=ui->robot_port->text().toInt();
     m_mcs->ip->robot_ip[0].remote_ip.ip=ui->robot_remoteip->text();
-    m_mcs->ip->SaveIP(IPADDRESS_PATH_MOTO);
+    m_mcs->ip->SaveIP((char*)IPADDRESS_PATH_MOTO);
 }

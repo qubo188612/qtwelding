@@ -28,14 +28,14 @@ IPaddress::IPaddress()
     robot_ip[0].plc_ip.ip="192.168.1.5";
     robot_ip[0].plc_ip.port=23;
 
-    LoadIP(IPADDRESS_PATH_MOTO);
+    LoadIP((char*)IPADDRESS_PATH_MOTO);
 
     robotmyselfcontrol_port[0]=1496;
 }
 
 IPaddress::~IPaddress()
 {
-    SaveIP(IPADDRESS_PATH_MOTO);
+    SaveIP((char*)IPADDRESS_PATH_MOTO);
 }
 
 int IPaddress::SaveIP(char* filename)

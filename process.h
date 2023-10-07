@@ -2,8 +2,6 @@
 #define PROCESS_H
 #include <QString>
 #include <QTextBrowser>
-#include "project.h"
-#include "process1_scanbeforetrace.h"
 
 class my_parameters;
 

@@ -3,6 +3,11 @@
 #include <QTextBrowser>
 #include <QThread>
 #include "my_cmd.h"
+#if _MSC_VER
+#include "TimeFunction.h"
+#else
+#include <sys/socket.h>
+#endif
 
 class my_parameters;
 

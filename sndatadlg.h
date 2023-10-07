@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QMessageBox>
 #include "my_parameters.h"
+#if _MSC_VER
+#include "TimeFunction.h"
+#endif
 
 namespace Ui {
 class sndataDlg;

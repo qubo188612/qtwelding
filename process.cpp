@@ -1,4 +1,5 @@
 #include "process.h"
+#include "process1_scanbeforetrace.h"
 #include "my_parameters.h"
 
 Process *Process::Get(my_parameters *mcs)

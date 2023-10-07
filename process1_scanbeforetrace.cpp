@@ -1,6 +1,10 @@
 #include "process1_scanbeforetrace.h"
 #include "my_parameters.h"
+#if _MSC_VER
+#include <synchapi.h>
+#else
 #include <sys/socket.h>
+#endif
 
 Process1_scanbeforetrace *Process1_scanbeforetrace::Get(my_parameters *mcs)
 {

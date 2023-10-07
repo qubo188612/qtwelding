@@ -32,7 +32,8 @@ bool d_Mysortcompare(d_Mysort &a,d_Mysort &b)
 {
     return a.data<b.data;
 }
-
+#if _MSC_VER
+#else
 uint64_t htonll(uint64_t val)
 {
     return (((uint64_t) htonl(val)) << 32) + htonl(val >> 32);
@@ -42,6 +43,7 @@ uint64_t ntohll(uint64_t val)
 {
     return (((uint64_t) ntohl(val)) << 32) + ntohl(val >> 32);
 }
+#endif
 
 bool b_nosame_vector_QString(std::vector<QString> vec)
 {

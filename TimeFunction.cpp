@@ -44,3 +44,19 @@ void TimeFunction::get_time_ms(std::string *timeOut)
     snprintf (time_string2, sizeof(time_string2), "%s_%03ld", time_string, milliseconds);
     (*timeOut)=time_string2;
 }
+
+
+#if _MSC_VER
+void usleep(unsigned long usec)
+{
+    HANDLE timer;
+    LARGE_INTEGER interval;
+    interval.QuadPart = -(10 * usec);
+
+    timer = CreateWaitableTimer(NULL, TRUE, NULL);
+    SetWaitableTimer(timer, &interval, 0, NULL, NULL, 0);
+    WaitForSingleObject(timer, INFINITE);
+    CloseHandle(timer);
+}
+#endif
+

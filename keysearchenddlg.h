@@ -6,6 +6,10 @@
 #include "my_parameters.h"
 #include "setmovecdlg.h"
 #include "my_cmd.h"
+#if _MSC_VER
+#include "TimeFunction.h"
+#endif
+
 
 namespace Ui {
 class keysearchendDlg;

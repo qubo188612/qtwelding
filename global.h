@@ -4,6 +4,7 @@
 //#define WINDOWS_TCP                 1//linux仿windowstcp测试
 
 #if _MSC_VER||WINDOWS_TCP
+#define NOMINMAX     1
 #include "TCProsinterface.h"
 #else
 #include "tutorial_interfaces/msg/if_algorhmitcloud.hpp"

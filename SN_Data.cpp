@@ -132,7 +132,7 @@ void SN_Data::save()
     u16_p++;
 
     CFileOut fo;
-    fo.WriteFile(SN_SYSPATH_MOTO,buff,SN_SAVEBUFF);
+    fo.WriteFile((char*)SN_SYSPATH_MOTO,buff,SN_SAVEBUFF);
 
     if(buff!=NULL)
         delete []buff;
@@ -153,7 +153,7 @@ Int8 SN_Data::read()
         return 1;
     }
     CFileOut fo;
-    if(0 > fo.ReadFile(SN_SYSPATH_MOTO,buff,SN_SAVEBUFF))
+    if(0 > fo.ReadFile((char*)SN_SYSPATH_MOTO,buff,SN_SAVEBUFF))
     {
         GenerateSerial();
         SerialFlag=0x55AA;
@@ -262,7 +262,7 @@ void SN_Data::save_SN2()
     }
 
     CFileOut fo;
-    fo.WriteFile(SN_SYSPATH_MOTO2,buff,SN2_SAVEBUFF);
+    fo.WriteFile((char*)SN_SYSPATH_MOTO2,buff,SN2_SAVEBUFF);
 
     if(buff!=NULL)
         delete []buff;
@@ -281,7 +281,7 @@ Int8 SN_Data::read_SN2()
         return 1;
     }
     CFileOut fo;
-    if(0 > fo.ReadFile(SN_SYSPATH_MOTO2,buff,SN2_SAVEBUFF))
+    if(0 > fo.ReadFile((char*)SN_SYSPATH_MOTO2,buff,SN2_SAVEBUFF))
     {
         nCurrentSerialCount=0;
         groupSavedSerialNo.clear();

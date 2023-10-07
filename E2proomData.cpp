@@ -303,7 +303,7 @@ void E2proomData::init_camdlg_para()
 void E2proomData::read_demdlg_para()
 {
     QJsonDocument jsonDoc;
-    if(0!=Loadjsonfile(E2POOM_DEMDLG_SYSPATH_MOTO,jsonDoc))
+    if(0!=Loadjsonfile((char*)E2POOM_DEMDLG_SYSPATH_MOTO,jsonDoc))
     {
         return;
     }
@@ -539,7 +539,7 @@ void E2proomData::write_demdlg_para()
     }
     data.insert("matrix_plane2robot",arrData7);
 
-    Savejsonfile(E2POOM_DEMDLG_SYSPATH_MOTO,data);
+    Savejsonfile((char*)E2POOM_DEMDLG_SYSPATH_MOTO,data);
 }
 
 void E2proomData::init_demdlg_para()

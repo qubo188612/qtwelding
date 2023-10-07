@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #if _MSC_VER
 #include<chrono>
+#include <QCoreApplication>
+#include <windows.h>
 #else
 #include <sys/time.h>
 #endif
@@ -21,5 +23,11 @@ public:
     ~TimeFunction();
 
     void get_time_ms(std::string *timeOut);
+
 };
+
+#if _MSC_VER
+void usleep(unsigned long usec);
+#endif
+
 #endif

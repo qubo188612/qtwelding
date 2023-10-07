@@ -55,6 +55,9 @@
 #include "setcraft1dlg.h"
 #include "setcraft2dlg.h"
 #include "setcraft3dlg.h"
+#if _MSC_VER
+#include "TimeFunction.h"
+#endif
 
 namespace Ui {
 class setprojectDlg;
