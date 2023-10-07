@@ -1,4 +1,5 @@
 #include "robotcontrol.h"
+#include "my_parameters.h"
 
 QMutex mutexsend_buf_group;
 QMutex mutextotalcontrol_buf_group;

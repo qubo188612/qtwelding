@@ -1,4 +1,5 @@
 #include "tosendbuffer.h"
+#include "my_parameters.h"
 
 extern QMutex send_group_leaser;
 extern QMutex send_group_robot;

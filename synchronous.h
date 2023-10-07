@@ -1,7 +1,7 @@
 #ifndef SYNCHRONOUS_H
 #define SYNCHRONOUS_H
 
-#include "my_parameters.h"
+#include "global.h"
 
 class my_parameters;
 

@@ -1,4 +1,5 @@
 #include "synchronous.h"
+#include "my_parameters.h"
 
 
 Synchronous *Synchronous::Get(my_parameters *mcs)

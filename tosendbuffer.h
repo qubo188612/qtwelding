@@ -4,7 +4,6 @@
 #include <QFile>
 #include "global.h"
 #include "modbus/modbus.h"
-#include "my_parameters.h"
 #include "TimeFunction.h"
 #include "fitlineside.h"
 #include "cweldtarject.h"

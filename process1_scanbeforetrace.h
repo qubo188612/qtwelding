@@ -1,7 +1,7 @@
 #ifndef PROCESS1_SCANBEFORETRACE_H
 #define PROCESS1_SCANBEFORETRACE_H
 #include <QTextBrowser>
-#include "my_parameters.h"
+#include <QThread>
 #include "my_cmd.h"
 
 class my_parameters;

@@ -2,7 +2,7 @@
 #define ROBOTCONTROL_H
 #include <modbus/modbus.h>
 #include "global.h"
-#include "my_parameters.h"
+#include "robotdata.h"
 #include "XTcp.h"
 #include <QThread>
 #include <QMutex>

@@ -8,8 +8,6 @@
 #include "soptopcamera.h"
 #endif
 
-//class my_parameters;
-
 class Cam_Sen
 {
 public:

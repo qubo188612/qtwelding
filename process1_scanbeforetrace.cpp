@@ -1,4 +1,5 @@
 #include "process1_scanbeforetrace.h"
+#include "my_parameters.h"
 #include <sys/socket.h>
 
 Process1_scanbeforetrace *Process1_scanbeforetrace::Get(my_parameters *mcs)
