@@ -5,7 +5,7 @@ qtmysunnyDlg::qtmysunnyDlg(my_parameters *mcs,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::qtmysunnyDlg)
 {
-#if _MSC_VER
+#if _MSC_VER||WINDOWS_TCP
     QString filePath =  "./DATA";
     QDir dir(filePath);
     if(!dir.exists())

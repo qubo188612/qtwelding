@@ -11,23 +11,23 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::qtweldingDlg)
 {
-#if _MSC_VER
+#if _MSC_VER||WINDOWS_TCP
     QString filePath;
     filePath =  "./DATA";
-    QDir dir(filePath);
-    if(!dir.exists())
+    QDir dir1(filePath);
+    if(!dir1.exists())
         QDir().mkdir(filePath);
     filePath =  "./CRAFT";
-    QDir dir(filePath);
-    if(!dir.exists())
+    QDir dir2(filePath);
+    if(!dir2.exists())
         QDir().mkdir(filePath);
     filePath =  "./log";
-    QDir dir(filePath);
-    if(!dir.exists())
+    QDir dir3(filePath);
+    if(!dir3.exists())
         QDir().mkdir(filePath);
     filePath =  "./temp";
-    QDir dir(filePath);
-    if(!dir.exists())
+    QDir dir4(filePath);
+    if(!dir4.exists())
         QDir().mkdir(filePath);
 #else
     std::string dir;

@@ -8,7 +8,7 @@ RobotData *RobotData::Get()
 
 RobotData::RobotData()
 {
-#if _MSC_VER
+#if _MSC_VER||WINDOWS_TCP
     QString filePath =  "./SAVE";
     QDir dir(filePath);
     if(!dir.exists())

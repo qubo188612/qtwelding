@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QByteArray>
-#if _MSC_VER
+#if _MSC_VER||WINDOWS_TCP
 #include <QDir>
 #else
 #include <sys/stat.h>
