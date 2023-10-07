@@ -341,9 +341,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/lib/pcl_*d.lib
 INCLUDEPATH += D:/PCL/include/pcl-1.13
 
 #pthread库的添加
-INCLUDEPATH += D:/pthreads/include \
+#INCLUDEPATH += D:/pthreads/include \
 
-LIBS += D:/pthreads/lib/x64/pthreadVC2.lib \
+#LIBS += D:/pthreads/lib/x64/pthreadVC2.lib \
 
 }
 
