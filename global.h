@@ -52,7 +52,10 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define ROBOT_POSE_MOVEC_STEP               0.2     //机器人圆弧运动采样间隔
 
 #define DEBUG_MYINTERFACES          //显示算法结果或者算法原图开关
+#if _MSC_VER
+#else
 #define DEBUS_SSH                   //ssh升级方式开关
+#endif
 
 #define CAMBUILD_IMAGE_WIDTH  1024
 #define CAMBUILD_IMAGE_HEIGHT 1536
