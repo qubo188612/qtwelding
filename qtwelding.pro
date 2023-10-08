@@ -308,7 +308,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += -LD:/opencv/build/x64/vc16/lib/
 #modbustcp库的添加
 INCLUDEPATH += D:/libmodbus/include \
 
-LIBS += -LD:/libmodbus/x64/lib/ -lmodbus
+win32:CONFIG(release, debug|release):LIBS += -LD:/libmodbus/x64/lib/ -lmodbus
+else:win32:CONFIG(debug, debug|release):LIBS += -LD:/libmodbus/x64/lib/ -lmodbusd
+
 
 #Eigen库的添加
 INCLUDEPATH += D:/eigen3

@@ -208,7 +208,7 @@ void Robotcontrol::Close_control_modbus()
         }
         thread1->quit();
         thread1->wait();
-        close(sock);
+        closesocket(sock);
 
         delete rcv_thread;
         delete send_Thread;
@@ -1868,7 +1868,7 @@ void RobotcontrolThread1::run() //接到上位机命令
                 if (ret == -1)
                 {
                     // Connection closed by the client or error
-                    close(fd);
+                    closesocket(fd);
                     FD_CLR(fd, &refset);
                     fds.erase(fd);
                     fdmax = *fds.rbegin();
@@ -2776,7 +2776,7 @@ void RobotcontrolThread1::run() //接到上位机命令
             }
         }
     }
-    close(_p->sock);
+    closesocket(_p->sock);
     modbus_close(_p->ctx_robotcontrol);
     modbus_free(_p->ctx_robotcontrol);
     _p->b_stop_server_state=true;
