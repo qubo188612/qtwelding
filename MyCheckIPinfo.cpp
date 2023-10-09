@@ -19,9 +19,12 @@ QString MyCheckIPinfo::getAllAdapterInfo()
     for(int i = 0; i < nCnt; i ++)
     {
         // 如果此网络接口被激活并且正在运行并且不是回环地址，则就是我们需要找的Mac地址
-        if(nets[i].flags().testFlag(QNetworkInterface::IsUp)
-                && nets[i].flags().testFlag(QNetworkInterface::IsRunning)
-                && !nets[i].flags().testFlag(QNetworkInterface::IsLoopBack))
+        /*if(nets[i].flags().testFlag(QNetworkInterface::IsUp)      //网线插入
+              && nets[i].flags().testFlag(QNetworkInterface::IsRunning)     //网络是否工作
+                && !nets[i].flags().testFlag(QNetworkInterface::IsLoopBack))    //是否是回环
+        */
+        if(nets[i].type()==QNetworkInterface::Ethernet&&    //有线网络接口
+            !nets[i].flags().testFlag(QNetworkInterface::IsLoopBack))
         {
             // 该mac的ip地址不能是回环地址并且是ipv4地址
             for(int j = 0; j < nets[i].addressEntries().size(); j++)
@@ -60,3 +63,5 @@ int MyCheckIPinfo::split_mac(QString qmac,std::vector<uchar> *cmac_out)
     *cmac_out=mac;
     return 0;
 }
+
+

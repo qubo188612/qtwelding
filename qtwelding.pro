@@ -1,9 +1,11 @@
 CONFIG += c++17
 CONFIG -= app_bundle
 
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QT       += core gui network xml openglwidgets
+
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -309,7 +311,7 @@ else:win32:CONFIG(debug, debug|release): LIBS += -LD:/opencv/build/x64/vc16/lib/
 INCLUDEPATH += D:/libmodbus/include \
 
 win32:CONFIG(release, debug|release):LIBS += -LD:/libmodbus/x64/lib/ -lmodbus
-else:win32:CONFIG(debug, debug|release):LIBS += -LD:/libmodbus/x64/lib/ -lmodbusd
+else:win32:CONFIG(debug, debug|release):LIBS += -LD:/libmodbus/x64/lib/ -lmodbus
 
 
 #Eigen库的添加
