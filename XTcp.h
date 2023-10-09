@@ -1,6 +1,22 @@
 #ifndef XTCP_H
 #define XTCP_H
 #include <string>
+#include <iostream>
+#include "string.h"
+
+#if _MSC_VER
+#include <Windows.h>
+#define socklen_t int
+#pragma comment(lib, "Ws2_32.lib")
+#else
+#include <arpa/inet.h>
+#define closesocket close    //宏定义替换函数
+#include <unistd.h>
+#include <fcntl.h>
+#include <pthread.h>
+
+#define strcpy_s strcpy
+#endif
 
 class XTcp
 {
