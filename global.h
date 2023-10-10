@@ -944,11 +944,18 @@ typedef enum CREATADDP_EDIT_MODE_ID         //点位与轨迹相加模式
 }Creataddp_edit_mode;
 
 #define SAVEPCD_EDIT_ID_TOTAL_NUM   2   //保存PCD点云模式总数
-typedef enum SAVEPCD_EDIT_ID_MODE_ID    //保存PCD点云模式
+typedef enum SAVEPCD_EDIT_MODE_ID    //保存PCD点云模式
 {
     SAVEPCD_EDIT_MODE_TIME=0,           //文件名用时间后缀
     SAVEPCD_EDIT_MODE_STATIC=1,         //文件名无后缀(会替换调之前保存的文件)
 }Savepcd_edit_mode;
+
+#define TRACEREALTIME_EDIT_ID_TOTAL_NUM 2 //实时跟踪下枪模式总数
+typedef enum TRACEREALTIME_EDIT_MODE_ID     //实时跟踪下枪模式
+{
+    TRACEREALTIME_EDIT_MODE_STOPDOWN=0,     //在起始位置停止后再下枪
+    TRACEREALTIME_EDIT_MODE_MOVINEDOWN=1,   //在起始位置边运动边下枪
+}Tracerealtime_edit_mode;
 
 //摆焊参数
 class wWAVEParam
@@ -1011,6 +1018,8 @@ QString Creataddp_edit_mode_toQString(Creataddp_edit_mode creataddp_edit_mode);
 QString Filter_mode_toQString(Filter_mode filter_mode);
 
 QString Savepcd_edit_mode_toQString(Savepcd_edit_mode savepcd_mode);
+
+QString Tracerealtime_edit_mode_toQString(Tracerealtime_edit_mode Tracerealtime_mode);
 
 bool b_nosame_vector_QString(std::vector<QString> vec);//判断容器里是否有相同元素,没有则返回true
 

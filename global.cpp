@@ -238,3 +238,18 @@ QString Savepcd_edit_mode_toQString(Savepcd_edit_mode savepcd_mode)
     }
     return msg;
 }
+
+QString Tracerealtime_edit_mode_toQString(Tracerealtime_edit_mode Tracerealtime_mode)
+{
+    QString msg;
+    switch(Tracerealtime_mode)
+    {
+    case TRACEREALTIME_EDIT_MODE_STOPDOWN:
+        msg=QStringLiteral("在起始位置停止后再下枪");
+        break;
+    case TRACEREALTIME_EDIT_MODE_MOVINEDOWN:
+        msg=QStringLiteral("在起始位置边运动边下枪");
+        break;
+    }
+    return msg;
+}

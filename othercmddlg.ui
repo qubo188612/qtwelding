@@ -212,6 +212,16 @@
        </item>
        <item>
         <property name="text">
+         <string>TRACEREALTIME: 实时跟踪指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TRACEREALTIME2: 实时跟踪指令</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>TRACING: 跟踪轨迹工艺指令</string>
         </property>
        </item>

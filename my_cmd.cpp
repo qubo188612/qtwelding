@@ -26,12 +26,13 @@ my_cmd::my_cmd()
     cmd_traceadd_samplespeed=0;//获取到的连接处的采样点移动速度mm/s
     cmd_traceadd_speed=0;//获取到的连接处的焊接移动速度mm/s
     cmd_traceadd_time=0;//获取到的连接处的采样点之间的时间间隔ms
+    cmd_tracerealtime_weld=0;//获取到实时跟踪是否起弧
+    cmd_tracerealtime2_weld=0;//获取到实时跟踪是否起弧
 }
 
 QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_MOV_KEY)+" "+
             rc_move(pos,movemodel)+" "+
@@ -47,7 +48,6 @@ QString my_cmd::cmd_move(RobPos pos,Robmovemodel movemodel,float speed,int tcp,Q
 QString my_cmd::cmd_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_MOV_KEY)+" "+
             rc_moveC(pos1,pos2,pos3,movemodel)+" "+
@@ -63,7 +63,6 @@ QString my_cmd::cmd_moveC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movem
 QString my_cmd::cmd_smove(QString s_pos,Robmovemodel movemodel,float speed,int tcp,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SMOV_KEY)+" "+
             rc_smove(s_pos,movemodel)+" "+
@@ -79,7 +78,6 @@ QString my_cmd::cmd_smove(QString s_pos,Robmovemodel movemodel,float speed,int t
 QString my_cmd::cmd_smoveC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel,float speed,int tcp,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SMOV_KEY)+" "+
             rc_smoveC(s_pos1,s_pos2,s_pos3,movemodel)+" "+
@@ -139,7 +137,6 @@ QString my_cmd::cmd_elec_work(int work)
 QString my_cmd::cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SCAN_KEY)+" "+
             rc_move(pos,movemodel)+" "+
@@ -156,7 +153,6 @@ QString my_cmd::cmd_scan(RobPos pos,Robmovemodel movemodel,float speed,int tcp,Q
 QString my_cmd::cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SCAN_KEY)+" "+
             rc_moveC(pos1,pos2,pos3,movemodel)+" "+
@@ -173,7 +169,6 @@ QString my_cmd::cmd_scanC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movem
 QString my_cmd::cmd_sscan(QString s_pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SSCAN_KEY)+" "+
             rc_smove(s_pos,movemodel)+" "+
@@ -190,7 +185,6 @@ QString my_cmd::cmd_sscan(QString s_pos,Robmovemodel movemodel,float speed,int t
 QString my_cmd::cmd_sscanC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SSCAN_KEY)+" "+
             rc_smoveC(s_pos1,s_pos2,s_pos3,movemodel)+" "+
@@ -207,7 +201,6 @@ QString my_cmd::cmd_sscanC(QString s_pos1,QString s_pos2,QString s_pos3,Robmovem
 QString my_cmd::cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SEARCH_KEY)+" "+
             rc_move(pos,movemodel)+" "+
@@ -227,7 +220,6 @@ QString my_cmd::cmd_search(RobPos pos,Robmovemodel movemodel,float speed,int tcp
 QString my_cmd::cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,int side,std::vector<float> sidemove,float sidespeed,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SEARCH_KEY)+" "+
             rc_moveC(pos1,pos2,pos3,movemodel)+" "+
@@ -247,7 +239,6 @@ QString my_cmd::cmd_searchC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel mov
 QString my_cmd::cmd_searchend(RobPos pos,Robmovemodel movemodel,float speed,int tcp,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SEARCHEND_KEY)+" "+
             rc_move(pos,movemodel)+" "+
@@ -264,7 +255,6 @@ QString my_cmd::cmd_searchend(RobPos pos,Robmovemodel movemodel,float speed,int 
 QString my_cmd::cmd_searchendC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,int tcp,QString name,QString change)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_SEARCHEND_KEY)+" "+
             rc_moveC(pos1,pos2,pos3,movemodel)+" "+
@@ -313,7 +303,6 @@ QString my_cmd::cmd_trace2(QString name_in,float speed,QString crafts,QString na
 QString my_cmd::cmd_creat(Trace_edit_mode mode,std::vector<QString> scanname,QString name)
 {
     QString msg;
-    QString msg1;
 
     msg=QString(CMD_CREAT_KEY)+" "+
             rc_mode(mode)+" "+
@@ -615,6 +604,106 @@ QString my_cmd::cmd_savepcd(std::vector<QString> scanname,std::vector<QString> p
     }
     msg=msg+rc_mode(mode)+" "+
             rc_name(name);
+    return msg;
+}
+
+QString my_cmd::cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString craftfilepath,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+{
+    QString msg;
+    msg=QString(CMD_TRACEREALTIME_KEY)+" "+
+          rc_move(pos,movemodel)+" "+
+          rc_speed(speed)+" "+
+          rc_downspeed(downspeed)+" "+
+          rc_tcp(tcp)+" "+
+          rc_mode(mode)+" "+
+          rc_craft(craftfilepath);
+    if(weld==true)
+    {
+        msg=msg+" "+
+        rc_work(1)+" "+
+        rc_eled(eled)+" "+
+        rc_elev(elev)+" "+
+        rc_elem(elem);
+    }
+    if(!change.isEmpty())
+    {
+        msg=msg+" "+rc_change(change);
+    }
+    return msg;
+}
+
+QString my_cmd::cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString craftfilepath,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+{
+    QString msg;
+    msg=QString(CMD_TRACEREALTIME_KEY)+" "+
+          rc_moveC(pos1,pos2,pos3,movemodel)+" "+
+          rc_speed(speed)+" "+
+          rc_downspeed(downspeed)+" "+
+          rc_tcp(tcp)+" "+
+          rc_mode(mode)+" "+
+          rc_craft(craftfilepath);
+    if(weld==true)
+    {
+        msg=msg+" "+
+        rc_work(1)+" "+
+        rc_eled(eled)+" "+
+        rc_elev(elev)+" "+
+        rc_elem(elem);
+    }
+    if(!change.isEmpty())
+    {
+        msg=msg+" "+rc_change(change);
+    }
+    return msg;
+}
+
+QString my_cmd::cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString crafts,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+{
+    QString msg;
+    msg=QString(CMD_TRACEREALTIME2_KEY)+" "+
+          rc_move(pos,movemodel)+" "+
+          rc_speed(speed)+" "+
+          rc_downspeed(downspeed)+" "+
+          rc_tcp(tcp)+" "+
+          rc_mode(mode)+" "+
+          rc_crafts(crafts);
+    if(weld==true)
+    {
+        msg=msg+" "+
+        rc_work(1)+" "+
+        rc_eled(eled)+" "+
+        rc_elev(elev)+" "+
+        rc_elem(elem);
+    }
+    if(!change.isEmpty())
+    {
+        msg=msg+" "+rc_change(change);
+    }
+    return msg;
+}
+
+QString my_cmd::cmd_tracerealtimeC2(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString crafts,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+{
+    QString msg;
+    msg=QString(CMD_TRACEREALTIME2_KEY)+" "+
+          rc_moveC(pos1,pos2,pos3,movemodel)+" "+
+          rc_speed(speed)+" "+
+          rc_downspeed(downspeed)+" "+
+          rc_tcp(tcp)+" "+
+          rc_mode(mode)+" "+
+          rc_crafts(crafts);
+    if(weld==true)
+    {
+        msg=msg+" "+
+        rc_work(1)+" "+
+        rc_eled(eled)+" "+
+        rc_elev(elev)+" "+
+        rc_elem(elem);
+    }
+    if(!change.isEmpty())
+    {
+        msg=msg+" "+rc_change(change);
+    }
     return msg;
 }
 
@@ -1853,22 +1942,22 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         if(b_SPEED==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
-                         return 1;
+            return 1;
         }
         else if(b_CREAT==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CREAT+QStringLiteral("'项参数");
-                         return 1;
+            return 1;
         }
         else if(b_NAME==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_NAME+QStringLiteral("'项参数");
-                         return 1;
+            return 1;
         }
         else if(b_CRAFTS==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CRAFTS+QStringLiteral("'项参数");
-                         return 1;
+            return 1;
         }
         if(b_CHANGE==false)
         {
@@ -5002,6 +5091,670 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return 1;
         }
     }
+    else if(key==CMD_TRACEREALTIME_KEY)
+    {
+        int pn=0;
+        bool b_SPEED=false;
+        bool b_DOWNSPEED=false;
+        bool b_MOVE=false;
+        bool b_TCP=false;
+        bool b_CRAFT=false;
+        bool b_MODE=false;
+        bool b_WELD=false;
+        bool b_ELED=false;
+        bool b_ELEM=false;
+        bool b_ELEV=false;
+        bool b_CHANGE=false;
+
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_SPEED)
+                {
+                    if(b_SPEED==false)
+                    {
+                        b_SPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_speed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_speed<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_DOWNSPEED)
+                {
+                    if(b_DOWNSPEED==false)
+                    {
+                        b_DOWNSPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_downspeed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_downspeed<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MOVL)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_pos,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime_movemod=MOVEL;
+                    }
+                    else
+                    {
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MOVJ)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_pos,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime_movemod=MOVEJ;
+                    }
+                    else
+                    {
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MOVC)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robposP(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_pos1,cmd_tracerealtime_pos2,cmd_tracerealtime_pos3,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime_movemod=MOVEC;
+                    }
+                    else
+                    {
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TCP)
+                {
+                    if(b_TCP==false)
+                    {
+                        b_TCP=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_tcp,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_tcp<0||cmd_tracerealtime_tcp>=ROBOTTCPNUM)
+                        {
+                            return_msg=QStringLiteral("TCP的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CRAFT)
+                {
+                    if(b_CRAFT==false)
+                    {
+                        b_CRAFT=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_craftfilepath,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MODE)
+                {
+                    if(b_MODE==false)
+                    {
+                        b_MODE=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime_mode=(Tracerealtime_edit_mode)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_WORK)
+                {
+                    if(b_WELD==false)
+                    {
+                        b_WELD=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_weld,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_weld!=1&&cmd_tracerealtime_weld!=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能为0或1");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_ELEM)
+                {
+                    if(b_ELEM==false)
+                    {
+                        b_ELEM=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime_elem=(Alternatingcurrent)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_ELED)
+                {
+                    if(b_ELED==false)
+                    {
+                        b_ELED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_eled,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_ELEV)
+                {
+                    if(b_ELEV==false)
+                    {
+                        b_ELEV=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_elev,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CHANGE)
+                {
+                    if(b_CHANGE==false)
+                    {
+                        b_CHANGE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_change,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_SPEED==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_DOWNSPEED==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_DOWNSPEED+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_MOVE==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MOVL+QStringLiteral("'或'")+CMD_MOVJ+QStringLiteral("'或'")+CMD_MOVC+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_TCP==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_CRAFT==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CRAFT+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_MODE==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
+            return 1;
+        }
+
+        if(b_WELD==true)
+        {
+            if(b_ELEM==false)
+            {
+                if(cmd_tracerealtime_weld==1)
+                {
+                    return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELEM+QStringLiteral("'项参数");
+                    return 1;
+                }
+            }
+            else if(b_ELED==false)
+            {
+                if(cmd_tracerealtime_weld==1)
+                {
+                    return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELED+QStringLiteral("'项参数");
+                    return 1;
+                }
+            }
+            else if(b_ELEV==false)
+            {
+                if(cmd_tracerealtime_weld==1)
+                {
+                    return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELEV+QStringLiteral("'项参数");
+                    return 1;
+                }
+            }
+        }
+
+        if(b_CHANGE==false)
+        {
+            cmd_tracerealtime_change.clear();
+        }
+    }
+    else if(key==CMD_TRACEREALTIME2_KEY)
+    {
+        int pn=0;
+        bool b_SPEED=false;
+        bool b_DOWNSPEED=false;
+        bool b_MOVE=false;
+        bool b_TCP=false;
+        bool b_CRAFTS=false;
+        bool b_MODE=false;
+        bool b_WELD=false;
+        bool b_ELED=false;
+        bool b_ELEM=false;
+        bool b_ELEV=false;
+        bool b_CHANGE=false;
+
+        QStringList param = list[1].split(" ");
+        for(int n=0;n<param.size();n++)
+        {
+            if(param[n].size()!=0)
+            {
+                QString paramname;
+                int data_fpos,data_bpos;
+                if(0!=de_param(++pn,param[n],paramname,data_fpos,data_bpos,return_msg))
+                {
+                    return 1;
+                }
+                if(paramname==CMD_SPEED)
+                {
+                    if(b_SPEED==false)
+                    {
+                        b_SPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_speed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_speed<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_DOWNSPEED)
+                {
+                    if(b_DOWNSPEED==false)
+                    {
+                        b_DOWNSPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_downspeed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_downspeed<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MOVL)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_pos,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime2_movemod=MOVEL;
+                    }
+                    else
+                    {
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MOVJ)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robpos(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_pos,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime2_movemod=MOVEJ;
+                    }
+                    else
+                    {
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MOVC)
+                {
+                    if(b_MOVE==false)
+                    {
+                        b_MOVE=true;
+                        if(0!=de_robposP(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_pos1,cmd_tracerealtime2_pos2,cmd_tracerealtime2_pos3,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime2_movemod=MOVEC;
+                    }
+                    else
+                    {
+                        return_msg=QStringLiteral("只能有一个MOV类型项");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TCP)
+                {
+                    if(b_TCP==false)
+                    {
+                        b_TCP=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_tcp,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_tcp<0||cmd_tracerealtime2_tcp>=ROBOTTCPNUM)
+                        {
+                            return_msg=QStringLiteral("TCP的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CRAFTS)
+                {
+                    if(b_CRAFTS==false)
+                    {
+                        b_CRAFTS=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_crafts,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_MODE)
+                {
+                    if(b_MODE==false)
+                    {
+                        b_MODE=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime2_mode=(Tracerealtime_edit_mode)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_WORK)
+                {
+                    if(b_WELD==false)
+                    {
+                        b_WELD=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_weld,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_weld!=1&&cmd_tracerealtime2_weld!=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能为0或1");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_ELEM)
+                {
+                    if(b_ELEM==false)
+                    {
+                        b_ELEM=true;
+                        int data;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,data,return_msg))
+                        {
+                            return 1;
+                        }
+                        cmd_tracerealtime2_elem=(Alternatingcurrent)data;
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_ELED)
+                {
+                    if(b_ELED==false)
+                    {
+                        b_ELED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_eled,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_ELEV)
+                {
+                    if(b_ELEV==false)
+                    {
+                        b_ELEV=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_elev,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_CHANGE)
+                {
+                    if(b_CHANGE==false)
+                    {
+                        b_CHANGE=true;
+                        if(0!=de_QString(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_change,return_msg))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return_msg=key+QStringLiteral("指令里没有这个'")+paramname+QStringLiteral("'参数名称");
+                    return 1;
+                }
+            }
+        }
+        if(b_SPEED==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SPEED+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_DOWNSPEED==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_DOWNSPEED+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_MOVE==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MOVL+QStringLiteral("'或'")+CMD_MOVJ+QStringLiteral("'或'")+CMD_MOVC+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_TCP==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_CRAFTS==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CRAFTS+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_MODE==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
+            return 1;
+        }
+
+        if(b_WELD==true)
+        {
+            if(b_ELEM==false)
+            {
+                if(cmd_tracerealtime2_weld==1)
+                {
+                    return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELEM+QStringLiteral("'项参数");
+                    return 1;
+                }
+            }
+            else if(b_ELED==false)
+            {
+                if(cmd_tracerealtime2_weld==1)
+                {
+                    return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELED+QStringLiteral("'项参数");
+                    return 1;
+                }
+            }
+            else if(b_ELEV==false)
+            {
+                if(cmd_tracerealtime2_weld==1)
+                {
+                    return_msg=key+QStringLiteral("指令在")+CMD_WORK+QStringLiteral("值等于1时还需要设置'")+CMD_ELEV+QStringLiteral("'项参数");
+                    return 1;
+                }
+            }
+        }
+
+        if(b_CHANGE==false)
+        {
+            cmd_tracerealtime2_change.clear();
+        }
+    }
     else if(key==CMD_STOP_KEY)
     {
         //不需要处理
@@ -5647,6 +6400,13 @@ QString my_cmd::rc_line(int line)
 {
     QString msg;
     msg=QString(CMD_LINE)+"["+QString::number(line)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_downspeed(float speed)
+{
+    QString msg;
+    msg=QString(CMD_DOWNSPEED)+"["+QString::number(speed,'f',3)+"]";
     return msg;
 }
 

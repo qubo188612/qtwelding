@@ -748,6 +748,7 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                 QString name_in;//获取到跟踪轨迹序号
                 QString name_out;//获取到生成的跟踪轨迹序号
                 QString change;//获取变换矩阵名字
+                QString crafts;
                 if(key==CMD_TRACE_KEY)
                 {
                     name_in=cmd.cmd_trace_name_in;//获取到跟踪轨迹序号
@@ -759,6 +760,25 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     name_in=cmd.cmd_trace2_name_in;//获取到跟踪轨迹序号
                     name_out=cmd.cmd_trace2_name_out;//获取到生成的跟踪轨迹序号
                     change=cmd.cmd_trace2_change;//获取变换矩阵名字
+                    crafts=cmd.cmd_trace2_crafts;//获取工艺名字
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->project_crafts_trace.size();t++)
+                    {
+                        if(m_mcs->project->project_crafts_trace[t].name==crafts)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+crafts+QStringLiteral("的工艺");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
                 }
                 bool b_find=0;
                 if(!change.isEmpty())//有变化矩阵
@@ -797,80 +817,6 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     main_record.lock();
                     return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的跟踪轨迹");
                     m_mcs->main_record.push_back(return_msg);
-                    main_record.unlock();
-                    errmsg.push_back(return_msg);
-                    break;
-                }
-                else
-                {
-                    bool b_find=0;
-                    for(int t=0;t<m_mcs->project->project_interweld_trace.size();t++)
-                    {
-                        if(m_mcs->project->project_interweld_trace[t].name==name_out)
-                        {
-                            b_find=1;
-                            break;
-                        }
-                    }
-                    if(b_find==1)
-                    {
-                        err=1;
-                        main_record.lock();
-                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 跟踪工艺轨迹与已有的轨迹重名");
-                        m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                        errmsg.push_back(return_msg);
-                    }
-                    else
-                    {
-                        Weld_tracing_result trace;
-                        trace.name=name_out;
-                        m_mcs->project->project_interweld_trace.push_back(trace);
-                    }
-                }
-            }
-            else if(key==CMD_TRACE2_KEY)
-            {
-                QString name_in=cmd.cmd_trace2_name_in;//获取到跟踪轨迹序号
-                QString name_out=cmd.cmd_trace2_name_out;//获取到生成的跟踪轨迹序号
-                QString change=cmd.cmd_trace2_change;//获取变换矩阵名字
-                bool b_find=0;
-                if(!change.isEmpty())//有变化矩阵
-                {
-                    bool b_find=false;
-                    for(int t=0;t<m_mcs->project->project_coord_matrix4d.size();t++)
-                    {
-                        if(m_mcs->project->project_coord_matrix4d[t].name==change)
-                        {
-                            b_find=1;
-                            break;
-                        }
-                    }
-                    if(b_find==false)
-                    {
-                        err=1;
-                        main_record.lock();
-                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
-                                                                                                                                                         m_mcs->main_record.push_back(return_msg);
-                        main_record.unlock();
-                        errmsg.push_back(return_msg);
-                    }
-                }
-                b_find=false;
-                for(int t=0;t<m_mcs->project->project_weld_trace.size();t++)
-                {
-                    if(name_in==m_mcs->project->project_weld_trace[t].name)
-                    {
-                        b_find=true;
-                        break;
-                    }
-                }
-                if(b_find==false)//没找到name_in这个名字的跟踪轨迹序号
-                {
-                    err=1;
-                    main_record.lock();
-                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+name_in+QStringLiteral("的跟踪轨迹");
-                                                                                                                                                      m_mcs->main_record.push_back(return_msg);
                     main_record.unlock();
                     errmsg.push_back(return_msg);
                     break;
@@ -2017,6 +1963,59 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         main_record.unlock();
                         errmsg.push_back(return_msg);
                         break;
+                    }
+                }
+            }
+            else if(key==CMD_TRACEREALTIME_KEY||key==CMD_TRACEREALTIME2_KEY)//实时跟踪指令
+            {
+                QString change;
+                QString crafts;
+                if(key==CMD_TRACEREALTIME_KEY)
+                {
+                    change=cmd.cmd_tracerealtime_change;//获取变换矩阵名字
+                }
+                else
+                {
+                    change=cmd.cmd_tracerealtime2_change;//获取变换矩阵名字
+                    crafts=cmd.cmd_tracerealtime2_crafts;//获取工艺名字
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->project_crafts_trace.size();t++)
+                    {
+                        if(m_mcs->project->project_crafts_trace[t].name==crafts)
+                        {
+                            b_find=true;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+crafts+QStringLiteral("的工艺");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
+                    }
+                }
+                if(!change.isEmpty())//有变化矩阵
+                {
+                    bool b_find=false;
+                    for(int t=0;t<m_mcs->project->project_coord_matrix4d.size();t++)
+                    {
+                        if(m_mcs->project->project_coord_matrix4d[t].name==change)
+                        {
+                            b_find=1;
+                            break;
+                        }
+                    }
+                    if(b_find==false)
+                    {
+                        err=1;
+                        main_record.lock();
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 前面没有名为")+change+QStringLiteral("的矩阵");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        errmsg.push_back(return_msg);
                     }
                 }
             }
@@ -6911,6 +6910,94 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             /*********************/
             //掉电保存
             savetemp_pos(m_mcs->project->project_robpos_trace[robpos_trace_num]);
+        }
+        else if(key==CMD_TRACEREALTIME_KEY||key==CMD_TRACEREALTIME2_KEY)//实时跟踪
+        {
+            QString change;//获取变换矩阵名字
+            float speed;//获取到的跟踪速度
+            float downspeed;//获取到的跟踪速度
+            Robmovemodel movemod;//获取到的点位移动模式
+            bool b_weld;//获取到实时跟踪是否焊接起弧下标
+            Tracerealtime_edit_mode mode;//获取到实时跟踪下枪模式
+            Alternatingcurrent elem;
+            float eled;
+            float elev;
+            QString craftfilepath;//获取到工艺包的文件路径
+            QString crafts;
+
+            if(key==CMD_TRACEREALTIME_KEY)
+            {
+                change=cmd.cmd_tracerealtime_change;//获取变换矩阵名字
+                speed=cmd.cmd_tracerealtime_speed;//获取到的跟踪速度
+                downspeed=cmd.cmd_tracerealtime_downspeed;
+                movemod=cmd.cmd_tracerealtime_movemod;
+                b_weld=cmd.cmd_tracerealtime_weld;//获取到实时跟踪是否焊接起弧下标
+                mode=cmd.cmd_tracerealtime_mode;
+                craftfilepath=cmd.cmd_tracerealtime_craftfilepath;//获取到工艺包的文件路径
+                elem=cmd.cmd_tracerealtime_elem;  //获取到焊机交变电流模式
+                eled=cmd.cmd_tracerealtime_eled; //获取到焊机电流
+                elev=cmd.cmd_tracerealtime_elev; //获取到焊机电压
+            }
+            else
+            {
+                change=cmd.cmd_tracerealtime2_change;//获取变换矩阵名字
+                speed=cmd.cmd_tracerealtime2_speed;//获取到的跟踪速度
+                downspeed=cmd.cmd_tracerealtime2_downspeed;
+                movemod=cmd.cmd_tracerealtime2_movemod;
+                b_weld=cmd.cmd_tracerealtime2_weld;//获取到实时跟踪是否焊接起弧下标
+                mode=cmd.cmd_tracerealtime2_mode;
+                crafts=cmd.cmd_tracerealtime2_crafts;
+                elem=cmd.cmd_tracerealtime2_elem;  //获取到焊机交变电流模式
+                eled=cmd.cmd_tracerealtime2_eled; //获取到焊机电流
+                elev=cmd.cmd_tracerealtime2_elev; //获取到焊机电压
+            }
+
+            if(key==CMD_TRACEREALTIME_KEY)
+            {
+                m_mcs->craft->LoadCraft(craftfilepath);
+            }
+            else
+            {
+                int crafts_trace_num;//获取要储存的工艺下标
+                for(int n=0;n<m_mcs->project->project_crafts_trace.size();n++)
+                {
+                    if(crafts==m_mcs->project->project_crafts_trace[n].name)
+                    {
+                        crafts_trace_num=n;//找到要储存的工艺下标
+                        break;
+                    }
+                }
+                Weld_crafts_result singcrafts=m_mcs->project->project_crafts_trace[crafts_trace_num];
+                m_mcs->craft->craft_id=singcrafts.craft_id;
+                m_mcs->craft->craft_name=singcrafts.name;
+                m_mcs->craft->posturelist=singcrafts.posturelist;
+                switch(m_mcs->craft->craft_id)
+                {
+                    case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                    {
+                    }
+                    break;
+                    case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+                    {
+                    }
+                    break;
+                    case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
+                    {
+                    }
+                    break;
+                    case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                    {
+                        m_mcs->craft->posture_distance=singcrafts.params[0];
+                        m_mcs->craft->weld_direction=(Weld_direction)((int)singcrafts.params[1]);
+                    }
+                    break;
+                }
+            }
+
+            /********************/
+
+            //这里开始添加实时跟踪函数
+            /*********************/
         }
         else if(key==CMD_GOTO_KEY)
         {

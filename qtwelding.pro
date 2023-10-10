@@ -70,6 +70,8 @@ SOURCES += \
         keytraceadddlg.cpp \
         keytracecontinuedlg.cpp \
         keytracedlg.cpp \
+        keytracerealtime2dlg.cpp \
+        keytracerealtimedlg.cpp \
         keytracingdlg.cpp \
         keywavedlg.cpp \
         keywelddlg.cpp \
@@ -157,6 +159,8 @@ FORMS += \
     keytraceadddlg.ui \
     keytracecontinuedlg.ui \
     keytracedlg.ui \
+    keytracerealtime2dlg.ui \
+    keytracerealtimedlg.ui \
     keytracingdlg.ui \
     keywavedlg.ui \
     keywelddlg.ui \
@@ -246,6 +250,8 @@ HEADERS += \
     keytraceadddlg.h \
     keytracecontinuedlg.h \
     keytracedlg.h \
+    keytracerealtime2dlg.h \
+    keytracerealtimedlg.h \
     keytracingdlg.h \
     keywavedlg.h \
     keywelddlg.h \
