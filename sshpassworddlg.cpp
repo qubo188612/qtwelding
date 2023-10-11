@@ -220,8 +220,8 @@ void sshpasswordDlg::slotDataArrived(QString strMsg, QString strIp, int nPort)
         if(strMsg.contains(m_mcs->e2proomdata.sshdlg_usename+"@"+m_mcs->e2proomdata.sshdlg_usename+":~$"))
         {
             m_mcs->resultdata.updata_step=5;
-        //  QString strCmd = "sudo docker load < /dev/sunny-tis.tar";
-            QString strCmd = "sudo docker load < sunny-tis.tar";
+            QString strCmd = "sudo docker load < /dev/sunny-tis.tar";
+        //  QString strCmd = "sudo docker load < sunny-tis.tar";
             strCmd += "\n"; //添加回车
             emit sigSend(strCmd);
         }

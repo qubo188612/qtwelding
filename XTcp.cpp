@@ -97,9 +97,9 @@ bool XTcp::SetRcvBufferlong(int bufferlong) //设置接收缓冲长度
     setsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(const char*)&sendBufLen, sizeof(int));
 #if _MSC_VER
     getsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(char *)&tmp, &optlen);
+    return 0;
 #else
     getsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(int *)&tmp, &optlen);
-#endif
     if(tmp==sendBufLen)
     {
         return true;
@@ -108,6 +108,7 @@ bool XTcp::SetRcvBufferlong(int bufferlong) //设置接收缓冲长度
     {
         return false;
     }
+#endif
 }
 
 bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
@@ -118,9 +119,9 @@ bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
     setsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(const char*)&sendBufLen, sizeof(int));
 #if _MSC_VER
     getsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(char *)&tmp, &optlen);
+    return 0;
 #else
     getsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(int *)&tmp, &optlen);
-#endif
     if(tmp==sendBufLen)
     {
         return true;
@@ -129,6 +130,7 @@ bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
     {
         return false;
     }
+#endif
 }
 
 bool XTcp::SetBlock(bool isblock)  //设置阻塞模式  （希望只有在connect的时候是非阻塞的，而接收数据时候是阻塞的）
@@ -204,7 +206,11 @@ bool XTcp::Connect(const char *ip, unsigned short port , int sec)
             {
                 connect(tsock, (sockaddr*)&saddr, sizeof(saddr));    //再次连接一次进行确认
                 int err = errno;
-                if  (err == EISCONN||err == EINPROGRESS)     //已经连接到该套接字 或 套接字为非阻塞套接字，且连接请求没有立即完成
+            #if _MSC_VER
+                if  (err == EISCONN||err == EINPROGRESS||err==0)     //已经连接到该套接字 或 套接字为非阻塞套接字，且连接请求没有立即完成
+            #else
+                if  (err == EISCONN||err == EINPROGRESS)
+            #endif
                 {
                     printf("connect %s : %d finished(success).\n",ip,port);
                     SetBlock(true);   //成功之后重新把sock改成阻塞模式，以便后面发送/接收数据
