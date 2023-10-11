@@ -277,7 +277,11 @@ bool XTcp::Connect(int sec)
             {
                 connect(tsock, (sockaddr*)&saddr, sizeof(saddr));    //再次连接一次进行确认
                 int err = errno;
-                if  (err == EISCONN||err == EINPROGRESS)     //已经连接到该套接字 或 套接字为非阻塞套接字，且连接请求没有立即完成
+            #if _MSC_VER
+                if  (err == EISCONN||err == EINPROGRESS||err==0)     //已经连接到该套接字 或 套接字为非阻塞套接字，且连接请求没有立即完成
+            #else
+                if  (err == EISCONN||err == EINPROGRESS)
+            #endif
                 {
                     printf("connect %s : %d finished(success).\n",tcp_serverip,tport);
                     SetBlock(true);   //成功之后重新把sock改成阻塞模式，以便后面发送/接收数据
