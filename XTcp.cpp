@@ -97,10 +97,9 @@ bool XTcp::SetRcvBufferlong(int bufferlong) //设置接收缓冲长度
     setsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(const char*)&sendBufLen, sizeof(int));
 #if _MSC_VER
     getsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(char *)&tmp, &optlen);
-    return 0;
 #else
     getsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(int *)&tmp, &optlen);
-    if(tmp==sendBufLen)
+    if(tmp<sendBufLen)
     {
         return true;
     }
@@ -119,10 +118,9 @@ bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
     setsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(const char*)&sendBufLen, sizeof(int));
 #if _MSC_VER
     getsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(char *)&tmp, &optlen);
-    return 0;
 #else
     getsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(int *)&tmp, &optlen);
-    if(tmp==sendBufLen)
+    if(tmp<sendBufLen)
     {
         return true;
     }
