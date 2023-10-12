@@ -1,6 +1,8 @@
 CONFIG += c++17
 CONFIG -= app_bundle
 
+CONFIG += console
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

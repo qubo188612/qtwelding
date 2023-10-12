@@ -1,6 +1,5 @@
 ﻿#include "XTcp.h"
 
-
 XTcp::XTcp(unsigned short port)
 {
     //初始化动态链接库
@@ -99,6 +98,7 @@ bool XTcp::SetRcvBufferlong(int bufferlong) //设置接收缓冲长度
     getsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(char *)&tmp, &optlen);
 #else
     getsockopt(tsock,SOL_SOCKET, SO_RCVBUF,(int *)&tmp, &optlen);
+#endif
     if(tmp<sendBufLen)
     {
         return true;
@@ -107,7 +107,6 @@ bool XTcp::SetRcvBufferlong(int bufferlong) //设置接收缓冲长度
     {
         return false;
     }
-#endif
 }
 
 bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
@@ -120,6 +119,7 @@ bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
     getsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(char *)&tmp, &optlen);
 #else
     getsockopt(tsock,SOL_SOCKET, SO_SNDBUF,(int *)&tmp, &optlen);
+#endif
     if(tmp<sendBufLen)
     {
         return true;
@@ -128,7 +128,6 @@ bool XTcp::SetSentBufferlong(int bufferlong) //设置发送缓冲长度
     {
         return false;
     }
-#endif
 }
 
 bool XTcp::SetBlock(bool isblock)  //设置阻塞模式  （希望只有在connect的时候是非阻塞的，而接收数据时候是阻塞的）
@@ -194,14 +193,47 @@ bool XTcp::Connect(const char *ip, unsigned short port , int sec)
         {
 
         case -1:
+            /*
+            {
+                QString qip=QString::fromUtf8(ip)+": "+QString::number(port);
+                QString fileName=qip+"select error:";
+                const wchar_t * encodedName = reinterpret_cast<const wchar_t *>(fileName.utf16());
+                MessageBoxW(NULL, encodedName, encodedName, MB_OK);
+            }
+            */
             printf("select error\n");
             return false;
         case 0:
+            /*
+            {
+                QString qip=QString::fromUtf8(ip)+": "+QString::number(port);
+                QString fileName=qip+"select time:";
+                const wchar_t * encodedName = reinterpret_cast<const wchar_t *>(fileName.utf16());
+                MessageBoxW(NULL, encodedName, encodedName, MB_OK);
+            }
+            */
             printf("select time out\n");
             return false;
         default:
             if (FD_ISSET(tsock, &rfds) || FD_ISSET(tsock, &wfds))
             {
+                /*
+                int error = 0;
+                socklen_t len = sizeof(error);
+                if(getsockopt(tsock, SOL_SOCKET, SO_ERROR, (char*)&error, &len) < 0)
+                {
+                    return false;
+                }
+                if(error != 0) // 失败
+                {
+                    return false;
+                }
+                else
+                {
+                    SetBlock(true);
+                    return true;
+                }
+                */
                 connect(tsock, (sockaddr*)&saddr, sizeof(saddr));    //再次连接一次进行确认
                 int err = errno;
             #if _MSC_VER
@@ -227,7 +259,6 @@ bool XTcp::Connect(const char *ip, unsigned short port , int sec)
                 return false;
             }
         }
-
     }
     else  //连接正常
     {

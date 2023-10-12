@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "string.h"
+#include <stdio.h>
 
 #if _MSC_VER
 #include <Windows.h>

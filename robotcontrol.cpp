@@ -2791,6 +2791,7 @@ void RobotlinkThread::run() //连接机器人命令
 {
     while(_p->link_state==true)
     {
+        static bool b_link=false;//上一次没有链接成功
         int nextlinktime=5;//失败后5m秒再重联
         usleep(100000);//每隔100ms秒查看一次机器人
         static QString old_rodb_ip="0.0.0.0";   //老机器人IP
@@ -2810,8 +2811,9 @@ void RobotlinkThread::run() //连接机器人命令
 
         static ROBOT_MODEL old_rob_mod=ROBOT_MODEL_NULL;    //老机器人型号
         _p->rob_mod=(ROBOT_MODEL)_p->mb_mapping->tab_registers[ROB_MODEL_REG_ADD];
-        if(old_rodb_ip!=rodb_ip||old_rob_mod!=_p->rob_mod||_p->b_relink==true||old_robot_totalcontrolnEn!=robot_totalcontrolnEn)
+        if(old_rodb_ip!=rodb_ip||old_rob_mod!=_p->rob_mod||_p->b_relink==true||old_robot_totalcontrolnEn!=robot_totalcontrolnEn||b_link==false)
         {
+            b_link=false;
             _p->mb_mapping->tab_registers[ROB_CONNECT_STATE_REG_ADD]=0;//远程连接是否完成
             if(_p->b_client==true)
             {
@@ -2974,7 +2976,6 @@ void RobotlinkThread::run() //连接机器人命令
                         _p->totalcontrolrcv_Thread->start();
                     #endif
                     }
-
                     old_rodb_ip=rodb_ip;
                     old_robot_totalcontrolnEn=robot_totalcontrolnEn;
                     old_rob_mod=_p->rob_mod;
@@ -3337,6 +3338,7 @@ void RobotlinkThread::run() //连接机器人命令
                 }
                 break;
             }
+            b_link=true;
             _p->RobotInit(tcp);
             main_record.lock();
             QString return_msg=QStringLiteral("机器人状态获取成功");
