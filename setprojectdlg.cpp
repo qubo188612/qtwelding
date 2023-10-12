@@ -1945,7 +1945,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                         setcraft1->setWindowTitle(msg);
                         rc=setcraft1->exec();
                         setcraft1->close_dlg_show();
-                        cmd_msg=setcraft0->cmd_msg;
+                        cmd_msg=setcraft1->cmd_msg;
                     }
                     break;
                     case CRAFT_ID_LASERNORMAL_POSTURE: //激光器测量法线姿态
@@ -1954,7 +1954,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                         setcraft2->setWindowTitle(msg);
                         rc=setcraft2->exec();
                         setcraft2->close_dlg_show();
-                        cmd_msg=setcraft0->cmd_msg;
+                        cmd_msg=setcraft2->cmd_msg;
                     }
                     break;
                     case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
@@ -1965,7 +1965,7 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
                         setcraft3->setWindowTitle(msg);
                         rc=setcraft3->exec();
                         setcraft3->close_dlg_show();
-                        cmd_msg=setcraft0->cmd_msg;
+                        cmd_msg=setcraft3->cmd_msg;
                     }
                     break;
                 }

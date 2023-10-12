@@ -617,7 +617,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                          QString::number(quater_posture.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                          QString::number(quater_posture.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User,0,Tool,"+
                                          QString::number(tcp)+",SpeedL,"+
-                                         QString::number((int)f_speed);
+                                         QString::number((int)f_speed)+",";
                     std::string str=msg.toStdString();
                 //  std::string str="MoveL,1.3,23,45,6,7,8,User,0,Tool,2,SpeedL,1";
                     _p->send_buf_group.push_back(str);
@@ -644,7 +644,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                          QString::number(quater_posture.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                          QString::number(quater_posture.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User,0,Tool,"+
                                          QString::number(tcp)+",SpeedJ,"+
-                                         QString::number((int)f_speed);
+                                         QString::number((int)f_speed)+",";
                     std::string str=msg.toStdString();
                 //  std::string str="MoveJ,1.3,23,45,6,7,8,User,0,Tool,2,SpeedJ,3";
                     _p->send_buf_group.push_back(str);
@@ -682,7 +682,7 @@ void RobotcontrolThread1::RobotMove(float f_movX,float f_movY,float f_movZ,float
                                          QString::number(quater_posture1.y(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+","+
                                          QString::number(quater_posture1.z(),'f',ROBOT_POSTURE_DECIMAL_PLACE)+",User,0,Tool,"+
                                          QString::number(tcp)+",SpeedL,"+
-                                         QString::number((int)f_speed);
+                                         QString::number((int)f_speed)+",";
                     std::string str=msg.toStdString();
                 //  std::string str="MoveC,1.3,23,45,6,7,8,1.3,23,45,6,7,8,User,0,Tool,2,SpeedL,1.2";
                     _p->send_buf_group.push_back(str);

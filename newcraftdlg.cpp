@@ -81,6 +81,7 @@ void newcraftDlg::on_pushButton_clicked()
             {
                 craftName=edittext->msg_edit;
                 m_mcs->craft->craft_name=craftName;
+                m_mcs->craft->craft_id=(Craft_ID)now_craft_Id;
                 done(1);
             }
             else
