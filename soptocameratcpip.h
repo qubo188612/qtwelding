@@ -3,6 +3,7 @@
 #include "TCProsinterface.h"
 #include "global.h"
 #if _MSC_VER||WINDOWS_TCP
+#include <QTcpSocket>
 #include "PictureBox.h"
 #include <opencv2/opencv.hpp>
 #include <QThread>
@@ -24,6 +25,7 @@
 #define RECVBUFFER_MAX      CAMBUILD_IMAGE_HEIGHT*CAMBUILD_IMAGE_WIDTH*3
 
 class tcprcvThread;
+class tcpcloudThread;
 
 struct Params
 {
@@ -60,13 +62,19 @@ public:
 
     XTcp m_client;
     XTcp m_cloud;
-    XTcp m_ftp;
+ // XTcp m_ftp;
 
     tcprcvThread *rcv_thread;
     bool b_rcv_thread;
     bool b_stop_rcv_thread;
 
     uchar *rcv_buf;
+
+    tcpcloudThread *cloud_thread;
+    bool b_cloud_thread;
+    bool b_stop_cloud_thread;
+
+    uchar *cloud_buf;
 
     bool luzhi;
     cv::VideoWriter writer;
@@ -80,7 +88,7 @@ public:
 
     volatile bool b_updatacloud_finish;
 
-    void ros_set_homography_matrix(Params ros_Params);
+    void ros_set_homography_matrix(Params ros_Params,QTcpSocket *m_ftp);
 protected:
 
     PictureBox *m_lab_show;
@@ -94,6 +102,20 @@ class tcprcvThread : public QThread
 
 public:
     tcprcvThread(Soptocameratcpip *statci_p);
+    void Stop();
+protected:
+    void run();
+private:
+    Soptocameratcpip *_p;
+
+};
+
+class tcpcloudThread: public QThread
+{
+    Q_OBJECT
+
+public:
+    tcpcloudThread(Soptocameratcpip *statci_p);
     void Stop();
 protected:
     void run();

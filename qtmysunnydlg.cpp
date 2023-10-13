@@ -4194,7 +4194,7 @@ QJsonObject qtmysunnyDlg::QstringToJson(QString jsonString)
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonString.toLocal8Bit().data());
     if(jsonDocument.isNull())
     {
-        qDebug()<< "String NULL"<< jsonString.toLocal8Bit().data();
+    //  qDebug()<< "String NULL"<< jsonString.toLocal8Bit().data();
     }
     QJsonObject jsonObject = jsonDocument.object();
     return jsonObject;
