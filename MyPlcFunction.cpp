@@ -246,3 +246,39 @@ int Mypcl::Gaussian(std::vector<RobPos> robpos_in,    //输入点云
     return 0;
 }
 
+//PCA滤波(擅长主方向滤波)
+int Mypcl::Principal_Component_Analysis(std::vector<RobPos> robpos_in, std::vector<RobPos> &robpos_out, float Threshold)
+{
+    Eigen::MatrixXd pts(robpos_in.size(), 3);
+
+    for (int i = 0; i < robpos_in.size(); i++) {
+       pts(i, 0) = robpos_in[i].X;
+       pts(i, 1) = robpos_in[i].Y;
+       pts(i, 2) = robpos_in[i].Z;
+    }
+
+    // 使用PCA算法计算点云的主方向
+    Eigen::JacobiSVD<Eigen::MatrixXd> svd(pts, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::Vector3d principalAxis = svd.matrixV().col(2);
+
+    // 将点云投影到主方向上的直线
+    Eigen::VectorXd projections(robpos_in.size());
+    for (int i = 0; i < robpos_in.size(); i++)
+    {
+       projections(i) = pts.row(i) * principalAxis;
+    }
+
+    // 对投影结果进行阈值滤波
+    robpos_out.reserve(robpos_in.size());
+
+    for (int i = 1; i < projections.size() - 1; i++)
+    {
+       if (fabs(projections(i) - projections(i-1)) < Threshold && fabs(projections(i) - projections(i+1)) < Threshold)
+       {
+           RobPos rob=robpos_in[i];
+           robpos_out.push_back(rob);
+       }
+    }
+
+    return 0;
+}

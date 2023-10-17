@@ -43,6 +43,11 @@ public:
                         float SmoothingRadius = 2.0,      //平滑半径
                         float SmoothingSigma = 0.5);      //标准差
 
+    //PCA滤波(擅长主方向滤波)
+    static int Principal_Component_Analysis(std::vector<RobPos> robpos_in,    //输入点云
+                                            std::vector<RobPos> &robpos_out,  //输出点云
+                                            float Threshold=2.0);             //奇异点去除最小距离
+
 
 
 protected:

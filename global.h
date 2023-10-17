@@ -22,7 +22,7 @@
 //#define OPEN_SHOW_WELDSOCKDATA    1//显示与焊机通信内容(在非机器人直连时)
 #define OPEN_TIMESTAMP              1//使用时间戳同步功能
 #define USE_SN_DATA                 1//使用序列号
-//#define USE_PLC_FILTER            1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
+#define USE_PLC_FILTER              1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
 #define OPEN_OFFLINEMAP_PROGRAM     1//变换矩阵开启离线地图编成功能
 
 #if _MSC_VER
@@ -903,20 +903,22 @@ typedef enum TREND_MODE_ID  //摆幅方向
 }Trend_mode;
 
 #if USE_PLC_FILTER==1
-#define FILTER_ID_TOTAL_NUM    4    //滤波模式
+#define FILTER_ID_TOTAL_NUM    5    //滤波模式
 typedef enum FILTER_MODE_ID//扫描轨迹滤波模式
 {
     FILTER_MLS=0,         //MLS滤波
     FILTER_SOR=1,         //SOR滤波
     FILTER_SVD=2,         //SVD滤波
     FILTER_GAUSSIAN=3,    //GAUSSIAN滤波
+    FILTER_PCA=4,         //PCA滤波
 }Filter_mode;
 #else
-#define FILTER_ID_TOTAL_NUM    2    //滤波模式
+#define FILTER_ID_TOTAL_NUM    3    //滤波模式
 typedef enum FILTER_MODE_ID//扫描轨迹滤波模式
 {
     FILTER_SVD=0,         //SVD滤波
     FILTER_GAUSSIAN=1,    //GAUSSIAN滤波
+    FILTER_PCA=2,         //PCA滤波
 }Filter_mode;
 #endif
 
@@ -1001,6 +1003,8 @@ public:
 
     float gaussian_SmoothingRadius;      //平滑半径
     float gaussian_SmoothingSigma;       //标准差
+
+    float pca_Threshold;            //奇异点去除最小距离
 
     filterParam();
 };

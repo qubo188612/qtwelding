@@ -118,7 +118,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -321,6 +321,34 @@
      </property>
      <property name="text">
       <string>平滑半径:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>页</string>
+    </attribute>
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>71</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>判定距离:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="pca_Threshold">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>60</y>
+       <width>91</width>
+       <height>25</height>
+      </rect>
      </property>
     </widget>
    </widget>

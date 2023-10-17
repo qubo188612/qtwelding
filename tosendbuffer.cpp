@@ -4428,6 +4428,17 @@ int toSendbuffer::slopbuild(QString list,int n,QString &return_msg)
                 }
             }
             break;
+            case FILTER_PCA://PCA滤波
+            {
+                if(0!=Mypcl::Principal_Component_Analysis(weld,interpolatweld,filters.pca_Threshold))
+                {
+                    main_record.lock();
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 滤波结果出错");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    return 1;
+                }
+            }
         }
 
         m_mcs->project->project_weld_trace[weld_trace_num].point=interpolatweld;

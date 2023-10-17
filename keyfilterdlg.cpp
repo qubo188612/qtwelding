@@ -31,6 +31,7 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
     ui->svd_SingularThreshold->setText(QString::number(filters.svd_SingularThreshold,'f',ROBOT_POSE_DECIMAL_PLACE));
     ui->gaussian_SmoothingRadius->setText(QString::number(filters.gaussian_SmoothingRadius,'f',ROBOT_POSE_DECIMAL_PLACE));
     ui->gaussian_SmoothingSigma->setText(QString::number(filters.gaussian_SmoothingSigma,'f',3));
+    ui->pca_Threshold->setText(QString::number(filters.pca_Threshold,'f',3));
 }
 
 keyfilterDlg::~keyfilterDlg()
@@ -95,6 +96,7 @@ void keyfilterDlg::init_dlg_show(QString cmdlist)
             ui->svd_SingularThreshold->setText(QString::number(filters.svd_SingularThreshold,'f',ROBOT_POSE_DECIMAL_PLACE));
             ui->gaussian_SmoothingRadius->setText(QString::number(filters.gaussian_SmoothingRadius,'f',ROBOT_POSE_DECIMAL_PLACE));
             ui->gaussian_SmoothingSigma->setText(QString::number(filters.gaussian_SmoothingSigma,'f',3));
+            ui->pca_Threshold->setText(QString::number(filters.pca_Threshold,'f',3));
 
             ui->filternamelineEdit->setText(nameout);
 
@@ -267,6 +269,22 @@ void keyfilterDlg::on_pushButton_clicked()
                 return;
             }
             filters.gaussian_SmoothingSigma=f_data;
+        }
+        break;
+        case FILTER_PCA:
+        {
+            if(ui->pca_Threshold->text().isEmpty())
+            {
+                ui->record->append(QStringLiteral("请填写判定距离"));
+                return;
+            }
+            f_data=ui->pca_Threshold->text().toFloat(&rc);
+            if(rc==false)
+            {
+                ui->record->append(QStringLiteral("判定距离格式错误"));
+                return;
+            }
+            filters.pca_Threshold=f_data;
         }
         break;
     }

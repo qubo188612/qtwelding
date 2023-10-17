@@ -106,6 +106,8 @@ filterParam::filterParam()
 
     gaussian_SmoothingRadius=5.0;      //平滑半径
     gaussian_SmoothingSigma=0.5;       //标准差
+
+    pca_Threshold=2.0;    //距离主轴距离阈值
 }
 
 QString Pendulum_mode_toQString(Pendulum_mode pendulum_mode)
@@ -219,6 +221,9 @@ QString Filter_mode_toQString(Filter_mode filter_mode)
         break;
         case FILTER_GAUSSIAN:
             msg=QStringLiteral("GAUSSIAN滤波");
+        break;
+        case FILTER_PCA:
+            msg=QStringLiteral("PCA滤波");
         break;
     }
     return msg;

@@ -4522,6 +4522,21 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                 cmd_filters.gaussian_SmoothingSigma=f_datagroup[1];
             }
             break;
+            case FILTER_PCA:
+            {
+                if(f_datagroup.size()!=1)
+                {
+                    return_msg=CMD_MODE+QStringLiteral("项参数为")+QString::number(cmd_filter_mode)+QStringLiteral("时,")+CMD_FILTERS+QStringLiteral("项参数有且只有1个");
+                    return 1;
+                }
+                if(f_datagroup[0]<0)
+                {
+                    return_msg=Filter_mode_toQString(cmd_filter_mode)+CMD_FILTERS+QStringLiteral("项参数的邻域点数量(第1个参数)必须大于等于0");
+                    return 1;
+                }
+                cmd_filters.pca_Threshold=f_datagroup[0];
+            }
+            break;
             default:
             break;
         }
@@ -6383,6 +6398,12 @@ QString my_cmd::rc_filters(filterParam filters,Filter_mode mode)
             msg=QString(CMD_FILTERS)+"["+
                 QString::number(filters.gaussian_SmoothingRadius,'f',ROBOT_POSE_DECIMAL_PLACE)+","+
                 QString::number(filters.gaussian_SmoothingSigma,'f',3)+"]";
+        }
+        break;
+        case FILTER_PCA:
+        {
+            msg=QString(CMD_FILTERS)+"["+
+                  QString::number(filters.pca_Threshold,'f',3)+"]";
         }
         break;
     }
