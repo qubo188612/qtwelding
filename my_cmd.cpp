@@ -607,7 +607,7 @@ QString my_cmd::cmd_savepcd(std::vector<QString> scanname,std::vector<QString> p
     return msg;
 }
 
-QString my_cmd::cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString craftfilepath,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+QString my_cmd::cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString craftfilepath,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
 {
     QString msg;
     msg=QString(CMD_TRACEREALTIME_KEY)+" "+
@@ -615,6 +615,9 @@ QString my_cmd::cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,
           rc_speed(speed)+" "+
           rc_downspeed(downspeed)+" "+
           rc_tcp(tcp)+" "+
+          rc_time(time)+" "+
+          rc_samplespeed(samplespeed)+" "+
+          rc_distance(errdis)+" "+
           rc_mode(mode)+" "+
           rc_craft(craftfilepath);
     if(weld==true)
@@ -632,7 +635,7 @@ QString my_cmd::cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,
     return msg;
 }
 
-QString my_cmd::cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString craftfilepath,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+QString my_cmd::cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString craftfilepath,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
 {
     QString msg;
     msg=QString(CMD_TRACEREALTIME_KEY)+" "+
@@ -640,6 +643,9 @@ QString my_cmd::cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemo
           rc_speed(speed)+" "+
           rc_downspeed(downspeed)+" "+
           rc_tcp(tcp)+" "+
+          rc_time(time)+" "+
+          rc_samplespeed(samplespeed)+" "+
+          rc_distance(errdis)+" "+
           rc_mode(mode)+" "+
           rc_craft(craftfilepath);
     if(weld==true)
@@ -657,7 +663,7 @@ QString my_cmd::cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemo
     return msg;
 }
 
-QString my_cmd::cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString crafts,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+QString my_cmd::cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString crafts,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
 {
     QString msg;
     msg=QString(CMD_TRACEREALTIME2_KEY)+" "+
@@ -665,6 +671,9 @@ QString my_cmd::cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed
           rc_speed(speed)+" "+
           rc_downspeed(downspeed)+" "+
           rc_tcp(tcp)+" "+
+          rc_time(time)+" "+
+          rc_samplespeed(samplespeed)+" "+
+          rc_distance(errdis)+" "+
           rc_mode(mode)+" "+
           rc_crafts(crafts);
     if(weld==true)
@@ -682,7 +691,7 @@ QString my_cmd::cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed
     return msg;
 }
 
-QString my_cmd::cmd_tracerealtimeC2(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString crafts,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
+QString my_cmd::cmd_tracerealtimeC2(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString crafts,float eled,float elev,Alternatingcurrent elem,bool weld,QString change)
 {
     QString msg;
     msg=QString(CMD_TRACEREALTIME2_KEY)+" "+
@@ -690,6 +699,9 @@ QString my_cmd::cmd_tracerealtimeC2(RobPos pos1,RobPos pos2,RobPos pos3,Robmovem
           rc_speed(speed)+" "+
           rc_downspeed(downspeed)+" "+
           rc_tcp(tcp)+" "+
+          rc_time(time)+" "+
+          rc_samplespeed(samplespeed)+" "+
+          rc_distance(errdis)+" "+
           rc_mode(mode)+" "+
           rc_crafts(crafts);
     if(weld==true)
@@ -5120,6 +5132,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_ELEM=false;
         bool b_ELEV=false;
         bool b_CHANGE=false;
+        bool b_TIME=false;
+        bool b_SAMPLESPEED=false;
+        bool b_DISTANCE=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -5237,6 +5252,69 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         if(cmd_tracerealtime_tcp<0||cmd_tracerealtime_tcp>=ROBOTTCPNUM)
                         {
                             return_msg=QStringLiteral("TCP的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TIME)
+                {
+                    if(b_TIME==false)
+                    {
+                        b_TIME=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_time,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_time<0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SAMPLESPEED)
+                {
+                    if(b_SAMPLESPEED==false)
+                    {
+                        b_SAMPLESPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_samplespeed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_samplespeed<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_DISTANCE)
+                {
+                    if(b_DISTANCE==false)
+                    {
+                        b_DISTANCE=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime_errdis,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime_errdis<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
@@ -5394,6 +5472,11 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TCP+QStringLiteral("'项参数");
             return 1;
         }
+        else if(b_TIME==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_TIME+QStringLiteral("'项参数");
+            return 1;
+        }
         else if(b_CRAFT==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_CRAFT+QStringLiteral("'项参数");
@@ -5402,6 +5485,16 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_MODE==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_SAMPLESPEED==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SAMPLESPEED+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_DISTANCE==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_DISTANCE+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -5452,6 +5545,9 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         bool b_ELEM=false;
         bool b_ELEV=false;
         bool b_CHANGE=false;
+        bool b_TIME=false;
+        bool b_SAMPLESPEED=false;
+        bool b_DISTANCE=false;
 
         QStringList param = list[1].split(" ");
         for(int n=0;n<param.size();n++)
@@ -5569,6 +5665,69 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
                         if(cmd_tracerealtime2_tcp<0||cmd_tracerealtime2_tcp>=ROBOTTCPNUM)
                         {
                             return_msg=QStringLiteral("TCP的值超出设置范围");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_TIME)
+                {
+                    if(b_TIME==false)
+                    {
+                        b_TIME=true;
+                        if(0!=de_int(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_time,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_time<0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于等于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_SAMPLESPEED)
+                {
+                    if(b_SAMPLESPEED==false)
+                    {
+                        b_SAMPLESPEED=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_samplespeed,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_samplespeed<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return_msg=paramname+QStringLiteral("项参数重复设置");
+                        return 1;
+                    }
+                }
+                else if(paramname==CMD_DISTANCE)
+                {
+                    if(b_DISTANCE==false)
+                    {
+                        b_DISTANCE=true;
+                        if(0!=de_float(paramname,param[n],data_fpos,data_bpos,cmd_tracerealtime2_errdis,return_msg))
+                        {
+                            return 1;
+                        }
+                        if(cmd_tracerealtime2_errdis<=0)
+                        {
+                            return_msg=paramname+QStringLiteral("项参数只能大于0");
                             return 1;
                         }
                     }
@@ -5734,6 +5893,21 @@ int my_cmd::decodecmd(QString msg,QString &return_msg,QString &return_key)
         else if(b_MODE==false)
         {
             return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_TIME==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_MODE+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_SAMPLESPEED==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_SAMPLESPEED+QStringLiteral("'项参数");
+            return 1;
+        }
+        else if(b_DISTANCE==false)
+        {
+            return_msg=key+QStringLiteral("指令还需要设置'")+CMD_DISTANCE+QStringLiteral("'项参数");
             return 1;
         }
 
@@ -6428,6 +6602,13 @@ QString my_cmd::rc_downspeed(float speed)
 {
     QString msg;
     msg=QString(CMD_DOWNSPEED)+"["+QString::number(speed,'f',3)+"]";
+    return msg;
+}
+
+QString my_cmd::rc_distance(float distance)
+{
+    QString msg;
+    msg=QString(CMD_DISTANCE)+"["+QString::number(distance,'f',ROBOT_POSE_DECIMAL_PLACE)+"]";
     return msg;
 }
 

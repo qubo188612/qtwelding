@@ -1979,11 +1979,13 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                     change=cmd.cmd_tracerealtime2_change;//获取变换矩阵名字
                     crafts=cmd.cmd_tracerealtime2_crafts;//获取工艺名字
                     bool b_find=false;
+                    int crafts_trace_num;
                     for(int t=0;t<m_mcs->project->project_crafts_trace.size();t++)
                     {
                         if(m_mcs->project->project_crafts_trace[t].name==crafts)
                         {
                             b_find=true;
+                            crafts_trace_num=t;
                             break;
                         }
                     }
@@ -1995,6 +1997,43 @@ int toSendbuffer::cmdlist_creat_tracename_mem(int beforeline,std::vector<QString
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         errmsg.push_back(return_msg);
+                    }
+                    else
+                    {
+                        Weld_crafts_result singcrafts=m_mcs->project->project_crafts_trace[crafts_trace_num];
+                        bool support=true;
+                        switch(singcrafts.craft_id)
+                        {
+                            case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                            {
+                                support=false;
+                            }
+                            break;
+                            case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+                            {
+                                support=false;
+                            }
+                            break;
+                            case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
+                            {
+
+                            }
+                            break;
+                            case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                            {
+                                support=false;
+                            }
+                            break;
+                        }
+                        if(support==false)//目前不支持这个工艺跟踪
+                        {
+                            err=1;
+                            main_record.lock();
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 目前实时跟踪还不能支持")+m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id)+QStringLiteral("工艺");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            errmsg.push_back(return_msg);
+                        }
                     }
                 }
                 if(!change.isEmpty())//有变化矩阵
@@ -2105,6 +2144,57 @@ int toSendbuffer::cmdlist_check()
                 {
                     return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 轨迹的文件格式出错");
                 }
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+            }
+        }
+        if(key==CMD_TRACEREALTIME_KEY)
+        {
+            QString craftfilepath=cmd.cmd_trace_craftfilepath;//获取到工艺包的文件路径
+            int rc=m_mcs->craft->LoadCraft(craftfilepath);
+            if(rc!=0)
+            {
+                err=1;
+                main_record.lock();
+                if(rc==1)
+                {
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 该路径找不到焊接工艺参数文件");
+                }
+                else
+                {
+                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 焊接工艺参数文件格式出错");
+                }
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+            }
+            bool support=true;
+            switch(m_mcs->craft->craft_id)
+            {
+                case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                {
+                    support=false;
+                }
+                break;
+                case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+                {
+                    support=false;
+                }
+                break;
+                case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
+                {
+                }
+                break;
+                case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                {
+                    support=false;
+                }
+                break;
+            }
+            if(support==false)//目前不支持这个工艺跟踪
+            {
+                err=1;
+                main_record.lock();
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 目前实时跟踪还不能支持")+m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id)+QStringLiteral("工艺");
                 m_mcs->main_record.push_back(return_msg);
                 main_record.unlock();
             }
@@ -6925,16 +7015,26 @@ int toSendbuffer::cmdlist_build(volatile int &line)
         else if(key==CMD_TRACEREALTIME_KEY||key==CMD_TRACEREALTIME2_KEY)//实时跟踪
         {
             QString change;//获取变换矩阵名字
+            int tcp;
             float speed;//获取到的跟踪速度
             float downspeed;//获取到的跟踪速度
             Robmovemodel movemod;//获取到的点位移动模式
             bool b_weld;//获取到实时跟踪是否焊接起弧下标
             Tracerealtime_edit_mode mode;//获取到实时跟踪下枪模式
             Alternatingcurrent elem;
+            int time;//采样时间间隔
             float eled;
             float elev;
             QString craftfilepath;//获取到工艺包的文件路径
             QString crafts;
+            Eigen::Matrix3d R1;          //旋转矩阵
+            Eigen::Vector3d T1;          //平移矩阵(零点坐标)
+            Eigen::Matrix3d R;          //旋转矩阵
+            Eigen::Vector3d T;          //平移矩阵(零点坐标)
+            RobPos pos,pos1,pos2,pos3;  //移动目的地
+            std::vector<RobPos> PosBuffer;//跟踪
+            float samplespeed;
+            float errdis;
 
             if(key==CMD_TRACEREALTIME_KEY)
             {
@@ -6948,6 +7048,25 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 elem=cmd.cmd_tracerealtime_elem;  //获取到焊机交变电流模式
                 eled=cmd.cmd_tracerealtime_eled; //获取到焊机电流
                 elev=cmd.cmd_tracerealtime_elev; //获取到焊机电压
+                tcp=cmd.cmd_tracerealtime_tcp;  //获取到tcp
+                time=cmd.cmd_tracerealtime_time;
+                samplespeed=cmd.cmd_tracerealtime_samplespeed;
+                errdis=cmd.cmd_tracerealtime_errdis;
+                switch(movemod)
+                {
+                    case MOVEL:
+                    case MOVEJ:
+                    {
+                        pos=cmd.cmd_tracerealtime_pos;
+                    }
+                    break;
+                    case MOVEC:
+                    {
+                        pos1=cmd.cmd_tracerealtime_pos1;
+                        pos2=cmd.cmd_tracerealtime_pos2;
+                        pos3=cmd.cmd_tracerealtime_pos3;
+                    }
+                }
             }
             else
             {
@@ -6961,6 +7080,25 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 elem=cmd.cmd_tracerealtime2_elem;  //获取到焊机交变电流模式
                 eled=cmd.cmd_tracerealtime2_eled; //获取到焊机电流
                 elev=cmd.cmd_tracerealtime2_elev; //获取到焊机电压
+                tcp=cmd.cmd_tracerealtime2_tcp;  //获取到tcp
+                time=cmd.cmd_tracerealtime2_time;
+                samplespeed=cmd.cmd_tracerealtime2_samplespeed;
+                errdis=cmd.cmd_tracerealtime_errdis;
+                switch(movemod)
+                {
+                    case MOVEL:
+                    case MOVEJ:
+                    {
+                        pos=cmd.cmd_tracerealtime2_pos;
+                    }
+                    break;
+                    case MOVEC:
+                    {
+                        pos1=cmd.cmd_tracerealtime2_pos1;
+                        pos2=cmd.cmd_tracerealtime2_pos2;
+                        pos3=cmd.cmd_tracerealtime2_pos3;
+                    }
+                }
             }
 
             if(key==CMD_TRACEREALTIME_KEY)
@@ -7006,8 +7144,451 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             }
 
             /********************/
-
             //这里开始添加实时跟踪函数
+            //先记录下当前位置
+            RobPos oldpos=m_mcs->rob->TCPpos;
+            int matrix4d_trace_num;
+            bool b_find=false;
+            RobPos findstpos;//起点坐标
+            if(!change.isEmpty())//需要变换矩阵
+            {
+                for(int n=0;n<m_mcs->project->project_coord_matrix4d.size();n++)
+                {
+                    if(change==m_mcs->project->project_coord_matrix4d[n].name)
+                    {
+                        matrix4d_trace_num=n;//找到变换矩阵下标
+                        break;
+                    }
+                }
+                if(m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].nEn!=true)
+                {
+                    //矩阵无效
+                    main_record.lock();
+                    return_msg=QStringLiteral("Line")+QString::number(n)+": "+change+QStringLiteral("矩阵没有获取到有效值");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    line=n;
+                    return 1;
+                }
+                R=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R;
+                T=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T;
+                R1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].R1;
+                T1=m_mcs->project->project_coord_matrix4d[matrix4d_trace_num].T1;
+            }
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos.X;
+                        tempin.y()=pos.Y;
+                        tempin.z()=pos.Z;
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
+                        pos.X=tempout.x();
+                        pos.Y=tempout.y();
+                        pos.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture={pos.RX,pos.RY,pos.RZ};
+                        std::array<double,3> posture_map=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture);
+                        std::array<double,3> posture_out=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map);
+                        pos.RX=posture_out[0];
+                        pos.RY=posture_out[1];
+                        pos.RZ=posture_out[2];
+                        /************/
+                    }
+                }
+                break;
+                case MOVEC:
+                {
+                    if(!change.isEmpty())//需要变换矩阵
+                    {
+                        Eigen::Vector3d tempin,tempout;
+                        tempin.x()=pos1.X;
+                        tempin.y()=pos1.Y;
+                        tempin.z()=pos1.Z;
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
+                        pos1.X=tempout.x();
+                        pos1.Y=tempout.y();
+                        pos1.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture1={pos1.RX,pos1.RY,pos1.RZ};
+                        std::array<double,3> posture_map1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture1);
+                        std::array<double,3> posture_out1=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map1);
+                        pos1.RX=posture_out1[0];
+                        pos1.RY=posture_out1[1];
+                        pos1.RZ=posture_out1[2];
+                        /************/
+                        tempin.x()=pos2.X;
+                        tempin.y()=pos2.Y;
+                        tempin.z()=pos2.Z;
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
+                        pos2.X=tempout.x();
+                        pos2.Y=tempout.y();
+                        pos2.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture2={pos2.RX,pos2.RY,pos2.RZ};
+                        std::array<double,3> posture_map2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture2);
+                        std::array<double,3> posture_out2=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map2);
+                        pos2.RX=posture_out2[0];
+                        pos2.RY=posture_out2[1];
+                        pos2.RZ=posture_out2[2];
+                        /************/
+                        tempin.x()=pos3.X;
+                        tempin.y()=pos3.Y;
+                        tempin.z()=pos3.Z;
+                        tempout=CCoordChange::_1point2point(tempin,R1,T1);
+                        tempout=CCoordChange::point2point(tempout,R,T);
+                        pos3.X=tempout.x();
+                        pos3.Y=tempout.y();
+                        pos3.Z=tempout.z();
+                        /************/
+                        //姿态自适应变化
+                        std::array<double,3> posture3={pos3.RX,pos3.RY,pos3.RZ};
+                        std::array<double,3> posture_map3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R1,posture3);
+                        std::array<double,3> posture_out3=Calibration::Attitudeangleroation(m_mcs->rob->cal_posture_model,R,posture_map3);
+                        pos3.RX=posture_out3[0];
+                        pos3.RY=posture_out3[1];
+                        pos3.RZ=posture_out3[2];
+                        /************/
+                    }
+                }
+            break;
+            }
+            //清空检测状态
+            m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+            m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
+            //打开激光器
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    cmd_move(pos,movemod,speed,tcp);
+                }
+                break;
+                case MOVEC:
+                {
+                #ifdef USE_MYMOVEC_CONTROL
+                    CWeldTarject tarjectMath;
+                    std::vector<RobPos> interpolatPos;
+                    if(false==tarjectMath.pos_circle(m_mcs->rob->cal_posture_model,pos1,pos2,pos3,interpolatPos,ROBOT_POSE_MOVEC_STEP,16,speed))
+                    {
+                        main_record.lock();
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 圆弧三点轨迹拟合出错");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                    for(int n=0;n<interpolatPos.size();n++)
+                    {
+                        cmd_move(interpolatPos[n],MOVEL,speed,tcp);
+                    }
+                #else
+                    cmd_move(pos1,MOVEL,speed,tcp);
+                    cmd_moveC(pos2,pos3,MOVEC,speed,tcp);
+                #endif
+                }
+                break;
+            }
+            usleep(ROB_WORK_DELAY);
+            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待寻位到位
+            {
+                if(b_cmdlist_build==false)     //停止
+                {
+                    main_record.lock();
+                    return_msg=QStringLiteral("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    paused_key=key;
+                    cmd_lock(1);
+                    line=n;
+                    return 1;
+                }
+                //这里添加扫描数据
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        std::vector<Scan_trace_line> scan_trace(1);
+                        std::vector<RobPos> weld_trace;
+                        scan_trace[0].robottime=m_mcs->rob->robtime;
+                        scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                        scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                        scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                        scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                        scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                        scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                        scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                        scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                        scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                        scan_trace[0].robotpos.nEn=1;
+                    #else
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                    #endif
+                        if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                        {
+                            main_record.lock();
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                        findstpos=scan_trace[0].robotpos;
+                        findstpos.X=weld_trace[0].X;
+                        findstpos.Y=weld_trace[0].Y;
+                        findstpos.Z=weld_trace[0].Z;
+                        b_find=true;
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
+                if(b_find==true)//成功找到了点
+                {
+                    break;
+                }
+                //开始采集检测数据
+                usleep(0);
+            }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
+            if(b_find==true)//成功找到了点
+            {
+                cmd_lock(0);    //让机器人先停下当前的寻位运动
+            }
+            else    //没有找到跟踪的起点
+            {
+                main_record.lock();
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位起点失败");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            /*********************/
+            //这里添加下枪姿态函数
+            bool support=true;
+            switch(m_mcs->craft->craft_id)
+            {
+                case CRAFT_ID_FIXED_POSTURE://固定焊接姿态
+                {
+                    support=false;
+                }
+                break;
+                case CRAFT_ID_STARTENDCHANGE_POSTURE:   //起终点变姿态
+                {
+                    support=false;
+                }
+                break;
+                case CRAFT_ID_LASERNORMAL_POSTURE:   //激光器测量法线姿态
+                {
+                    //不需要更改，直接用原值
+                }
+                break;
+                case CRAFT_ID_CORRUGATED_POSTURE: //波纹板变姿态
+                {
+                    support=false;
+                }
+                break;
+            }
+            if(support==false)//目前不支持这个工艺跟踪
+            {
+                main_record.lock();
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 目前实时跟踪还不能支持")+m_mcs->craft->craft_Id_toQString(m_mcs->craft->craft_id)+QStringLiteral("工艺");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            //开始下枪
+            //清空检测状态
+            m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+            m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
+            PosBuffer.clear();
+            switch(mode)
+            {
+                case TRACEREALTIME_EDIT_MODE_STOPDOWN://先停止移动到上方后再下枪
+                {
+                    findstpos.Z=oldpos.Z;    //移动到上方
+                }
+                break;
+                case TRACEREALTIME_EDIT_MODE_MOVINEDOWN://边运动边下枪
+                {
+                    //不需要更改，直接用原值
+                }
+                break;
+            }
+            //移动到起点
+            cmd_move(findstpos,MOVEL,downspeed,tcp);
+            usleep(ROB_WORK_DELAY);
+            while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+            {
+                //这里添加扫描数据
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        std::vector<Scan_trace_line> scan_trace(1);
+                        std::vector<RobPos> weld_trace;
+                        scan_trace[0].robottime=m_mcs->rob->robtime;
+                        scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                        scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                        scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                        scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                        scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                        scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                        scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                        scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                        scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                        scan_trace[0].robotpos.nEn=1;
+                    #else
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                    #endif
+                        if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                        {
+                            main_record.lock();
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                        RobPos pos=scan_trace[0].robotpos;
+                        PosBuffer.push_back(pos);
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
+                if(b_cmdlist_build==false)     //停止
+                {
+                    main_record.lock();
+                    return_msg=QStringLiteral("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    paused_key=key;
+                    cmd_lock(1);
+                    line=n;
+                    return 1;
+                }
+            #if _MSC_VER
+                Sleep(0);
+            #else
+                sleep(0);
+            #endif
+                //  usleep(ROB_WORK_DELAY_STEP);
+            }
+        #ifdef USE_MYROBOT_CONTROL
+            m_mcs->robotcontrol->clear_movepoint_buffer();
+        #endif
+            /*********************/
+            //开始起弧
+            if(b_weld==true)//起弧
+            {
+                cmd_elec(eled,elev,elem,FIRE);
+                usleep(ROB_WORK_DELAY);//确保焊机设置完成
+            }
+            //开始跟踪
+            RobPos oldPos=m_mcs->rob->TCPpos;//当前点
+            while(1)
+            {
+                int rc;
+                RobPos nextPos;
+                rc=Mytracerealtime::Principal_Component_Analysis(PosBuffer,nextPos);
+                if(rc<0)
+                {
+                    //跟踪结束,跳出
+                    break;
+                }
+                else if(rc==0)
+                {
+                    //计算下一个点与当前点的距离
+                    Eigen::Vector3d v_oldPos(oldPos.X,oldPos.Y,oldPos.Z);
+                    Eigen::Vector3d v_nextPos(nextPos.X,nextPos.Y,nextPos.Z);
+                    double dis=(v_nextPos-v_oldPos).norm();
+                    double mindis=samplespeed*time; //最小距离
+                    if(dis>mindis&&dis<errdis)//距离合适
+                    {
+                        //移动到目标点
+                        cmd_move(nextPos,MOVEP,speed,tcp);
+                    }
+                    else if(dis>=errdis)//超过容错距离
+                    {
+                        //跟踪结束,跳出
+                        main_record.lock();
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 无数据长度超过容错距离");
+                        m_mcs->main_record.push_back(return_msg);
+                        main_record.unlock();
+                        line=n;
+                        return 1;
+                    }
+                }
+                //更新扫描数据
+                if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                {
+                    if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                    {
+                        std::vector<Scan_trace_line> scan_trace(1);
+                        std::vector<RobPos> weld_trace;
+                        scan_trace[0].robottime=m_mcs->rob->robtime;
+                        scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                    #if OPEN_TIMESTAMP==1
+                        scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                        scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                        scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                        scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                        scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                        scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                        scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                        scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                        scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                        scan_trace[0].robotpos.nEn=1;
+                    #else
+                        scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                    #endif
+                        if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                        {
+                            main_record.lock();
+                            return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            line=n;
+                            return 1;
+                        }
+                        RobPos pos=scan_trace[0].robotpos;
+                        PosBuffer.push_back(pos);
+                    }
+                    m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                }
+                if(b_cmdlist_build==false)     //停止
+                {
+                    main_record.lock();
+                    return_msg=QStringLiteral("手动停止进程");
+                    m_mcs->main_record.push_back(return_msg);
+                    main_record.unlock();
+                    paused_key=key;
+                    cmd_lock(1);
+                    line=n;
+                    return 1;
+                }
+            #if _MSC_VER
+                Sleep(0);
+            #else
+                sleep(0);
+            #endif
+            }
             /*********************/
         }
         else if(key==CMD_GOTO_KEY)

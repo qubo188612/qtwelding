@@ -10,6 +10,7 @@
 #include "ccoordchange.h"
 #include "qelapsedtimer.h"
 #include "MyPlcFunction.h"
+#include "MytracerealtimeFunction.h"
 #include <pcl/common/common_headers.h>
 #include <pcl/io/pcd_io.h>
 #if _MSC_VER

@@ -87,6 +87,9 @@ void keytracerealtime2Dlg::init_dlg_show(QString cmdlist)
             float speed=cmd.cmd_tracerealtime2_speed;//获取到实时跟踪速度值
             float downspeed=cmd.cmd_tracerealtime2_downspeed;//获取到实时跟踪下枪速度值
             bool b_weld=cmd.cmd_tracerealtime2_weld;//获取到实时跟踪是否焊接起弧下标
+            int time=cmd.cmd_tracerealtime2_time;
+            float samplespeed=cmd.cmd_tracerealtime2_samplespeed;
+            float errdis=cmd.cmd_tracerealtime_errdis;
             Tracerealtime_edit_mode mode=cmd.cmd_tracerealtime2_mode;//获取到实时跟踪下枪模式
             Robmovemodel movemod=cmd.cmd_tracerealtime2_movemod;//获取到的实时跟踪移动模式
             QString change=cmd.cmd_tracerealtime2_change;//获取到的实时跟踪变换矩阵
@@ -162,6 +165,9 @@ void keytracerealtime2Dlg::init_dlg_show(QString cmdlist)
             {
                 ui->tracerealtime2movemodecombo->setCurrentIndex(movemod);
             }
+            ui->tracerealtime2sampletime->setText(QString::number(time));
+            ui->tracerealtime2samplespeed->setText(QString::number(samplespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
+            ui->tracerealtime2errdis->setText(QString::number(errdis,'f',ROBOT_POSE_DECIMAL_PLACE));
             if(b_weld==true)
             {
                 Alternatingcurrent elem=cmd.cmd_tracerealtime2_elem;  //获取到焊机交变电流模式
@@ -345,12 +351,45 @@ void keytracerealtime2Dlg::on_tracerealtime2addBtn_clicked()
             }
             elem=(Alternatingcurrent)ui->weldermodelcombo->currentIndex();
         }
+        int time=ui->tracerealtime2sampletime->text().toInt(&rc);
+        if(ui->tracerealtime2sampletime->text().isEmpty())
+        {
+            ui->record->append(QStringLiteral("请填写采样点发送间隔时间"));
+            return;
+        }
+        if(rc==false)
+        {
+            ui->record->append(QStringLiteral("采样点发送间隔时间格式出错"));
+            return;
+        }
+        float samplespeed=ui->tracerealtime2samplespeed->text().toFloat(&rc);
+        if(ui->tracerealtime2samplespeed->text().isEmpty())
+        {
+            ui->record->append(QStringLiteral("请填写采样速度"));
+            return;
+        }
+        if(rc==false)
+        {
+            ui->record->append(QStringLiteral("采样速度格式出错"));
+            return;
+        }
+        float errdis=ui->tracerealtime2errdis->text().toFloat(&rc);
+        if(ui->tracerealtime2errdis->text().isEmpty())
+        {
+            ui->record->append(QStringLiteral("请填写容错长度"));
+            return;
+        }
+        if(rc==false)
+        {
+            ui->record->append(QStringLiteral("容错长度格式出错"));
+            return;
+        }
         switch(movemodel)
         {
             case MOVEL:
             case MOVEJ:
             {
-                msg=cmd.cmd_tracerealtime2(robpos,movemodel,speed,downspeed,mode,tcp,filepath,eled,elev,elem,weld,change);
+                msg=cmd.cmd_tracerealtime2(robpos,movemodel,speed,downspeed,mode,tcp,time,samplespeed,errdis,filepath,eled,elev,elem,weld,change);
             }
             break;
             case MOVEC:
@@ -362,7 +401,7 @@ void keytracerealtime2Dlg::on_tracerealtime2addBtn_clicked()
                 setmovec->close_dlg_show();
                 if(rc!=0)//确定
                 {
-                    msg=cmd.cmd_tracerealtimeC2(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,downspeed,mode,tcp,filepath,eled,elev,elem,weld,change);
+                    msg=cmd.cmd_tracerealtimeC2(setmovec->pos_st,setmovec->pos_center,setmovec->pos_ed,movemodel,speed,downspeed,mode,tcp,time,samplespeed,errdis,filepath,eled,elev,elem,weld,change);
                 }
                 else
                 {

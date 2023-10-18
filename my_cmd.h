@@ -52,8 +52,8 @@
 //跟踪轨迹相加指令，举例 CREATADD: CREATS[轨迹1,轨迹2,轨迹3] NAME[跟踪轨迹]
 //点加跟踪轨迹指令, 举例 CREATADDP: MODE[0] POINT[点位1] CREAT[轨迹1] NAME[跟踪轨迹]
 //保存轨迹指令，举例 SAVEPCD: SCAN[扫描第一条line,第二条,第三] POINTS[点位1，点位2，点位3，点位4，点位5] CREATS[第一条,第二条,第三条] TRACES[第一条,第二条,第三条] MODE[0] NAME[保存]
-//实时跟踪指令，举例 TRACEREALTIME: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] DOWNSPEED[25] TCP[0] MODE[0] CRAFT[/home/qubo/caf.json] CHANGE[矩阵1] WORK[0] ELED[1.23] ELEV[1.3] ELEM[0]
-//实时跟踪指令，举例 TRACEREALTIME2: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] DOWNSPEED[25] TCP[0] MODE[0] CRAFTS[工艺1] CHANGE[矩阵1] WORK[0] ELED[1.23] ELEV[1.3] ELEM[0]
+//实时跟踪指令，举例 TRACEREALTIME: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] DOWNSPEED[25] TCP[0] MODE[0] TIME[16] SAMPLESPEED[10] DISTANCE[10] CRAFT[/home/qubo/caf.json] CHANGE[矩阵1] WORK[0] ELED[1.23] ELEV[1.3] ELEM[0]
+//实时跟踪指令，举例 TRACEREALTIME2: MOVL[1.3,32.7,45,66,7,89,3,0,0,0] SPEED[25] DOWNSPEED[25] TCP[0] MODE[0] TIME[16] SAMPLESPEED[10] DISTANCE[20] CRAFTS[工艺1] CHANGE[矩阵1] WORK[0] ELED[1.23] ELEV[1.3] ELEM[0]
 
 //key项
 #define CMD_MOV_KEY                     "MOV:"              //移动命令集合KEY
@@ -148,6 +148,7 @@
 #define CMD_SAMPLESPEED                     "SAMPLESPEED"         //连接工艺轨迹时的连接处采样速度
 #define CMD_LINE                            "LINE"                //行参数
 #define CMD_DOWNSPEED                       "DOWNSPEED"           //实时跟踪时下枪速度
+#define CMD_DISTANCE                        "DISTANCE"            //距离
 
 
 /************************/
@@ -203,10 +204,10 @@ public:
     QString cmd_creataddp(QString weldname,QString pointname,Creataddp_edit_mode mode,QString name_out);//点位和轨迹相加
     QString cmd_crafts(Craft_ID craft_id,std::vector<ChangeRobPosVariable> posturelist,std::vector<float> params,QString name);//创建焊接工艺指令
     QString cmd_savepcd(std::vector<QString> scanname,std::vector<QString> pointsname,std::vector<QString> creatsname,std::vector<QString> tracesname,Savepcd_edit_mode mode,QString name);
-    QString cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString craftfilepath,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
-    QString cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString craftfilepath,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
-    QString cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString crafts,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
-    QString cmd_tracerealtimeC2(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,QString crafts,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
+    QString cmd_tracerealtime(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString craftfilepath,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
+    QString cmd_tracerealtimeC(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString craftfilepath,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
+    QString cmd_tracerealtime2(RobPos pos,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString crafts,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
+    QString cmd_tracerealtimeC2(RobPos pos1,RobPos pos2,RobPos pos3,Robmovemodel movemodel,float speed,float downspeed,Tracerealtime_edit_mode mode,int tcp,int time,float samplespeed,float errdis,QString crafts,float eled=0,float elev=0,Alternatingcurrent elem=DIRECT,bool weld=false,QString change="");
 
     int getkey(QString msg,QString &return_msg,QString &return_key);   //解key 返回值0:正常，返回值-1:注释行，返回值>0:异常
     int decodecmd(QString msg,QString &return_msg,QString &return_key);//解码：返回值0:正常
@@ -417,6 +418,9 @@ public:
     Tracerealtime_edit_mode cmd_tracerealtime_mode;//获取到的实时跟踪起点下枪模式
     QString cmd_tracerealtime_craftfilepath;//获取到的实时跟踪焊接工艺包路径
     QString cmd_tracerealtime_change;//获取到的实时跟踪变换矩阵名字
+    int cmd_tracerealtime_time;//获取到的实时跟踪采样频率
+    float cmd_tracerealtime_samplespeed;//获取到的采样点移动速度mm/s
+    float cmd_tracerealtime_errdis;//获取到的实时跟踪容错距离
 
     int cmd_tracerealtime2_tcp;//获取到实时跟踪TCP
     RobPos cmd_tracerealtime2_pos;//获取到实时跟踪终点坐标
@@ -433,6 +437,10 @@ public:
     Tracerealtime_edit_mode cmd_tracerealtime2_mode;//获取到的实时跟踪起点下枪模式
     QString cmd_tracerealtime2_crafts;//获取到的实时跟踪焊接工艺包名字
     QString cmd_tracerealtime2_change;//获取到的实时跟踪变换矩阵名字
+    int cmd_tracerealtime2_time;//获取到的实时跟踪采样频率
+    float cmd_tracerealtime2_samplespeed;//获取到的采样点移动速度mm/s
+    float cmd_tracerealtime2_errdis;//获取到的实时跟踪容错距离
+
 
 
     int cmd_goto_line;//获取到的跳转行数
@@ -491,6 +499,7 @@ protected:
     QString rc_line(int line);
     QString rc_pointadds(std::vector<ChangeRobPosVariable> posturelist);
     QString rc_downspeed(float speed);
+    QString rc_distance(float distance);
 
 
     int de_param(int param_n,QString msg,QString &paramname,int &data_fpos,int &data_bpos,QString &return_msg);

@@ -249,6 +249,11 @@ int Mypcl::Gaussian(std::vector<RobPos> robpos_in,    //输入点云
 //PCA滤波(擅长主方向滤波)
 int Mypcl::Principal_Component_Analysis(std::vector<RobPos> robpos_in, std::vector<RobPos> &robpos_out, float Threshold)
 {
+    if(robpos_in.size()<3)    //点数太少
+    {
+       return -1;
+    }
+
     Eigen::MatrixXd pts(robpos_in.size(), 3);
 
     for (int i = 0; i < robpos_in.size(); i++) {
