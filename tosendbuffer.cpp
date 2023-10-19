@@ -7438,6 +7438,26 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 return 1;
             }
             RobPos oldpos=m_mcs->rob->TCPpos;
+            //计算跟踪长度距离
+            int tracerealtdistance; //计划长度
+            switch(movemod)
+            {
+                case MOVEL:
+                case MOVEJ:
+                {
+                    Eigen::Vector3d endpos(pos.X,pos.Y,pos.Z);
+                    Eigen::Vector3d stpos(oldpos.X,oldpos.Y,oldpos.Z);
+                    tracerealtdistance=(stpos-endpos).norm();
+                }
+                break;
+                case MOVEC:
+                {
+                    Eigen::Vector3d endpos(pos3.X,pos3.Y,pos3.Z);
+                    Eigen::Vector3d stpos(oldpos.X,oldpos.Y,oldpos.Z);
+                    tracerealtdistance=(stpos-endpos).norm();
+                }
+                break;
+            }
             switch(mode)
             {
                 case TRACEREALTIME_EDIT_MODE_STOPDOWN://先停止移动到上方后再下枪
@@ -7684,6 +7704,15 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     }
                     m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
                 }
+                //判断是否到达跟踪终点
+                Eigen::Vector3d v_nowpos(oldpos.X,oldpos.Y,oldpos.Z);       //当前位置
+                Eigen::Vector3d v_findstpos(findstpos.X,findstpos.Y,findstpos.Z);    //实际起点
+                if((v_findstpos-v_nowpos).norm()>tracerealtdistance)    //超过预计终点
+                {
+                    //跟踪结束,跳出
+                    break;
+                }
+
                 if(b_cmdlist_build==false)     //停止
                 {
                     main_record.lock();
@@ -7700,6 +7729,12 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             #else
                 sleep(0);
             #endif
+            }
+            //如果是起弧跟踪,则要熄弧
+            if(b_weld==true)//熄弧
+            {
+                cmd_elec(STATIC);
+                usleep(ROB_WORK_DELAY);//确保焊机设置完成
             }
             /*********************/
         }

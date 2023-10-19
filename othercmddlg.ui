@@ -192,7 +192,7 @@
        </item>
        <item>
         <property name="text">
-         <string>TRACE: 生成跟踪轨迹工艺指令</string>
+         <string>TRACE: 生成跟踪轨迹工艺指令(嵌入式版不支持)</string>
         </property>
        </item>
        <item>
@@ -212,7 +212,7 @@
        </item>
        <item>
         <property name="text">
-         <string>TRACEREALTIME: 实时跟踪指令</string>
+         <string>TRACEREALTIME: 实时跟踪指令(嵌入式版不支持)</string>
         </property>
        </item>
        <item>
