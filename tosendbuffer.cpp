@@ -7083,7 +7083,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 tcp=cmd.cmd_tracerealtime2_tcp;  //获取到tcp
                 time=cmd.cmd_tracerealtime2_time;
                 samplespeed=cmd.cmd_tracerealtime2_samplespeed;
-                errdis=cmd.cmd_tracerealtime_errdis;
+                errdis=cmd.cmd_tracerealtime2_errdis;
                 switch(movemod)
                 {
                     case MOVEL:
@@ -7145,8 +7145,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
 
             /********************/
             //这里开始添加实时跟踪函数
-            //先记录下当前位置
-            RobPos oldpos=m_mcs->rob->TCPpos;
+
             int matrix4d_trace_num;
             bool b_find=false;
             RobPos findstpos;//起点坐标
@@ -7417,11 +7416,99 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
             m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
             PosBuffer.clear();
+            //先记录下当前位置
+            int num=0;
+            m_mcs->rob->TCPpos.nEn=false;
+            while (m_mcs->rob->TCPpos.nEn==false)
+            {
+                if(num>10)
+                {
+                    break;
+                }
+                usleep(ROB_WORK_DELAY_STEP);
+                num++;
+            }
+            if(m_mcs->rob->TCPpos.nEn==false)
+            {
+                main_record.lock();
+                return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 获取机器人坐标失败");
+                m_mcs->main_record.push_back(return_msg);
+                main_record.unlock();
+                line=n;
+                return 1;
+            }
+            RobPos oldpos=m_mcs->rob->TCPpos;
             switch(mode)
             {
                 case TRACEREALTIME_EDIT_MODE_STOPDOWN://先停止移动到上方后再下枪
                 {
-                    findstpos.Z=oldpos.Z;    //移动到上方
+                    RobPos temppos=findstpos;
+                    temppos.Z=oldpos.Z;    //移动到上方
+                    cmd_move(temppos,MOVEL,downspeed,tcp);
+                    usleep(ROB_WORK_DELAY);
+                    while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
+                    {
+                        //这里添加扫描数据
+                        if(m_mcs->cam->sop_cam[0].b_updatacloud_finish==true)//有中断数据
+                        {
+                            if(m_mcs->cam->sop_cam[0].b_ros_lineEn==true)//检测有正确结果
+                            {
+                                std::vector<Scan_trace_line> scan_trace(1);
+                                std::vector<RobPos> weld_trace;
+                                scan_trace[0].robottime=m_mcs->rob->robtime;
+                                scan_trace[0].ros_line=*(m_mcs->cam->sop_cam[0].ros_line);
+                            #if OPEN_TIMESTAMP==1
+                                scan_trace[0].robotpos.X=scan_trace[0].ros_line.robpos.posx;
+                                scan_trace[0].robotpos.Y=scan_trace[0].ros_line.robpos.posy;
+                                scan_trace[0].robotpos.Z=scan_trace[0].ros_line.robpos.posz;
+                                scan_trace[0].robotpos.RX=scan_trace[0].ros_line.robpos.posrx;
+                                scan_trace[0].robotpos.RY=scan_trace[0].ros_line.robpos.posry;
+                                scan_trace[0].robotpos.RZ=scan_trace[0].ros_line.robpos.posrz;
+                                scan_trace[0].robotpos.out_1=scan_trace[0].ros_line.robpos.posout1;
+                                scan_trace[0].robotpos.out_2=scan_trace[0].ros_line.robpos.posout2;
+                                scan_trace[0].robotpos.out_3=scan_trace[0].ros_line.robpos.posout3;
+                                scan_trace[0].robotpos.nEn=1;
+                            #else
+                                scan_trace[0].robotpos=m_mcs->rob->TCPpos;
+                            #endif
+                                if(false==m_mcs->synchronous->Scantrace_to_Weldtrace(scan_trace,weld_trace))
+                                {
+                                    main_record.lock();
+                                    return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 寻位计算结果出错");
+                                    m_mcs->main_record.push_back(return_msg);
+                                    main_record.unlock();
+                                    line=n;
+                                    return 1;
+                                }
+                                RobPos pos=scan_trace[0].robotpos;
+                                pos.X=weld_trace[0].X;
+                                pos.Y=weld_trace[0].Y;
+                                pos.Z=weld_trace[0].Z;
+                                PosBuffer.push_back(pos);
+                            }
+                            m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
+                        }
+                        if(b_cmdlist_build==false)     //停止
+                        {
+                            main_record.lock();
+                            return_msg=QStringLiteral("手动停止进程");
+                            m_mcs->main_record.push_back(return_msg);
+                            main_record.unlock();
+                            paused_key=key;
+                            cmd_lock(1);
+                            line=n;
+                            return 1;
+                        }
+                    #if _MSC_VER
+                        Sleep(0);
+                    #else
+                        sleep(0);
+                    #endif
+                    //  usleep(ROB_WORK_DELAY_STEP);
+                    }
+                #ifdef USE_MYROBOT_CONTROL
+                    m_mcs->robotcontrol->clear_movepoint_buffer();
+                #endif
                 }
                 break;
                 case TRACEREALTIME_EDIT_MODE_MOVINEDOWN://边运动边下枪
@@ -7430,7 +7517,6 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 break;
             }
-            //移动到起点
             cmd_move(findstpos,MOVEL,downspeed,tcp);
             usleep(ROB_WORK_DELAY);
             while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待移动到位
@@ -7468,6 +7554,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             return 1;
                         }
                         RobPos pos=scan_trace[0].robotpos;
+                        pos.X=weld_trace[0].X;
+                        pos.Y=weld_trace[0].Y;
+                        pos.Z=weld_trace[0].Z;
                         PosBuffer.push_back(pos);
                     }
                     m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
@@ -7501,11 +7590,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 usleep(ROB_WORK_DELAY);//确保焊机设置完成
             }
             //开始跟踪
-            RobPos oldPos=m_mcs->rob->TCPpos;//当前点
             while(1)
             {
                 int rc;
                 RobPos nextPos;
+                oldpos=m_mcs->rob->TCPpos;//当前点
                 rc=Mytracerealtime::Principal_Component_Analysis(PosBuffer,nextPos);
                 if(rc<0)
                 {
@@ -7515,20 +7604,40 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 else if(rc==0)
                 {
                     //计算下一个点与当前点的距离
-                    Eigen::Vector3d v_oldPos(oldPos.X,oldPos.Y,oldPos.Z);
+                    Eigen::Vector3d v_oldPos(oldpos.X,oldpos.Y,oldpos.Z);
                     Eigen::Vector3d v_nextPos(nextPos.X,nextPos.Y,nextPos.Z);
                     double dis=(v_nextPos-v_oldPos).norm();
-                    double mindis=samplespeed*time; //最小距离
+                    double mindis=samplespeed*time/1000; //最小距离
                     if(dis>mindis&&dis<errdis)//距离合适
                     {
                         //移动到目标点
                         cmd_move(nextPos,MOVEP,speed,tcp);
+                        usleep(time*1000);
+                        while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待寻位到位
+                        {
+                            if(b_cmdlist_build==false)     //停止
+                            {
+                                main_record.lock();
+                                return_msg=QStringLiteral("手动停止进程");
+                                m_mcs->main_record.push_back(return_msg);
+                                main_record.unlock();
+                                paused_key=key;
+                                cmd_lock(1);
+                                line=n;
+                                return 1;
+                            }
+                        #if _MSC_VER
+                            Sleep(0);
+                        #else
+                            sleep(0);
+                        #endif
+                        }
                     }
                     else if(dis>=errdis)//超过容错距离
                     {
                         //跟踪结束,跳出
                         main_record.lock();
-                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 无数据长度超过容错距离");
+                        return_msg=QStringLiteral("Line")+QString::number(n)+QStringLiteral(": 坐标位置超过容错距离");
                         m_mcs->main_record.push_back(return_msg);
                         main_record.unlock();
                         line=n;
@@ -7568,6 +7677,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                             return 1;
                         }
                         RobPos pos=scan_trace[0].robotpos;
+                        pos.X=weld_trace[0].X;
+                        pos.Y=weld_trace[0].Y;
+                        pos.Z=weld_trace[0].Z;
                         PosBuffer.push_back(pos);
                     }
                     m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;

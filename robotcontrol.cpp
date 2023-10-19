@@ -3629,26 +3629,6 @@ void RobotrcvThread::run()//获取机器人数据
                         float f_robRZ=d_robRZ;
                         float f_speed=d_speed;
 
-                        /*
-                        static int times=0;
-                        if(state==0)
-                        {
-                            if(times<10)
-                            {
-                                times++;
-                                state=1;
-                            }
-                            else
-                            {
-                                state=0;
-                            }
-                        }
-                        else
-                        {
-                            times=0;
-                        }
-                        */
-
                         if(state==0)
                         {
                             mutexmovepoint_buffer_group.lock();
@@ -3936,9 +3916,9 @@ void RobotrcvThread::run()//获取机器人数据
                                              ||fabs(f_robRX-moveinfo.robpos.RX)>0.1
                                              ||fabs(f_robRY-moveinfo.robpos.RY)>0.1
                                              ||fabs(f_robRZ-moveinfo.robpos.RZ)>0.1
-                                             ||abs(f_robout1-moveinfo.robpos.out_1)>1
-                                             ||abs(f_robout2-moveinfo.robpos.out_2)>1
-                                             ||abs(f_robout3-moveinfo.robpos.out_3)>1)
+                                             ||abs(f_robout1-moveinfo.robpos.out_1)>100
+                                             ||abs(f_robout2-moveinfo.robpos.out_2)>100
+                                             ||abs(f_robout3-moveinfo.robpos.out_3)>100)
                                             {
                                                 state=1;
                                             }
@@ -3952,9 +3932,9 @@ void RobotrcvThread::run()//获取机器人数据
                                              ||fabs(f_robRX-moveinfo.robpos.RX1)>0.1
                                              ||fabs(f_robRY-moveinfo.robpos.RY1)>0.1
                                              ||fabs(f_robRZ-moveinfo.robpos.RZ1)>0.1
-                                             ||abs(f_robout1-moveinfo.robpos.out1_1)>1
-                                             ||abs(f_robout2-moveinfo.robpos.out1_2)>1
-                                             ||abs(f_robout3-moveinfo.robpos.out1_3)>1)
+                                             ||abs(f_robout1-moveinfo.robpos.out1_1)>100
+                                             ||abs(f_robout2-moveinfo.robpos.out1_2)>100
+                                             ||abs(f_robout3-moveinfo.robpos.out1_3)>100)
                                             {
                                                 state=1;
                                             }
@@ -3971,6 +3951,15 @@ void RobotrcvThread::run()//获取机器人数据
                 break;
                 case ROBOT_MODEL_KAWASAKI://川崎机器人
                 {
+                    float f_robX;
+                    float f_robY;
+                    float f_robZ;
+                    float f_robRX;
+                    float f_robRY;
+                    float f_robRZ;
+                    int f_robout1;
+                    int f_robout2;
+                    int f_robout3;
                     static int total_rcvnum=0;
                     static QString s_rcvmsg;
                     int rcvnum=_p->m_client.Recv((char*)_p->rcv_buf,ROBOT_KAWASAKI_INFO_RECVBUFFER_MAX*2);
@@ -4004,25 +3993,24 @@ void RobotrcvThread::run()//获取机器人数据
                                 }
                                 if(pos.size()>=6&&b_succeed==true)//解码成功
                                 {
-                                    float f_data;
-                                    f_data=pos[0];
-                                    _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&f_data))[0];
-                                    _p->mb_mapping->tab_registers[ROB_X_POS_FL_REG_ADD]=((uint16_t*)(&f_data))[1];
-                                    f_data=pos[1];
-                                    _p->mb_mapping->tab_registers[ROB_Y_POS_FH_REG_ADD]=((uint16_t*)(&f_data))[0];
-                                    _p->mb_mapping->tab_registers[ROB_Y_POS_FL_REG_ADD]=((uint16_t*)(&f_data))[1];
-                                    f_data=pos[2];
-                                    _p->mb_mapping->tab_registers[ROB_Z_POS_FH_REG_ADD]=((uint16_t*)(&f_data))[0];
-                                    _p->mb_mapping->tab_registers[ROB_Z_POS_FL_REG_ADD]=((uint16_t*)(&f_data))[1];
-                                    f_data=pos[3];
-                                    _p->mb_mapping->tab_registers[ROB_RX_POS_FH_REG_ADD]=((uint16_t*)(&f_data))[0];
-                                    _p->mb_mapping->tab_registers[ROB_RX_POS_FL_REG_ADD]=((uint16_t*)(&f_data))[1];
-                                    f_data=pos[4];
-                                    _p->mb_mapping->tab_registers[ROB_RY_POS_FH_REG_ADD]=((uint16_t*)(&f_data))[0];
-                                    _p->mb_mapping->tab_registers[ROB_RY_POS_FL_REG_ADD]=((uint16_t*)(&f_data))[1];
-                                    f_data=pos[5];
-                                    _p->mb_mapping->tab_registers[ROB_RZ_POS_FH_REG_ADD]=((uint16_t*)(&f_data))[0];
-                                    _p->mb_mapping->tab_registers[ROB_RZ_POS_FL_REG_ADD]=((uint16_t*)(&f_data))[1];
+                                    f_robX=pos[0];
+                                    _p->mb_mapping->tab_registers[ROB_X_POS_FH_REG_ADD]=((uint16_t*)(&f_robX))[0];
+                                    _p->mb_mapping->tab_registers[ROB_X_POS_FL_REG_ADD]=((uint16_t*)(&f_robX))[1];
+                                    f_robY=pos[1];
+                                    _p->mb_mapping->tab_registers[ROB_Y_POS_FH_REG_ADD]=((uint16_t*)(&f_robY))[0];
+                                    _p->mb_mapping->tab_registers[ROB_Y_POS_FL_REG_ADD]=((uint16_t*)(&f_robY))[1];
+                                    f_robZ=pos[2];
+                                    _p->mb_mapping->tab_registers[ROB_Z_POS_FH_REG_ADD]=((uint16_t*)(&f_robZ))[0];
+                                    _p->mb_mapping->tab_registers[ROB_Z_POS_FL_REG_ADD]=((uint16_t*)(&f_robZ))[1];
+                                    f_robRX=pos[3];
+                                    _p->mb_mapping->tab_registers[ROB_RX_POS_FH_REG_ADD]=((uint16_t*)(&f_robRX))[0];
+                                    _p->mb_mapping->tab_registers[ROB_RX_POS_FL_REG_ADD]=((uint16_t*)(&f_robRX))[1];
+                                    f_robRY=pos[4];
+                                    _p->mb_mapping->tab_registers[ROB_RY_POS_FH_REG_ADD]=((uint16_t*)(&f_robRY))[0];
+                                    _p->mb_mapping->tab_registers[ROB_RY_POS_FL_REG_ADD]=((uint16_t*)(&f_robRY))[1];
+                                    f_robRZ=pos[5];
+                                    _p->mb_mapping->tab_registers[ROB_RZ_POS_FH_REG_ADD]=((uint16_t*)(&f_robRZ))[0];
+                                    _p->mb_mapping->tab_registers[ROB_RZ_POS_FL_REG_ADD]=((uint16_t*)(&f_robRZ))[1];
                                 }
                                 //有外部轴
                                 if(pos.size()>6&&pos.size()<=9)
@@ -4034,7 +4022,70 @@ void RobotrcvThread::run()//获取机器人数据
                                         i_data=pos[i]*1000;//川崎第六轴放大1000倍
                                         _p->mb_mapping->tab_registers[ROB_OUT1_POS_FH_REG_ADD+st]=((uint16_t*)(&i_data))[0];
                                         _p->mb_mapping->tab_registers[ROB_OUT1_POS_FL_REG_ADD+st+1]=((uint16_t*)(&i_data))[1];
+                                        if(st==0)
+                                        {
+                                            f_robout1=i_data;
+                                        }
+                                        else if(st==2)
+                                        {
+                                            f_robout2=i_data;
+                                        }
+                                        else if(st==4)
+                                        {
+                                            f_robout3=i_data;
+                                        }
                                         st=st+2;
+                                    }
+                                }
+                                if(pos.size()>=6&&b_succeed==true)//解码成功
+                                {
+                                    int state=0;
+                                    if(state==0)
+                                    {
+                                        mutexmovepoint_buffer_group.lock();
+                                        int num=_p->movepoint_buffer.size();
+                                        if(num!=0)
+                                        {
+                                            Pause_PointInfo moveinfo=_p->movepoint_buffer[num-1];
+                                            switch(moveinfo.movemod)
+                                            {
+                                            case MOVEL:
+                                            case MOVEJ:
+                                            {
+                                                if(fabs(f_robX-moveinfo.robpos.X)>0.1
+                                                    ||fabs(f_robY-moveinfo.robpos.Y)>0.1
+                                                    ||fabs(f_robZ-moveinfo.robpos.Z)>0.1
+                                                    ||fabs(f_robRX-moveinfo.robpos.RX)>0.1
+                                                    ||fabs(f_robRY-moveinfo.robpos.RY)>0.1
+                                                    ||fabs(f_robRZ-moveinfo.robpos.RZ)>0.1
+                                                    ||abs(f_robout1-moveinfo.robpos.out_1)>100
+                                                    ||abs(f_robout2-moveinfo.robpos.out_2)>100
+                                                    ||abs(f_robout3-moveinfo.robpos.out_3)>100)
+                                                {
+                                                    state=1;
+                                                }
+                                            }
+                                            break;
+                                            case MOVEC:
+                                            {
+                                                if(fabs(f_robX-moveinfo.robpos.X1)>0.1
+                                                    ||fabs(f_robY-moveinfo.robpos.Y1)>0.1
+                                                    ||fabs(f_robZ-moveinfo.robpos.Z1)>0.1
+                                                    ||fabs(f_robRX-moveinfo.robpos.RX1)>0.1
+                                                    ||fabs(f_robRY-moveinfo.robpos.RY1)>0.1
+                                                    ||fabs(f_robRZ-moveinfo.robpos.RZ1)>0.1
+                                                    ||abs(f_robout1-moveinfo.robpos.out_1)>100
+                                                    ||abs(f_robout2-moveinfo.robpos.out_2)>100
+                                                    ||abs(f_robout3-moveinfo.robpos.out_3)>100)
+                                                {
+                                                    state=1;
+                                                }
+                                            }
+                                            break;
+                                            }
+                                        }
+                                        mutexmovepoint_buffer_group.unlock();
+                                        _p->mb_mapping->tab_registers[ROB_STATE_REG_ADD]=state;
                                     }
                                 }
                             }
