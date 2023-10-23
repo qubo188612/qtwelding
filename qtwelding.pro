@@ -356,6 +356,12 @@ else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/lib/pcl_*d.lib
 
 INCLUDEPATH += D:/PCL/include/pcl-1.13
 
+#flann库添加
+win32:CONFIG(release, debug|release): LIBS += D:/PCL/3rdParty/FLANN/lib/flann*.lib
+else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/3rdParty/FLANN/lib/flann*.lib
+
+INCLUDEPATH += D:/PCL/3rdParty/FLANN/include
+
 
 CONFIG(release, debug|release) {
     QMAKE_CXXFLAGS_RELEASE += /MT
