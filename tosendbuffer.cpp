@@ -5396,6 +5396,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             int task=cmd.cmd_cam_task;
             int work=cmd.cmd_cam_work_d;
             cmd_cam(task,work);
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_GPIO_DELAY);
+        #endif
         }
         else if(key==CMD_WELD_KEY)//起光弧指令
         {
@@ -5697,6 +5700,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
 
             for(int nside=0;nside<=side*2;nside++)
             {
+            #ifdef OPEN_AUTO_WAIT_TIME
+                usleep(LEASER_WORK_TASK_DELAY);
+            #endif
                 //清空检测状态
                 m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
                 m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
@@ -6062,6 +6068,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
             ed3.y()=pos3.Y;
             ed3.z()=pos3.Z;
 
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_TASK_DELAY);
+        #endif
+
             //清空检测状态
             m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
             m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
@@ -6250,6 +6260,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     break;
                 }
             }
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_TASK_DELAY);
+        #endif
             //清空检测状态
             m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
             m_mcs->cam->sop_cam[0].b_ros_lineEn=false;
@@ -6363,6 +6376,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     break;
                 }
             }
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_TASK_DELAY);
+        #endif
             switch(movemod)
             {
                 case MOVEL:
@@ -6593,6 +6609,11 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     break;
                 }
             }
+
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_TASK_DELAY);
+        #endif
+
             switch(movemod)
             {
                 case MOVEL:
@@ -7002,6 +7023,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                     break;
                 }
             }
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_STATE_DELAY);
+        #endif
             RobPos pos=m_mcs->rob->TCPpos;
             pos.X=pos.X+add[0];
             pos.Y=pos.Y+add[1];
@@ -7262,6 +7286,9 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
             break;
             }
+        #ifdef OPEN_AUTO_WAIT_TIME
+            usleep(LEASER_WORK_TASK_DELAY);
+        #endif
             //清空检测状态
             m_mcs->cam->sop_cam[0].b_updatacloud_finish=false;
             m_mcs->cam->sop_cam[0].b_ros_lineEn=false;

@@ -24,6 +24,7 @@
 #define USE_SN_DATA                 1//使用序列号
 #define USE_PLC_FILTER              1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
 #define OPEN_OFFLINEMAP_PROGRAM     1//变换矩阵开启离线地图编成功能
+#define OPEN_AUTO_WAIT_TIME         1//程序添加自动延时功能(开关激光以及获取坐标时的延时)
 
 #if _MSC_VER
 #include "tistdtypes.h"
@@ -85,6 +86,10 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 
 #define ROB_WORK_DELAY          100000       //机器人通讯反映时间(微秒)
 #define ROB_WORK_DELAY_STEP     10000        //机器人每步循环等待时间(微秒)
+
+#define LEASER_WORK_GPIO_DELAY     500000   //激光器IO控制反映时间
+#define LEASER_WORK_TASK_DELAY     300000   //激光器算法控制反映时间
+#define LEASER_WORK_STATE_DELAY    200000   //机器人到位后,到达到稳定状态的延时
 
 /*****************************/
 //自带机器人控制接口
