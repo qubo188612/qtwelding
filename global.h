@@ -25,6 +25,7 @@
 #define USE_PLC_FILTER              1//使用PCL的滤波函数功能(不使用可以减小安装文件包)
 #define OPEN_OFFLINEMAP_PROGRAM     1//变换矩阵开启离线地图编成功能
 #define OPEN_AUTO_WAIT_TIME         1//程序添加自动延时功能(开关激光以及获取坐标时的延时)
+#define OPEN_BEAUTIFY_INTERFACE     1//界面美化开关
 
 #if _MSC_VER
 #include "tistdtypes.h"

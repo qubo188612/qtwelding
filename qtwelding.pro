@@ -261,6 +261,7 @@ HEADERS += \
     keywelddlg.h \
     my_cmd.h \
     my_parameters.h \
+    myfont.h \
     newcraftdlg.h \
     newprojectdlg.h \
     othercmddlg.h \

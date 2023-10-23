@@ -87,6 +87,62 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
                   |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
+    //美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+//  this->setStyleSheet(FONT_MAIN_BACKGROUND_INFO);
+
+    ui->importprojectBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->runprojectBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->runpausedBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->editprojectBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->editweldprocessBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->setlaserheadBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->setrobotBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->setweldBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->demarcateBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->setplcBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->infoBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+
+    ui->posXaddBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posYaddBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posZaddBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posRXaddBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posRYaddBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posRZaddBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posXsubBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posYsubBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posZsubBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posRXsubBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posRYsubBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posRZsubBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posOut1addBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posOut2addBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posOut3addBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posOut1subBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posOut2subBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+    ui->posOut3subBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
+
+    ui->projectskiprunBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
+    ui->projectcheckdataBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
+    ui->weld_windBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
+    ui->weld_fireBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
+    ui->weld_gassBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
+    ui->weld_rewindBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
+
+    ui->projectskiplineEdit->setStyleSheet(FONT_MAIN_EDIT_INFO);
+    ui->weld_eled->setStyleSheet(FONT_MAIN_EDIT_INFO);
+    ui->weld_elev->setStyleSheet(FONT_MAIN_EDIT_INFO);
+    ui->movespeed->setStyleSheet(FONT_MAIN_EDIT_INFO);
+
+    ui->groupBox->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
+    ui->groupBox_4->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
+    ui->groupBox_5->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
+
+//  ui->robotEncheckBox->setStyleSheet(FONT_MAIN_CHECKBOX_INFO);
+#endif
+
     ui->project_name->setText(QStringLiteral("未命名"));
     ui->project_Id->setText(QStringLiteral("无"));
     ui->project_buildstep->setText(QStringLiteral("0/0"));

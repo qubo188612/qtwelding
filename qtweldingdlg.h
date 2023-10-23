@@ -7,6 +7,7 @@
 #include <QMutex>
 #include "my_parameters.h"
 #include <QThread>
+#include "myfont.h"
 #if _MSC_VER
 #include <QDir>
 #include <synchapi.h>
