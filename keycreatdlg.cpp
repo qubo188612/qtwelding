@@ -9,6 +9,16 @@ keycreatDlg::keycreatDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->traceeditBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->traceeditcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracename->setStyleSheet(FONT_EDIT_INFO);
+    ui->groupBox_8->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_8->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     traceedit0=new traceedit0Dlg(mcs);
     traceedit1=new traceedit1Dlg(mcs);
     traceedit2=new traceedit2Dlg(mcs);

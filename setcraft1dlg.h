@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDoubleValidator>
 #include <QListWidgetItem>
+#include "myfont.h"
 #include "my_parameters.h"
 #include "my_cmd.h"
 

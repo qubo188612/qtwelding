@@ -8,6 +8,17 @@ keycreatpDlg::keycreatpDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->creatpAddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creatpBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creatpcomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->creatpDelBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creatplist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->creatpnamelineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keycreatpDlg::~keycreatpDlg()

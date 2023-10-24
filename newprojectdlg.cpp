@@ -9,6 +9,14 @@ newprojectDlg::newprojectDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->project_Id->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->project_name->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     QString msg;
     for(int n=0;n<PROJECT_ID_TOTAL_NUM;n++)
     {

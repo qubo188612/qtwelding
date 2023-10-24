@@ -89,6 +89,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     //美化界面
 #ifdef OPEN_BEAUTIFY_INTERFACE
+//  this->setObjectName(FONT_QUALIFY_MOUDLES_INFO);       //限定模块
 //  this->setStyleSheet(FONT_MAIN_BACKGROUND_INFO);
 
     ui->importprojectBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
@@ -129,18 +130,27 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->weld_gassBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
     ui->weld_rewindBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
 
-    ui->projectskiplineEdit->setStyleSheet(FONT_MAIN_EDIT_INFO);
-    ui->weld_eled->setStyleSheet(FONT_MAIN_EDIT_INFO);
-    ui->weld_elev->setStyleSheet(FONT_MAIN_EDIT_INFO);
-    ui->movespeed->setStyleSheet(FONT_MAIN_EDIT_INFO);
+    ui->projectskiplineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->weld_eled->setStyleSheet(FONT_EDIT_INFO);
+    ui->weld_elev->setStyleSheet(FONT_EDIT_INFO);
+    ui->movespeed->setStyleSheet(FONT_EDIT_INFO);
 
-    ui->groupBox->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
-    ui->groupBox_2->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
-    ui->groupBox_3->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
-    ui->groupBox_4->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
-    ui->groupBox_5->setStyleSheet(FONT_MAIN_GROUPBOX_INFO);
+    ui->groupBox->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_3->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_4->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_4->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_5->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_5->setStyleSheet(FONT_GROUPBOX_INFO);
 
-//  ui->robotEncheckBox->setStyleSheet(FONT_MAIN_CHECKBOX_INFO);
+    ui->weld_elem->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->movetcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+
 #endif
 
     ui->project_name->setText(QStringLiteral("未命名"));

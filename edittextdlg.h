@@ -2,6 +2,8 @@
 #define EDITTEXTDLG_H
 
 #include <QDialog>
+#include "global.h"
+#include "myfont.h"
 
 namespace Ui {
 class edittextDlg;

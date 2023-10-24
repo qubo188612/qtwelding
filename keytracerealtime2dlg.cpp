@@ -12,6 +12,35 @@ keytracerealtime2Dlg::keytracerealtime2Dlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_3->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->arriveBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tracerealtime2addBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tracerealtime2changecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracerealtime2errdis->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracerealtime2filepathcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracerealtime2modecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracerealtime2movedownspeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracerealtime2movemodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracerealtime2movespeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracerealtime2samplespeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracerealtime2sampletime->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracerealtime2tcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->updata_posBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->updata_posBtn_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->weldercurrent->setStyleSheet(FONT_EDIT_INFO);
+    ui->weldercurrent_v->setStyleSheet(FONT_EDIT_INFO);
+    ui->weldermodelcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     setmovec=new setmovecDlg(m_mcs);
 
     for(int n=0;n<ROBOTTCPNUM;n++)

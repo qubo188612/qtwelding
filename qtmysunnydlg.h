@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include <QDialog>
+#include "myfont.h"
 #include "showtasknumdlg.h"
 #include "taskcleardlg.h"
 #include "pshowdlg.h"

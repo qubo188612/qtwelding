@@ -2,6 +2,7 @@
 #define EDITPROJECTDLG_H
 
 #include <QDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 
 #define EDITPROJECTDLG_BTN1         1

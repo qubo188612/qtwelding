@@ -8,6 +8,12 @@ editcraftDlg::editcraftDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->BTN1->setStyleSheet(FONT_EDITCRAFT_BUTTON_BIG_INFO);
+    ui->BTN2->setStyleSheet(FONT_EDITCRAFT_BUTTON_BIG_INFO);
+#endif
 }
 
 editcraftDlg::~editcraftDlg()

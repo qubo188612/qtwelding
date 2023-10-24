@@ -10,6 +10,19 @@ keytrace2Dlg::keytrace2Dlg(my_parameters *mcs,QWidget *parent) :
 
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox_6->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_6->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->trace2changecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->trace2cmdaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->trace2filename->setStyleSheet(FONT_EDIT_INFO);
+    ui->trace2filepathcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->trace2speed->setStyleSheet(FONT_EDIT_INFO);
+    ui->trace2trackcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     ui->trace2changecheckBox->setCheckState(Qt::Unchecked);
     ui->trace2changecombo->setDisabled(true);
 

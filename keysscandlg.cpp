@@ -9,6 +9,22 @@ keysscanDlg::keysscanDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->pos1comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pos2comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pos3comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->sscanaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->sscanchangecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->sscanmovemodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->sscanname->setStyleSheet(FONT_EDIT_INFO);
+    ui->sscanspeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->sscantcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->groupBox_3->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     for(int n=0;n<ROBOTTCPNUM;n++)
     {
         QString msg="TCP: "+QString::number(n);

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "my_parameters.h"
+#include "myfont.h"
 #include "sndatadlg.h"
 
 namespace Ui {

@@ -8,6 +8,15 @@ keyplcDlg::keyplcDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->PLCinputBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->PLCoutputBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->plc_add->setStyleSheet(FONT_EDIT_INFO);
+    ui->plc_data->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keyplcDlg::~keyplcDlg()

@@ -8,6 +8,18 @@ keyweldDlg::keyweldDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox_4->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_4->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->welderarcingBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->welderarcoutBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->weldercurrent->setStyleSheet(FONT_EDIT_INFO);
+    ui->weldercurrent_v->setStyleSheet(FONT_EDIT_INFO);
+    ui->weldermodelcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keyweldDlg::~keyweldDlg()

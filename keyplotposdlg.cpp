@@ -9,6 +9,16 @@ keyplotposDlg::keyplotposDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox_8->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_8->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->plotposBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->plotposmodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->plotposname->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     plotedit0=new plotedit0Dlg(mcs);
     plotedit1=new plotedit1Dlg(mcs);
     plotedit2=new plotedit2Dlg(mcs);

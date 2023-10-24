@@ -8,6 +8,17 @@ keygetposDlg::keygetposDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->addXEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->addYEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->addZEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->getposBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->getposname->setStyleSheet(FONT_EDIT_INFO);
+    ui->getpostime->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keygetposDlg::~keygetposDlg()

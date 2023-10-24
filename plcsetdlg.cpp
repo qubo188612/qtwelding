@@ -9,6 +9,14 @@ plcsetDlg::plcsetDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->plc_ip->setStyleSheet(FONT_EDIT_INFO);
+    ui->plc_model->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->plc_port->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+#endif
+
     for(int n=0;n<PLC_MODEL_NUM;n++)
     {
         QString msg=m_mcs->rob->plc_model_toQString((PLC_MODEL)n)+" PLC";

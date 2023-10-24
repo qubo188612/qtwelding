@@ -8,6 +8,39 @@ keywaveDlg::keywaveDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->leftaddRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->leftaddRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->leftaddRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->rightaddRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->rightaddRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->rightaddRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->waveanglex->setStyleSheet(FONT_EDIT_INFO);
+    ui->waveangley->setStyleSheet(FONT_EDIT_INFO);
+    ui->wavefilename->setStyleSheet(FONT_EDIT_INFO);
+    ui->wavefilenamecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->waveleftAmp->setStyleSheet(FONT_EDIT_INFO);
+    ui->waveleftAmp_z->setStyleSheet(FONT_EDIT_INFO);
+    ui->waveleftStopTime->setStyleSheet(FONT_EDIT_INFO);
+    ui->waveordercombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->wavependulum_modecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->waveperiod->setStyleSheet(FONT_EDIT_INFO);
+    ui->waverightAmp->setStyleSheet(FONT_EDIT_INFO);
+    ui->waverightAmp_z->setStyleSheet(FONT_EDIT_INFO);
+    ui->waverightStopTime->setStyleSheet(FONT_EDIT_INFO);
+    ui->waveStartPos->setStyleSheet(FONT_EDIT_INFO);
+    ui->wavetimeGap->setStyleSheet(FONT_EDIT_INFO);
+    ui->wavetrend_modecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     for(int n=0;n<TREND_ID_TOTAL_NUM;n++)
     {
         QString msg=Trend_mode_toQString((Trend_mode)n);

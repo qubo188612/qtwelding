@@ -8,6 +8,21 @@ keysetposeDlg::keysetposeDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->getposeBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->setposeaddXEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->setposeaddYEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->setposeaddZEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->setposeBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->setposecomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->setposenameEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->setposeRXEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->setposeRYEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->setposeRZEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keysetposeDlg::~keysetposeDlg()

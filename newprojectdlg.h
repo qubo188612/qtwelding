@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QListWidgetItem>
+#include "myfont.h"
 #include "my_parameters.h"
 
 namespace Ui {

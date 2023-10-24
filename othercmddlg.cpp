@@ -7,6 +7,12 @@ othercmdDlg::othercmdDlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
     m_mcs=mcs;
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->listWidget->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->OK_Btn->setStyleSheet(FONT_BUTTON_INFO);
+#endif
 }
 
 othercmdDlg::~othercmdDlg()

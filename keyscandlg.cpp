@@ -11,6 +11,25 @@ keyscanDlg::keyscanDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->arriveBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_3->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->scanaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->scanchangecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->scanmovemodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->scanname->setStyleSheet(FONT_EDIT_INFO);
+    ui->scanspeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->scantcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->updata_posBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->updata_posBtn_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     setmovec=new setmovecDlg(m_mcs);
 
     for(int n=0;n<ROBOTTCPNUM;n++)

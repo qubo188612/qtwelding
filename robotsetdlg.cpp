@@ -9,6 +9,18 @@ robotsetDlg::robotsetDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->robot_ip->setStyleSheet(FONT_EDIT_INFO);
+    ui->robot_model->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->robot_outnum->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->robot_port->setStyleSheet(FONT_EDIT_INFO);
+    ui->robot_posure_model->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->robot_remoteip->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+#endif
+
     for(int n=0;n<ROBOTTALNUM;n++)  //机器人控制台数
     {
         QString msg="机器人 "+QString::number(n);

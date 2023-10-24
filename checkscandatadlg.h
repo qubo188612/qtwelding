@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include "myfont.h"
 #include "my_parameters.h"
 #include <pcl/common/common_headers.h>
 #include <pcl/visualization/pcl_visualizer.h>

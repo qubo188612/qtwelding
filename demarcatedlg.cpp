@@ -15,8 +15,23 @@ demarcateDlg::demarcateDlg(my_parameters *mcs,QWidget *parent) :
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
                   |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
-    m_mcs=mcs;  
+    m_mcs=mcs;
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_3->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_4->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_5->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_6->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_7->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_8->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_9->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+    ui->leaserposlist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->robposlist->setStyleSheet(FONT_LISTWIDGET_INFO);
+#endif
 
     client=new QTcpSocket(this);
     link_ftp_state=false;

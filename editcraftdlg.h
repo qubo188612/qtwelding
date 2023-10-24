@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "my_parameters.h"
+#include "myfont.h"
 
 #define EDITCRAFTDLG_BTN1       1
 #define EDITCRAFTDLG_BTN2       2

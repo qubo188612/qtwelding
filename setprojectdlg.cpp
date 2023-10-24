@@ -13,6 +13,102 @@ setprojectDlg::setprojectDlg(my_parameters *mcs,QWidget *parent) :
     setWindowFlags(Qt::WindowCloseButtonHint        //显示关闭
                   |Qt::WindowMinMaxButtonsHint);    //显示最大最小化
 
+    //美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_3->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_4->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_4->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_5->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_5->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_6->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_6->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_7->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_7->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_8->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_8->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_9->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_9->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_10->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_10->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_11->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_11->setStyleSheet(FONT_GROUPBOX_INFO);
+
+    ui->ctlposXsubBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposXaddBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposYsubBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposYaddBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposZsubBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposZaddBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposRXsubBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposRXaddBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposRYsubBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposRYaddBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposRZsubBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposRZaddBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposOut1subBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposOut1addBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposOut2subBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposOut2addBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposOut3subBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+    ui->ctlposOut3addBtn->setStyleSheet(FONT_SETPROJECT_BUTTON_BIG_INFO);
+
+    ui->ctlmovespeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->ctlmovetcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->movemodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->movespeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->movetcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->delaytime->setStyleSheet(FONT_EDIT_INFO);
+    ui->leasertasknum->setStyleSheet(FONT_EDIT_INFO);
+    ui->weldermodelcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->weldercurrent->setStyleSheet(FONT_EDIT_INFO);
+    ui->weldercurrent_v->setStyleSheet(FONT_EDIT_INFO);
+    ui->scanname->setStyleSheet(FONT_EDIT_INFO);
+    ui->scanspeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->scanmovemodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->scantcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->traceeditcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracefilename->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracefilepath->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracename->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracespeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracetrackcombo->setStyleSheet(FONT_EDIT_INFO);
+    ui->customcmd->setStyleSheet(FONT_EDIT_INFO);
+    ui->Camtask->setStyleSheet(FONT_EDIT_INFO);
+    ui->cmdlist->setStyleSheet(FONT_LISTWIDGET_INFO);
+
+    ui->cmdlistdeleteBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->cmdlistclearBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->SaveAsBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->OKBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tracecmdaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tracefilepathBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->customaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->customcheckBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->customreplaceBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->moveaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->delaytimeBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->leaseropenBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->leasercloseBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->welderarcingBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->welderarcoutBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->scanaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->traceeditBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->IOoutputBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->IOinputBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->othercmdaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->ConnectCamBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->setCamtaskBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arrvepointtestBtn->setStyleSheet(FONT_BUTTON_INFO);
+
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+
+#endif
+
     for(int n=0;n<ROBOTTCPNUM;n++)
     {
         QString msg="TCP: "+QString::number(n);

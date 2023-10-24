@@ -9,6 +9,18 @@ keycreatcDlg::keycreatcDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->pos1comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pos2comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pos3comboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->creatctimelineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->creatcspeedlineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->creatcnamelineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->creatcBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_speed = new QDoubleValidator(ROBOT_SPEED_DECIMAL_BOTTOM,ROBOT_SPEED_DECIMAL_TOP,ROBOT_SPEED_DECIMAL_PLACE,this);//限制3位小数
     ui->creatcspeedlineEdit->setValidator(adoubleValidator_speed);
 }

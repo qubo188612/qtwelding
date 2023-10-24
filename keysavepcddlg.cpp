@@ -8,6 +8,30 @@ keysavepcdDlg::keysavepcdDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->creatsAddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creatscomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->creatsDelBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creatslist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->pointsAddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pointscomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pointsDelBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pointslist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->savepcdBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->savepcdmodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->scanAddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->scancomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->scanDelBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->scanlist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->tracesAddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tracescomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->tracesDelBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->traceslist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->savepcdname->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     for(int n=0;n<SAVEPCD_EDIT_ID_TOTAL_NUM;n++)
     {
         QString msg=Savepcd_edit_mode_toQString((Savepcd_edit_mode)n);

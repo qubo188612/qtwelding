@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QListWidgetItem>
 #include <QFileDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 #include "edittextdlg.h"
 

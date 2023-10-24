@@ -8,6 +8,15 @@ keyioDlg::keyioDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox_9->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_9->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->IOinputBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->IOoutputBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keyioDlg::~keyioDlg()

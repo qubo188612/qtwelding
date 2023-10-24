@@ -8,6 +8,22 @@ arrvepointtestDlg::arrvepointtestDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->lineEdit_X->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Y->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Z->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RZ->setStyleSheet(FONT_EDIT_INFO);
+
+    ui->updataleaser->setStyleSheet(FONT_BUTTON_INFO);
+    ui->updatapose->setStyleSheet(FONT_BUTTON_INFO);
+    ui->updatapos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 arrvepointtestDlg::~arrvepointtestDlg()

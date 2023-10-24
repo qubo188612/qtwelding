@@ -8,6 +8,17 @@ keycreataddDlg::keycreataddDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->creataddAddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creataddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creataddDelBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->creataddcomboBox->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->creataddlist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->creataddnamelineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keycreataddDlg::~keycreataddDlg()

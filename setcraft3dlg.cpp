@@ -9,6 +9,34 @@ setcraft3Dlg::setcraft3Dlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->lineEdit_downRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_downRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_downRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsdownX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsdownY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsdownZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsupX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsupY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsupZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_offsetsZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_posture_distance->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_upRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_upRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_upRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButtonOK->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_centerpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_edpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_stpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
     adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数

@@ -13,6 +13,21 @@ cambuilddlg::cambuilddlg(my_parameters *mcs,QWidget *parent) :
 {
     ui->setupUi(this);
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->x1_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->y1_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->x2_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->y2_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->x3_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->y3_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->x4_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->y4_Edit->setStyleSheet(FONT_EDIT_INFO);
+    ui->cambuildBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->confimbuildBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_2 = new QDoubleValidator(-9999,9999,2,this);//限制3位小数
     ui->x1_Edit->setValidator(adoubleValidator_2);
     ui->y1_Edit->setValidator(adoubleValidator_2);

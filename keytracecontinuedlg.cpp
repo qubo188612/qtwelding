@@ -10,6 +10,18 @@ keytracecontinueDlg::keytracecontinueDlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->arriveBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tracecontinuename->setStyleSheet(FONT_EDIT_INFO);
+    ui->tracecontinuenamecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->updata_posBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
 }
 
 keytracecontinueDlg::~keytracecontinueDlg()

@@ -11,6 +11,32 @@ keysearchDlg::keysearchDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->arriveBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->groupBox->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_2->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_2->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->groupBox_3->setObjectName(FONT_QUALIFY_MOUDLES_INFO);
+    ui->groupBox_3->setStyleSheet(FONT_GROUPBOX_INFO);
+    ui->searchaddBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->searchchangecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->searchmovemodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->searchname->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchside->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchsidemovex->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchsidemovey->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchsidemovez->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchsidespeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchspeed->setStyleSheet(FONT_EDIT_INFO);
+    ui->searchtcpcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->updata_posBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->updata_posBtn_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     setmovec=new setmovecDlg(m_mcs);
 
     for(int n=0;n<ROBOTTCPNUM;n++)

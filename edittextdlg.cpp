@@ -7,6 +7,12 @@ edittextDlg::edittextDlg(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedSize(this->width(), this->height());//禁止拉伸
+
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->lineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+#endif
 }
 
 edittextDlg::~edittextDlg()

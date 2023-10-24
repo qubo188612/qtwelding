@@ -9,6 +9,15 @@ setcraft2Dlg::setcraft2Dlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->lineEdit_X->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Y->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Z->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
 
     ui->lineEdit_X->setValidator(adoubleValidator_pose);

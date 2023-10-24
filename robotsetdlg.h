@@ -2,6 +2,7 @@
 #define ROBOTSETDLG_H
 
 #include <QDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 
 namespace Ui {

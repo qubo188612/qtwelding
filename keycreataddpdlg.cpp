@@ -9,6 +9,16 @@ keycreataddpDlg::keycreataddpDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->traceaddpweldcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->traceaddpointcombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->traceaddpname->setStyleSheet(FONT_EDIT_INFO);
+    ui->traceaddpmodecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     for(int n=0;n<CREATADDP_EDIT_ID_TOTAL_NUM;n++)
     {
         QString msg=Creataddp_edit_mode_toQString((Creataddp_edit_mode)n);

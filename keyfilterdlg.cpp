@@ -9,6 +9,23 @@ keyfilterDlg::keyfilterDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->filternamecombo->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->filternamelineEdit->setStyleSheet(FONT_EDIT_INFO);
+    ui->gaussian_SmoothingRadius->setStyleSheet(FONT_EDIT_INFO);
+    ui->gaussian_SmoothingSigma->setStyleSheet(FONT_EDIT_INFO);
+    ui->msl_poly->setStyleSheet(FONT_EDIT_INFO);
+    ui->pca_Threshold->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->sor_nearpoint_num->setStyleSheet(FONT_EDIT_INFO);
+    ui->sor_standard_deviation->setStyleSheet(FONT_EDIT_INFO);
+    ui->svd_Degree->setStyleSheet(FONT_EDIT_INFO);
+    ui->svd_SingularThreshold->setStyleSheet(FONT_EDIT_INFO);
+    ui->svd_WindowSize->setStyleSheet(FONT_EDIT_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
 #if !defined USE_PLC_FILTER
     ui->tabWidget->removeTab(0);
     ui->tabWidget->removeTab(0);

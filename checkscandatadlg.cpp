@@ -10,6 +10,15 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
 
     m_mcs=mcs;
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->tab1listWidget->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->tab2listWidget->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->tab3listWidget->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->tab4listWidget->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->tab5listWidget->setStyleSheet(FONT_LISTWIDGET_INFO);
+#endif
+
     ui->tabWidget->setTabText(0,QStringLiteral("点位"));
     ui->tabWidget->setTabText(1,QStringLiteral("扫描轨迹"));
     ui->tabWidget->setTabText(2,QStringLiteral("跟踪轨迹"));
@@ -29,12 +38,12 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui->tab1pushButton_5->setIconSize(ui->tab1pushButton_5->size());
     ui->tab1pushButton_6->setIconSize(ui->tab1pushButton_6->size());
 
-    ui->tab2pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
-    ui->tab2pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
-    ui->tab2pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
-    ui->tab2pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
-    ui->tab2pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
-    ui->tab2pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab2pushButton_1->setIcon(QIcon(":/new/prefix1/icons/1.png"));
+    ui->tab2pushButton_2->setIcon(QIcon(":/new/prefix1/icons/2.png"));
+    ui->tab2pushButton_3->setIcon(QIcon(":/new/prefix1/icons/3.png"));
+    ui->tab2pushButton_4->setIcon(QIcon(":/new/prefix1/icons/4.png"));
+    ui->tab2pushButton_5->setIcon(QIcon(":/new/prefix1/icons/5.png"));
+    ui->tab2pushButton_6->setIcon(QIcon(":/new/prefix1/icons/6.png"));
     ui->tab2pushButton_1->setIconSize(ui->tab2pushButton_1->size());
     ui->tab2pushButton_2->setIconSize(ui->tab2pushButton_2->size());
     ui->tab2pushButton_3->setIconSize(ui->tab2pushButton_3->size());
@@ -42,12 +51,12 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui->tab2pushButton_5->setIconSize(ui->tab2pushButton_5->size());
     ui->tab2pushButton_6->setIconSize(ui->tab2pushButton_6->size());
 
-    ui->tab3pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
-    ui->tab3pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
-    ui->tab3pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
-    ui->tab3pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
-    ui->tab3pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
-    ui->tab3pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab3pushButton_1->setIcon(QIcon(":/new/prefix1/icons/1.png"));
+    ui->tab3pushButton_2->setIcon(QIcon(":/new/prefix1/icons/2.png"));
+    ui->tab3pushButton_3->setIcon(QIcon(":/new/prefix1/icons/3.png"));
+    ui->tab3pushButton_4->setIcon(QIcon(":/new/prefix1/icons/4.png"));
+    ui->tab3pushButton_5->setIcon(QIcon(":/new/prefix1/icons/5.png"));
+    ui->tab3pushButton_6->setIcon(QIcon(":/new/prefix1/icons/6.png"));
     ui->tab3pushButton_1->setIconSize(ui->tab3pushButton_1->size());
     ui->tab3pushButton_2->setIconSize(ui->tab3pushButton_2->size());
     ui->tab3pushButton_3->setIconSize(ui->tab3pushButton_3->size());
@@ -55,12 +64,12 @@ checkscandataDlg::checkscandataDlg(my_parameters *mcs,QWidget *parent) :
     ui->tab3pushButton_5->setIconSize(ui->tab3pushButton_5->size());
     ui->tab3pushButton_6->setIconSize(ui->tab3pushButton_6->size());
 
-    ui->tab4pushButton_1->setIcon(QIcon(":/new/prefix1/icons/俯.png"));
-    ui->tab4pushButton_2->setIcon(QIcon(":/new/prefix1/icons/前.png"));
-    ui->tab4pushButton_3->setIcon(QIcon(":/new/prefix1/icons/左.png"));
-    ui->tab4pushButton_4->setIcon(QIcon(":/new/prefix1/icons/后.png"));
-    ui->tab4pushButton_5->setIcon(QIcon(":/new/prefix1/icons/右.png"));
-    ui->tab4pushButton_6->setIcon(QIcon(":/new/prefix1/icons/上.png"));
+    ui->tab4pushButton_1->setIcon(QIcon(":/new/prefix1/icons/1.png"));
+    ui->tab4pushButton_2->setIcon(QIcon(":/new/prefix1/icons/2.png"));
+    ui->tab4pushButton_3->setIcon(QIcon(":/new/prefix1/icons/3.png"));
+    ui->tab4pushButton_4->setIcon(QIcon(":/new/prefix1/icons/4.png"));
+    ui->tab4pushButton_5->setIcon(QIcon(":/new/prefix1/icons/5.png"));
+    ui->tab4pushButton_6->setIcon(QIcon(":/new/prefix1/icons/6.png"));
     ui->tab4pushButton_1->setIconSize(ui->tab4pushButton_1->size());
     ui->tab4pushButton_2->setIconSize(ui->tab4pushButton_2->size());
     ui->tab4pushButton_3->setIconSize(ui->tab4pushButton_3->size());

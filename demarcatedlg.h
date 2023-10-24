@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include "myfont.h"
 #include "my_parameters.h"
 #include "calibration.h"
 #if _MSC_VER

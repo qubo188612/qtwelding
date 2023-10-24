@@ -2,6 +2,7 @@
 #define KEYCREATDLG_H
 
 #include <QDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 #include "my_cmd.h"
 #include "traceedit0dlg.h"

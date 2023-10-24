@@ -2,6 +2,7 @@
 #define KEYFILTERDLG_H
 
 #include <QDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 #include "my_cmd.h"
 

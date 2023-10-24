@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDoubleValidator>
 #include <QFileDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 #include "setmovecdlg.h"
 #include "my_cmd.h"

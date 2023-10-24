@@ -2,6 +2,7 @@
 #define PSHOWDLG_H
 
 #include <QDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 #include <modbus/modbus.h>
 

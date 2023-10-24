@@ -9,6 +9,12 @@ infoDlg::infoDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->SN_DataBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+#endif
+
     sndata=new sndataDlg(m_mcs);
 }
 

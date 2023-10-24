@@ -9,6 +9,41 @@ setcraft1Dlg::setcraft1Dlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->lineEdit_centerRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_X->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Y->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Z->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButtonOK->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_del->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_centerpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_edpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_stpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_updata_centerpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_updata_edpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_updata_stpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->robposlist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
     adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数

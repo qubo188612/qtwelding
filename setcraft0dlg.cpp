@@ -9,6 +9,19 @@ setcraft0Dlg::setcraft0Dlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->lineEdit_RX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_RZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_X->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Y->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_Z->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_3 = new QDoubleValidator(0,9999,3,this);//限制3位小数
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
     adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
