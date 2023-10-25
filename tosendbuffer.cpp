@@ -7660,7 +7660,7 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                         //移动到目标点
                         cmd_move(nextPos,MOVEP,speed,tcp);
                         usleep(time*1000);
-                        while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待寻位到位
+                        while(m_mcs->rob->robot_state!=ROBOT_STATE_IDLE)//等待到位
                         {
                             if(b_cmdlist_build==false)     //停止
                             {

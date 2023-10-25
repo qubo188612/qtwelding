@@ -118,7 +118,7 @@ void keytracerealtime2Dlg::init_dlg_show(QString cmdlist)
             bool b_weld=cmd.cmd_tracerealtime2_weld;//获取到实时跟踪是否焊接起弧下标
             int time=cmd.cmd_tracerealtime2_time;
             float samplespeed=cmd.cmd_tracerealtime2_samplespeed;
-            float errdis=cmd.cmd_tracerealtime_errdis;
+            float errdis=cmd.cmd_tracerealtime2_errdis;
             Tracerealtime_edit_mode mode=cmd.cmd_tracerealtime2_mode;//获取到实时跟踪下枪模式
             Robmovemodel movemod=cmd.cmd_tracerealtime2_movemod;//获取到的实时跟踪移动模式
             QString change=cmd.cmd_tracerealtime2_change;//获取到的实时跟踪变换矩阵
