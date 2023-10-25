@@ -9,6 +9,13 @@ weldsetDlg::weldsetDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->weld_ip->setStyleSheet(FONT_EDIT_INFO);
+    ui->weld_model->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+#endif
+
     for(int n=0;n<WELD_MODEL_NUM;n++)
     {
         QString msg=m_mcs->rob->weld_model_toQString((WELD_MODEL)n)+"焊机";

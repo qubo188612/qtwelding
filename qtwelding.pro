@@ -301,6 +301,9 @@ HEADERS += \
 
 win32{
 
+QMAKE_CXXFLAGS_RELEASE = -O2  -MD  -GL
+QMAKE_CXXFLAGS_DEBUG  =  Zi  -MDd
+
 #opencv库的添加
 INCLUDEPATH += D:/opencv/build/include
 
@@ -329,14 +332,14 @@ else:win32:CONFIG(debug, debug|release):LIBS += -LD:/libmodbus/x64/lib/ -lmodbus
 INCLUDEPATH += D:/eigen3
 
 #QSsh库的添加
-#win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSsh
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSshd
+win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSsh
+else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/6.2.4/msvc2019_64/lib/ -lQSshd
 
-#INCLUDEPATH += D:/Qt/6.2.4/msvc2019_64/include/Qssh
+INCLUDEPATH += D:/Qt/6.2.4/msvc2019_64/include/Qssh
 
-#INCLUDEPATH += C:/Botan/include/botan-2 \
+INCLUDEPATH += C:/Botan/include/botan-2 \
 
-#LIBS += -LC:/Botan/lib/ -lbotan-2
+LIBS += -LC:/Botan/lib/ -lbotan-2
 
 #VTK库添加
 win32:CONFIG(release, debug|release): LIBS += D:/VTK/lib/vtk*-9.2.lib
@@ -362,11 +365,6 @@ win32:CONFIG(release, debug|release): LIBS += D:/PCL/3rdParty/FLANN/lib/flann*.l
 else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/3rdParty/FLANN/lib/flann*.lib
 
 INCLUDEPATH += D:/PCL/3rdParty/FLANN/include
-
-
-CONFIG(release, debug|release) {
-    QMAKE_CXXFLAGS_RELEASE += /MT
-}
 
 }
 
