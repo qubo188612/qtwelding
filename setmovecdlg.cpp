@@ -9,6 +9,39 @@ setmovecDlg::setmovecDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->arriveBtn_center->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_center_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_ed->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_ed_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_st->setStyleSheet(FONT_BUTTON_INFO);
+    ui->arriveBtn_st_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->lineEdit_centerRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_centerX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_edZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stRX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stRY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stRZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stX->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stY->setStyleSheet(FONT_EDIT_INFO);
+    ui->lineEdit_stZ->setStyleSheet(FONT_EDIT_INFO);
+    ui->pushButton_get_centerpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_centerpos_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_edpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_edpos_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_stpos->setStyleSheet(FONT_BUTTON_INFO);
+    ui->pushButton_get_stpos_2->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     adoubleValidator_pose = new QDoubleValidator(ROBOT_POSE_DECIMAL_BOTTOM,ROBOT_POSE_DECIMAL_TOP,ROBOT_POSE_DECIMAL_PLACE,this);//限制3位小数
     adoubleValidator_posture = new QDoubleValidator(ROBOT_POSTURE_DECIMAL_BOTTOM,ROBOT_POSTURE_DECIMAL_TOP,ROBOT_POSTURE_DECIMAL_PLACE,this);//限制4位小数
 

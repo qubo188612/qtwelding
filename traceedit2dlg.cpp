@@ -8,6 +8,15 @@ traceedit2Dlg::traceedit2Dlg(my_parameters *mcs,QWidget *parent) :
     ui->setupUi(this);
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->comboBox_0->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->comboBox_1->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->comboBox_2->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->comboBox_3->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->comboBox_4->setStyleSheet(FONT_COMBOBOX_INFO);
+    ui->pushButton->setStyleSheet(FONT_BUTTON_INFO);
+#endif
 }
 
 traceedit2Dlg::~traceedit2Dlg()

@@ -11,6 +11,17 @@ sshpasswordDlg::sshpasswordDlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->sshpassword->setStyleSheet(FONT_EDIT_INFO);
+    ui->sshusename->setStyleSheet(FONT_EDIT_INFO);
+    ui->sshcmdBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->sshfileBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->sshlinkBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->sshsetupBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     connect(ui->sshlinkBtn,&QPushButton::clicked,[=](){
         m_mcs->e2proomdata.sshdlg_usename=ui->sshusename->text();
         m_mcs->e2proomdata.sshdlg_password=ui->sshpassword->text();

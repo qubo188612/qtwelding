@@ -9,6 +9,14 @@ taskcleardlg::taskcleardlg(my_parameters *mcs,QWidget *parent) :
     m_mcs=mcs;
     setFixedSize(this->width(), this->height());//禁止拉伸
 
+//美化界面
+#ifdef OPEN_BEAUTIFY_INTERFACE
+    ui->taskclearallBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->taskclearBtn->setStyleSheet(FONT_BUTTON_INFO);
+    ui->tasklist->setStyleSheet(FONT_LISTWIDGET_INFO);
+    ui->record->setStyleSheet(FONT_TEXTBROWERS_INFO);
+#endif
+
     connect(ui->tasklist,&QListWidget::itemClicked,[=](){
         nowtask_Id=ui->tasklist->currentRow();
     });

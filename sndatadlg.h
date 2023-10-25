@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include "myfont.h"
 #include "my_parameters.h"
 #if _MSC_VER
 #include "TimeFunction.h"

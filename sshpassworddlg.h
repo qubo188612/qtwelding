@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QDialog>
+#include "myfont.h"
 #include "my_parameters.h"
 
 #ifdef DEBUS_SSH
