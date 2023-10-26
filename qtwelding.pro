@@ -305,7 +305,7 @@ HEADERS += \
 win32{
 
 QMAKE_CXXFLAGS_RELEASE = -O2  -MD  -GL
-QMAKE_CXXFLAGS_DEBUG  =  Zi  -MDd
+QMAKE_CXXFLAGS_DEBUG  =  -Zi  -MDd
 
 #opencv库的添加
 INCLUDEPATH += D:/opencv/build/include
@@ -369,6 +369,13 @@ else:win32:CONFIG(debug, debug|release): LIBS += D:/PCL/3rdParty/FLANN/lib/flann
 
 INCLUDEPATH += D:/PCL/3rdParty/FLANN/include
 
+#ZXing库的添加
+
+win32:CONFIG(release, debug|release): LIBS += -LD:/zxing/lib/ -lZXing
+else:win32:CONFIG(debug, debug|release): LIBS += -LD:/zxing/lib/ -lZXing
+
+INCLUDEPATH += D:/zxing/include/ZXing
+
 }
 
 unix {
@@ -426,5 +433,7 @@ unix:!macx: LIBS += -L/usr/local/lib/ -lZXing
 
 RESOURCES += \
     rsc.qrc
+
+
 
 
