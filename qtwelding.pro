@@ -203,6 +203,7 @@ HEADERS += \
     MyQrFunction.h \
     MytracerealtimeFunction.h \
     PictureBox.h \
+    QrCode.h \
     ResultData.h \
     SN_Data.h \
     TCProsinterface.h \
@@ -416,13 +417,14 @@ INCLUDEPATH += /usr/include \
 
 LIBS += /usr/lib/x86_64-linux-gnu/libmodbus.so
 
+#ZXing库的添加
+INCLUDEPATH += /usr/local/include/ZXing \
+
+unix:!macx: LIBS += -L/usr/local/lib/ -lZXing
 
 }
 
 RESOURCES += \
     rsc.qrc
-
-
-
 
 

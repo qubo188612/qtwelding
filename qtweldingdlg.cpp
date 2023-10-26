@@ -2182,6 +2182,11 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
     ui->project_name->setText(m_mcs->project->project_name);
     ui->project_Id->setText(m_mcs->project->project_Id_toQString(m_mcs->project->project_Id));
 
+    QImage fileImage;
+    Myqr::QrInfo_to_Qr(m_mcs->project->project_path,"QRCode",fileImage);
+    fileImage = fileImage.scaled(ui->projectwidget->width(),ui->projectwidget->height(),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    ui->projectwidget->setPixmap(QPixmap::fromImage(fileImage));
+
     switch(m_mcs->project->project_Id)
     {
         case PROGECT_ID_TEACH_SCAN:

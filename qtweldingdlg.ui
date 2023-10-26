@@ -491,7 +491,7 @@
          <string>查看变量数据</string>
         </property>
        </widget>
-       <widget class="PictureBox" name="widget" native="true">
+       <widget class="QLabel" name="projectwidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -511,6 +511,9 @@
           <width>141</width>
           <height>141</height>
          </size>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </widget>
@@ -2511,14 +2514,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>PictureBox</class>
-   <extends>QWidget</extends>
-   <header location="global">PictureBox.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

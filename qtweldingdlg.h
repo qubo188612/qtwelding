@@ -33,6 +33,7 @@
 #include "setcraft1dlg.h"
 #include "setcraft2dlg.h"
 #include "setcraft3dlg.h"
+#include "MyQrFunction.h"
 
 
 namespace Ui {
