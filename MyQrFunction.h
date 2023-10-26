@@ -1,0 +1,4 @@
+#ifndef MYQRFUNCTION_H
+#define MYQRFUNCTION_H
+
+#endif // MYQRFUNCTION_H

@@ -19,6 +19,7 @@ SOURCES += \
         FileOut.cpp \
         MyCheckIPinfo.cpp \
         MyPlcFunction.cpp \
+        MyQrFunction.cpp \
         MytracerealtimeFunction.cpp \
         PictureBox.cpp \
         ResultData.cpp \
@@ -199,6 +200,7 @@ HEADERS += \
     FileOut.h \
     MyCheckIPinfo.h \
     MyPlcFunction.h \
+    MyQrFunction.h \
     MytracerealtimeFunction.h \
     PictureBox.h \
     ResultData.h \
