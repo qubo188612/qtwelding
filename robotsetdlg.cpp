@@ -52,6 +52,7 @@ void robotsetDlg::init_dlg_show()
         ui->robot_remoteip->setEnabled(false);
         ui->label_6->setEnabled(false);
         ui->robot_posure_model->setEnabled(false);
+        ui->label_7->setEnabled(false);
         ui->robot_outnum->setEnabled(false);
     }
     else
@@ -60,6 +61,7 @@ void robotsetDlg::init_dlg_show()
         ui->robot_remoteip->setEnabled(true);
         ui->label_6->setEnabled(true);
         ui->robot_posure_model->setEnabled(true);
+        ui->label_7->setEnabled(true);
         ui->robot_outnum->setEnabled(true);
     }
 }
@@ -77,6 +79,7 @@ void robotsetDlg::on_robot_model_currentIndexChanged(int index)
         ui->robot_remoteip->setEnabled(false);
         ui->label_6->setEnabled(false);
         ui->robot_posure_model->setEnabled(false);
+        ui->label_7->setEnabled(false);
         ui->robot_outnum->setEnabled(false);
     }
     else
@@ -85,6 +88,7 @@ void robotsetDlg::on_robot_model_currentIndexChanged(int index)
         ui->robot_remoteip->setEnabled(true);
         ui->label_6->setEnabled(true);
         ui->robot_posure_model->setEnabled(true);
+        ui->label_7->setEnabled(true);
         ui->robot_outnum->setEnabled(true);
     }
 }

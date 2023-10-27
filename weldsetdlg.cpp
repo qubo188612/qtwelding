@@ -18,7 +18,7 @@ weldsetDlg::weldsetDlg(my_parameters *mcs,QWidget *parent) :
 
     for(int n=0;n<WELD_MODEL_NUM;n++)
     {
-        QString msg=m_mcs->rob->weld_model_toQString((WELD_MODEL)n)+"焊机";
+        QString msg=m_mcs->rob->weld_model_toQString((WELD_MODEL)n)+QStringLiteral("焊机");
         ui->weld_model->addItem(msg);
     }
     ui->weld_model->setCurrentIndex(m_mcs->rob->weld_model);
@@ -51,7 +51,7 @@ void weldsetDlg::close_dlg_show()
 
 void weldsetDlg::on_weld_model_currentIndexChanged(int index)
 {
-    if(index==WELD_MODEL_NULL||m_mcs->rob->weld_model==WELD_MODEL_ROBOT_LINK)
+    if(index==WELD_MODEL_NULL||index==WELD_MODEL_ROBOT_LINK)
     {
         ui->label_3->setEnabled(false);
         ui->weld_ip->setEnabled(false);
