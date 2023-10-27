@@ -33,7 +33,7 @@
 #include "setcraft1dlg.h"
 #include "setcraft2dlg.h"
 #include "setcraft3dlg.h"
-#include "MyQrFunction.h"
+#include "qrshowdlg.h"
 
 
 namespace Ui {
@@ -103,6 +103,7 @@ public:
     checkscandataDlg *checkscandata;
     sndataDlg *sndata;
     infoDlg *info;
+    qrshowDlg *qrshow;
     setcraft0Dlg *setcraft0;
     setcraft1Dlg *setcraft1;
     setcraft2Dlg *setcraft2;
@@ -258,6 +259,8 @@ private slots:
     void on_infoBtn_clicked();
 
     void on_weld_elev_editingFinished();
+
+    void on_projectqrshowBtn_clicked();
 
 private:
     Ui::qtweldingDlg *ui;

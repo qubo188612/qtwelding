@@ -93,6 +93,7 @@ SOURCES += \
         process1_scanbeforetrace.cpp \
         project.cpp \
         pshowdlg.cpp \
+        qrshowdlg.cpp \
         qtmysunnydlg.cpp \
         qtweldingdlg.cpp \
         robotcontrol.cpp \
@@ -176,6 +177,7 @@ FORMS += \
     plotedit1dlg.ui \
     plotedit2dlg.ui \
     pshowdlg.ui \
+    qrshowdlg.ui \
     qtmysunnydlg.ui \
     qtweldingdlg.ui \
     robotsetdlg.ui \
@@ -276,6 +278,7 @@ HEADERS += \
     process1_scanbeforetrace.h \
     project.h \
     pshowdlg.h \
+    qrshowdlg.h \
     qtmysunnydlg.h \
     qtweldingdlg.h \
     robotcontrol.h \

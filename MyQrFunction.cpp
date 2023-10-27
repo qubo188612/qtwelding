@@ -46,11 +46,13 @@ int Myqr::QrInfo_to_Qr(QString msg,QString format,QImage &fileImage)
 }
 
 
-QImage Myqr::WriteBarcode(QStringView text, ZXing::BarcodeFormat format)
+QImage Myqr::WriteBarcode(QString text, ZXing::BarcodeFormat format)
 {
+//    text=QStringLiteral("我就不信了");
+    int width=271,height=271;
     auto writer = ZXing::MultiFormatWriter(format);
-    auto matrix = writer.encode(text.toString().toStdString(), 0, 0);
+    std::wstring str = text.toStdWString();
+    auto matrix = writer.encode(str, width, height);
     auto bitmap = ZXing::ToMatrix<uint8_t>(matrix);
-
     return QImage(bitmap.data(), bitmap.width(), bitmap.height(), bitmap.width(), QImage::Format::Format_Grayscale8).copy();
 }

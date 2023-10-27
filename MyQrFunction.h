@@ -26,7 +26,7 @@ public:
     static int QrInfo_to_Qr(QString msg,QString format,QImage &fileImage);
 
 private:
-    static QImage WriteBarcode(QStringView text, ZXing::BarcodeFormat format);
+    static QImage WriteBarcode(QString text, ZXing::BarcodeFormat format);
 };
 
 #endif

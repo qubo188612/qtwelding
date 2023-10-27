@@ -417,7 +417,7 @@
        <widget class="QPushButton" name="projectskiprunBtn">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>167</x>
           <y>280</y>
           <width>161</width>
           <height>61</height>
@@ -481,7 +481,7 @@
        <widget class="QPushButton" name="projectcheckdataBtn">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>167</x>
           <y>360</y>
           <width>161</width>
           <height>61</height>
@@ -491,29 +491,17 @@
          <string>查看变量数据</string>
         </property>
        </widget>
-       <widget class="QLabel" name="projectwidget">
+       <widget class="QPushButton" name="projectqrshowBtn">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>280</y>
-          <width>141</width>
-          <height>141</height>
+          <x>3</x>
+          <y>360</y>
+          <width>161</width>
+          <height>61</height>
          </rect>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>141</width>
-          <height>141</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>141</width>
-          <height>141</height>
-         </size>
-        </property>
         <property name="text">
-         <string/>
+         <string>工程二维码</string>
         </property>
        </widget>
       </widget>

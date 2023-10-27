@@ -67,6 +67,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
 
     sndata=new sndataDlg(m_mcs);
     info=new infoDlg(m_mcs);
+    qrshow=new qrshowDlg(m_mcs);
     qtmysunny=new qtmysunnyDlg(m_mcs);
     demarcate=new demarcateDlg(m_mcs);
     robotset=new robotsetDlg(m_mcs);
@@ -123,6 +124,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->posOut2subBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
     ui->posOut3subBtn->setStyleSheet(FONT_MAIN_BUTTON_BIG_INFO);
 
+    ui->projectqrshowBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
     ui->projectskiprunBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
     ui->projectcheckdataBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
     ui->weld_windBtn->setStyleSheet(FONT_MAIN_BUTTON_SMALL_INFO);
@@ -354,6 +356,7 @@ qtweldingDlg::~qtweldingDlg()
 //  delete thread4;
     delete sndata;
     delete info;
+    delete qrshow;
     delete qtmysunny;
     delete demarcate;
     delete robotset;
@@ -589,6 +592,18 @@ void qtweldingDlg::on_projectcheckdataBtn_clicked()
     checkscandata->setWindowTitle(QStringLiteral("查看变量数据"));
     checkscandata->exec();
     checkscandata->close_dlg_show();
+}
+
+//查看二维码
+void qtweldingDlg::on_projectqrshowBtn_clicked()
+{
+#ifdef USE_SN_DATA
+    m_mcs->sn_data.save();
+#endif
+    qrshow->init_dlg_show();
+    qrshow->setWindowTitle(QStringLiteral("工程二维码信息"));
+    qrshow->exec();
+    qrshow->close_dlg_show();
 }
 
 void qtweldingDlg::on_runpausedBtn_clicked()//暂停工程
@@ -2182,11 +2197,6 @@ void qtweldingDlg::init_show_ui_list()//界面刷新
     ui->project_name->setText(m_mcs->project->project_name);
     ui->project_Id->setText(m_mcs->project->project_Id_toQString(m_mcs->project->project_Id));
 
-    QImage fileImage;
-    Myqr::QrInfo_to_Qr(m_mcs->project->project_path,"QRCode",fileImage);
-    fileImage = fileImage.scaled(ui->projectwidget->width(),ui->projectwidget->height(),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    ui->projectwidget->setPixmap(QPixmap::fromImage(fileImage));
-
     switch(m_mcs->project->project_Id)
     {
         case PROGECT_ID_TEACH_SCAN:
@@ -3126,6 +3136,8 @@ void qtplcThread::Stop()
 }
 
 */
+
+
 
 
 
