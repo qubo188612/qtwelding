@@ -23,6 +23,8 @@ public:
     void init_dlg_show();
     void close_dlg_show();
 
+    QImage fileImage;
+
 private slots:
     void on_pushButton_clicked();
 

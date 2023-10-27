@@ -27,6 +27,10 @@ public:
 
 private:
     static QImage WriteBarcode(QString text, ZXing::BarcodeFormat format);
+
+    static std::string My_Chinese_to_u8string(QString text);
+
+    static QString My_u8string_to_Chinese(std::string str);
 };
 
 #endif
