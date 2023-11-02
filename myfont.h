@@ -57,9 +57,9 @@
                                 "QPushButton:disabled{color: rgb(90,90,90);background-color: rgb(180,180,180);}"
 
 //编辑框
-#define FONT_EDIT_INFO          "color: rgb(31,31,31);"     \
+#define FONT_EDIT_INFO          "QLineEdit{color: rgb(31,31,31);"     \
                                 "background-color: rgb(255, 255, 255);"     \
-                                "border:2px solid rgb(20,196,188);border-radius:5px;"
+                                "border:2px solid rgb(20,196,188);border-radius:5px;}"
 
 //组
 #define FONT_GROUPBOX_INFO     "#w{background-color:rgba(192,192,192,255);"      \
@@ -67,19 +67,17 @@
                                "color:rgb(0,0,0);}"
 
 //单选框
-/*
-#define FONT_CHECKBOX_INFO     "QCheckBox:indicator{ background-color: rgb(240,240,240); "     \
-                               "border:2px solid rgb(20,196,188);}"
-*/
+#define FONT_CHECKBOX_INFO     "QCheckBox{border:2px solid rgb(20,196,188);}"
+
 
 //下拉条
-#define FONT_COMBOBOX_INFO     "border:2px solid rgb(20,196,188);border-radius: 5px;"
+#define FONT_COMBOBOX_INFO     "QComboBox{border:2px solid rgb(20,196,188);border-radius: 5px;}"
 
 //消息框
-#define FONT_TEXTBROWERS_INFO  "border:2px solid rgb(20,196,188);border-radius: 5px; background-color: rgba(192,192,192,255);"
+#define FONT_TEXTBROWERS_INFO  "QTextBrowser{border:2px solid rgb(20,196,188);border-radius: 5px; background-color: rgba(192,192,192,255);}"
 
 //队列框
-#define FONT_LISTWIDGET_INFO   "border:2px solid rgb(20,196,188);border-radius: 5px; background-color: rgba(192,192,192,255);"
+#define FONT_LISTWIDGET_INFO   "QListWidget{border:2px solid rgb(20,196,188);border-radius: 5px; background-color: rgba(192,192,192,255);}"
 
 
 
