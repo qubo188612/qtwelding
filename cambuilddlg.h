@@ -55,6 +55,7 @@ protected:
 
 private slots:
     void init_show_cambuild_inlab(cv::Mat);
+    void on_cambuildBtn_clicked();
 };
 
 class cambuildThread : public QThread

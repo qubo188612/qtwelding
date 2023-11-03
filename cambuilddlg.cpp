@@ -508,3 +508,9 @@ void cambuildThread::Stop()
     }
   }
 }
+
+void cambuilddlg::on_cambuildBtn_clicked()
+{
+
+}
+
