@@ -2,6 +2,8 @@
 #define ROBOTSETDLG_H
 
 #include <QDialog>
+#include <QHostAddress>
+#include <QMessageBox>
 #include "myfont.h"
 #include "my_parameters.h"
 
@@ -21,6 +23,8 @@ public:
 
     void init_dlg_show();
     void close_dlg_show();
+
+    bool IsIp(QString currentIp);   //判断IP格式
 private slots:
     void on_pushButton_clicked();
 

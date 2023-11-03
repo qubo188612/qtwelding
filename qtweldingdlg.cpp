@@ -865,10 +865,23 @@ void qtweldingDlg::on_setrobotBtn_clicked()//机器人设置
     thread2->quit();
     thread2->wait();
     DisconnectRobot();
+
+    int oldport=m_mcs->ip->robot_ip[0].robot_ip.port;
+    QString oldip=m_mcs->ip->robot_ip[0].robot_ip.ip;
+
     robotset->init_dlg_show();
     robotset->setWindowTitle(QStringLiteral("机器人设置"));
     robotset->exec();
     robotset->close_dlg_show();
+
+#ifdef USE_MYROBOT_CONTROL
+    if(oldport!=m_mcs->ip->robot_ip[0].robot_ip.port||oldip!=m_mcs->ip->robot_ip[0].robot_ip.ip)
+    {
+        m_mcs->robotcontrol->Close_control_modbus(); //关闭接口
+        m_mcs->robotcontrol->Creat_control_modbus(); //重启接口
+    }
+#endif
+
     ConnectRobot();
     b_thread2=true;
     thread2->start();

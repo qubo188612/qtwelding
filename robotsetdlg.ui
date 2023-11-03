@@ -274,22 +274,5 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>robotsetDlg</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>185</x>
-     <y>295</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>189</x>
-     <y>172</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

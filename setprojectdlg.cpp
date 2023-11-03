@@ -1939,21 +1939,8 @@ void setprojectDlg::on_customcheckBtn_clicked()//指令表查看
             }
             else if(key==CMD_STOP_KEY)
             {
-                my_cmd cmd;
-                QString msg=cmd.cmd_stop();
-                m_mcs->project->project_cmdlist[now_cmdline]=msg;
-                if(0==m_mcs->tosendbuffer->cmdlist_creat_tracename_mem(m_mcs->project->project_cmdlist.size(),err_msg))
-                {
-                    ui->record->append(QStringLiteral("替换自定义指令成功"));
-                }
-                else
-                {
-                    for(int n=0;n<err_msg.size();n++)
-                    {
-                        ui->record->append(err_msg[n]);
-                    }
-                }
-                updatacmdlistUi();
+                ui->record->append(QStringLiteral("这是停止代码指令,无相关界面"));
+                return;
             }
             else if(key==CMD_CREATADD_KEY)
             {

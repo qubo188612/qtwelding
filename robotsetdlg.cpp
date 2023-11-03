@@ -23,12 +23,12 @@ robotsetDlg::robotsetDlg(my_parameters *mcs,QWidget *parent) :
 
     for(int n=0;n<ROBOTTALNUM;n++)  //机器人控制台数
     {
-        QString msg="机器人 "+QString::number(n);
+        QString msg=QStringLiteral("机器人 ")+QString::number(n);
         ui->comboBox->addItem(msg);
     }
     for(int n=0;n<ROBOT_MODEL_NUM;n++)
     {
-        QString msg=m_mcs->rob->robot_model_toQString((ROBOT_MODEL)n)+"机器人";
+        QString msg=m_mcs->rob->robot_model_toQString((ROBOT_MODEL)n)+QStringLiteral("机器人");
         ui->robot_model->addItem(msg);
     }
     ui->robot_model->setCurrentIndex(m_mcs->rob->robot_model);
@@ -96,6 +96,12 @@ void robotsetDlg::on_robot_model_currentIndexChanged(int index)
 
 void robotsetDlg::on_pushButton_clicked()
 {
+    QString ip=ui->robot_ip->text();
+    if(false==IsIp(ip))
+    {
+        QMessageBox::information(this, QStringLiteral("错误"), QStringLiteral("机器人ip地址需要为本地127回环地址"));
+        return;
+    }
     m_mcs->rob->out_num=ui->robot_outnum->currentIndex();
     m_mcs->rob->robot_model=(ROBOT_MODEL)ui->robot_model->currentIndex();
     m_mcs->rob->cal_posture_model=(CAL_POSTURE)ui->robot_posure_model->currentIndex();
@@ -104,4 +110,11 @@ void robotsetDlg::on_pushButton_clicked()
     m_mcs->ip->robot_ip[0].robot_ip.port=ui->robot_port->text().toInt();
     m_mcs->ip->robot_ip[0].remote_ip.ip=ui->robot_remoteip->text();
     m_mcs->ip->SaveIP((char*)IPADDRESS_PATH_MOTO);
+    done(1);
+}
+
+bool robotsetDlg::IsIp(QString currentIp)
+{
+    QHostAddress address(currentIp);
+    return address.protocol() != QAbstractSocket::UnknownNetworkLayerProtocol && address.isLoopback();
 }

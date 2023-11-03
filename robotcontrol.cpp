@@ -1801,8 +1801,8 @@ RobotcontrolThread1::RobotcontrolThread1(Robotcontrol *statci_p)
 
 void RobotcontrolThread1::run() //接到上位机命令
 {
-    QString server_port=QString::number(_p->m_mcs->ip->robotmyselfcontrol_port[0]);
-    _p->ctx_robotcontrol = modbus_new_tcp(NULL, server_port.toInt());
+    QString server_port=QString::number(_p->m_mcs->ip->robot_ip[0].robot_ip.port);
+    _p->ctx_robotcontrol = modbus_new_tcp(_p->m_mcs->ip->robot_ip[0].robot_ip.ip.toUtf8(), server_port.toInt());
     _p->sock = modbus_tcp_listen(_p->ctx_robotcontrol, 2);//最大监听2路
     std::set<int> fds {_p->sock};
     fd_set refset;

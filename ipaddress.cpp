@@ -30,7 +30,7 @@ IPaddress::IPaddress()
 
     LoadIP((char*)IPADDRESS_PATH_MOTO);
 
-    robotmyselfcontrol_port[0]=1496;
+//  robotmyselfcontrol_port[0]=1496;
 }
 
 IPaddress::~IPaddress()

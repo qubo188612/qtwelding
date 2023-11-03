@@ -89,11 +89,6 @@ typedef uint64_t u_int64_t; /* u_int64_t is defined in <machine/types.h> */
 #define LEASER_WORK_TASK_DELAY     300000   //激光器算法控制反映时间
 #define LEASER_WORK_STATE_DELAY    200000   //机器人到位后,到达到稳定状态的延时
 
-/*****************************/
-//自带机器人控制接口
-#define PORT_ROB_MYSELF_CONTROL_IP            "127.0.0.1"
-#define PORT_ROB_MYSELF_CONTROL_PORT          1496
-/******************************/
 
 //机器人信息和指令传输端口                        (1477-1496)
 #define ROB_CONTROL_REG_TOTALNUM              0x500         //机器人控制器寄存器总个数
