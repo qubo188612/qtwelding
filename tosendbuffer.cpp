@@ -5062,9 +5062,10 @@ int toSendbuffer::cmdlist_build(volatile int &line)
                 }
                 else if(rc==0)
                 {
-                    //下一句还是移动，可以紧接着动
-                    if(key==CMD_SMOV_KEY||
-                       key==CMD_MOV_KEY)
+                    //下一句还是移动，且不是最后一句指令时可以紧接着动
+                    if((key==CMD_SMOV_KEY||
+                        key==CMD_MOV_KEY)
+                      &&next!=m_mcs->project->project_cmdlist.size()-1)
                     {
                         b_continuemove=true;//
                     }
