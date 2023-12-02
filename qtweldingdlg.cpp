@@ -212,6 +212,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
     ui->movespeed->setText(QString::number(m_mcs->e2proomdata.maindlg_movespeed,'f',ROBOT_SPEED_DECIMAL_PLACE));
 #ifdef USE_SN_DATA
     //检测序列号
+    /*
     if(0!=m_mcs->sn_data.checkSN())
     {
         QMessageBox:: StandardButton result= QMessageBox::information(this, QStringLiteral("提示信息"),
@@ -237,6 +238,7 @@ qtweldingDlg::qtweldingDlg(QWidget *parent) :
             exit(1);
         }
     }
+*/
 #endif
 
     /************************************************/
