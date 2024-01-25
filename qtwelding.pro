@@ -354,8 +354,8 @@ else:win32:CONFIG(debug, debug|release): LIBS += D:/VTK/lib/vtk*-9.2d.lib
 INCLUDEPATH += D:/VTK/include/vtk-9.2
 
 #boost库添加
-win32:CONFIG(release, debug|release): LIBS += D:/boost/lib64-msvc-14.2/libboost*.lib
-else:win32:CONFIG(debug, debug|release): LIBS += D:/boost/lib64-msvc-14.2/libboost*-gd-*.lib
+win32:CONFIG(release, debug|release): LIBS += D:/boost/lib64-msvc-14.2/libboost*-mt-x64-*.lib
+else:win32:CONFIG(debug, debug|release): LIBS += D:/boost/lib64-msvc-14.2/libboost*-mt-gd-x64*.lib
 
 INCLUDEPATH += D:/boost
 
